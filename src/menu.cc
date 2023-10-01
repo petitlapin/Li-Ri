@@ -92,7 +92,7 @@ void ChangeVideo(void)
   // Teste la resolution video
   sdlVideoInfo=(SDL_VideoInfo*)SDL_GetVideoInfo();
   if(sdlVideoInfo->vfmt->BitsPerPixel==8) {
-    cerr <<"Impossible d'utiliser 8bits pour la vidéo !"<<endl;
+    std::cerr <<"Impossible d'utiliser 8bits pour la vidéo !"<<std::endl;
     exit(-1);
   }
   
@@ -112,7 +112,7 @@ void ChangeVideo(void)
   if(Pref.FullScreen) vOption|=SDL_FULLSCREEN;
   sdlVideo=SDL_SetVideoMode(800,600,sdlVideoInfo->vfmt->BitsPerPixel,vOption);
   if(sdlVideo==NULL) {
-    cerr <<"Impossible de passer dans le mode vidéo 800x600 !"<<endl;
+    std::cerr <<"Impossible de passer dans le mode vidéo 800x600 !"<<std::endl;
     exit(-1);
   }
   

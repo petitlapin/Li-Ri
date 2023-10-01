@@ -374,7 +374,7 @@ void Editeur::PrendTouche(int Tou)
     
     // Sauve le niveau
     if(Niveau.Save()==false) {
-      cerr <<"ERREUR Saving levels!"<<endl;
+      std::cerr <<"ERREUR Saving levels!"<<std::endl;
       exit(-1);
     }
     

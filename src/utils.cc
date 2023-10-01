@@ -77,7 +77,7 @@ long ChargeFichier(const char *Path,unsigned char *&Buf)
 
   file=fopen(Path,"r");
   if(!file) {
-    cerr <<"ERREUR: Impossible d'ouvrir '"<<Path<<"'"<<endl;
+    std::cerr <<"ERREUR: Impossible d'ouvrir '"<<Path<<"'"<<std::endl;
     perror("fopen");
     return -1;
   }
@@ -93,7 +93,7 @@ long ChargeFichier(const char *Path,unsigned char *&Buf)
 
   Buf=new unsigned char [L+1];
   if(Buf==NULL) {
-    cerr <<"ERREUR: Memoire insuffisante!"<<endl;
+    std::cerr <<"ERREUR: Memoire insuffisante!"<<std::endl;
     fclose(file);
     return -1;
   }
@@ -104,7 +104,7 @@ long ChargeFichier(const char *Path,unsigned char *&Buf)
   while(Compt>1024) {
     AfficheChargeur();
     if( fread(Po,1,1024,file) != 1024 ) {
-      cerr <<"ERREUR de lecture du fichier '"<<Path<<"'"<<endl;
+      std::cerr <<"ERREUR de lecture du fichier '"<<Path<<"'"<<std::endl;
       perror("fread");
       fclose(file);
       delete [] Buf;
@@ -131,13 +131,13 @@ long ChargeFichier(const char *Path,unsigned char *&Buf)
 
   file=_lopen(Path,OF_READ);
   if(file==-1) {
-    cerr <<"Impossible d'ouvrir "<<Path<<endl;
+    std::cerr <<"Impossible d'ouvrir "<<Path<<std::endl;
     exit(-1);
   }
   
   long L=(long)_llseek(file,0,SEEK_END);
   if(L==-1) {
-    cerr <<"Impossible de trouver la longueur du fichier"<<endl;
+    std::cerr <<"Impossible de trouver la longueur du fichier"<<std::endl;
     perror("lseek");
     _lclose(file);
     return -1;
@@ -146,7 +146,7 @@ long ChargeFichier(const char *Path,unsigned char *&Buf)
   
   Buf=new unsigned char [L+1];
   if(Buf==NULL) {
-    cerr <<"ERREUR: Memoire insuffisante!"<<endl;
+    std::cerr <<"ERREUR: Memoire insuffisante!"<<std::endl;
     _lclose(file);
     return -1;
   }
@@ -169,14 +169,14 @@ bool SauveFichier(const char *Path,char *Buf,long L)
   
   file=fopen(Path,"w");
   if(!file) {
-    cerr <<"ERREUR: Impossible d'ouvrir '"<<Path<<"'"<<endl;
+    std::cerr <<"ERREUR: Impossible d'ouvrir '"<<Path<<"'"<<std::endl;
     perror("fopen");
     return false;
   }
   
   while(L>512) {
     if( fwrite(Buf,1,512,file) != 512 ) {
-      cerr <<"ERREUR d'ecriture du fichier '"<<Path<<"'"<<endl;
+      std::cerr <<"ERREUR d'ecriture du fichier '"<<Path<<"'"<<std::endl;
       perror("fwrite");
       fclose(file);
       return false;
@@ -187,7 +187,7 @@ bool SauveFichier(const char *Path,char *Buf,long L)
 
   if(L>0) {
     if( fwrite(Buf,1,(size_t)L,file) != (size_t)L ) {
-      cerr <<"ERREUR d'ecriture du fichier '"<<Path<<"'"<<endl;
+      std::cerr <<"ERREUR d'ecriture du fichier '"<<Path<<"'"<<std::endl;
       perror("fwrite");
       fclose(file);
       return false;
@@ -208,7 +208,7 @@ bool SauveFichier(const char *Path,char *Buf,long L)
 
   file=_lcreat(Path,0);
   if(!file) {
-    cerr <<"ERREUR: Impossible de créer le fichier '"<<Path<<"'"<<endl;
+    std::cerr <<"ERREUR: Impossible de créer le fichier '"<<Path<<"'"<<std::endl;
     return false;
   }
   
@@ -216,7 +216,7 @@ bool SauveFichier(const char *Path,char *Buf,long L)
   _lclose(file);
 
   if(Lec!=L) {
-    cerr <<"Problème d'ecriture du fichier '"<<Path<<"' ecris="<<Lec<<" au lieux de ="<<L<<endl;
+    std::cerr <<"Problème d'ecriture du fichier '"<<Path<<"' ecris="<<Lec<<" au lieux de ="<<L<<std::endl;
     return false;
   }
 
@@ -250,7 +250,7 @@ void GetPath(char *Path)
   sprintf(Path,"/usr/share/games/Ri-li/%s",Provi);
   if(FileExiste(Path)) return;
   
-  cerr <<"Impossible de trouver le fichier '"<<Provi<<endl;
+  std::cerr <<"Impossible de trouver le fichier '"<<Provi<<std::endl;
   exit(-1);
 }
 #endif
@@ -266,7 +266,7 @@ void GetPath(char *Path)
   sprintf(Path,"PROGDIR:%s",Provi);
   if(FileExiste(Path)) return;
   
-  cerr <<"Impossible de trouver le fichier '"<<Path<<endl;
+  std::cerr <<"Impossible de trouver le fichier '"<<Path<<std::endl;
   exit(-1);
 }
 #endif
@@ -282,7 +282,7 @@ void GetPath(char *Path)
   sprintf(Path,"Ri-li.app/Contents/Resources/%s",Provi);
   if(FileExiste(Path)) return;
   
-  cerr <<"Impossible de trouver le fichier '"<<Path<<endl;
+  std::cerr <<"Impossible de trouver le fichier '"<<Path<<std::endl;
   exit(-1);
 }
 #endif
