@@ -156,7 +156,7 @@ sbindir = @sbindir@
 sharedstatedir = @sharedstatedir@
 sysconfdir = @sysconfdir@
 target_alias = @target_alias@
-SUBDIRS = src data Sounds gentoo
+SUBDIRS = src data Sounds #gentoo
 datdir = $(datadir)/@PACKAGE@
 dat_HEADERS = COPYING.Music
 all: config.h
