@@ -1,0 +1,45 @@
+01-11-2007 : Version 2.0.1
+	   New Korean language.
+	   Russian correction language.
+	   Hungarian correction language.
+	   License upgrade to 'GNU GPL Version 2 or Version 3'.
+	   You can drive the train with the left mouse button.
+	   That player who complete the final level be awarded 100
+	   points for each remaining life. (Patch by E. Hikory).
+16-10-2006 : New Version 2.0.0
+	   New Polish language.
+	   New Turkish language.
+	   New Hungarian language.
+	   New Dutch language.
+	   Animate when Ri-li is loading.
+	   10 news levels. Now 50 levels.
+	   Correction of the languages : Japanese, German, Italian, Russian.
+	   Define AMIGAOS4 flags for Amiga OS4 system.
+	   Organization of the data files remade.
+	   Ri-Li can be launched without a sound card.
+	   Ri-li is limited to 60 fps to relieve the CPU.
+	   Ri-li use less ram memory.
+19-07-2006 : Addition a help in the game to direct the engine.
+	   New Breton language.
+	   New Esperanto language.
+	   New Italian language.
+	   New Portuguese language.
+	   New Slovak language.
+	   New Swedish language.
+	   Correction of the languages : German, Japanese, Spanish.
+07-07-2006 : Upgrade source, Version 1.0.3. Now use $pkgdatadir
+	   variable in autoconf for more compatibility with all
+	   distributions. Thanks to "B. GANNE" for the sources
+	   in his patch for gentoo linux distribution.
+29-06-2006 : Upgrade source, Version 1.0.2 for disable POWER_PC
+	   define.  Now it can be compiled on all the CPU types
+	   without having has to specify the type of CPU.
+	   Logos for menu in KDE and Gnome are insert for RPM.
+27-06-2006 : Upgrade source, Version 1.0.1 for compile on Mac OS X.
+	   In the compile:
+	   Must define Mac_OSX for Mac OS X system.
+	   Must define POWER_PC for PowerPC CPU.
+	   Must define WINDOWS for Windows system.
+	   Must define LINUX for Linux system.
+23-06-2006 : First version 1.0.0 for linux and windows
+18-06-2006 : First automake / autoconf

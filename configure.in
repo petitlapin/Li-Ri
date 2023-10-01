@@ -1,0 +1,33 @@
+#                                               -*- Autoconf -*-
+# Process this file with autoconf to produce a configure script.
+
+AC_INIT(src/main.cc)
+AM_INIT_AUTOMAKE(Ri-li, 2.0.1)
+
+AC_CONFIG_SRCDIR([src/main.cc])
+AC_CONFIG_HEADER([config.h])
+
+# Checks for programs.
+
+AC_PROG_CXX
+AC_PROG_CC
+AC_PROG_INSTALL
+
+CPPFLAGS="$CPPFLAGS -DLINUX"
+
+# Checks for libraries.
+AC_CHECK_LIB([SDL], [SDL_Init])
+AC_CHECK_LIB([SDL_mixer], [Mix_OpenAudio])
+AC_CHECK_LIB([pthread], [pthread_create])
+AC_CHECK_LIB([m],[sqrt])
+
+# Checks for header files.
+AC_HEADER_STDC
+AC_CHECK_HEADERS([stdlib.h string.h math.h SDL/SDL.h pthread.h SDL/SDL_mixer.h])
+
+# Checks for library functions.
+AC_CHECK_FUNCS([sqrt])
+
+# Output.
+AC_CONFIG_FILES(Makefile src/Makefile data/Makefile Sounds/Makefile gentoo/Makefile)
+AC_OUTPUT
