@@ -318,7 +318,9 @@ eMenu Menu::SDLMain_Langue(void)
 	    Pref.Langue=PyE;
 	    if(Pref.Langue!=OldLangue) LoadLangue();
 	    return mMenu;
-	  }
+          default:
+            break;
+          }
 	}
 	break;
       case SDL_QUIT:
@@ -557,7 +559,9 @@ eMenu Menu::SDLMain_Options(void)
 	    default:
 	      return mMenu;
 	    }
-	  }
+          default:
+            break;
+          }
 	}
 	break;
       case SDL_QUIT:
@@ -718,7 +722,9 @@ eMenu Menu::SDLMain_Speed(void)
 	      return mJeux;
 	    }
 	    break;
-	  }
+          default:
+            break;
+          }
 	}
 	break;
       case SDL_QUIT:
@@ -839,6 +845,8 @@ eMenu Menu::SDLMain_Niveau(void)
 	      break;
 	    }
 	    break;
+          default:
+            break;
 	  }
 	}
 	break;
@@ -997,6 +1005,8 @@ eMenu Menu::SDLMain_HR(void)
 	      break;
 	    }
 	    break;
+          default:
+            break;
 	  }
 	}
 	break;
@@ -1137,6 +1147,8 @@ eMenu Menu::SDLMain_InGame(void)
 	      return mScoreEdit;
 	    }
 	    break;
+          default:
+            break;
 	  }
 	}
 	break;

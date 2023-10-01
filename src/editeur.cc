@@ -189,6 +189,8 @@ eMenu Editeur::SDLMain(int NumNiv)
 	Niveau.T[NumN].DepY=cy;
 	Niveau.T[NumN].DepDir=(int)(Option)-(int)(locomotive);
 	break;
+      default:
+        break;
       }
     
     // Gère les Horloges et la pose
@@ -304,6 +306,8 @@ void Editeur::Affiche()
     break;
   case deco:
     Sprites[deco].Affiche(740,200,NumDeco);
+    break;
+  default:
     break;
   }
 

@@ -162,6 +162,8 @@ eMenu Jeux::SDLMain(void)
 	case SDLK_RIGHT:
 	  MasqueK&=7;
 	  break;
+        default:
+          break;
 	}
 	if(!MasqueK) Key=0;
 	break;
