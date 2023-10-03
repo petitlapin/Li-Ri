@@ -1,7 +1,7 @@
 //      (_||_/       Utils.h
-//      (    )       Fonctions divers pour les differents systèmes d'exploitation
+//      (    )       Fonctions divers pour les differents systÃ¨mes d'exploitation
 //     ( o  0 )
-//-OOO°--(_)---°OOO---------------------------------------
+//-OOOÂ°--(_)---Â°OOO---------------------------------------
 //                   Copyright (C) 2006 By Dominique Roux-Serret
 // .OOOo      oOOO.  roux-serret@ifrance.com
 //-(   )------(   )---------------------------------------
@@ -25,11 +25,11 @@
 #define _UTILS_DOM_
 
 bool FileExiste(const char *Path);    // Si un fichier existe
-long ChargeFichier(const char *Path,unsigned char *&Buf); // Charge un ficher en mémoire
+long ChargeFichier(const char *Path,unsigned char *&Buf); // Charge un ficher en mÃ©moire
 bool SauveFichier(const char *Path,char *Buf,long L); // Sauve un Fichier
 
 void GetPath(char *Name); // Rajoute le chemin au nom du fichier (sprites, levels)
 
-bool LoadPref(void); // Charger les préferences
+bool LoadPref(void); // Charger les prÃ©ferences
 void SauvePref(void); // Sauve les preferences
 #endif

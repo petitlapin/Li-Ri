@@ -1,7 +1,7 @@
 //      (_||_/
 //      (    )       Class de la Sourie
 //     ( o  0 )
-//-OOO°--(_)---°OOO---------------------------------------
+//-OOOÂ°--(_)---Â°OOO---------------------------------------
 //                   Copyright (C) 2006 By Dominique Roux-Serret
 // .OOOo      oOOO.  roux-serret@ifrance.com
 //-(   )------(   )---------------------------------------
@@ -50,7 +50,7 @@ Mouse::~Mouse(void)
 /****************************/
 void Mouse::InitStart(void) 
 {
-  // Initialise les coordonnées de la sourie
+  // Initialise les coordonnÃ©es de la sourie
   Px=400;
   Py=300;
   SDL_WarpMouse(Px,Py);
@@ -78,7 +78,7 @@ void Mouse::GetEvent(SDL_Event &event,int &pPy)
     // regarde si doit bouger la position de Py
     if(tPy) { // Si bien une table
       i=0;
-      while(tPy[i].DepX!=-1) { // Fait toutes les coordonnées
+      while(tPy[i].DepX!=-1) { // Fait toutes les coordonnÃ©es
 	if(Px>=tPy[i].DepX && Px<=tPy[i].FinX && Py>=tPy[i].DepY && Py<=tPy[i].FinY) 
 	  if(pPy!=tPy[i].Py) {
 	    pPy=tPy[i].Py;
@@ -96,7 +96,7 @@ void Mouse::GetEvent(SDL_Event &event,int &pPy)
       // regarde si doit valider un enter
       if(tPy) { // Si bien une table
 	i=0;
-	while(tPy[i].DepX!=-1) { // Fait toutes les coordonnées
+	while(tPy[i].DepX!=-1) { // Fait toutes les coordonnÃ©es
 	  if(Px>=tPy[i].DepX && Px<=tPy[i].FinX && Py>=tPy[i].DepY && Py<=tPy[i].FinY) 
 	    if(tPy[i].Valide==true) {
 	      event.type=SDL_KEYDOWN;
@@ -110,7 +110,7 @@ void Mouse::GetEvent(SDL_Event &event,int &pPy)
       // Fait la gestion des bouttons
       if(Bo) { // Si bien une table
 	i=0;
-	while(Bo[i].DepX!=-1) { // Fait toutes les coordonnées
+	while(Bo[i].DepX!=-1) { // Fait toutes les coordonnÃ©es
 	  if(Px>=Bo[i].DepX && Px<=Bo[i].FinX && Py>=Bo[i].DepY && Py<=Bo[i].FinY) {
 	    if(Bo[i].Adr==NULL) { // Si doit fair une touche
 	      event.type=SDL_KEYDOWN;
@@ -137,7 +137,7 @@ void Mouse::Affiche(int NumVideo)
   int X=Px,Y=Py;
   int NumSp=(Horloge/50)%20;
   
-  // Corrige la position du curseur au cas ou déborde de l'écran
+  // Corrige la position du curseur au cas ou dÃ©borde de l'Ã©cran
   if(X<5) X=5;
   if(X>=800-38) X=800-39;
   if(Y<10) Y=10;

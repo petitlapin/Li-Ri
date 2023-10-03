@@ -1,7 +1,7 @@
 //      (_||_/
 //      (    )       Classe Audio
 //     ( o  0 )
-//-OOO°--(_)---°OOO---------------------------------------
+//-OOOÂ°--(_)---Â°OOO---------------------------------------
 //                   Copyright (C) 2006 By Dominique Roux-Serret
 // .OOOo      oOOO.  roux-serret@ifrance.com
 //-(   )------(   )---------------------------------------
@@ -61,7 +61,7 @@ bool Audio::Init(void)
     return false;
   }
   
-  /*** Allocation de la mémoire ***/
+  /*** Allocation de la mÃ©moire ***/
   N=sFin;
   Son=new Mix_Chunk* [sFin];
   
@@ -139,7 +139,7 @@ void Audio::LoadMusic(int Num)
   PlayMusic();
 }
 
-/*** Passe à la music de jeu suivante ***/
+/*** Passe Ã  la music de jeu suivante ***/
 /****************************************/
 void Audio::NextMusic(void)
 {

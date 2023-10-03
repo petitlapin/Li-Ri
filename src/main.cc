@@ -1,7 +1,7 @@
 //      (_||_/
 //      (    )       Programme Principale
 //     ( o  0 )
-//-OOO°--(_)---°OOO---------------------------------------
+//-OOOÂ°--(_)---Â°OOO---------------------------------------
 //                   Copyright (C) 2006 By Dominique Roux-Serret
 // .OOOo      oOOO.  roux-serret@ifrance.com
 //-(   )------(   )---------------------------------------
@@ -41,22 +41,22 @@
 
 /*** Variables globales ***/
 /************************/
-SDL_Surface *sdlVideo; // Pointe sur l'écran video
+SDL_Surface *sdlVideo; // Pointe sur l'Ã©cran video
 SDL_VideoInfo *sdlVideoInfo; // Infos sur la video
-Uint32 FontColor;      // Couleur du fond d'écran
+Uint32 FontColor;      // Couleur du fond d'Ã©cran
 
 char Titre[]="Ri-li V2.0.1";
 
 Sprite *Sprites=NULL; // Pointe sur les sprites
-int NSprites=0; // Nombre de sprites en mémoire
-Ecran Ec[2];          // Pointe sur les 2 buffets vidéo
-sPreference Pref;     // Tableau des préférences.
-Jeux Jeu;             // Gère le jeu
-Mouse Sourie;         // Gère les mouvements de sourie
-Menu MenuPrincipale;  // Gère les menus
-Tableau Niveau;       // Gère les niveaux
-Editeur Edit;         // Gère le menu de l'éditeur
-Audio Sons;           // Gère les sons
+int NSprites=0; // Nombre de sprites en mÃ©moire
+Ecran Ec[2];          // Pointe sur les 2 buffets vidÃ©o
+sPreference Pref;     // Tableau des prÃ©fÃ©rences.
+Jeux Jeu;             // GÃ¨re le jeu
+Mouse Sourie;         // GÃ¨re les mouvements de sourie
+Menu MenuPrincipale;  // GÃ¨re les menus
+Tableau Niveau;       // GÃ¨re les niveaux
+Editeur Edit;         // GÃ¨re le menu de l'Ã©diteur
+Audio Sons;           // GÃ¨re les sons
 
 int Horloge=0; // Horloges du jeu
 int HorlogeAvant=0;
@@ -107,7 +107,7 @@ int main(int narg,char *argv[])
   Sprite Spr;
   eMenu RetM,RetMenu=mMenu;
 
-  // Initialuse les préferences
+  // Initialuse les prÃ©ferences
   InitPref();
 #ifdef LINUX
   if(narg>1) strcpy(DefPath,argv[1]);
@@ -125,14 +125,14 @@ int main(int narg,char *argv[])
   sdlVideoInfo=(SDL_VideoInfo*)SDL_GetVideoInfo();
 
   if(sdlVideoInfo->vfmt->BitsPerPixel==8) {
-    std::cerr <<"Impossible d'utiliser 8bits pour la vidéo !"<<std::endl;
+    std::cerr <<"Impossible d'utiliser 8bits pour la vidÃ©o !"<<std::endl;
     exit(-1);
   }
   
   // Demande la resolution Video
 #ifndef LINUX
   int vOption;
-  if(Pref.FullScreen)   vOption=SDL_SWSURFACE; // Bug accé aux bits pour les cordes
+  if(Pref.FullScreen)   vOption=SDL_SWSURFACE; // Bug accÃ© aux bits pour les cordes
   else  vOption=SDL_SWSURFACE|SDL_DOUBLEBUF;
 #else
 #ifndef __AMIGAOS4__
@@ -145,7 +145,7 @@ int main(int narg,char *argv[])
   sdlVideo=SDL_SetVideoMode(800,600,sdlVideoInfo->vfmt->BitsPerPixel,vOption);
 
   if(sdlVideo==NULL) {
-    std::cerr <<"Impossible de passer dans le mode vidéo 800x600 !"<<std::endl;
+    std::cerr <<"Impossible de passer dans le mode vidÃ©o 800x600 !"<<std::endl;
     exit(-1);
   }
   // Change le nom de la fenetre
@@ -154,7 +154,7 @@ int main(int narg,char *argv[])
   SDL_ShowCursor(0); // Masque le curseur
   SDL_EnableUNICODE(1);
 
-  // Couleur du font d'écran
+  // Couleur du font d'Ã©cran
   FontColor=SDL_MapRGB(sdlVideo->format,128,128,128);
 
   // Chargement des sprites
@@ -172,7 +172,7 @@ int main(int narg,char *argv[])
   // Si pas de langues demande la langue
   if(Pref.Langue==-1) MenuPrincipale.SDLMain_Langue();
   
-  // Gère les menus
+  // GÃ¨re les menus
   do {
     switch(RetMenu) {
     case mMenu:

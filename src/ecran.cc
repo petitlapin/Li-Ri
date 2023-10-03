@@ -1,7 +1,7 @@
 //      (_||_/
 //      (    )       Classe Ecran
 //     ( o  0 )
-//-OOO°--(_)---°OOO---------------------------------------
+//-OOOÂ°--(_)---Â°OOO---------------------------------------
 //                   Copyright (C) 2006 By Dominique Roux-Serret
 // .OOOo      oOOO.  roux-serret@ifrance.com
 //-(   )------(   )---------------------------------------
@@ -91,13 +91,13 @@ void Ecran::AfficheOptions(int NV,int NScore)
 {
   int x,y;
 
-  if(NScore!=Score) { // Gère l'affichage des scores
+  if(NScore!=Score) { // GÃ¨re l'affichage des scores
     if(Score!=-1) EffaceChiffre(740,215,Score);
     Score=NScore;
     AfficheChiffre(740,215,Score);
   }
 
-  if(NV>10) NV=10; // Evite un dépassement de l'affichage
+  if(NV>10) NV=10; // Evite un dÃ©passement de l'affichage
 
   while(NVie>NV) { // Si doit effacer des vies
     x=(NVie-1)%2;

@@ -1,7 +1,7 @@
 //      (_||_/
 //      (    )       Class de la Sourie
 //     ( o  0 )
-//-OOO°--(_)---°OOO---------------------------------------
+//-OOOÂ°--(_)---Â°OOO---------------------------------------
 //                   Copyright (C) 2006 By Dominique Roux-Serret
 // .OOOo      oOOO.  roux-serret@ifrance.com
 //-(   )------(   )---------------------------------------
@@ -28,35 +28,35 @@
 
 /*** Structure pour la position dans le menu Py ***/
 /**************************************************/
-struct mPy {      // DepX==-1 si derniere entrée
+struct mPy {      // DepX==-1 si derniere entrÃ©e
   int DepX,DepY;
   int FinX,FinY;
   int Py;
   bool Valide;   // Si doit valider un enter quand click de la sourie
 };
 
-struct mBoutton { // DepX=-1 si derniere entrée
+struct mBoutton { // DepX=-1 si derniere entrÃ©e
   int DepX,DepY;
   int FinX,FinY;
   int Valeur;
   int *Adr;
 };
 
-/*** Définition de la class Tableau ***/
+/*** DÃ©finition de la class Tableau ***/
 /**************************************/
 class Mouse {
  public:
   Mouse(void);
   ~Mouse(void);
 
-  void InitStart(void); // Initialise les coordonnées de la sourie
+  void InitStart(void); // Initialise les coordonnÃ©es de la sourie
   void Init(struct mPy *tPy,struct mBoutton *B=NULL); // Initialise la sourie
   void GetEvent(SDL_Event &event,int &Py); // Prend les evenements
   void Affiche(int NumEcran);             // Affiche le curseur
 
-  int Px,Py; // Position réel de la sourie
-  struct mPy *tPy;   // Pointe sur coordonées pour Py
-  struct mBoutton *Bo; // Pointe sur les coordonnées des bouttons
+  int Px,Py; // Position rÃ©el de la sourie
+  struct mPy *tPy;   // Pointe sur coordonÃ©es pour Py
+  struct mBoutton *Bo; // Pointe sur les coordonnÃ©es des bouttons
 };
 
 #endif

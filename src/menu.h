@@ -1,7 +1,7 @@
 //      (_||_/
 //      (    )       Classe Menu
 //     ( o  0 )
-//-OOO°--(_)---°OOO---------------------------------------
+//-OOOÂ°--(_)---Â°OOO---------------------------------------
 //                   Copyright (C) 2006 By Dominique Roux-Serret
 // .OOOo      oOOO.  roux-serret@ifrance.com
 //-(   )------(   )---------------------------------------
@@ -30,7 +30,7 @@
 /**************************/
 void Sleeping(void);
 
-/*** Définition de la class ***/
+/*** DÃ©finition de la class ***/
 /******************************/
 class Menu {
  public:
@@ -41,9 +41,9 @@ class Menu {
   /*****************/
   eMenu SDLMain(void); // Menu principale
   eMenu SDLMain_Langue(void);  // Menu du choix de la langue
-  void InitMain_Options(void);   // Prépare l'affichage du menu options
+  void InitMain_Options(void);   // PrÃ©pare l'affichage du menu options
   eMenu SDLMain_Options(void);  // Menu du choix des options
-  eMenu SDLMain_Speed(void);  // Menu du choix de la difficulté
+  eMenu SDLMain_Speed(void);  // Menu du choix de la difficultÃ©
   eMenu SDLMain_Niveau(void); // Choisi le niveau
 #ifndef DCHILDREN
   eMenu SDLMain_HR(void);      // Menu de question sur les doits de l'homme
@@ -53,12 +53,12 @@ class Menu {
   eMenu SDLMain_Score(bool EditScore=false);  // Affiche les scores
   
   void Affiche_Main(int Centre=400);      // Affiche le menu principale
-  void Affiche_Main_Centre(void);          // Centre les flèches sur le bouton
+  void Affiche_Main_Centre(void);          // Centre les flÃ¨ches sur le bouton
 
   /*** Variables ***/
   /*****************/
   int PyE; // Position du curseur dans le menu
-  int NumEc; // Numéro de l'ecran en cours d'affichage
+  int NumEc; // NumÃ©ro de l'ecran en cours d'affichage
   int Niv;
   int CentreM; // Variable pour le menu options
 };

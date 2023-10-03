@@ -1,7 +1,7 @@
 //      (_||_/       Utils.cc
 //      (    )       Fonctions divers
 //     ( o  0 )
-//-OOO°--(_)---°OOO---------------------------------------
+//-OOOÂ°--(_)---Â°OOO---------------------------------------
 //                   Copyright (C) 2006 By Dominique Roux-Serret 
 // .OOOo      oOOO.  roux-serret@ifrance.com
 //-(   )------(   )---------------------------------------
@@ -43,7 +43,7 @@ extern sPreference Pref;
 extern char DefPath[]; // Chemin par defaut dans arg
 #endif
 
-/*** Définition générals ***/
+/*** DÃ©finition gÃ©nÃ©rals ***/
 /***************************/
 #ifdef MAC_OSX
 #define MAC_LINUX
@@ -67,7 +67,7 @@ bool FileExiste(const char *Path)
 }
 
 
-/*** Charge un fichier en Mémoire ***/
+/*** Charge un fichier en MÃ©moire ***/
 /************************************/
 #ifdef MAC_LINUX
 // Version linux
@@ -88,7 +88,7 @@ long ChargeFichier(const char *Path,unsigned char *&Buf)
     return -1;
   }
 
-  long L=ftell(file); // récupère la longueur
+  long L=ftell(file); // rÃ©cupÃ¨re la longueur
   fseek(file,0,0);
 
   Buf=new unsigned char [L+1];
@@ -114,7 +114,7 @@ long ChargeFichier(const char *Path,unsigned char *&Buf)
     Po+=1024;
   }
   
-  if(Compt) { // Ne fait pas le test à cause d'un bug dans windows
+  if(Compt) { // Ne fait pas le test Ã  cause d'un bug dans windows
     fread(Po,1,(unsigned int)Compt,file);
   }
   
@@ -208,7 +208,7 @@ bool SauveFichier(const char *Path,char *Buf,long L)
 
   file=_lcreat(Path,0);
   if(!file) {
-    std::cerr <<"ERREUR: Impossible de créer le fichier '"<<Path<<"'"<<std::endl;
+    std::cerr <<"ERREUR: Impossible de crÃ©er le fichier '"<<Path<<"'"<<std::endl;
     return false;
   }
   
@@ -216,7 +216,7 @@ bool SauveFichier(const char *Path,char *Buf,long L)
   _lclose(file);
 
   if(Lec!=L) {
-    std::cerr <<"Problème d'ecriture du fichier '"<<Path<<"' ecris="<<Lec<<" au lieux de ="<<L<<std::endl;
+    std::cerr <<"ProblÃ¨me d'ecriture du fichier '"<<Path<<"' ecris="<<Lec<<" au lieux de ="<<L<<std::endl;
     return false;
   }
 
@@ -293,7 +293,7 @@ void GetPath(char *Path)
 { }
 #endif
 
-/*** Charge les préferences ***/
+/*** Charge les prÃ©ferences ***/
 /******************************/
 bool LoadPref(void)
 {

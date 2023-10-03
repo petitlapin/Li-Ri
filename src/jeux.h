@@ -1,7 +1,7 @@
 //      (_||_/
 //      (    )       Classe Jeux
 //     ( o  0 )
-//-OOO°--(_)---°OOO---------------------------------------
+//-OOOÂ°--(_)---Â°OOO---------------------------------------
 //                   Copyright (C) 2006 By Dominique Roux-Serret
 // .OOOo      oOOO.  roux-serret@ifrance.com
 //-(   )------(   )---------------------------------------
@@ -27,7 +27,7 @@
 #include "preference.h"
 #include "loco.h"
 
-/*** Définition de la class ***/
+/*** DÃ©finition de la class ***/
 /******************************/
 class Jeux {
  public:
@@ -39,7 +39,7 @@ class Jeux {
   eMenu SDLMain(void);   // Boucle principale
   bool Load(int NiveauN); // Charge un tableau
   bool DrawLevel(int NiveauN);   // Dessine le niveau
-  void PrendTouche(int Touche); // Prend les touches enfoncées
+  void PrendTouche(int Touche); // Prend les touches enfoncÃ©es
 
   void TourneFleche(void); // Fait tourner la fleche d'un simple clic.
   void BufTouche(int Touche); // Met une nouvelle touche dans le buffet
@@ -49,16 +49,16 @@ class Jeux {
   /*** Variables ***/
   bool Pause; // Si en pose
 
-  long DureeJeu; // Horloge de durée du jeu 
+  long DureeJeu; // Horloge de durÃ©e du jeu 
 
-  int Key;       // Mémorise la touche enfoncée
-  int Touche[4]; // Direction demandée
+  int Key;       // MÃ©morise la touche enfoncÃ©e
+  int Touche[4]; // Direction demandÃ©e
   int T[LT*HT]; // Pointe sur le tableau
 
-  Loco Lo;      // Gère la locomotive
+  Loco Lo;      // GÃ¨re la locomotive
 
-  int NumSS; // Numéro du Screen shot
-  int NumVideo; // Numéro de l'ecran affiché
+  int NumSS; // NumÃ©ro du Screen shot
+  int NumVideo; // NumÃ©ro de l'ecran affichÃ©
   bool Help; // Si doit affiche les fleches d'aide
 };
 #endif

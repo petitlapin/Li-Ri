@@ -1,7 +1,7 @@
 //      (_||_/
 //      (    )       Structure des Preferences
 //     ( o  0 )
-//-OOO°--(_)---°OOO---------------------------------------
+//-OOOÂ°--(_)---Â°OOO---------------------------------------
 //                   Copyright (C) 2006 By Dominique Roux-Serret
 // .OOOo      oOOO.  roux-serret@ifrance.com
 //-(   )------(   )---------------------------------------
@@ -24,7 +24,7 @@
 #ifndef _PREFERENCE_DOM_
 #define _PREFERENCE_DOM_
 
-/*** Défintitions ***/
+/*** DÃ©fintitions ***/
 #define VITESSE_MAX 180.0
 #define VITESSE_MOY 120.0
 #define VITESSE_MIN 80.0
@@ -64,14 +64,14 @@
 #define C_Live 6
 #define C_Fin 7
 
-/*** Difficultées possible ***/
+/*** DifficultÃ©es possible ***/
 enum e_Difficulte {
   Easy,
   Normal,
   Hard
 };
 
-/*** Mémorise un score ***/
+/*** MÃ©morise un score ***/
 #define LSCOREMAX 460
 
 struct sScore {
@@ -79,9 +79,9 @@ struct sScore {
   char Name[80];
 };
 
-/*** Structure des preferences Générales ***/
+/*** Structure des preferences GÃ©nÃ©rales ***/
 struct sPreference {
-  e_Difficulte Difficulte; // Difficulté de la partie (Vitesse)
+  e_Difficulte Difficulte; // DifficultÃ© de la partie (Vitesse)
   int Niveau;        // Niveau du joueur
   int NVie;          // Nombre de vie du joueur
   int Score;         // Score du joueur
@@ -90,14 +90,14 @@ struct sPreference {
   float EcartWagon;  // ecart en pixels entre 2 wagons
   int NiveauMax;
   int FullScreen;
-  int Langue;        // Langue à afficher
+  int Langue;        // Langue Ã  afficher
   int NLangues;      // Nombre de langues disponible
   float Volume;        // Volumes audio
   float VolumeM;       // Volume de la music
-  struct sScore Sco[8]; // Mémorise les scores
+  struct sScore Sco[8]; // MÃ©morise les scores
 };
 
-/*** Valeur retournées pour le menu princiaple ***/
+/*** Valeur retournÃ©es pour le menu princiaple ***/
 enum eMenu {
   mMenu,
   mMenuJeux,

@@ -1,7 +1,7 @@
 //      (_||_/
-//      (    )       Classe Ecran (Gère un buffet d'écran)
+//      (    )       Classe Ecran (GÃ¨re un buffet d'Ã©cran)
 //     ( o  0 )
-//-OOO°--(_)---°OOO---------------------------------------
+//-OOOÂ°--(_)---Â°OOO---------------------------------------
 //                   Copyright (C) 2006 By Dominique Roux-Serret
 // .OOOo      oOOO.  roux-serret@ifrance.com
 //-(   )------(   )---------------------------------------
@@ -28,7 +28,7 @@
 #include "sprite.h"
 #include "preference.h"
 
-/*** Définitions générales ***/
+/*** DÃ©finitions gÃ©nÃ©rales ***/
 /*****************************/
 struct s_Ecran {
   e_Sprite NumSpr;
@@ -48,16 +48,16 @@ class Ecran
   /*** Fonctions ***/
   void Affiche(e_Sprite NumSpr,int Num,int x,int y); // Affiche un sprite
   void AfficheCable(int dx,int dy,int fx,int fy); // Affiche un cable
-  void Affiche_Text(e_Sprite Text,int x,int y);    // Affiche un text à l'ecran
-  void AfficheOptions(int NVies,int NouveauScore); // Affiches les options sur le coté
-  void Efface(e_Sprite NumSpriteFondEcran); // Efface tous ce qui a été affiché
+  void Affiche_Text(e_Sprite Text,int x,int y);    // Affiche un text Ã  l'ecran
+  void AfficheOptions(int NVies,int NouveauScore); // Affiches les options sur le cotÃ©
+  void Efface(e_Sprite NumSpriteFondEcran); // Efface tous ce qui a Ã©tÃ© affichÃ©
   void Cls(e_Sprite NumSpriteFondEcran); // Efface l'ecran avec l'image de fond
 
   /*** Variables ***/
-  int N;               // Nombre de sprites mémorisés aprés l'affichage
-  int NVie;            // Mémorise le nombre de vies affiché
-  int Score;           // Mémorise le score affiché
-  s_Ecran B[LT*HT*2];  // N° des sprites à effacer plus tard
+  int N;               // Nombre de sprites mÃ©morisÃ©s aprÃ©s l'affichage
+  int NVie;            // MÃ©morise le nombre de vies affichÃ©
+  int Score;           // MÃ©morise le score affichÃ©
+  s_Ecran B[LT*HT*2];  // NÂ° des sprites Ã  effacer plus tard
 };
 
 #endif

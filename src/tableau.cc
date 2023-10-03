@@ -1,7 +1,7 @@
 //      (_||_/
 //      (    )       Classe Sprite
 //     ( o  0 )
-//-OOO°--(_)---°OOO---------------------------------------
+//-OOOÂ°--(_)---Â°OOO---------------------------------------
 //                   Copyright (C) 2006 By Dominique Roux-Serret
 // .OOOo      oOOO.  roux-serret@ifrance.com
 //-(   )------(   )---------------------------------------
@@ -85,7 +85,7 @@ bool Tableau::Save(void)
   int i,j;
   char NameLevelFile[512]="levels.dat";
   
-  // Alloue la mémoire
+  // Alloue la mÃ©moire
   Buf=new unsigned char [sizeof(s_Tableau)*N+sizeof(int)+1];
   if(Buf==NULL) return false;
 

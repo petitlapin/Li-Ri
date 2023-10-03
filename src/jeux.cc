@@ -1,7 +1,7 @@
 //      (_||_/
 //      (    )       Classe Jeux
 //     ( o  0 )
-//-OOO°--(_)---°OOO---------------------------------------
+//-OOOÂ°--(_)---Â°OOO---------------------------------------
 //                   Copyright (C) 2006 By Dominique Roux-Serret
 // .OOOo      oOOO.  roux-serret@ifrance.com
 //-(   )------(   )---------------------------------------
@@ -56,7 +56,7 @@ extern Audio Sons;
 
 static int NumRail[]={ -1,-1,-1,0,-1,1,2,3,-1,4,5,6,7,8,9,10 };
 
-int MasqueK; // Masque pour les touches de déplacement
+int MasqueK; // Masque pour les touches de dÃ©placement
 
 /*** Constructeur et Destructeur ***/
 /***********************************/
@@ -92,7 +92,7 @@ eMenu Jeux::SDLMain(void)
   DureeJeu=0;
   Key=0;
     
-  // Met le options de départ du joueur
+  // Met le options de dÃ©part du joueur
   Pref.NVie=N_VIES_DEP;
   Pref.Score=0;
   
@@ -108,7 +108,7 @@ eMenu Jeux::SDLMain(void)
 	  NumVideo=(NumVideo+1)&1;
 	  Ec[NumVideo].Cls(fjeu);
 	}
-	else { // Si désactive l'ecran
+	else { // Si dÃ©sactive l'ecran
 	  Pause=true; // Met en Pause
 	}
 	break;
@@ -173,10 +173,10 @@ eMenu Jeux::SDLMain(void)
       }
     }
     
-    // Gère l'appui des touches
+    // GÃ¨re l'appui des touches
     if(Key && Lo.Mort==-1) PrendTouche(Key);
 
-    // Gère les Horloges et la pose
+    // GÃ¨re les Horloges et la pose
     HorlogeAvant=Horloge;
     Horloge=SDL_GetTicks();
     Sleeping();
@@ -253,7 +253,7 @@ bool Jeux::Load(int NivN)
   BufTouche(Niveau.T[NivN].DepDir);
   MasqueK=0;
 
-  // Met la vitesse suivant difficulté
+  // Met la vitesse suivant difficultÃ©
   switch(Pref.Difficulte) {
   case Easy:
     Pref.Vitesse=Pref.VitesseMoy=VITESSE_MIN;
@@ -295,7 +295,7 @@ bool Jeux::DrawLevel(int NivN)
     }
   }
 
-  // Affiche les décorations
+  // Affiche les dÃ©corations
 #ifndef DCHILDREN
   for(i=0;i<Niveau.T[NivN].NDeco;i++)
     Sprites[deco].Affiche(Niveau.T[NivN].Deco[i].x,Niveau.T[NivN].Deco[i].y,Niveau.T[NivN].Deco[i].NumSpr,
@@ -313,7 +313,7 @@ bool Jeux::DrawLevel(int NivN)
   return true;
 }
 
-/*** Prend les touches enfoncées ***/
+/*** Prend les touches enfoncÃ©es ***/
 /***********************************/
 void Jeux::PrendTouche(int Tou)
 {
@@ -389,10 +389,10 @@ void Jeux::TourneFleche(void)
   }
   while(Cherche==false);
   
-  BufTouche(To); // Mémorise la nouvelle touche par defaut.    
+  BufTouche(To); // MÃ©morise la nouvelle touche par defaut.    
 }
   
-/*** Mémorise une touche dans le buffet des touches ***/
+/*** MÃ©morise une touche dans le buffet des touches ***/
 /******************************************************/
 void Jeux::BufTouche(int Tou)
 {
@@ -401,15 +401,15 @@ void Jeux::BufTouche(int Tou)
   // Favorise la touche
   while(Touche[n]!=Tou) n++; // Prend position de la touche
 
-  if(n) { // Si changement doit faire un décalage
+  if(n) { // Si changement doit faire un dÃ©calage
     while(n) {
       Touche[n]=Touche[n-1];
       n--;
     }
-    Touche[0]=Tou; // Mémorise la touche
+    Touche[0]=Tou; // MÃ©morise la touche
   }
  
-  // Cherche son oposé
+  // Cherche son oposÃ©
   switch(Tou) {
   case D_Haut:
     Tou=D_Bas;
@@ -425,16 +425,16 @@ void Jeux::BufTouche(int Tou)
     break;
   }
 
-  // Défavorise son oposé.
+  // DÃ©favorise son oposÃ©.
   n=3;
   while(Touche[n]!=Tou) n--; // Prend position de la touche
   
-  if(n<3) { // Si changement doit faire un décalage
+  if(n<3) { // Si changement doit faire un dÃ©calage
     while(n<3) {
       Touche[n]=Touche[n+1];
       n++;
     }
-    Touche[3]=Tou; // Mémorise la touche
+    Touche[3]=Tou; // MÃ©morise la touche
   }  
 }
 
@@ -472,7 +472,7 @@ void Jeux::AfficheEcran(void)
   int i;
   int ndir=0;
 
-  // Prépare pour nouvelle Affichage
+  // PrÃ©pare pour nouvelle Affichage
   Ec[NumVideo].Efface(fjeu);
   
   // Fait nouvelle Affichage

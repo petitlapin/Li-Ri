@@ -1,7 +1,7 @@
 //      (_||_/
 //      (    )       Classe Sprite
 //     ( o  0 )
-//-OOO°--(_)---°OOO---------------------------------------
+//-OOOÂ°--(_)---Â°OOO---------------------------------------
 //                   Copyright (C) 2006 By Dominique Roux-Serret
 // .OOOo      oOOO.  roux-serret@ifrance.com
 //-(   )------(   )---------------------------------------
@@ -43,7 +43,7 @@ static const char* OrdreTexte="ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789.-!?*+<>%$()&
 static const char* OrdreTexte2="abcdefghijklmnopqrstuvwxyz0123456789,_|?*+<>%$[]&;";
 static int TableTexte[256]; 
 
-char Langue[31][16]; // Mémorise les noms des langues
+char Langue[31][16]; // MÃ©morise les noms des langues
 int NTextes=0;
 bool AfficheC=false; // Si peut afficher le chargeur lors du chargement
 
@@ -53,13 +53,13 @@ bool AfficheC=false; // Si peut afficher le chargeur lors du chargement
 /**********************************************/
 void AfficheChargeur()
 {
-  static int NumAf=-1; // Numéro su sprite affiché
+  static int NumAf=-1; // NumÃ©ro su sprite affichÃ©
   int i,Old;
   int Hor;
 
   if(AfficheC==true) {
     Hor=SDL_GetTicks();
-    i=(Hor/(1000/25))%Sprites[chargeur].N; // Calcule le numéro su sprite à afficher
+    i=(Hor/(1000/25))%Sprites[chargeur].N; // Calcule le numÃ©ro su sprite Ã  afficher
 
     if(i!=NumAf) {
       Old=NumAf;
@@ -95,7 +95,7 @@ bool LoadLangue()
     if(Sprites[T_level+i].N) Sprites[T_level+i].Delete();
     if(Sprites[T_level+i].Load(Buf,P)==false) return false;
   }
-  delete [] Buf; // Libère la mémoire du fichier des sprites
+  delete [] Buf; // LibÃ¨re la mÃ©moire du fichier des sprites
 
   return true;
 }
@@ -142,7 +142,7 @@ bool LoadSprites()
   NSprites=NSp+NTextes+Pref.NLangues;
   Sprites=new Sprite[NSprites];
 
-  // Récupère les nom des langues
+  // RÃ©cupÃ¨re les nom des langues
   P=6;
   for(i=0;i<Pref.NLangues;i++) {
     strcpy(Langue[i],(char*)(Buf+P));
@@ -187,7 +187,7 @@ bool LoadSprites()
     }
   }
   
-  delete [] Buf; // Libère la mémoire du fichier des sprites
+  delete [] Buf; // LibÃ¨re la mÃ©moire du fichier des sprites
   
   // *** Charge la langue ***
   // ************************
@@ -352,7 +352,7 @@ bool Sprite::Load(unsigned char *Buf,long &P)
     Image[i]=SDL_CreateRGBSurface((Dim[i].bpp-3)*SDL_SRCALPHA,Dim[i].L,Dim[i].H,Dim[i].bpp*8,
 				  0xff,0xff00,0xff0000,0xff000000*(Dim[i].bpp-3));
     if(Image[i]==NULL) {
-      std::cerr <<"Impossible de créer une Surface SDL!"<<std::endl;
+      std::cerr <<"Impossible de crÃ©er une Surface SDL!"<<std::endl;
       return false;
     }
     
@@ -449,7 +449,7 @@ void Sprite::Efface(int X,int Y,int NumSpr,SDL_Surface *Fond)
   SDL_BlitSurface(Fond,&Position,sdlVideo,&Position);
 }
 
-/*** Efface un carré à l'ecran ***/
+/*** Efface un carrÃ© Ã  l'ecran ***/
 /*********************************/
 void Sprite::EffaceCarre(int dx,int dy,int fx,int fy,SDL_Surface *Fond)
 {
@@ -486,7 +486,7 @@ bool Sprite::Nouveau(int Lx,int Ly)
   Image[0]=SDL_CreateRGBSurface((Dim[0].bpp-3)*SDL_SRCALPHA,Dim[0].L,Dim[0].H,Dim[0].bpp*8,
 				0xff,0xff00,0xff0000,0xff000000*(Dim[0].bpp-3));
   if(Image[0]==NULL) {
-    std::cerr <<"Impossible de créer une Surface SDL!"<<std::endl;
+    std::cerr <<"Impossible de crÃ©er une Surface SDL!"<<std::endl;
     return false;
   }
   return true;

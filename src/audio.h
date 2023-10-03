@@ -1,7 +1,7 @@
 //      (_||_/
 //      (    )       Classe Audio
 //     ( o  0 )
-//-OOO°--(_)---°OOO---------------------------------------
+//-OOOÂ°--(_)---Â°OOO---------------------------------------
 //                   Copyright (C) 2006 By Dominique Roux-Serret
 // .OOOo      oOOO.  roux-serret@ifrance.com
 //-(   )------(   )---------------------------------------
@@ -27,7 +27,7 @@
 #include <SDL/SDL.h>
 #include <SDL/SDL_mixer.h>
 
-/*** Enumération des sons ***/
+/*** EnumÃ©ration des sons ***/
 /****************************/
 enum eSon {
   sClic=0,
@@ -42,7 +42,7 @@ enum eSon {
   sFin
 };
 
-/*** Définition de la classe Audio ***/
+/*** DÃ©finition de la classe Audio ***/
 /*************************************/
 class Audio {
  public:
@@ -52,7 +52,7 @@ class Audio {
   /*** Fonctions ***/
   bool Init(void); // Initialise et charge les fichiers audio
   void LoadMusic(int Num); // Charge une music, 0 = music du menu 1,2,3,4=Jeu
-  void NextMusic(void);    // Passe à la music suivante
+  void NextMusic(void);    // Passe Ã  la music suivante
 
   void Play(eSon); // Joue un son
   void PlayMusic(void); // Joue la music
@@ -63,9 +63,9 @@ class Audio {
   void DoVolume(void); // Valide les volumes audio
   
   /*** Variables ***/
-  int N; // Nombre d'échantillon audio
-  int NMus; // Numéro de la music en cours
-  int MemoHorloge; // Mémorise l'horloge pour les clics
+  int N; // Nombre d'Ã©chantillon audio
+  int NMus; // NumÃ©ro de la music en cours
+  int MemoHorloge; // MÃ©morise l'horloge pour les clics
   Mix_Chunk **Son; // Pointe sur les sons
   Mix_Music *Music; // Pointe sur les musics
 };

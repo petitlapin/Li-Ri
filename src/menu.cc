@@ -1,7 +1,7 @@
 //      (_||_/
 //      (    )       Classe Menu
 //     ( o  0 )
-//-OOO°--(_)---°OOO---------------------------------------
+//-OOOÂ°--(_)---Â°OOO---------------------------------------
 //                   Copyright (C) 2006 By Dominique Roux-Serret
 // .OOOo      oOOO.  roux-serret@ifrance.com
 //-(   )------(   )---------------------------------------
@@ -69,7 +69,7 @@ Menu::Menu() : PyE(0)
 Menu::~Menu()
 { }
 
-/*** Ajoute une entrée dans le tableau des boutons ***/
+/*** Ajoute une entrÃ©e dans le tableau des boutons ***/
 /*****************************************************/
 void AddBouton(int Num,e_Sprite NumSp,int X,int Y)
 {
@@ -83,7 +83,7 @@ void AddBouton(int Num,e_Sprite NumSp,int X,int Y)
   Menu_Py[Num].Valide=true;
 }
 
-/*** Change le vidéo ***/
+/*** Change le vidÃ©o ***/
 /***********************/
 void ChangeVideo(void)
 {
@@ -92,14 +92,14 @@ void ChangeVideo(void)
   // Teste la resolution video
   sdlVideoInfo=(SDL_VideoInfo*)SDL_GetVideoInfo();
   if(sdlVideoInfo->vfmt->BitsPerPixel==8) {
-    std::cerr <<"Impossible d'utiliser 8bits pour la vidéo !"<<std::endl;
+    std::cerr <<"Impossible d'utiliser 8bits pour la vidÃ©o !"<<std::endl;
     exit(-1);
   }
   
   // Demande la resolution Video
 #ifndef LINUX
   int vOption;
-  if(Pref.FullScreen)   vOption=SDL_SWSURFACE; // Bug accé aux bits pour les cordes
+  if(Pref.FullScreen)   vOption=SDL_SWSURFACE; // Bug accÃ© aux bits pour les cordes
   else  vOption=SDL_SWSURFACE|SDL_DOUBLEBUF;
 #else
 #ifndef __AMIGAOS4__
@@ -112,7 +112,7 @@ void ChangeVideo(void)
   if(Pref.FullScreen) vOption|=SDL_FULLSCREEN;
   sdlVideo=SDL_SetVideoMode(800,600,sdlVideoInfo->vfmt->BitsPerPixel,vOption);
   if(sdlVideo==NULL) {
-    std::cerr <<"Impossible de passer dans le mode vidéo 800x600 !"<<std::endl;
+    std::cerr <<"Impossible de passer dans le mode vidÃ©o 800x600 !"<<std::endl;
     exit(-1);
   }
   
@@ -199,9 +199,9 @@ eMenu Menu::SDLMain(void)
 	    }
 	    break;
 	  default:
-	    key=event.key.keysym.unicode&0x7F; // Prend le caracataire correspondant à la touche
+	    key=event.key.keysym.unicode&0x7F; // Prend le caracataire correspondant Ã  la touche
 	    if(CharExiste(key)==true) { // Si la caractaire existe bien
-	      for(i=2;i>=0;i--) MCode[i+1]=MCode[i]; // décale le code
+	      for(i=2;i>=0;i--) MCode[i+1]=MCode[i]; // dÃ©cale le code
 	      MCode[0]=key;
 	      if(strcmp(MCode,"tide")==0 || strcmp(MCode,"TIDE")==0) return mEdit; // Si editeur de niveau
 	    } 
@@ -214,12 +214,12 @@ eMenu Menu::SDLMain(void)
       }
     }
     
-    // Gère les variables
+    // GÃ¨re les variables
     HorlogeAvant=Horloge;
     Horloge=SDL_GetTicks();
     Sleeping();
     
-    // Gère l'Affichage
+    // GÃ¨re l'Affichage
     Ec[NumEc].Efface(fmenu);
     Affiche_Main();
     Sourie.Affiche(NumEc);
@@ -329,12 +329,12 @@ eMenu Menu::SDLMain_Langue(void)
       }
     }
     
-    // Gère les variables
+    // GÃ¨re les variables
     HorlogeAvant=Horloge;
     Horloge=SDL_GetTicks();
     Sleeping();
     
-    // Gère l'Affichage
+    // GÃ¨re l'Affichage
     Ec[NumEc].Efface(fmenu);
 
     Affiche_Main_Centre();
@@ -374,7 +374,7 @@ void Menu::InitMain_Options(void)
 
   AddBouton(3,monde,180,400);
 
-  // Centre à gauche le text de menu
+  // Centre Ã  gauche le text de menu
   CentreM=120+Sprites[T_menu].Dim[0].L/2;
   AfficheText(CentreM,490,T_menu,Sprites[fmenu].Image[0]);
   AddBouton(4,T_menu,CentreM,490);
@@ -429,7 +429,7 @@ eMenu Menu::SDLMain_Options(void)
   int i,N;
   int NumSp;
 
-  InitMain_Options(); // Prépare le menu
+  InitMain_Options(); // PrÃ©pare le menu
 
   // Prend les evenements
   do {
@@ -570,12 +570,12 @@ eMenu Menu::SDLMain_Options(void)
       }
     }
     
-    // Gère les variables
+    // GÃ¨re les variables
     HorlogeAvant=Horloge;
     Horloge=SDL_GetTicks();
     Sleeping();
     
-    // Gère l'Affichage
+    // GÃ¨re l'Affichage
     Ec[NumEc].Efface(fmenu);
 
     if(Pref.FullScreen) {
@@ -649,7 +649,7 @@ eMenu Menu::SDLMain_Options(void)
   return mQuit;
 }
 
-/*** SDL Main Menu Choix de la difficulté ***/
+/*** SDL Main Menu Choix de la difficultÃ© ***/
 /********************************************/
 eMenu Menu::SDLMain_Speed(void)
 {
@@ -733,12 +733,12 @@ eMenu Menu::SDLMain_Speed(void)
       }
     }
     
-    // Gère les variables
+    // GÃ¨re les variables
     HorlogeAvant=Horloge;
     Horloge=SDL_GetTicks();
     Sleeping();
     
-    // Gère l'Affichage
+    // GÃ¨re l'Affichage
     Ec[NumEc].Efface(fmenu);
     Affiche_Main();
     Sourie.Affiche(NumEc);
@@ -762,7 +762,7 @@ eMenu Menu::SDLMain_Niveau(void)
   Niv=Pref.NiveauMax;
   Pref.Niveau=0;
 
-  if(Niv==0) return mMenuSpeed; // Inutile si la première fois
+  if(Niv==0) return mMenuSpeed; // Inutile si la premiÃ¨re fois
 
   // Prend l'image du fond et fait l'affichage 
   Sprites[fond_menu].Affiche(400,300,0,Sprites[fmenu].Image[0]);
@@ -856,16 +856,16 @@ eMenu Menu::SDLMain_Niveau(void)
       }
     }
     
-    // Gère les variables
+    // GÃ¨re les variables
     HorlogeAvant=Horloge;
     Horloge=SDL_GetTicks();
     Sleeping();
     
-    // Gère l'Affichage
+    // GÃ¨re l'Affichage
     Ec[NumEc].Efface(fmenu);
     EffaceChiffre(400,380,999,Sprites[fmenu].Image[0]);
 
-    // Affiche les flèches
+    // Affiche les flÃ¨ches
     if(Niv>0) {
       if(PyE==3) Ec[NumEc].Affiche(fleches,2,330,380);
       else Ec[NumEc].Affiche(fleches,1,330,380);
@@ -1019,12 +1019,12 @@ eMenu Menu::SDLMain_HR(void)
     // Test si fini
     if(Fini!=-1 && Fini<Horloge) return mJeux;
     
-    // Gère les variables
+    // GÃ¨re les variables
     HorlogeAvant=Horloge;
     Horloge=SDL_GetTicks();
     Sleeping();
     
-    // Gère l'Affichage
+    // GÃ¨re l'Affichage
     Ec[NumEc].Efface(fmenu);
   
     if(Ordre) {
@@ -1158,12 +1158,12 @@ eMenu Menu::SDLMain_InGame(void)
       }
     }
     
-    // Gère les variables
+    // GÃ¨re les variables
     HorlogeAvant=Horloge;
     Horloge=SDL_GetTicks();
     Sleeping();
     
-    // Gère l'Affichage
+    // GÃ¨re l'Affichage
     Ec[NumEc].Efface(fmenu);
     Affiche_Main(340);
     Sourie.Affiche(NumEc);
@@ -1177,7 +1177,7 @@ eMenu Menu::SDLMain_InGame(void)
   return mQuit;
 }
 
-/*** SDL Main Menu Choix de la difficulté ***/
+/*** SDL Main Menu Choix de la difficultÃ© ***/
 /********************************************/
 eMenu Menu::SDLMain_Score(bool EditScore)
 {
@@ -1187,12 +1187,12 @@ eMenu Menu::SDLMain_Score(bool EditScore)
   int PosCur=0;
   char key;
 
-  // Cherche le numéro du score à remplacer si edition des scores
+  // Cherche le numÃ©ro du score Ã  remplacer si edition des scores
   if(EditScore) {
     for(i=7;i>=0;i--) if(Pref.Sco[i].Score<Pref.Score) NEdit=i;
     if(NEdit==-1) return mMenu;
 
-    if(NEdit<7) // Si doit fair un décalage
+    if(NEdit<7) // Si doit fair un dÃ©calage
       for(i=7;i>NEdit;i--) {
 	Pref.Sco[i].Score=Pref.Sco[i-1].Score;
 	strcpy(Pref.Sco[i].Name,Pref.Sco[i-1].Name);
@@ -1262,7 +1262,7 @@ eMenu Menu::SDLMain_Score(bool EditScore)
 	  case SDLK_F12: // Sauve un screenshot
 	    SDL_SaveBMP(sdlVideo,"screenshot.bmp");
 	    break;   
-	  case SDLK_ESCAPE: // Valide l'entrée
+	  case SDLK_ESCAPE: // Valide l'entrÃ©e
 	  case SDLK_RETURN:
 	  case SDLK_KP_ENTER:
 	    return mMenu;
@@ -1273,7 +1273,7 @@ eMenu Menu::SDLMain_Score(bool EditScore)
 	    }
 	    break;
 	  default: // Prend les touches
-	    key=event.key.keysym.unicode&0x7F; // Prend le caracataire correspondant à la touche
+	    key=event.key.keysym.unicode&0x7F; // Prend le caracataire correspondant Ã  la touche
 	    if(PosCur<79 && CharExiste(key)==true) { // Prend le caractaire
 	      Pref.Sco[NEdit].Name[PosCur]=key;
 	      Pref.Sco[NEdit].Name[PosCur+1]=0;
@@ -1293,15 +1293,15 @@ eMenu Menu::SDLMain_Score(bool EditScore)
       }
     }
 
-    // Gère les variables
+    // GÃ¨re les variables
     HorlogeAvant=Horloge;
     Horloge=SDL_GetTicks();
     Sleeping();
     
-    // Gère l'Affichage
+    // GÃ¨re l'Affichage
     Ec[NumEc].Efface(fmenu);
 
-    if(EditScore) { // Gère l'affiche pour l'édition des scores
+    if(EditScore) { // GÃ¨re l'affiche pour l'Ã©dition des scores
       Sprites[fmenu].EffaceCarre(140,120-360/14+NEdit*(360/7),140+LSCOREMAX,120-360/14+(NEdit+1)*(360/7),
 				 Sprites[fmenu].Image[0]);
       AfficheString(140,120+NEdit*(360/7),Pref.Sco[NEdit].Name);
@@ -1334,7 +1334,7 @@ void Menu::Affiche_Main(int Centre)
   Ec[NumEc].Affiche(fleche_droite,NumSp,x2,y);
 }
 
-/*** Centre les flèches sur le boutton ***/
+/*** Centre les flÃ¨ches sur le boutton ***/
 /*****************************************/
 void Menu::Affiche_Main_Centre()
 {

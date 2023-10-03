@@ -1,7 +1,7 @@
 //      (_||_/
 //      (    )       Classe Sprite
 //     ( o  0 )
-//-OOO°--(_)---°OOO---------------------------------------
+//-OOOÂ°--(_)---Â°OOO---------------------------------------
 //                   Copyright (C) 2006 By Dominique Roux-Serret
 // .OOOo      oOOO.  roux-serret@ifrance.com
 //-(   )------(   )---------------------------------------
@@ -36,7 +36,7 @@
 /**************************************/
 struct s_Dim {
   int L,H;
-  int cx,cy; // Centre de l'image après recadrage
+  int cx,cy; // Centre de l'image aprÃ¨s recadrage
   int bpp;   // Nombre de bytes par pixels 3 ou 4 avec l'alpha
 };
 
@@ -173,7 +173,7 @@ enum e_Sprite {
 
 /*** Fonctions ***/
 /*****************/
-void AfficheChargeur(void);   // Affiche le chargeur sur la page de départ
+void AfficheChargeur(void);   // Affiche le chargeur sur la page de dÃ©part
 bool LoadLangue(void);  // Charge les sprites d'une langue
 bool LoadSprites(void); // Charge tous les sprites
 
@@ -201,9 +201,9 @@ class Sprite
   void Affiche(int X,int Y,int NumSpr,SDL_Surface *Fond=NULL);  // Affiche un sprite
   void AfficheCorde(int dx,int dy,int fx,int fy); // Affiche une corde
   void Efface(int X,int Y,int NumSpr,SDL_Surface *Fond);   // Efface le sprite
-  void EffaceCarre(int dx,int dy,int fx,int fy,SDL_Surface *Fond); // Efface un carré à l'ecran
+  void EffaceCarre(int dx,int dy,int fx,int fy,SDL_Surface *Fond); // Efface un carrÃ© Ã  l'ecran
   bool Nouveau(int Lx,int Ly); // Alloue un nouveau sprite vide sans transparence
-  void Delete(void); // Efface la mémoire du sprite
+  void Delete(void); // Efface la mÃ©moire du sprite
 
   /*** Variables ***/
   int N;            // Nombre de sprite

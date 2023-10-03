@@ -1,7 +1,7 @@
 //      (_||_/
 //      (    )       Classe Editeur
 //     ( o  0 )
-//-OOO∞--(_)---∞OOO---------------------------------------
+//-OOO¬∞--(_)---¬∞OOO---------------------------------------
 //                   Copyright (C) 2006 By Dominique Roux-Serret
 // .OOOo      oOOO.  roux-serret@ifrance.com
 //-(   )------(   )---------------------------------------
@@ -107,7 +107,7 @@ eMenu Editeur::SDLMain(int NumNiv)
 	break;
       case SDL_MOUSEBUTTONUP:
 	Boutton=false;
-	if(TypeB!=-1 && Option==deco && cx>=LT) { // Si doit effacer une dÈcoration
+	if(TypeB!=-1 && Option==deco && cx>=LT) { // Si doit effacer une d√©coration
 	  Niveau.T[NumN].NDeco--;
 	}
 	TypeB=-1;
@@ -118,15 +118,15 @@ eMenu Editeur::SDLMain(int NumNiv)
       }
     }
     
-    // GËre l'appuis du boutton de la sourie
+    // G√®re l'appuis du boutton de la sourie
     cx=Sourie.Px/D_Case;
     cy=Sourie.Py/D_Case;
     
     if(Boutton && cx<LT)
       switch(Option) {
       case deco:
-	if(TypeB==-1) { // Si premiËre fois que appuis sur la touche
-	  for(i=0;i<Niveau.T[NumN].NDeco;i++) { // Recherche si dÈcoration proche du clic
+	if(TypeB==-1) { // Si premi√®re fois que appuis sur la touche
+	  for(i=0;i<Niveau.T[NumN].NDeco;i++) { // Recherche si d√©coration proche du clic
 	    dx=Niveau.T[NumN].Deco[i].x-Sourie.Px;
 	    dy=Niveau.T[NumN].Deco[i].y-Sourie.Py;
 	    d=dx*dx+dy*dy;
@@ -134,7 +134,7 @@ eMenu Editeur::SDLMain(int NumNiv)
 	      TypeB=i;
 	    }
 	  }
-	  if(TypeB==-1) { // Si doit fair un nouveau dÈcor
+	  if(TypeB==-1) { // Si doit fair un nouveau d√©cor
 	    Niveau.T[NumN].NDeco++;
 	    Niveau.T[NumN].Deco[(Niveau.T[NumN].NDeco-1)].NumSpr=NumDeco;
 	    Niveau.T[NumN].Deco[(Niveau.T[NumN].NDeco-1)].x=Sourie.Px;
@@ -153,7 +153,7 @@ eMenu Editeur::SDLMain(int NumNiv)
 	    NumDeco=Niveau.T[NumN].Deco[(Niveau.T[NumN].NDeco-1)].NumSpr;
 	  }	 
 	}
-	else { // Si pas la premiËre fois remplace
+	else { // Si pas la premi√®re fois remplace
 	  Niveau.T[NumN].Deco[(Niveau.T[NumN].NDeco-1)].NumSpr=NumDeco;
 	  Niveau.T[NumN].Deco[(Niveau.T[NumN].NDeco-1)].x=Sourie.Px;
 	  Niveau.T[NumN].Deco[(Niveau.T[NumN].NDeco-1)].y=Sourie.Py;
@@ -193,7 +193,7 @@ eMenu Editeur::SDLMain(int NumNiv)
         break;
       }
     
-    // GËre les Horloges et la pose
+    // G√®re les Horloges et la pose
     HorlogeAvant=Horloge;
     Horloge=SDL_GetTicks();
     Sleeping();
@@ -238,7 +238,7 @@ void Editeur::Affiche()
     }
   }
   
-  // Affiche les dÈcorations
+  // Affiche les d√©corations
   for(i=0;i<Niveau.T[NumN].NDeco;i++)
     Sprites[deco].Affiche(Niveau.T[NumN].Deco[i].x,Niveau.T[NumN].Deco[i].y,Niveau.T[NumN].Deco[i].NumSpr);
   
@@ -266,7 +266,7 @@ void Editeur::Affiche()
     }
   }
 
-  // Affiche le dÈpart de la locomotive
+  // Affiche le d√©part de la locomotive
   switch(Niveau.T[NumN].DepDir) {
   case D_Haut:
     Sprites[locomotive].Affiche(Niveau.T[NumN].DepX*D_Case+D_Case/2,Niveau.T[NumN].DepY*D_Case+D_Case/2,0);
@@ -316,7 +316,7 @@ void Editeur::Affiche()
   else Sprites[deco].Affiche(Sourie.Px,Sourie.Py,NumDeco);
 }
 
-/*** Prend les touches enfoncÈes ***/
+/*** Prend les touches enfonc√©es ***/
 /***********************************/
 void Editeur::PrendTouche(int Tou)
 {  

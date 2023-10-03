@@ -1,7 +1,7 @@
 //      (_||_/
-//      (    )       Classe Loco (Gère la locomotive)
+//      (    )       Classe Loco (GÃ¨re la locomotive)
 //     ( o  0 )
-//-OOO°--(_)---°OOO---------------------------------------
+//-OOOÂ°--(_)---Â°OOO---------------------------------------
 //                   Copyright (C) 2006 By Dominique Roux-Serret
 // .OOOo      oOOO.  roux-serret@ifrance.com
 //-(   )------(   )---------------------------------------
@@ -29,22 +29,22 @@
 #include "ecran.h"
 #include "preference.h"
 
-/*** Definition de la classe qui mémorise les cases ***/
+/*** Definition de la classe qui mÃ©morise les cases ***/
 /******************************************************/
 struct s_TLoco {
-  int P; // Pointe sur le N° de la case
+  int P; // Pointe sur le NÂ° de la case
   float D;  // Distance parcoure (case comprie)
-  unsigned char Arrive,Sortie;  // Direction d'arrivée et de sortie
+  unsigned char Arrive,Sortie;  // Direction d'arrivÃ©e et de sortie
 };
 
-struct s_PosWagon { // Mémorise la position avant et arrière des wagons pour le test de colision
+struct s_PosWagon { // MÃ©morise la position avant et arriÃ¨re des wagons pour le test de colision
   int dx,dy;
   int fx,fy;
-  float SprStart;     // Si fini sa sequence d'affiche de départ
+  float SprStart;     // Si fini sa sequence d'affiche de dÃ©part
 };
 #define N_SPR_START 50
 
-/*** Définition de la class ***/
+/*** DÃ©finition de la class ***/
 /******************************/
 class Loco
 {
@@ -61,23 +61,23 @@ class Loco
   bool TestDir(int FuturDir,int *Tableau); // Test si une direction est possible
   void AddLoco(void); // Ajoute une loco au azard
 
-  /*** Fonctions privées ***/
+  /*** Fonctions privÃ©es ***/
   inline bool Go(int FuturDirection); // Fait avancer le tableau (retourne true si tourne)
   inline void FindPoint(float Dist,int &x,int &y); // Retourne la position d'un point sur le parcour
 
   /*** Variables ***/
-  long Reduit,Alonge,Vitesse; // Memorise l'horloge de fin si doit réduire ou alonger le train
-  int PLoco;  // Position de la tête de la loco dans le tableau
+  long Reduit,Alonge,Vitesse; // Memorise l'horloge de fin si doit rÃ©duire ou alonger le train
+  int PLoco;  // Position de la tÃªte de la loco dans le tableau
   int PInter; // Position de la futur intersection pour afficher la fleche
-  int PEntree; // Entrée le la loco sur une case pour la fleche
-  int Mort;   // Mémorise l'heure + duree pour faire une pause aprés avoir touché un wagon
+  int PEntree; // EntrÃ©e le la loco sur une case pour la fleche
+  int Mort;   // MÃ©morise l'heure + duree pour faire une pause aprÃ©s avoir touchÃ© un wagon
   bool Gagne; // Si a fini le niveau
   float D;    // Distance parcourue par la loco
-  struct s_TLoco T[256]; // Mémorise le parcour de la loco maxi = 256 cases
-  int NWagon; // Mémorise le nombre de wagon
-  e_Sprite Wagon[256]; // Mémorise les wagons
-  struct s_PosWagon PosWagon[256]; // Mémorise position des wagons à l'écran pour test de colision
-  float MemoDuree; // Memorise la precedente durée pour faire avancer les explosions du depart
+  struct s_TLoco T[256]; // MÃ©morise le parcour de la loco maxi = 256 cases
+  int NWagon; // MÃ©morise le nombre de wagon
+  e_Sprite Wagon[256]; // MÃ©morise les wagons
+  struct s_PosWagon PosWagon[256]; // MÃ©morise position des wagons Ã  l'Ã©cran pour test de colision
+  float MemoDuree; // Memorise la precedente durÃ©e pour faire avancer les explosions du depart
 };
 
 #endif

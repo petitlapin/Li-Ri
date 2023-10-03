@@ -1,7 +1,7 @@
 //      (_||_/
 //      (    )       Classe Loco
 //     ( o  0 )
-//-OOO°--(_)---°OOO---------------------------------------
+//-OOOÂ°--(_)---Â°OOO---------------------------------------
 //                   Copyright (C) 2006 By Dominique Roux-Serret
 // .OOOo      oOOO.  roux-serret@ifrance.com
 //-(   )------(   )---------------------------------------
@@ -61,7 +61,7 @@ void Loco::Init(int Pos,int Direction)
   int i;
   unsigned char Ar=0;
 
-  PLoco=0; // Pointe sur la première case
+  PLoco=0; // Pointe sur la premiÃ¨re case
   PInter=-1;
   Vitesse=Reduit=Alonge=0; // Pas d'alongement
   Mort=-1;
@@ -92,7 +92,7 @@ void Loco::Init(int Pos,int Direction)
   }
 
   // Initialise le Tableau et la loco
-  D=D_Case*1.99; // Positionne la tete presque à la fin
+  D=D_Case*1.99; // Positionne la tete presque Ã  la fin
 
   T[PLoco].P=Pos;
   T[PLoco].Arrive=Ar;
@@ -103,7 +103,7 @@ void Loco::Init(int Pos,int Direction)
   Go(Direction);
   Go(Direction);
 
-  // Initialise la loco et son wagon à charbon
+  // Initialise la loco et son wagon Ã  charbon
   NWagon=2;
   Wagon[0]=locomotive;
   Wagon[1]=charbon;
@@ -153,15 +153,15 @@ void Loco::Affiche(Ecran &Ec)
     PosWagon[i].fx=x2;
     PosWagon[i].fy=y2;
     
-    // Calcule l'angle de rotation de la loco et le N° du Sprite
-    if(x1<=x2) { // Angle 0 à 180 compris
+    // Calcule l'angle de rotation de la loco et le NÂ° du Sprite
+    if(x1<=x2) { // Angle 0 Ã  180 compris
       vy=(float)(x2-x1);
       vx=(float)(y2-y1);
       if(vx!=0) a=atan(vy/vx)*180.0/M_PI;
       else a=90.0;
       if(vx<0) a=180.0+a;
     }
-    else { // Angle 180.001 à 359.999
+    else { // Angle 180.001 Ã  359.999
       vy=(float)(x1-x2);
       vx=(float)(y1-y2);
       if(vx!=0) a=atan(vy/vx)*180.0/M_PI+180.0;
@@ -187,7 +187,7 @@ void Loco::Affiche(Ecran &Ec)
     cfx=x1-(int)(sin(ar+M_PI)*lv);
     cfy=y1-(int)(cos(ar+M_PI)*lv);
     
-    // Cherche le N° du Sprite
+    // Cherche le NÂ° du Sprite
     switch( (int)a ) {
     case 0: // En haut
       ns=(int)(y1+D_Case/2)%(int)D_Case;
@@ -209,7 +209,7 @@ void Loco::Affiche(Ecran &Ec)
     
     Ec.Affiche(Wagon[i],ns,x1,y1);
 
-    // Si pas fini la sequence d'affiche de départ du wagon
+    // Si pas fini la sequence d'affiche de dÃ©part du wagon
     if(PosWagon[i].SprStart<N_SPR_START) {
       PosWagon[i].SprStart+=MemoDuree*N_SPR_START/750.0;
       if(PosWagon[i].SprStart<N_SPR_START) Ec.Affiche(nouveau_wagon,(int)(PosWagon[i].SprStart),x1,y1);
@@ -239,7 +239,7 @@ void Loco::TestCase(float Dist,long DureeJeu,int *Tableau)
       Pref.Score+=5;
       AddLoco(); // Ajoute une loco au azard
  
-      Gagne=true; // Test si la dernière loco
+      Gagne=true; // Test si la derniÃ¨re loco
       for(i=0;i<LT*HT;i++) if(Tableau[i]==C_Wagon) Gagne=false;
       if(Gagne) { 
 	Mort=Horloge+DUREE_PAUSE;
@@ -253,7 +253,7 @@ void Loco::TestCase(float Dist,long DureeJeu,int *Tableau)
       if(Reduit>DureeJeu) Reduit=DureeJeu-1;
       else Alonge=DureeJeu+DUREE_ALONGE;
       break;
-    case C_Reduit: // Si réduit la loco
+    case C_Reduit: // Si rÃ©duit la loco
       Sons.Play(sReduit);
       Tableau[T[PLoco].P]=1; // efface l'option
       if(Alonge>DureeJeu) Alonge=DureeJeu-1;
@@ -304,14 +304,14 @@ void Loco::Avance(int Duree,long DureeJeu,int *Touche,int *Tableau)
   
   TestCase(Dist,DureeJeu,Tableau);
   
-  // Test si doit Réduire le wagon
+  // Test si doit RÃ©duire le wagon
   if(Reduit>DureeJeu) {
-    if(Pref.EcartWagon>ECARTWAGON_MIN) { // Si doit réduire
+    if(Pref.EcartWagon>ECARTWAGON_MIN) { // Si doit rÃ©duire
       Pref.EcartWagon-=(float)(Duree)*(Pref.VitesseMoy*0.8/(float)(NWagon-1))/1000.0;
       if(Pref.EcartWagon<ECARTWAGON_MIN) Pref.EcartWagon=ECARTWAGON_MIN;
     }
   }
-  else { // Si temps est passé
+  else { // Si temps est passÃ©
     if(Pref.EcartWagon<ECARTWAGON_MOY) { // Si doit ralonger le wagon
       Pref.EcartWagon+=(float)(Duree)*(Pref.VitesseMoy*0.8/(float)(NWagon))/1000.0;
       if(Pref.EcartWagon>ECARTWAGON_MOY) Pref.EcartWagon=ECARTWAGON_MOY;
@@ -325,7 +325,7 @@ void Loco::Avance(int Duree,long DureeJeu,int *Touche,int *Tableau)
       if(Pref.EcartWagon>ECARTWAGON_MAX) Pref.EcartWagon=ECARTWAGON_MAX;
     }
   }
-  else { // Si temps est passé
+  else { // Si temps est passÃ©
     if(Pref.EcartWagon>ECARTWAGON_MOY) { // Si doit ralonger le wagon
       Pref.EcartWagon-=(float)(Duree)*(Pref.VitesseMoy*0.8/(float)(NWagon-1))/1000.0;
       if(Pref.EcartWagon<ECARTWAGON_MOY) Pref.EcartWagon=ECARTWAGON_MOY;
@@ -346,15 +346,15 @@ void Loco::Avance(int Duree,long DureeJeu,int *Touche,int *Tableau)
     }
   }
 
-  // Tand que dépasse la case en distante
+  // Tand que dÃ©passe la case en distante
   while(D+Dist>T[PLoco].D) {
-    Dist-=T[PLoco].D-D; // Enleve la distance restant à parcourir
+    Dist-=T[PLoco].D-D; // Enleve la distance restant Ã  parcourir
     D=T[PLoco].D;
     
     i=0; // Cherche la direction possible
     while(TestDir(Touche[i],Tableau)==false) i++;
     
-    Go(Touche[i]); // Fait avancer le loco suivant le désir du joueur
+    Go(Touche[i]); // Fait avancer le loco suivant le dÃ©sir du joueur
 
     DoFleche(Tableau,Touche); // Recherche la position de la futur intersection
 
@@ -362,7 +362,7 @@ void Loco::Avance(int Duree,long DureeJeu,int *Touche,int *Tableau)
 
   }
   
-  D+=Dist; // Met à la bonne position finale
+  D+=Dist; // Met Ã  la bonne position finale
   
   if(PInter==-1) DoFleche(Tableau,Touche);
 }
@@ -377,12 +377,12 @@ void Loco::DoFleche(int *Tableau,int *Touche)
   int x,y,Tou;
   int i=0;
 
-  if(T[PLoco].P!=PInter && PInter!=-1) return; // Si pas encore arrivé sur la case de croisement
+  if(T[PLoco].P!=PInter && PInter!=-1) return; // Si pas encore arrivÃ© sur la case de croisement
 
   PInter=T[PLoco].P; // Prend la position de la loco
 
   do {
-    // Vas à la nouvelle case
+    // Vas Ã  la nouvelle case
     switch(Sortie) {
     case D_Haut:
       PInter-=LT;
@@ -434,7 +434,7 @@ void Loco::DoFleche(int *Tableau,int *Touche)
       Touche[i]=Touche[i-1];
       i--;
     }
-    Touche[0]=Tou; // Mémorise la touche
+    Touche[0]=Tou; // MÃ©morise la touche
   }
   
 }
@@ -446,7 +446,7 @@ bool Loco::TestDir(int FDir,int *Tableau)
   int PAvant=T[PLoco].P;
   int x,y;
 
-  // Test si les directions ne sont pas opposées
+  // Test si les directions ne sont pas opposÃ©es
   if(T[PLoco].Sortie==D_Haut && FDir==D_Bas) return false;
   if(T[PLoco].Sortie==D_Bas && FDir==D_Haut) return false;
   if(T[PLoco].Sortie==D_Gauche && FDir==D_Droite) return false;
@@ -478,7 +478,7 @@ bool Loco::Go(int FuturDir)
   int Mask;
   int i;
 
-  // Test si risque de dépassement et enleve une bonne partie
+  // Test si risque de dÃ©passement et enleve une bonne partie
   if(PLoco==255) {
     for(i=0;i<256-50;i++) {
       T[i].P=T[i+50].P;
@@ -489,8 +489,8 @@ bool Loco::Go(int FuturDir)
     PLoco-=50;
   }
   
-  // Mémorise la prochaine case
-  PLoco++; // Passe à la case suivante
+  // MÃ©morise la prochaine case
+  PLoco++; // Passe Ã  la case suivante
 
   switch(Dir) {
   case D_Haut:
@@ -510,7 +510,7 @@ bool Loco::Go(int FuturDir)
     T[PLoco].Arrive=D_Gauche;
   }
 
-  // Donne futur direction et N° case avant
+  // Donne futur direction et NÂ° case avant
   T[PLoco].P=PTab;
   T[PLoco].Sortie=FuturDir;
 
@@ -543,7 +543,7 @@ void Loco::FindPoint(float Dist,int &x,int &y)
   while(T[NP-1].D>Dist) NP--;
   P=T[NP].P;
 
-  // Calcule les coordonnée suivant la direction
+  // Calcule les coordonnÃ©e suivant la direction
   D_Rest=T[NP].D-Dist;
   if(D_Rest==0) D_Rest=D_Case/1000.0; // Evite les erreurs de division
 

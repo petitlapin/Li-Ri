@@ -1,7 +1,7 @@
 //      (_||_/
 //      (    )       Classe Editeur
 //     ( o  0 )
-//-OOO°--(_)---°OOO---------------------------------------
+//-OOOÂ°--(_)---Â°OOO---------------------------------------
 //                   Copyright (C) 2006 By Dominique Roux-Serret
 // .OOOo      oOOO.  roux-serret@ifrance.com
 //-(   )------(   )---------------------------------------
@@ -27,7 +27,7 @@
 #include "preference.h"
 #include "sprite.h"
 
-/*** Définition de la class ***/
+/*** DÃ©finition de la class ***/
 /******************************/
 class Editeur {
  public:
@@ -38,10 +38,10 @@ class Editeur {
   /*****************/
   eMenu SDLMain(int NumNiveau);   // Boucle principale
   void Affiche(void);       // Charge un tableau
-  void PrendTouche(int Touche); // Prend les touches enfoncées
+  void PrendTouche(int Touche); // Prend les touches enfoncÃ©es
   
   /*** Variables ***/ 
-  int N; // Numero du tableau à éditer
+  int N; // Numero du tableau Ã  Ã©diter
   e_Sprite Option;
   int NumDeco;
   int NumN;

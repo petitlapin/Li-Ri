@@ -1,7 +1,7 @@
 //      (_||_/
 //      (    )       Classe Sprite
 //     ( o  0 )
-//-OOO°--(_)---°OOO---------------------------------------
+//-OOOÂ°--(_)---Â°OOO---------------------------------------
 //                   Copyright (C) 2006 By Dominique Roux-Serret
 // .OOOo      oOOO.  roux-serret@ifrance.com
 //-(   )------(   )---------------------------------------
@@ -26,24 +26,24 @@
 
 #include "preference.h"
 
-/*** Définition de la structure d'un tableau ***/
+/*** DÃ©finition de la structure d'un tableau ***/
 /***********************************************/
 struct s_Deco {
-  int NumSpr; // Numéro et position du sprite décoratif
+  int NumSpr; // NumÃ©ro et position du sprite dÃ©coratif
   int x;
   int y;
 };
 
 struct s_Tableau {
-  unsigned char T[LT*HT]; // Définition du circuit et des options
-  int DepX;  // Départ de la locomotive
+  unsigned char T[LT*HT]; // DÃ©finition du circuit et des options
+  int DepX;  // DÃ©part de la locomotive
   int DepY;
-  int DepDir; // Direction du départ
-  int NDeco;  // Nombre d'éléments décoratifs
+  int DepDir; // Direction du dÃ©part
+  int NDeco;  // Nombre d'Ã©lÃ©ments dÃ©coratifs
   struct s_Deco Deco[32];
 };
 
-/*** Définition de la classe ***/
+/*** DÃ©finition de la classe ***/
 /*******************************/
 class Tableau
 {
@@ -55,7 +55,7 @@ class Tableau
   bool Load(void); // charge les tableaux
   bool Save(void); // Sauve les tableaux
   void Del(int Num); // efface un tableau
-  void Ins(int Num); // Insert un tableau vièrge
+  void Ins(int Num); // Insert un tableau viÃ¨rge
   void Clear(int Num); // Vide un tableau
 
   /*** Variables ***/
