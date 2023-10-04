@@ -24,7 +24,7 @@
 #ifndef _ECRAN_DOM_
 #define _ECRAN_DOM_
 
-#include <SDL/SDL.h>
+#include <SDL2/SDL.h>
 #include "sprite.h"
 #include "preference.h"
 
@@ -55,7 +55,6 @@ class Ecran
 
   /*** Variables ***/
   int N;               // Nombre de sprites mémorisés aprés l'affichage
-  int NVie;            // Mémorise le nombre de vies affiché
   int Score;           // Mémorise le score affiché
   s_Ecran B[LT*HT*2];  // N° des sprites à effacer plus tard
 };

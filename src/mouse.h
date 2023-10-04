@@ -24,7 +24,7 @@
 #ifndef _SOURIE_DOM_
 #define _SOURIE_DOM_
 
-#include <SDL/SDL.h>
+#include <SDL2/SDL.h>
 
 /*** Structure pour la position dans le menu Py ***/
 /**************************************************/

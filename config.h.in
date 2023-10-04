@@ -9,32 +9,32 @@
 /* Define to 1 if you have the `pthread' library (-lpthread). */
 #undef HAVE_LIBPTHREAD
 
-/* Define to 1 if you have the `SDL' library (-lSDL). */
-#undef HAVE_LIBSDL
+/* Define to 1 if you have the `SDL2' library (-lSDL2). */
+#undef HAVE_LIBSDL2
 
-/* Define to 1 if you have the `SDL_mixer' library (-lSDL_mixer). */
-#undef HAVE_LIBSDL_MIXER
+/* Define to 1 if you have the `SDL2_mixer' library (-lSDL2_mixer). */
+#undef HAVE_LIBSDL2_MIXER
 
 /* Define to 1 if you have the <math.h> header file. */
 #undef HAVE_MATH_H
 
-/* Define to 1 if you have the <memory.h> header file. */
-#undef HAVE_MEMORY_H
-
 /* Define to 1 if you have the <pthread.h> header file. */
 #undef HAVE_PTHREAD_H
 
-/* Define to 1 if you have the <SDL/SDL.h> header file. */
-#undef HAVE_SDL_SDL_H
+/* Define to 1 if you have the <SDL2/SDL.h> header file. */
+#undef HAVE_SDL2_SDL_H
 
-/* Define to 1 if you have the <SDL/SDL_mixer.h> header file. */
-#undef HAVE_SDL_SDL_MIXER_H
+/* Define to 1 if you have the <SDL2/SDL_mixer.h> header file. */
+#undef HAVE_SDL2_SDL_MIXER_H
 
 /* Define to 1 if you have the `sqrt' function. */
 #undef HAVE_SQRT
 
 /* Define to 1 if you have the <stdint.h> header file. */
 #undef HAVE_STDINT_H
+
+/* Define to 1 if you have the <stdio.h> header file. */
+#undef HAVE_STDIO_H
 
 /* Define to 1 if you have the <stdlib.h> header file. */
 #undef HAVE_STDLIB_H
@@ -69,10 +69,15 @@
 /* Define to the one symbol short name of this package. */
 #undef PACKAGE_TARNAME
 
+/* Define to the home page for this package. */
+#undef PACKAGE_URL
+
 /* Define to the version of this package. */
 #undef PACKAGE_VERSION
 
-/* Define to 1 if you have the ANSI C header files. */
+/* Define to 1 if all of the C90 standard headers exist (not just the ones
+   required in a freestanding environment). This macro is provided for
+   backward compatibility; new code need not use it. */
 #undef STDC_HEADERS
 
 /* Version number of package */

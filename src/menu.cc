@@ -25,6 +25,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <array>
 #include "preference.h"
 #include "menu.h"
 #include "sprite.h"
@@ -38,7 +39,8 @@
 /**************************/
 extern int Horloge;
 extern int HorlogeAvant;
-extern SDL_Surface *sdlVideo;
+extern SDL_Window *sdlWindow;
+extern SDL_Renderer *sdlRenderer;
 extern Sprite *Sprites;
 extern Mouse Sourie;
 extern Ecran Ec[2];
@@ -87,35 +89,11 @@ void AddBouton(int Num,e_Sprite NumSp,int X,int Y)
 /***********************/
 void ChangeVideo(void)
 {
-  SDL_VideoInfo *sdlVideoInfo;
-
-  // Teste la resolution video
-  sdlVideoInfo=(SDL_VideoInfo*)SDL_GetVideoInfo();
-  if(sdlVideoInfo->vfmt->BitsPerPixel==8) {
-    std::cerr <<"Impossible d'utiliser 8bits pour la vidéo !"<<std::endl;
-    exit(-1);
+  Uint32 flag = 0;
+  if(Pref.FullScreen) {
+      flag = SDL_WINDOW_FULLSCREEN_DESKTOP;
   }
-  
-  // Demande la resolution Video
-#ifndef LINUX
-  int vOption;
-  if(Pref.FullScreen)   vOption=SDL_SWSURFACE; // Bug accé aux bits pour les cordes
-  else  vOption=SDL_SWSURFACE|SDL_DOUBLEBUF;
-#else
-#ifndef __AMIGAOS4__
-  int vOption=SDL_SWSURFACE|SDL_DOUBLEBUF;
-#else
-  int vOption=SDL_SWSURFACE;
-#endif
-#endif
-
-  if(Pref.FullScreen) vOption|=SDL_FULLSCREEN;
-  sdlVideo=SDL_SetVideoMode(800,600,sdlVideoInfo->vfmt->BitsPerPixel,vOption);
-  if(sdlVideo==NULL) {
-    std::cerr <<"Impossible de passer dans le mode vidéo 800x600 !"<<std::endl;
-    exit(-1);
-  }
-  
+  SDL_SetWindowFullscreen(sdlWindow, flag);
   SDL_ShowCursor(0); // Cache le curseur
 }
 
@@ -130,41 +108,34 @@ eMenu Menu::SDLMain(void)
   // Initialisations Divers
   Sourie.Init(Menu_Py); // Initialise la sourie
   PyE=0;
-  
-  // Prend l'image du fond et fait l'affichage 
-  Sprites[fond_menu].Affiche(400,300,0,Sprites[fmenu].Image[0]);
-  Sprites[menu].Affiche(400,340,0,Sprites[fmenu].Image[0]);
-  Sprites[titre].Affiche(400,65,0,Sprites[fmenu].Image[0]);
-  Sprites[copyright].Affiche(400,587,0,Sprites[fmenu].Image[0]);
 
-  AfficheText(400,229,T_play,Sprites[fmenu].Image[0]);
-  AddBouton(0,T_play,400,229);
-  AfficheText(400,306,T_scores,Sprites[fmenu].Image[0]);
-  AddBouton(1,T_scores,400,306);
-  AfficheText(400,384,T_moptions,Sprites[fmenu].Image[0]);
-  AddBouton(2,T_moptions,400,384);
-  AfficheText(400,461,T_quit,Sprites[fmenu].Image[0]);
-  AddBouton(3,T_quit,400,461);
-  Menu_Py[4].DepX=-1;
-
-  // Efface le fond
-  NumEc=0;
-  Ec[1].Cls(fmenu);
-  SDL_Flip(sdlVideo);
-  Ec[0].Cls(fmenu);
+  printf("Menu::SDLMain\n");
   
   // Prend les evenements
   do {
+    SDL_RenderClear(sdlRenderer);
+    // Prend l'image du fond et fait l'affichage 
+    Sprites[fond_menu].Affiche(400,300,0,Sprites[fmenu].Image[0]);
+    Sprites[menu].Affiche(400,340,0,Sprites[fmenu].Image[0]);
+    Sprites[titre].Affiche(400,65,0,Sprites[fmenu].Image[0]);
+    Sprites[copyright].Affiche(400,587,0,Sprites[fmenu].Image[0]);
+
+    AfficheText(400,229,T_play,Sprites[fmenu].Image[0]);
+    AddBouton(0,T_play,400,229);
+    AfficheText(400,306,T_scores,Sprites[fmenu].Image[0]);
+    AddBouton(1,T_scores,400,306);
+    AfficheText(400,384,T_moptions,Sprites[fmenu].Image[0]);
+    AddBouton(2,T_moptions,400,384);
+    AfficheText(400,461,T_quit,Sprites[fmenu].Image[0]);
+    AddBouton(3,T_quit,400,461);
+    Menu_Py[4].DepX=-1;
     SDL_Event event;
     while(SDL_PollEvent(&event)) {
       Sourie.GetEvent(event,PyE); // Prend les evenements de la sourie
       switch(event.type) {
-      case SDL_ACTIVEEVENT:
-	if(event.active.gain==1) {
-	  NumEc=0;
-	  Ec[1].Cls(fmenu);
-	  SDL_Flip(sdlVideo);
-	  Ec[0].Cls(fmenu);
+      case SDL_WINDOWEVENT:
+	if(event.window.event==SDL_WINDOWEVENT_ENTER) {
+	  //SDL_RenderPresent(sdlRenderer);
 	}
 	break;
       case SDL_KEYDOWN:
@@ -182,7 +153,7 @@ eMenu Menu::SDLMain(void)
 	    if(PyE>3) PyE=0;
 	    break;
 	  case SDLK_F12: // Sauve un screenshot
-	    SDL_SaveBMP(sdlVideo,"screenshot.bmp");
+	    //TODO SDL_SaveBMP(sdlVideo,"screenshot.bmp");
 	    break;    
 	  case ' ':
 	  case SDLK_RETURN:
@@ -199,7 +170,7 @@ eMenu Menu::SDLMain(void)
 	    }
 	    break;
 	  default:
-	    key=event.key.keysym.unicode&0x7F; // Prend le caracataire correspondant à la touche
+	    key=event.key.keysym.sym&0x7F; // Prend le caracataire correspondant à la touche
 	    if(CharExiste(key)==true) { // Si la caractaire existe bien
 	      for(i=2;i>=0;i--) MCode[i+1]=MCode[i]; // décale le code
 	      MCode[0]=key;
@@ -220,14 +191,13 @@ eMenu Menu::SDLMain(void)
     Sleeping();
     
     // Gère l'Affichage
-    Ec[NumEc].Efface(fmenu);
+    Ec[0].Efface(fmenu);
     Affiche_Main();
-    Sourie.Affiche(NumEc);
+    Sourie.Affiche(0);
     
     // Echange les buffets video
-    SDL_Flip(sdlVideo);
-    NumEc=(NumEc+1)&1;
-    
+    SDL_RenderPresent(sdlRenderer);
+
   } while(true);
   
   return mQuit;
@@ -243,12 +213,14 @@ eMenu Menu::SDLMain_Langue(void)
   int i;
   int x,y;
   int OldLangue=Pref.Langue;
+  printf("Menu::SDLMain_Langue\n");
 
   // Initialisations Divers
   Sourie.Init(Menu_Py); // Initialise la sourie
   PyE=Pref.Langue;
   if(PyE==-1) PyE=1;
 
+  SDL_RenderClear(sdlRenderer);
   // Prend l'image du fond et fait l'affichage 
   Sprites[fond_menu].Affiche(400,300,0,Sprites[fmenu].Image[0]);
   
@@ -269,23 +241,28 @@ eMenu Menu::SDLMain_Langue(void)
   Menu_Py[Pref.NLangues].DepX=-1;
 
   // Efface le fond
-  NumEc=0;
-  Ec[1].Cls(fmenu);
-  SDL_Flip(sdlVideo);
-  Ec[0].Cls(fmenu);
-  
+  SDL_RenderPresent(sdlRenderer);
+
   // Prend les evenements
   do {
+    SDL_RenderClear(sdlRenderer);
+    Sprites[fond_menu].Affiche(400,300,0,Sprites[fmenu].Image[0]);
+    for(i=0;i<Pref.NLangues;i++) {
+      x=(i/NL)*(800/3)+(800/6);
+      y=(i%NL)*Ecart+Ecart;
+    
+      Sprites[T_Langue+i].Affiche(x,y,0,Sprites[fmenu].Image[0]);
+      AddBouton(i,(e_Sprite)(T_Langue+i),x,y);
+    }
+
     SDL_Event event;
     while(SDL_PollEvent(&event)) {
+
       Sourie.GetEvent(event,PyE); // Prend les evenements de la sourie
       switch(event.type) {
-      case SDL_ACTIVEEVENT:
-	if(event.active.gain==1) {
-	  NumEc=0;
-	  Ec[1].Cls(fmenu);
-	  SDL_Flip(sdlVideo);
-	  Ec[0].Cls(fmenu);
+      case SDL_WINDOWEVENT:
+	if(event.window.event==SDL_WINDOWEVENT_ENTER) {
+	  SDL_RenderPresent(sdlRenderer);
 	}
 	break;
       case SDL_KEYDOWN:
@@ -310,7 +287,7 @@ eMenu Menu::SDLMain_Langue(void)
 	    if(PyE+NL<Pref.NLangues) PyE+=NL;
 	    break;
 	  case SDLK_F12: // Sauve un screenshot
-	    SDL_SaveBMP(sdlVideo,"screenshot.bmp");
+	    //TODO SDL_SaveBMP(sdlVideo,"screenshot.bmp");
 	    break;    
 	  case ' ':
 	  case SDLK_RETURN:
@@ -319,7 +296,7 @@ eMenu Menu::SDLMain_Langue(void)
 	    if(Pref.Langue!=OldLangue) LoadLangue();
 	    return mMenu;
           default:
-            break;
+	    break;
           }
 	}
 	break;
@@ -335,15 +312,13 @@ eMenu Menu::SDLMain_Langue(void)
     Sleeping();
     
     // Gère l'Affichage
-    Ec[NumEc].Efface(fmenu);
-
+    Ec[0].Efface(fmenu); // Something is done in the Efface that prevents a crash (or maybe more computation)!
     Affiche_Main_Centre();
 
-    Sourie.Affiche(NumEc);
+    Sourie.Affiche(0);
 
     // Echange les buffets video
-    SDL_Flip(sdlVideo);
-    NumEc=(NumEc+1)&1;
+    SDL_RenderPresent(sdlRenderer);
     
   } while(true);
   
@@ -356,7 +331,7 @@ void Menu::InitMain_Options(void)
 {
   // Initialisations Divers
   Sourie.Init(Menu_Py); // Initialise la sourie
-  PyE=4;
+  //PyE=4;
 
   // Prend l'image du fond et fait l'affichage 
   Sprites[fond_menu].Affiche(400,300,0,Sprites[fmenu].Image[0]);
@@ -416,10 +391,8 @@ void Menu::InitMain_Options(void)
   Menu_Py[9].DepX=-1;
 
   // Efface le fond
-  NumEc=0;
-  Ec[1].Cls(fmenu);
-  SDL_Flip(sdlVideo);
-  Ec[0].Cls(fmenu);
+  //SDL_RenderPresent(sdlRenderer);
+  //Ec[0].Cls(fmenu);
 }
   
 /*** Gestion du menu Options ***/
@@ -429,20 +402,19 @@ eMenu Menu::SDLMain_Options(void)
   int i,N;
   int NumSp;
 
-  InitMain_Options(); // Prépare le menu
-
+  PyE=4;
   // Prend les evenements
   do {
+    Ec[0].Cls(fmenu); // To not crash...
+    SDL_RenderClear(sdlRenderer);
+    InitMain_Options(); // Prépare le menu
     SDL_Event event;
     while(SDL_PollEvent(&event)) {
       Sourie.GetEvent(event,PyE); // Prend les evenements de la sourie
       switch(event.type) {
-      case SDL_ACTIVEEVENT:
-	if(event.active.gain==1) {
-	  NumEc=0;
-	  Ec[1].Cls(fmenu);
-	  SDL_Flip(sdlVideo);
-	  Ec[0].Cls(fmenu);
+      case SDL_WINDOWEVENT:
+	if(event.window.event==SDL_WINDOWEVENT_ENTER) {
+	  SDL_RenderPresent(sdlRenderer);
 	}
 	break;
       case SDL_KEYDOWN:
@@ -457,7 +429,7 @@ eMenu Menu::SDLMain_Options(void)
 	      if(Pref.FullScreen==false) {
 		Pref.FullScreen=true;
 		ChangeVideo();
-		InitMain_Options();
+		//InitMain_Options();
 		PyE=2;
 	      }
 	      break;
@@ -484,7 +456,7 @@ eMenu Menu::SDLMain_Options(void)
 	      if(Pref.FullScreen==true) {
 		Pref.FullScreen=false;
 		ChangeVideo();
-		InitMain_Options();
+		//InitMain_Options();
 		PyE=2;
 	      }
 	      break;
@@ -514,7 +486,7 @@ eMenu Menu::SDLMain_Options(void)
 	    if(PyE>=5) PyE=0;
 	    break;
 	  case SDLK_F12: // Sauve un screenshot
-	    SDL_SaveBMP(sdlVideo,"screenshot.bmp");
+	    //TODO SDL_SaveBMP(sdlVideo,"screenshot.bmp");
 	    break;    
 	  case ' ':
 	  case SDLK_RETURN:
@@ -526,12 +498,12 @@ eMenu Menu::SDLMain_Options(void)
 	    case 2: // Type d'affichage
 	      Pref.FullScreen=(Pref.FullScreen+1)&1;
 	      ChangeVideo();
-	      InitMain_Options();
+	      //InitMain_Options();
 	      PyE=2;
 	      break;
 	    case 3: // Choix de la langue
 	      SDLMain_Langue();
-	      InitMain_Options();
+	      //InitMain_Options();
 	      PyE=3;
 	      break;
 	    case 5: // Diminue volume sons
@@ -570,41 +542,42 @@ eMenu Menu::SDLMain_Options(void)
       }
     }
     
+    //SDL_RenderClear(sdlRenderer);
     // Gère les variables
     HorlogeAvant=Horloge;
     Horloge=SDL_GetTicks();
     Sleeping();
     
     // Gère l'Affichage
-    Ec[NumEc].Efface(fmenu);
+    //Ec[0].Efface(fmenu);
 
     if(Pref.FullScreen) {
-      Ec[NumEc].Affiche(fleches,1,350,300);
-      Ec[NumEc].Affiche(fleches,3,450,300);
+      Ec[0].Affiche(fleches,1,350,300);
+      Ec[0].Affiche(fleches,3,450,300);
     }
     else {
-      Ec[NumEc].Affiche(fleches,0,350,300);
-      Ec[NumEc].Affiche(fleches,4,450,300);
+      Ec[0].Affiche(fleches,0,350,300);
+      Ec[0].Affiche(fleches,4,450,300);
     }
 
     NumSp=(Horloge/30)%25;
-    Ec[NumEc].Affiche(bruitage,NumSp,150,110);
+    Ec[0].Affiche(bruitage,NumSp,150,110);
     NumSp=(Horloge/30)%25;
-    Ec[NumEc].Affiche(music,NumSp,150,200);
+    Ec[0].Affiche(music,NumSp,150,200);
     NumSp=(Horloge/50)%50;
-    Ec[NumEc].Affiche(monde,NumSp,180,400);
+    Ec[0].Affiche(monde,NumSp,180,400);
 
     N=(int)(Pref.Volume*10+1)/SDL_MIX_MAXVOLUME;
     NumSp=(Horloge/50)%40+120;
     for(i=0;i<N;i++) {
-      if(i==N-1) Ec[NumEc].Affiche(locomotive,NumSp,(690-300)/10*i+300,110);
-      else Ec[NumEc].Affiche(buches,NumSp,(690-300)/10*i+300,110);
+      if(i==N-1) Ec[0].Affiche(locomotive,NumSp,(690-300)/10*i+300,110);
+      else Ec[0].Affiche(buches,NumSp,(690-300)/10*i+300,110);
     }
 
     N=(int)(Pref.VolumeM*10+1)/SDL_MIX_MAXVOLUME;
     for(i=0;i<N;i++) {
-      if(i==N-1) Ec[NumEc].Affiche(locomotive,NumSp,(690-300)/10*i+300,200);
-      else Ec[NumEc].Affiche(buches,NumSp,(690-300)/10*i+300,200);
+      if(i==N-1) Ec[0].Affiche(locomotive,NumSp,(690-300)/10*i+300,200);
+      else Ec[0].Affiche(buches,NumSp,(690-300)/10*i+300,200);
     }
 
     switch(PyE) {
@@ -638,11 +611,10 @@ eMenu Menu::SDLMain_Options(void)
       Affiche_Main();
     }
     
-    Sourie.Affiche(NumEc);
+    Sourie.Affiche(0);
     
     // Echange les buffets video
-    SDL_Flip(sdlVideo);
-    NumEc=(NumEc+1)&1;
+    SDL_RenderPresent(sdlRenderer);
     
   } while(true);
   
@@ -657,36 +629,29 @@ eMenu Menu::SDLMain_Speed(void)
   Sourie.Init(Menu_Py); // Initialise la sourie
   PyE=1;
   
-  // Prend l'image du fond et fait l'affichage 
-  Sprites[fond_menu].Affiche(400,300,0,Sprites[fmenu].Image[0]);
-  Sprites[menu].Affiche(400,340,0,Sprites[fmenu].Image[0]);
-  Sprites[titre].Affiche(400,65,0,Sprites[fmenu].Image[0]);
-
-  AfficheText(400,225,T_easy,Sprites[fmenu].Image[0]);
-  AddBouton(0,T_easy,400,225);
-  AfficheText(400,340,T_normal,Sprites[fmenu].Image[0]);
-  AddBouton(1,T_normal,400,340);
-  AfficheText(400,455,T_hard,Sprites[fmenu].Image[0]);
-  AddBouton(2,T_hard,400,455);
-  Menu_Py[3].DepX=-1;
-
-  // Efface le fond
-  NumEc=0;
-  Ec[1].Cls(fmenu);
-  SDL_Flip(sdlVideo);
-  Ec[0].Cls(fmenu);
-  
   // Prend les evenements
   do {
+    SDL_RenderClear(sdlRenderer);
+    // Prend l'image du fond et fait l'affichage 
+    Sprites[fond_menu].Affiche(400,300,0,Sprites[fmenu].Image[0]);
+    Sprites[menu].Affiche(400,340,0,Sprites[fmenu].Image[0]);
+    Sprites[titre].Affiche(400,65,0,Sprites[fmenu].Image[0]);
+
+    AfficheText(400,225,T_easy,Sprites[fmenu].Image[0]);
+    AddBouton(0,T_easy,400,225);
+    AfficheText(400,340,T_normal,Sprites[fmenu].Image[0]);
+    AddBouton(1,T_normal,400,340);
+    AfficheText(400,455,T_hard,Sprites[fmenu].Image[0]);
+    AddBouton(2,T_hard,400,455);
+    Menu_Py[3].DepX=-1;
+
     SDL_Event event;
     while(SDL_PollEvent(&event)) {
       Sourie.GetEvent(event,PyE); // Prend les evenements de la sourie
       switch(event.type) {
-      case SDL_ACTIVEEVENT:
-	if(event.active.gain==1) {
-	  NumEc=0;
-	  Ec[1].Cls(fmenu);
-	  SDL_Flip(sdlVideo);
+      case SDL_WINDOWEVENT:
+	if(event.window.event==SDL_WINDOWEVENT_ENTER) {
+	  SDL_RenderPresent(sdlRenderer);
 	  Ec[0].Cls(fmenu);
 	}
 	break;
@@ -705,7 +670,7 @@ eMenu Menu::SDLMain_Speed(void)
 	    if(PyE>2) PyE=0;
 	    break;
 	  case SDLK_F12: // Sauve un screenshot
-	    SDL_SaveBMP(sdlVideo,"screenshot.bmp");
+	    //TODO SDL_SaveBMP(sdlVideo,"screenshot.bmp");
 	    break;    
 	  case ' ':
 	  case SDLK_RETURN:
@@ -739,13 +704,12 @@ eMenu Menu::SDLMain_Speed(void)
     Sleeping();
     
     // Gère l'Affichage
-    Ec[NumEc].Efface(fmenu);
+    Ec[0].Efface(fmenu);
     Affiche_Main();
-    Sourie.Affiche(NumEc);
+    Sourie.Affiche(0);
     
     // Echange les buffets video
-    SDL_Flip(sdlVideo);
-    NumEc=(NumEc+1)&1;
+    SDL_RenderPresent(sdlRenderer);
     
   } while(true);
   
@@ -763,42 +727,35 @@ eMenu Menu::SDLMain_Niveau(void)
   Pref.Niveau=0;
 
   if(Niv==0) return mMenuSpeed; // Inutile si la première fois
-
-  // Prend l'image du fond et fait l'affichage 
-  Sprites[fond_menu].Affiche(400,300,0,Sprites[fmenu].Image[0]);
-  Sprites[menu].Affiche(400,340,0,Sprites[fmenu].Image[0]);
-  Sprites[titre].Affiche(400,65,0,Sprites[fmenu].Image[0]);
-
-  AfficheText(400,225,T_new_game,Sprites[fmenu].Image[0]);
-  AddBouton(0,T_new_game,400,225);
-  AfficheText(400,320,T_old_level,Sprites[fmenu].Image[0]);
-  AddBouton(1,T_old_level,400,320);
-  AfficheText(400,455,T_menu,Sprites[fmenu].Image[0]);
-  AddBouton(2,T_menu,400,455);
-  
-  AddBouton(3,fleches,330,380);
-  AddBouton(4,fleches,470,380);
-
-  Menu_Py[5].DepX=-1;
-  
-  // Efface le fond
-  NumEc=0;
-  Ec[1].Cls(fmenu);
-  SDL_Flip(sdlVideo);
-  Ec[0].Cls(fmenu);
   
   // Prend les evenements
   do {
+    // Efface le fond
+    SDL_RenderClear(sdlRenderer);
+    // Prend l'image du fond et fait l'affichage 
+    Sprites[fond_menu].Affiche(400,300,0,Sprites[fmenu].Image[0]);
+    Sprites[menu].Affiche(400,340,0,Sprites[fmenu].Image[0]);
+    Sprites[titre].Affiche(400,65,0,Sprites[fmenu].Image[0]);
+
+    AfficheText(400,225,T_new_game,Sprites[fmenu].Image[0]);
+    AddBouton(0,T_new_game,400,225);
+    AfficheText(400,320,T_old_level,Sprites[fmenu].Image[0]);
+    AddBouton(1,T_old_level,400,320);
+    AfficheText(400,455,T_menu,Sprites[fmenu].Image[0]);
+    AddBouton(2,T_menu,400,455);
+  
+    AddBouton(3,fleches,330,380);
+    AddBouton(4,fleches,470,380);
+
+    Menu_Py[5].DepX=-1;
+  
     SDL_Event event;
     while(SDL_PollEvent(&event)) {
       Sourie.GetEvent(event,PyE); // Prend les evenements de la sourie
       switch(event.type) {
-      case SDL_ACTIVEEVENT:
-	if(event.active.gain==1) {
-	  NumEc=0;
-	  Ec[1].Cls(fmenu);
-	  SDL_Flip(sdlVideo);
-	  Ec[0].Cls(fmenu);
+      case SDL_WINDOWEVENT:
+	if(event.window.event==SDL_WINDOWEVENT_ENTER) {
+	  SDL_RenderPresent(sdlRenderer);
 	}
 	break;
       case SDL_KEYDOWN:
@@ -824,7 +781,7 @@ eMenu Menu::SDLMain_Niveau(void)
 	    PyE=1;
 	    break;
 	  case SDLK_F12: // Sauve un screenshot
-	    SDL_SaveBMP(sdlVideo,"screenshot.bmp");
+	    //TODO SDL_SaveBMP(sdlVideo,"screenshot.bmp");
 	    break;    
 	  case ' ':
 	  case SDLK_RETURN:
@@ -862,30 +819,29 @@ eMenu Menu::SDLMain_Niveau(void)
     Sleeping();
     
     // Gère l'Affichage
-    Ec[NumEc].Efface(fmenu);
-    EffaceChiffre(400,380,999,Sprites[fmenu].Image[0]);
+    Ec[0].Efface(fmenu);
+    //EffaceChiffre(400,380,999,Sprites[fmenu].Image[0]);
 
     // Affiche les flèches
     if(Niv>0) {
-      if(PyE==3) Ec[NumEc].Affiche(fleches,2,330,380);
-      else Ec[NumEc].Affiche(fleches,1,330,380);
+      if(PyE==3) Ec[0].Affiche(fleches,2,330,380);
+      else Ec[0].Affiche(fleches,1,330,380);
     }
-    else Ec[NumEc].Affiche(fleches,0,330,380);
+    else Ec[0].Affiche(fleches,0,330,380);
     
     if(Niv<Pref.NiveauMax) {
-      if(PyE==4) Ec[NumEc].Affiche(fleches,5,470,380);
-      else Ec[NumEc].Affiche(fleches,4,470,380);
+      if(PyE==4) Ec[0].Affiche(fleches,5,470,380);
+      else Ec[0].Affiche(fleches,4,470,380);
     }
-    else Ec[NumEc].Affiche(fleches,3,470,380);
+    else Ec[0].Affiche(fleches,3,470,380);
     
     AfficheChiffre(400,380,Niv+1);
     
     if(PyE!=3 && PyE!=4) Affiche_Main();
-    Sourie.Affiche(NumEc);
+    Sourie.Affiche(0);
     
     // Echange les buffets video
-    SDL_Flip(sdlVideo);
-    NumEc=(NumEc+1)&1;
+    SDL_RenderPresent(sdlRenderer);
     
   } while(true);
   
@@ -916,7 +872,7 @@ eMenu Menu::SDLMain_HR(void)
   Position.x=Position.y=0;
   Position.w=Sprites[fmenu].Dim[0].L;
   Position.h=Sprites[fmenu].Dim[0].H;
-  SDL_BlitSurface(sdlVideo,&Position,Sprites[fmenu].Image[0],&Position);
+  SDL_RenderCopy(sdlRenderer,Sprites[fmenu].Image[0],&Position,&Position);
   
   Sprites[menu].Affiche(340,300,0,Sprites[fmenu].Image[0]);
   Sprites[fond_hr].Affiche(340,74,0,Sprites[fmenu].Image[0]);
@@ -945,24 +901,50 @@ eMenu Menu::SDLMain_HR(void)
 
   Menu_Py[2].DepX=-1;
 
-  // Efface le fond
-  NumEc=0;
-  Ec[1].Cls(fmenu);
-  SDL_Flip(sdlVideo);
-  Ec[0].Cls(fmenu);
-  
+  std::array<std::pair<int, int>, 4> posDeco = {std::make_pair(rand()%130, rand()%18), std::make_pair(rand()%130, rand()%18), std::make_pair(rand()%130, rand()%18), std::make_pair(rand()%130, rand()%18)};
+  int locoPosition = rand()%320;
+
   // Prend les evenements
   do {
+    // Efface le fond
+    SDL_RenderClear(sdlRenderer);
+    
+    SDL_RenderCopy(sdlRenderer,Sprites[fmenu].Image[0],&Position,&Position);
+  
+    // Sprites[fond].Affiche(400,300,0,Sprites[fjeu].Image[0]);
+    Sprites[menu].Affiche(340,300,0,Sprites[fmenu].Image[0]);
+    Sprites[fond_hr].Affiche(340,74,0,Sprites[fmenu].Image[0]);
+    AfficheText(338,70,e_Sprite(T_question),Sprites[fmenu].Image[0]);
+
+    Sprites[locomotive].Affiche(115,110,locoPosition,Sprites[fmenu].Image[0]);
+    Sprites[deco].Affiche(100,160+posDeco[0].first,posDeco[0].second,Sprites[fmenu].Image[0]);
+    Sprites[deco].Affiche(100,470-(posDeco[1].first),posDeco[1].second,Sprites[fmenu].Image[0]);
+    Sprites[deco].Affiche(580,100+(posDeco[2].first),posDeco[2].second,Sprites[fmenu].Image[0]);
+    Sprites[deco].Affiche(580,470-(posDeco[3].first),posDeco[3].second,Sprites[fmenu].Image[0]);
+
+  AfficheText(340,300,e_Sprite(T_art1+N1),Sprites[fmenu].Image[0]);
+  /*
+  if(Ordre) {
+    AddBouton(0,e_Sprite(T_tart1+N1),240,492);
+    AddBouton(1,e_Sprite(T_tart1+N2),440,492);
+  }
+  else {
+    AddBouton(0,e_Sprite(T_tart1+N1),440,492);
+    AddBouton(1,e_Sprite(T_tart1+N2),240,492);
+  }
+  Menu_Py[0].DepY-=20;
+  Menu_Py[0].FinY+=20;
+  Menu_Py[1].DepY-=20;
+  Menu_Py[1].FinY+=20;
+
+  Menu_Py[2].DepX=-1;
+*/
     SDL_Event event;
     while(SDL_PollEvent(&event)) {
       Sourie.GetEvent(event,PyE); // Prend les evenements de la sourie
       switch(event.type) {
-      case SDL_ACTIVEEVENT:
-	if(event.active.gain==1) {
-	  NumEc=0;
-	  Ec[1].Cls(fmenu);
-	  SDL_Flip(sdlVideo);
-	  Ec[0].Cls(fmenu);
+      case SDL_WINDOWEVENT:
+	if(event.window.event==SDL_WINDOWEVENT_ENTER) {
 	}
 	break;
       case SDL_KEYDOWN:
@@ -988,7 +970,7 @@ eMenu Menu::SDLMain_HR(void)
 	    else PyE=0;
 	    break;
 	  case SDLK_F12: // Sauve un screenshot
-	    SDL_SaveBMP(sdlVideo,"screenshot.bmp");
+	    //TODO SDL_SaveBMP(sdlVideo,"screenshot.bmp");
 	    break;    
 	  case ' ':
 	  case SDLK_RETURN:
@@ -1025,36 +1007,35 @@ eMenu Menu::SDLMain_HR(void)
     Sleeping();
     
     // Gère l'Affichage
-    Ec[NumEc].Efface(fmenu);
+    Ec[0].Efface(fmenu);
   
     if(Ordre) {
-      Ec[NumEc].Affiche(fond_hrr,0,240,492);
+      Ec[0].Affiche(fond_hrr,0,240,492);
       AfficheText(240,492,e_Sprite(T_tart1+N1));
     }
     else {
-      Ec[NumEc].Affiche(fond_hrr,0,440,492);
+      Ec[0].Affiche(fond_hrr,0,440,492);
       AfficheText(440,492,e_Sprite(T_tart1+N1));
     }
     
     if(Fini==-1) {
       if(Ordre) {
-	Ec[NumEc].Affiche(fond_hrr,0,440,492);
+	Ec[0].Affiche(fond_hrr,0,440,492);
 	AfficheText(440,492,e_Sprite(T_tart1+N2));
 	if(PyE==0) Affiche_Main(240);
 	else Affiche_Main(440);
       }
       else {
-	Ec[NumEc].Affiche(fond_hrr,0,240,492);
+	Ec[0].Affiche(fond_hrr,0,240,492);
 	AfficheText(240,492,e_Sprite(T_tart1+N2));
 	if(PyE==1) Affiche_Main(240);
 	else Affiche_Main(440);
       }      
-      Sourie.Affiche(NumEc);
+      Sourie.Affiche(0);
     }
     
     // Echange les buffets video
-    SDL_Flip(sdlVideo);
-    NumEc=(NumEc+1)&1;
+    SDL_RenderPresent(sdlRenderer);
     
   } while(true);
 
@@ -1070,13 +1051,13 @@ void Menu::Affiche_InGame(void)
   
   // InitialisationsDivers
   Sourie.Init(Menu_Py); // Initialise la sourie
-  PyE=0;
+  //PyE=0;
   
   // Prend l'image du fond et fait l'affichage
   Position.x=Position.y=0;
   Position.w=Sprites[fmenu].Dim[0].L;
   Position.h=Sprites[fmenu].Dim[0].H;
-  SDL_BlitSurface(sdlVideo,&Position,Sprites[fmenu].Image[0],&Position);
+  SDL_RenderCopy(sdlRenderer,Sprites[fmenu].Image[0],&Position,&Position);
   
   Sprites[menu].Affiche(340,300,0,Sprites[fmenu].Image[0]);
 
@@ -1089,10 +1070,8 @@ void Menu::Affiche_InGame(void)
   Menu_Py[3].DepX=-1;
 
   // Efface le fond
-  NumEc=0;
-  Ec[1].Cls(fmenu);
-  SDL_Flip(sdlVideo);
-  Ec[0].Cls(fmenu);
+  //SDL_RenderPresent(sdlRenderer);
+  //Ec[0].Cls(fmenu);
 }
 
 /*** Gestion du menu dans le jeu ***/
@@ -1103,16 +1082,16 @@ eMenu Menu::SDLMain_InGame(void)
   
   // Prend les evenements
   do {
+    SDL_RenderClear(sdlRenderer);
+    //Affiche_InGame();
     SDL_Event event;
     while(SDL_PollEvent(&event)) {
       Sourie.GetEvent(event,PyE); // Prend les evenements de la sourie
       switch(event.type) {
-      case SDL_ACTIVEEVENT:
-	if(event.active.gain==1) {
-	  NumEc=0;
-	  Ec[1].Cls(fmenu);
-	  SDL_Flip(sdlVideo);
-	  Ec[0].Cls(fmenu);
+      case SDL_WINDOWEVENT:
+	if(event.window.event==SDL_WINDOWEVENT_ENTER) {
+	  //SDL_RenderPresent(sdlRenderer);
+	  //Ec[0].Cls(fmenu);
 	}
 	break;
       case SDL_KEYDOWN:
@@ -1130,7 +1109,7 @@ eMenu Menu::SDLMain_InGame(void)
 	    if(PyE>2) PyE=0;
 	    break;
 	  case SDLK_F12: // Sauve un screenshot
-	    SDL_SaveBMP(sdlVideo,"screenshot.bmp");
+	    //TODO SDL_SaveBMP(sdlVideo,"screenshot.bmp");
 	    break;    
 	  case ' ':
 	  case SDLK_RETURN:
@@ -1140,7 +1119,7 @@ eMenu Menu::SDLMain_InGame(void)
 	      return mJeux;
 	    case 1:
 	      SDLMain_Options();
-	      Affiche_InGame();
+	      //Affiche_InGame();
 	      PyE=1;
 	      break;
 	    case 2:
@@ -1164,13 +1143,13 @@ eMenu Menu::SDLMain_InGame(void)
     Sleeping();
     
     // Gère l'Affichage
-    Ec[NumEc].Efface(fmenu);
+    Ec[0].Efface(fmenu);
+    Affiche_InGame();
     Affiche_Main(340);
-    Sourie.Affiche(NumEc);
+    Sourie.Affiche(0);
     
     // Echange les buffets video
-    SDL_Flip(sdlVideo);
-    NumEc=(NumEc+1)&1;
+    SDL_RenderPresent(sdlRenderer);
     
   } while(true);
   
@@ -1213,44 +1192,41 @@ eMenu Menu::SDLMain_Score(bool EditScore)
   Menu_Py[0].Valide=true;
   Menu_Py[1].DepX=-1;
   
-  // Prend l'image du fond et fait l'affichage 
-  Sprites[fond_menu].Affiche(400,300,0,Sprites[fmenu].Image[0]);
-  
-  // Affiche le titre et les commandes
-  AfficheText(400,50,T_better_scores,Sprites[fmenu].Image[0]);
-  AfficheText(400,550,T_press_any_key,Sprites[fmenu].Image[0]);
-
-  // Affiche les scores
-  for(i=0;i<8;i++) {
-    sprintf(Provi,"%u",i+1);
-    AfficheString(70,120+i*(360/7),Provi,Sprites[fmenu].Image[0]);
-
-    if(EditScore==false || NEdit!=i) {
-      if(Pref.Sco[i].Name[0]) AfficheString(140,120+i*(360/7),Pref.Sco[i].Name,Sprites[fmenu].Image[0]);
-      else AfficheString(140,120+i*(360/7),Points,Sprites[fmenu].Image[0]);
-    }
-    
-    sprintf(Provi,"%i",Pref.Sco[i].Score);
-    AfficheString(740-LongueurString(Provi),120+i*(360/7),Provi,Sprites[fmenu].Image[0]);
-  }
-  
-  // Efface le fond
-  NumEc=0;
-  Ec[1].Cls(fmenu);
-  SDL_Flip(sdlVideo);
-  Ec[0].Cls(fmenu);
   
   // Prend les evenements
   do {
+    // Efface le fond
+    SDL_RenderClear(sdlRenderer);
+    // Prend l'image du fond et fait l'affichage 
+    Sprites[fond_menu].Affiche(400,300,0,Sprites[fmenu].Image[0]);
+  
+    // Affiche le titre et les commandes
+    AfficheText(400,50,T_better_scores,Sprites[fmenu].Image[0]);
+    AfficheText(400,550,T_press_any_key,Sprites[fmenu].Image[0]);
+
+    // Affiche les scores
+    for(i=0;i<8;i++) {
+      sprintf(Provi,"%u",i+1);
+      AfficheString(70,120+i*(360/7),Provi,Sprites[fmenu].Image[0]);
+
+      if(EditScore==false || NEdit!=i) {
+	if(Pref.Sco[i].Name[0]) AfficheString(140,120+i*(360/7),Pref.Sco[i].Name,Sprites[fmenu].Image[0]);
+	else AfficheString(140,120+i*(360/7),Points,Sprites[fmenu].Image[0]);
+      }
+    
+      sprintf(Provi,"%i",Pref.Sco[i].Score);
+      AfficheString(740-LongueurString(Provi),120+i*(360/7),Provi,Sprites[fmenu].Image[0]);
+    }
+  
+    // Efface le fond
+    SDL_RenderPresent(sdlRenderer);
     SDL_Event event;
     while(SDL_PollEvent(&event)) {
       Sourie.GetEvent(event,PyE); // Prend les evenements de la sourie
       switch(event.type) {
-      case SDL_ACTIVEEVENT:
-	if(event.active.gain==1) {
-	  NumEc=0;
-	  Ec[1].Cls(fmenu);
-	  SDL_Flip(sdlVideo);
+      case SDL_WINDOWEVENT:
+	if(event.window.event==SDL_WINDOWEVENT_ENTER) {
+	  SDL_RenderPresent(sdlRenderer);
 	  Ec[0].Cls(fmenu);
 	}
 	break;
@@ -1260,7 +1236,7 @@ eMenu Menu::SDLMain_Score(bool EditScore)
 	  if(EditScore==false && event.key.keysym.sym!=SDLK_F12) event.key.keysym.sym=SDLK_RETURN;
 	  switch(event.key.keysym.sym) {
 	  case SDLK_F12: // Sauve un screenshot
-	    SDL_SaveBMP(sdlVideo,"screenshot.bmp");
+	    //TODO SDL_SaveBMP(sdlVideo,"screenshot.bmp");
 	    break;   
 	  case SDLK_ESCAPE: // Valide l'entrée
 	  case SDLK_RETURN:
@@ -1273,7 +1249,7 @@ eMenu Menu::SDLMain_Score(bool EditScore)
 	    }
 	    break;
 	  default: // Prend les touches
-	    key=event.key.keysym.unicode&0x7F; // Prend le caracataire correspondant à la touche
+	    key=event.key.keysym.sym&0x7F; // Prend le caracataire correspondant à la touche
 	    if(PosCur<79 && CharExiste(key)==true) { // Prend le caractaire
 	      Pref.Sco[NEdit].Name[PosCur]=key;
 	      Pref.Sco[NEdit].Name[PosCur+1]=0;
@@ -1299,7 +1275,7 @@ eMenu Menu::SDLMain_Score(bool EditScore)
     Sleeping();
     
     // Gère l'Affichage
-    Ec[NumEc].Efface(fmenu);
+    Ec[0].Efface(fmenu);
 
     if(EditScore) { // Gère l'affiche pour l'édition des scores
       Sprites[fmenu].EffaceCarre(140,120-360/14+NEdit*(360/7),140+LSCOREMAX,120-360/14+(NEdit+1)*(360/7),
@@ -1307,14 +1283,13 @@ eMenu Menu::SDLMain_Score(bool EditScore)
       AfficheString(140,120+NEdit*(360/7),Pref.Sco[NEdit].Name);
       
       i=(Horloge/50)%20; // Affiche les curseurs
-      Ec[NumEc].Affiche(fleche_gauche,i,110,120+NEdit*(360/7));
-      Ec[NumEc].Affiche(fleche_droite,i,180+LongueurString(Pref.Sco[NEdit].Name),120+NEdit*(360/7));
+      Ec[0].Affiche(fleche_gauche,i,110,120+NEdit*(360/7));
+      Ec[0].Affiche(fleche_droite,i,180+LongueurString(Pref.Sco[NEdit].Name),120+NEdit*(360/7));
 
     }
   
     // Echange les buffets video
-    SDL_Flip(sdlVideo);
-    NumEc=(NumEc+1)&1;
+    SDL_RenderPresent(sdlRenderer);
     
   } while(true);
   
@@ -1330,8 +1305,8 @@ void Menu::Affiche_Main(int Centre)
   int x2=(Centre-x1)+Centre;
   int y=(Menu_Py[PyE].FinY+Menu_Py[PyE].DepY)/2;
   
-  Ec[NumEc].Affiche(fleche_gauche,NumSp,x1,y);
-  Ec[NumEc].Affiche(fleche_droite,NumSp,x2,y);
+  Ec[0].Affiche(fleche_gauche,NumSp,x1,y);
+  Ec[0].Affiche(fleche_droite,NumSp,x2,y);
 }
 
 /*** Centre les flèches sur le boutton ***/
@@ -1343,6 +1318,6 @@ void Menu::Affiche_Main_Centre()
   int x2=Menu_Py[PyE].FinX+5;
   int y=(Menu_Py[PyE].FinY+Menu_Py[PyE].DepY)/2;
   
-  Ec[NumEc].Affiche(fleche_gauche,NumSp,x1,y);
-  Ec[NumEc].Affiche(fleche_droite,NumSp,x2,y);
+  Ec[0].Affiche(fleche_gauche,NumSp,x1,y);
+  Ec[0].Affiche(fleche_droite,NumSp,x2,y);
 }
