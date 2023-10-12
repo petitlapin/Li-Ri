@@ -32,9 +32,8 @@
 
 /*** Variables Globales ***/
 /**************************/
-extern SDL_Surface *sdlVideo;
-extern SDL_VideoInfo *sdlVideoInfo;
-extern Uint32 FontColor;
+extern SDL_Renderer *sdlRenderer;
+//extern SDL_Surface *sdlVideo;
 extern Sprite *Sprites;
 extern int NSprites;
 extern sPreference Pref;
@@ -65,8 +64,8 @@ void AfficheChargeur()
       Old=NumAf;
       NumAf=i;
       Sprites[chargeur].Affiche(400,300,NumAf);
-      SDL_Flip(sdlVideo);
-      if(Old!=-1) Sprites[chargeur].Efface(400,300,Old,sdlVideo);
+      SDL_RenderPresent(sdlRenderer);
+      //TODO if(Old!=-1) Sprites[chargeur].Efface(400,300,Old,sdlVideo);
     }
   }
   
@@ -246,7 +245,7 @@ bool CharExiste(char C)
 }
 /*** Affiche un nombre ***/
 /*************************/
-void AfficheChiffre(int x,int y,int Nombre,SDL_Surface *Fond)
+void AfficheChiffre(int x,int y,int Nombre,SDL_Texture *Fond)
 {
   int l=LongueurChiffre(Nombre);
   
@@ -261,7 +260,7 @@ void AfficheChiffre(int x,int y,int Nombre,SDL_Surface *Fond)
 
 /*** Affiche un Texte ***/
 /************************/
-void AfficheString(int x,int y,char *Texte,SDL_Surface *Fond)
+void AfficheString(int x,int y,char *Texte,SDL_Texture *Fond)
 {
   int i=0;
   int Le;
@@ -284,7 +283,7 @@ void AfficheString(int x,int y,char *Texte,SDL_Surface *Fond)
 
 /*** Efface un nombre ***/
 /************************/
-void EffaceChiffre(int x,int y,int Nombre,SDL_Surface *Fond)
+void EffaceChiffre(int x,int y,int Nombre,SDL_Texture *Fond)
 {
   int l=LongueurChiffre(Nombre);
   int h=Sprites[chiffres].Dim[0].H;
@@ -295,7 +294,7 @@ void EffaceChiffre(int x,int y,int Nombre,SDL_Surface *Fond)
 
 /*** Affiche un text dans la langue ***/
 /**************************************/
-void AfficheText(int x,int y,e_Sprite Text,SDL_Surface *Fond)
+void AfficheText(int x,int y,e_Sprite Text,SDL_Texture *Fond)
 {
   Sprites[Text].Affiche(x,y,0,Fond);
 }
@@ -309,7 +308,7 @@ Sprite::~Sprite(void)
 {
   if(N) {
     for(int i=0;i<N;i++) {
-      SDL_FreeSurface(Image[i]);
+      SDL_DestroyTexture(Image[i]);
     }
     delete [] Image;
     delete [] Dim;
@@ -323,13 +322,13 @@ bool Sprite::Load(unsigned char *Buf,long &P)
   int i,j;
   unsigned char *B;
   unsigned long ul=1; // test le type de processeur
-  unsigned char *pul=(unsigned char*)(&ul) ;
+  unsigned char *pul=(unsigned char*)(&ul);
 
   // Prend nombre de sprites
   N=(int)(Buf[P])*256+(int)(Buf[P+1]);
   P+=2;
   Dim=new s_Dim[N];
-  Image=new SDL_Surface* [N];
+  Image=new SDL_Texture* [N];
 
   // Lit tous les sprites
   for(i=0;i<N;i++) {
@@ -349,16 +348,16 @@ bool Sprite::Load(unsigned char *Buf,long &P)
     P+=2;
     
     // Fabrique la surface
-    Image[i]=SDL_CreateRGBSurface((Dim[i].bpp-3)*SDL_SRCALPHA,Dim[i].L,Dim[i].H,Dim[i].bpp*8,
+    SDL_Surface *surface = SDL_CreateRGBSurface(0,Dim[i].L,Dim[i].H,Dim[i].bpp*8,
 				  0xff,0xff00,0xff0000,0xff000000*(Dim[i].bpp-3));
-    if(Image[i]==NULL) {
+    if(surface==NULL) {
       std::cerr <<"Impossible de créer une Surface SDL!"<<std::endl;
       return false;
     }
     
     // Copie les pixels
-    SDL_LockSurface(Image[i]);
-    B=(unsigned char*)Image[i]->pixels;
+    SDL_LockSurface(surface);
+    B=(unsigned char*)surface->pixels;
     
     if(pul[0]==0) { // Processeur type Power PC, 68000, ..
       for(j=0;j<Dim[i].L*Dim[i].H*Dim[i].bpp;j+=Dim[i].bpp) {
@@ -371,22 +370,17 @@ bool Sprite::Load(unsigned char *Buf,long &P)
     else
       for(j=0;j<Dim[i].L*Dim[i].H*Dim[i].bpp;j++) B[j]=Buf[P++];
     
-    SDL_UnlockSurface(Image[i]);
-    
-    // Si peut la mettre en surface Hardware
-    if(sdlVideoInfo->blit_hw_A) {
-      SDL_Surface *Provi=SDL_ConvertSurface(Image[i],Image[i]->format,SDL_HWSURFACE);
-      SDL_FreeSurface(Image[i]);
-      Image[i]=Provi;
-    }
+    SDL_UnlockSurface(surface);
+    Image[i] = SDL_CreateTextureFromSurface(sdlRenderer, surface);
+    SDL_FreeSurface(surface);
   }
-  
+
   return true;
 }
 
 /*** Affiche le sprite ***/
 /*************************/
-void Sprite::Affiche(int X,int Y,int NumSpr,SDL_Surface *Fond)
+void Sprite::Affiche(int X,int Y,int NumSpr,SDL_Texture *Fond)
 {
   SDL_Rect Position;
   SDL_Rect Di;
@@ -397,10 +391,11 @@ void Sprite::Affiche(int X,int Y,int NumSpr,SDL_Surface *Fond)
   Position.w=Position.h=Di.x=Di.y=0;
   Di.w=Dim[NumSpr].L;
   Di.h=Dim[NumSpr].H;
-  
-  if(Fond==NULL) Fond=sdlVideo;
-
-  SDL_BlitSurface(Image[NumSpr],&Di,Fond,&Position);
+  Position.w=Di.w;
+  Position.h=Di.h;
+  //TODO if(Fond==NULL) Fond=sdlRenderer;
+ 
+  SDL_RenderCopy(sdlRenderer, Image[NumSpr],NULL, &Position);
 }
 
 /*** Affiche un bout du sprite ***/
@@ -420,7 +415,7 @@ void Sprite::AfficheCorde(int dx,int dy,int fx,int fy)
   else n=(int)d;
   
   // Trace la ligne
-  SDL_LockSurface(sdlVideo);
+  /*TODO SDL_LockSurface(sdlVideo);
   B=(unsigned char*)sdlVideo->pixels;
   
   lx=lx/(float)n;
@@ -433,12 +428,12 @@ void Sprite::AfficheCorde(int dx,int dy,int fx,int fy)
     y+=ly;
   }
 
-  SDL_UnlockSurface(sdlVideo);
+  SDL_UnlockSurface(sdlVideo);*/
 }
 
 /*** Efface le sprite ***/
 /************************/
-void Sprite::Efface(int X,int Y,int NumSpr,SDL_Surface *Fond)
+void Sprite::Efface(int X,int Y,int NumSpr,SDL_Texture *Fond)
 {
   SDL_Rect Position;
   
@@ -446,12 +441,13 @@ void Sprite::Efface(int X,int Y,int NumSpr,SDL_Surface *Fond)
   Position.h=Dim[NumSpr].H;
   Position.x=X-Dim[NumSpr].cx;
   Position.y=Y-Dim[NumSpr].cy;
-  SDL_BlitSurface(Fond,&Position,sdlVideo,&Position);
+  //SDL_RenderCopy(sdlRenderer, Image[NumSpr],NULL, &Position);
+  //TODO SDL_BlitSurface(Fond,&Position,sdlVideo,&Position);
 }
 
 /*** Efface un carré à l'ecran ***/
 /*********************************/
-void Sprite::EffaceCarre(int dx,int dy,int fx,int fy,SDL_Surface *Fond)
+void Sprite::EffaceCarre(int dx,int dy,int fx,int fy,SDL_Texture *Fond)
 {
   int p;
   SDL_Rect Position;
@@ -463,7 +459,7 @@ void Sprite::EffaceCarre(int dx,int dy,int fx,int fy,SDL_Surface *Fond)
   Position.h=fy-dy+1;
   Position.x=dx;
   Position.y=dy;
-  SDL_BlitSurface(Fond,&Position,sdlVideo,&Position);
+  //TODO SDL_BlitSurface(Fond,&Position,sdlVideo,&Position);
 }
 
 /*** Alloue un nouveau sprite vide ***/
@@ -474,7 +470,7 @@ bool Sprite::Nouveau(int Lx,int Ly)
 
   N=1;
   Dim=new s_Dim[N];
-  Image=new SDL_Surface* [N];
+  Image=new SDL_Texture* [N];
 
   Dim[0].L=Lx;
   Dim[0].H=Ly;
@@ -483,12 +479,14 @@ bool Sprite::Nouveau(int Lx,int Ly)
   Dim[0].bpp=3; // Pas de transparence
      
   // Fabrique la surface
-  Image[0]=SDL_CreateRGBSurface((Dim[0].bpp-3)*SDL_SRCALPHA,Dim[0].L,Dim[0].H,Dim[0].bpp*8,
-				0xff,0xff00,0xff0000,0xff000000*(Dim[0].bpp-3));
-  if(Image[0]==NULL) {
+  SDL_Surface *surface = SDL_CreateRGBSurface(0,Dim[0].L,Dim[0].H,Dim[0].bpp*8,
+				  0xff,0xff00,0xff0000,0xff000000*(Dim[0].bpp-3));
+  if(surface==NULL) {
     std::cerr <<"Impossible de créer une Surface SDL!"<<std::endl;
     return false;
   }
+  Image[0] = SDL_CreateTextureFromSurface(sdlRenderer, surface);
+  SDL_FreeSurface(surface);
   return true;
 }
 
@@ -498,7 +496,7 @@ void Sprite::Delete(void)
 {
   if(N) {
     for(int i=0;i<N;i++) {
-      SDL_FreeSurface(Image[i]);
+      SDL_DestroyTexture(Image[i]);
     }
     delete [] Image;
     delete [] Dim;

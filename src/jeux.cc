@@ -30,7 +30,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <math.h>
-#include <SDL/SDL.h>
+#include <SDL2/SDL.h>
 
 #include "jeux.h"
 #include "ecran.h"
@@ -40,7 +40,7 @@
 
 /*** Variables globales ***/
 /**************************/
-extern SDL_Surface *sdlVideo;
+extern SDL_Renderer *sdlRenderer;
 
 extern Sprite *Sprites;
 extern sPreference Pref;
@@ -63,7 +63,6 @@ int MasqueK; // Masque pour les touches de déplacement
 Jeux::Jeux()
 {
   NumSS=0;
-  NumVideo=0;
   Touche[0]=D_Haut;
   Touche[1]=D_Bas;
   Touche[2]=D_Gauche;
@@ -82,10 +81,8 @@ eMenu Jeux::SDLMain(void)
   
   Help=true;
   Load(NumN); // Charge le tableau
-  Ec[NumVideo].Cls(fjeu);
-  SDL_Flip(sdlVideo);
-  NumVideo=(NumVideo+1)&1;
-  Ec[NumVideo].Cls(fjeu);
+  SDL_RenderPresent(sdlRenderer);
+  Ec[0].Cls(fjeu);
   Pause=true;
 
   Horloge=SDL_GetTicks(); // Prend l'horloge
@@ -95,25 +92,41 @@ eMenu Jeux::SDLMain(void)
   // Met le options de départ du joueur
   Pref.NVie=N_VIES_DEP;
   Pref.Score=0;
-  
+
   // Prend les evenements
   do {
+    SDL_RenderClear(sdlRenderer);
     SDL_Event event;
     while(SDL_PollEvent(&event)) {
       switch(event.type) {
-      case SDL_ACTIVEEVENT:
-	if(event.active.gain==1) {
-	  Ec[NumVideo].Cls(fjeu);
-	  SDL_Flip(sdlVideo);
-	  NumVideo=(NumVideo+1)&1;
-	  Ec[NumVideo].Cls(fjeu);
+      case SDL_WINDOWEVENT:
+	if(event.window.event==SDL_WINDOWEVENT_ENTER) {
 	}
-	else { // Si désactive l'ecran
+	else if(event.window.event==SDL_WINDOWEVENT_LEAVE) { // Si désactive l'ecran
 	  Pause=true; // Met en Pause
 	}
 	break;
       case SDL_MOUSEBUTTONDOWN:
-	if(event.button.state==SDL_PRESSED) TourneFleche();
+	if(event.button.state==SDL_PRESSED) {
+	  // Add a Pause event if we click on the top right loco
+	  int Px=event.button.x;
+	  int Py=event.button.y;
+	  if(Px>=680 && Py<=90) {
+	    mRet=MenuPrincipale.SDLMain_InGame();
+	    if(mRet==mJeux) {
+	      DrawLevel(NumN);
+	      SDL_RenderPresent(sdlRenderer);
+	      Pause=true;
+	    }
+	    else return mRet;
+	  }
+	  else if(Pause) {
+	    Pause = false;
+	  }
+	  else {
+	    TourneFleche();
+	  }
+	}
 	break;
       case SDL_KEYDOWN:
 	if(event.key.state==SDL_PRESSED) {
@@ -121,10 +134,9 @@ eMenu Jeux::SDLMain(void)
 	    mRet=MenuPrincipale.SDLMain_InGame();
 	    if(mRet==mJeux) {
 	      DrawLevel(NumN);
-	      Ec[NumVideo].Cls(fjeu);
-	      SDL_Flip(sdlVideo);
-	      NumVideo=(NumVideo+1)&1;
-	      Ec[NumVideo].Cls(fjeu);
+	      //Ec[0].Cls(fjeu);
+	      SDL_RenderPresent(sdlRenderer);
+	      //Ec[0].Cls(fjeu);
 	      Pause=true;
 	    }
 	    else return mRet;
@@ -187,10 +199,9 @@ eMenu Jeux::SDLMain(void)
     if(Lo.Mort==-1 && Pause==false) Lo.Avance(Horloge-HorlogeAvant,DureeJeu,Touche,T);
     
     // Fait l'affichage
+    DrawLevel(NumN);
     AfficheEcran();
-    SDL_Flip(sdlVideo);
-
-    NumVideo=(NumVideo+1)&1;    
+    SDL_RenderPresent(sdlRenderer);
 
     // Test la fin d'une partie
     if(Lo.Mort>-1 && Lo.Mort<Horloge) { // Si est Mort test si doit continuer ou quitter
@@ -207,15 +218,11 @@ eMenu Jeux::SDLMain(void)
 	if(Pref.NiveauMax<NumN) Pref.NiveauMax=NumN;
       }
       Sons.NextMusic();
-      Load(NumN);              // Recharge le tableau
-      Ec[NumVideo].Cls(fjeu);
-      SDL_Flip(sdlVideo);
-      NumVideo=(NumVideo+1)&1;
-      Ec[NumVideo].Cls(fjeu);
       DureeJeu=0;
       Pause=true;
       Key=MasqueK=0;
-    }    
+      Load(NumN);
+    }
     
   } while(true);
   
@@ -339,7 +346,7 @@ void Jeux::PrendTouche(int Tou)
   case SDLK_F12: // Sauve un screenshot
     sprintf(NomSS,"screenshot%i.bmp",NumSS);
     NumSS++;
-    SDL_SaveBMP(sdlVideo,NomSS);
+    //TODO SDL_SaveBMP(sdlVideo,NomSS);
     break;    
   case 'p':
   case 'P':
@@ -473,10 +480,10 @@ void Jeux::AfficheEcran(void)
   int ndir=0;
 
   // Prépare pour nouvelle Affichage
-  Ec[NumVideo].Efface(fjeu);
+  Ec[0].Efface(fjeu);
   
   // Fait nouvelle Affichage
-  Lo.Affiche(Ec[NumVideo]); // Affiche la loco
+  Lo.Affiche(Ec[0]); // Affiche la loco
 
   if(Lo.PInter!=-1 && Help) { // Affiche la fleche sur la futur intersection
     switch(Lo.PEntree) {
@@ -494,36 +501,36 @@ void Jeux::AfficheEcran(void)
       break;
     }
 
-    Ec[NumVideo].Affiche(dir,ndir,(Lo.PInter%LT)*D_Case+D_Case/2,(Lo.PInter/LT)*D_Case+D_Case/2);
+    Ec[0].Affiche(dir,ndir,(Lo.PInter%LT)*D_Case+D_Case/2,(Lo.PInter/LT)*D_Case+D_Case/2);
   }
   
   // Affiche les options
   for(i=0;i<LT*HT;i++) {
     switch(T[i]) {
     case C_Wagon: // Si un loco
-      Ec[NumVideo].Affiche(wagon,(DureeJeu*40/1000+i*7)%50,i%LT*D_Case+D_Case/2,i/LT*D_Case+D_Case/2);
+      Ec[0].Affiche(wagon,(DureeJeu*40/1000+i*7)%50,i%LT*D_Case+D_Case/2,i/LT*D_Case+D_Case/2);
       break;
     case C_Allonge: // Si plus long
-      Ec[NumVideo].Affiche(pluslong,(DureeJeu*40/1000+i*7)%50,i%LT*D_Case+D_Case/2,i/LT*D_Case+D_Case/2);
+      Ec[0].Affiche(pluslong,(DureeJeu*40/1000+i*7)%50,i%LT*D_Case+D_Case/2,i/LT*D_Case+D_Case/2);
       break;
     case C_Reduit: // Si plus court
-      Ec[NumVideo].Affiche(pluscourt,(DureeJeu*40/1000+i*7)%50,i%LT*D_Case+D_Case/2,i/LT*D_Case+D_Case/2);
+      Ec[0].Affiche(pluscourt,(DureeJeu*40/1000+i*7)%50,i%LT*D_Case+D_Case/2,i/LT*D_Case+D_Case/2);
       break;
     case C_Speed: // Si plus vite
-      Ec[NumVideo].Affiche(vitesse,(DureeJeu*40/1000+i*7)%50,i%LT*D_Case+D_Case/2,i/LT*D_Case+D_Case/2);
+      Ec[0].Affiche(vitesse,(DureeJeu*40/1000+i*7)%50,i%LT*D_Case+D_Case/2,i/LT*D_Case+D_Case/2);
       break;
     case C_Live: // Si une vie
-      Ec[NumVideo].Affiche(vie,(DureeJeu*40/1000+i*7)%50,i%LT*D_Case+D_Case/2,i/LT*D_Case+D_Case/2);
+      Ec[0].Affiche(vie,(DureeJeu*40/1000+i*7)%50,i%LT*D_Case+D_Case/2,i/LT*D_Case+D_Case/2);
       break;
     }
   }
 
   // Si en pose demande une touche
-  if(Pause) Ec[NumVideo].Affiche_Text(T_press_any_key,LT*D_Case/2,300);
+  if(Pause) Ec[0].Affiche_Text(T_press_any_key,LT*D_Case/2,300);
 
   // Affiche tableau de bord
-  Ec[NumVideo].AfficheOptions(Pref.NVie,Pref.Score);
-  if(Pref.EcartWagon<ECARTWAGON_MOY) Ec[NumVideo].Affiche(pluscourt,(DureeJeu*40/1000)%50,715,295);
-  if(Pref.EcartWagon>ECARTWAGON_MOY) Ec[NumVideo].Affiche(pluslong,(DureeJeu*40/1000)%50,715,295);
-  if(Pref.VitesseMoy>Pref.Vitesse) Ec[NumVideo].Affiche(vitesse,(DureeJeu*40/1000+7)%50,765,295);
+  Ec[0].AfficheOptions(Pref.NVie,Pref.Score);
+  if(Pref.EcartWagon<ECARTWAGON_MOY) Ec[0].Affiche(pluscourt,(DureeJeu*40/1000)%50,715,295);
+  if(Pref.EcartWagon>ECARTWAGON_MOY) Ec[0].Affiche(pluslong,(DureeJeu*40/1000)%50,715,295);
+  if(Pref.VitesseMoy>Pref.Vitesse) Ec[0].Affiche(vitesse,(DureeJeu*40/1000+7)%50,765,295);
 }

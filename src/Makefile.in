@@ -147,7 +147,8 @@ sbindir = @sbindir@
 sharedstatedir = @sharedstatedir@
 sysconfdir = @sysconfdir@
 target_alias = @target_alias@
-AM_CPPFLAGS = -DDATA_DIR="\"$(pkgdatadir)\"" -Wno-deprecated
+AM_CPPFLAGS = -DDATA_DIR="\"$(pkgdatadir)\"" -Wall -g -O0 #-fsanitize=address
+AM_LDFLAGS = #-fsanitize=address
 Ri_li_SOURCES = audio.h audio.cc ecran.h ecran.cc editeur.h editeur.cc jeux.h jeux.cc loco.h loco.cc preference.h main.cc menu.h menu.cc mouse.h mouse.cc sprite.h sprite.cc tableau.h tableau.cc utils.h utils.cc
 all: all-am
 

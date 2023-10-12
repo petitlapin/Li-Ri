@@ -58,7 +58,6 @@ class Jeux {
   Loco Lo;      // Gère la locomotive
 
   int NumSS; // Numéro du Screen shot
-  int NumVideo; // Numéro de l'ecran affiché
   bool Help; // Si doit affiche les fleches d'aide
 };
 #endif

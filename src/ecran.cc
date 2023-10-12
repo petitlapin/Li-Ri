@@ -36,7 +36,7 @@ extern sPreference Pref;
 
 /*** Constructeur ***/
 /********************/
-Ecran::Ecran(void) : N(0), NVie(0), Score(-1)
+Ecran::Ecran(void) : N(0), Score(-1)
 { }
 
 Ecran::~Ecran(void)
@@ -91,30 +91,16 @@ void Ecran::AfficheOptions(int NV,int NScore)
 {
   int x,y;
 
-  if(NScore!=Score) { // Gère l'affichage des scores
-    if(Score!=-1) EffaceChiffre(740,215,Score);
-    Score=NScore;
-    AfficheChiffre(740,215,Score);
-  }
+  Score=NScore;
+  AfficheChiffre(740,215,Score);
 
   if(NV>10) NV=10; // Evite un dépassement de l'affichage
-
-  while(NVie>NV) { // Si doit effacer des vies
-    x=(NVie-1)%2;
+  for(int i = 0; i < NV; ++i) { // Affiche les vies
+    x=i%2;
     x=x*44+38+LT*D_Case;
-    y=(NVie-1)/2;
-    y=384+y*46;
-    Sprites[logo_vie].Efface(x,y,0,Sprites[fjeu].Image[0]);
-    NVie--;
-  }
-
-  while(NVie<NV) { // Si doit afficher des vies
-    x=NVie%2;
-    x=x*44+38+LT*D_Case;
-    y=NVie/2;
+    y=i/2;
     y=384+y*46;
     Sprites[logo_vie].Affiche(x,y,0);
-    NVie++;
   }
 }
 
@@ -138,6 +124,5 @@ void Ecran::Cls(e_Sprite NumSp)
 {
   Sprites[NumSp].Affiche(Sprites[NumSp].Dim[0].L/2,Sprites[NumSp].Dim[0].H/2,0);
   N=0;
-  NVie=0;
   Score=-1;
 }

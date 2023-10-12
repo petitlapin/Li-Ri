@@ -30,7 +30,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <math.h>
-#include <SDL/SDL.h>
+#include <SDL2/SDL.h>
 
 #include "editeur.h"
 #include "menu.h"
@@ -40,7 +40,7 @@
 
 /*** Variables globales ***/
 /**************************/
-extern SDL_Surface *sdlVideo;
+extern SDL_Renderer *sdlRenderer;
 
 extern Sprite *Sprites;
 extern sPreference Pref;
@@ -75,7 +75,7 @@ eMenu Editeur::SDLMain(int NumNiv)
   NumN=NumNiv;
 
   Affiche(); // Charge le tableau
-  SDL_Flip(sdlVideo);
+  SDL_RenderPresent(sdlRenderer);
   
   Horloge=SDL_GetTicks(); // Prend l'horloge
   
@@ -90,8 +90,8 @@ eMenu Editeur::SDLMain(int NumNiv)
     while(SDL_PollEvent(&event)) {
       Sourie.GetEvent(event,PyE); // Prend les evenements de la sourie
       switch(event.type) {
-      case SDL_ACTIVEEVENT:
-	if(event.active.gain==1) Affiche();
+      case SDL_WINDOWEVENT:
+	if(event.window.event==SDL_WINDOWEVENT_ENTER) Affiche();
 	break;
       case SDL_KEYDOWN:
 	if(event.key.state==SDL_PRESSED) {
@@ -200,7 +200,7 @@ eMenu Editeur::SDLMain(int NumNiv)
 
     // Fait l'affichage
     Affiche();
-    SDL_Flip(sdlVideo);
+    SDL_RenderPresent(sdlRenderer);
     
   } while(true);
   

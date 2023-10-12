@@ -24,7 +24,7 @@
 #ifndef _SPRITE_DOM_
 #define _SPRITE_DOM_
 
-#include <SDL/SDL.h>
+#include <SDL2/SDL.h>
 
 #define FCOLOR 128
 #define ALPHA_OMBRE 125
@@ -181,11 +181,11 @@ int LongueurChiffre(int Nombre); // Retourne la longueur en pixels d'un nombre
 int LongueurString(char *Texte);  // Retourne la longueur en pixels d'un texte
 bool CharExiste(char C); // Si un caracataire existe
 
-void AfficheChiffre(int x,int y,int Nombre,SDL_Surface *Fond=NULL); // Affiche un chiffre
-void AfficheString(int x,int y,char *Texte,SDL_Surface *Fond=NULL); // Affiche une chaine de caractaire
+void AfficheChiffre(int x,int y,int Nombre,SDL_Texture *Fond=NULL); // Affiche un chiffre
+void AfficheString(int x,int y,char *Texte,SDL_Texture *Fond=NULL); // Affiche une chaine de caractaire
 
-void EffaceChiffre(int x,int y,int Nombre,SDL_Surface *Fond=NULL);  // Efface un chiffre
-void AfficheText(int x,int y,e_Sprite Text,SDL_Surface *Fond=NULL); // Affiche un text dans la langue
+void EffaceChiffre(int x,int y,int Nombre,SDL_Texture *Fond=NULL);  // Efface un chiffre
+void AfficheText(int x,int y,e_Sprite Text,SDL_Texture *Fond=NULL); // Affiche un text dans la langue
 
 
 /*** Definition de la classe Sprite ***/
@@ -198,16 +198,16 @@ class Sprite
 
   /*** Fonctions ***/
   bool Load(unsigned char *Buf,long &P); // Charge les images
-  void Affiche(int X,int Y,int NumSpr,SDL_Surface *Fond=NULL);  // Affiche un sprite
+  void Affiche(int X,int Y,int NumSpr,SDL_Texture *Fond=NULL);  // Affiche un sprite
   void AfficheCorde(int dx,int dy,int fx,int fy); // Affiche une corde
-  void Efface(int X,int Y,int NumSpr,SDL_Surface *Fond);   // Efface le sprite
-  void EffaceCarre(int dx,int dy,int fx,int fy,SDL_Surface *Fond); // Efface un carré à l'ecran
+  void Efface(int X,int Y,int NumSpr,SDL_Texture *Fond);   // Efface le sprite
+  void EffaceCarre(int dx,int dy,int fx,int fy,SDL_Texture *Fond); // Efface un carré à l'ecran
   bool Nouveau(int Lx,int Ly); // Alloue un nouveau sprite vide sans transparence
   void Delete(void); // Efface la mémoire du sprite
 
   /*** Variables ***/
   int N;            // Nombre de sprite
-  SDL_Surface **Image; // Pointe sur les sprites
+  SDL_Texture **Image; // Pointe sur les sprites
   s_Dim *Dim; // Dimensions des sprites
 };
 

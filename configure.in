@@ -16,14 +16,14 @@ AC_PROG_INSTALL
 CPPFLAGS="$CPPFLAGS -DLINUX"
 
 # Checks for libraries.
-AC_CHECK_LIB([SDL], [SDL_Init])
-AC_CHECK_LIB([SDL_mixer], [Mix_OpenAudio])
+AC_CHECK_LIB([SDL2], [SDL_Init])
+AC_CHECK_LIB([SDL2_mixer], [Mix_OpenAudio])
 AC_CHECK_LIB([pthread], [pthread_create])
 AC_CHECK_LIB([m],[sqrt])
 
 # Checks for header files.
 AC_HEADER_STDC
-AC_CHECK_HEADERS([stdlib.h string.h math.h SDL/SDL.h pthread.h SDL/SDL_mixer.h])
+AC_CHECK_HEADERS([stdlib.h string.h math.h SDL2/SDL.h pthread.h SDL2/SDL_mixer.h])
 
 # Checks for library functions.
 AC_CHECK_FUNCS([sqrt])

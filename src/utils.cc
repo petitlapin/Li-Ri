@@ -300,25 +300,23 @@ bool LoadPref(void)
   int L;
   unsigned char *Provi;
   
-#if defined(LINUX) && !defined(__AMIGAOS4__)
   char PathPref[512];
+#if defined(LINUX) && !defined(__AMIGAOS4__)
   char *Env=getenv("HOME");
   sprintf(PathPref,"%s/.ri-li.pref",Env);
 #elif defined(__AMIGAOS4__)
-  char PathPref[512];
   char *Env="PROGDIR:";
   sprintf(PathPref,"%s.ri-li.pref",Env);
 #endif
 
 #ifdef MAC_OSX
-  char PathPref[512];
   char *Env=getenv("HOME");
   sprintf(PathPref,"%s/Library/Preferences/Ri-li.pref",Env);
 #endif
 
 #ifdef WINDOWS
   // Version Windows, Chemin directe
-  char *PathPref="ri-li.pref";
+  strcpy(PathPref, "ri-li.pref");
 #endif
   
   if(FileExiste(PathPref)) {
