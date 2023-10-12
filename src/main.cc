@@ -44,7 +44,7 @@
 SDL_Window *sdlWindow; // Pointe sur l'écran video
 SDL_Renderer *sdlRenderer; // Pointe sur l'écran video
 
-char Titre[]="Ri-li V2.0.1";
+char Titre[]="Ri-li V3.0.0";
 
 Sprite *Sprites=NULL; // Pointe sur les sprites
 int NSprites=0; // Nombre de sprites en mémoire
@@ -119,11 +119,14 @@ int main(int narg,char *argv[])
   atexit(SDL_Quit);
 
   // Demande la resolution Video
-  int vOption = 0;
-  if(Pref.FullScreen) vOption|=SDL_WINDOW_FULLSCREEN;
+  int vOption = SDL_WINDOW_RESIZABLE;
+  if(Pref.FullScreen) vOption|=SDL_WINDOW_FULLSCREEN_DESKTOP;
 
   sdlWindow = SDL_CreateWindow(Titre, 0, 0, 800, 600, vOption);
   sdlRenderer = SDL_CreateRenderer(sdlWindow, -1, 0);
+  SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "linear");
+  SDL_RenderSetLogicalSize(sdlRenderer, 800, 600);
+
   SDL_ShowCursor(0); // Masque le curseur
 
   // Chargement des sprites

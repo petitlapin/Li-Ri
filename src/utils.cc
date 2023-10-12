@@ -53,6 +53,10 @@ extern char DefPath[]; // Chemin par defaut dans arg
 #define MAC_LINUX
 #endif
 
+#ifdef ANDROID
+#define MAC_LINUX
+#endif
+
 /*** Test si un fichier exite ***/
 /********************************/
 bool Utils::FileExiste(const char *Path)
@@ -217,7 +221,7 @@ bool Utils::SauveFichier(const char *Path,char *Buf,long L)
 
 /*** Met le bon chemin pour charger un fichier ***/
 /*************************************************/
-#if defined(LINUX) && !defined(__AMIGAOS4__)
+#if (defined(LINUX) || defined(ANDROID)) && !defined(__AMIGAOS4__) 
 // Version Linux
 void Utils::GetPath(char *Path)
 {
@@ -225,13 +229,19 @@ void Utils::GetPath(char *Path)
 
   strcpy(Provi,Path);
 
+#ifndef ANDROID
   if(DefPath[0]) {
     sprintf(Path,"%s%s",DefPath,Provi);
     if(Utils::FileExiste(Path)) return;
   }
-
   sprintf(Path,"%s/%s",DATA_DIR,Provi);
   if(Utils::FileExiste(Path)) return;
+#endif
+
+  // Android is directly the filename
+  sprintf(Path,"%s",Provi);
+  if(Utils::FileExiste(Path)) return;
+
   sprintf(Path,"./%s",Provi);
   if(Utils::FileExiste(Path)) return;
   sprintf(Path,"/usr/local/share/Ri-li/%s",Provi);
@@ -241,8 +251,7 @@ void Utils::GetPath(char *Path)
   sprintf(Path,"/usr/share/games/Ri-li/%s",Provi);
   if(Utils::FileExiste(Path)) return;
   
-  SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Unable to find '%s'", Path);
-  exit(-1);
+  SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Unable to find '%s'", Provi);
 }
 #endif
 

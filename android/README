@@ -1,0 +1,9 @@
+Change jni/SDL/src and jni/SDL/include links to point to SDL2.0/src and SDL2.0/include directories
+
+Install Android NDK and SDK.
+
+To compile:
+$ ndk-build 
+$ ant debug
+
+See README-Android file in SDL2.0 sources for more information.
