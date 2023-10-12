@@ -89,7 +89,7 @@ void AddBouton(int Num,e_Sprite NumSp,int X,int Y)
 /***********************/
 void ChangeVideo(void)
 {
-  Uint32 flag = 0;
+  Uint32 flag = SDL_WINDOW_RESIZABLE;
   if(Pref.FullScreen) {
       flag = SDL_WINDOW_FULLSCREEN_DESKTOP;
   }

@@ -144,6 +144,8 @@ void Mouse::Affiche(int NumVideo)
   if(Y<10) Y=10;
   if(Y>=600-35) Y=600-36;
   
+#ifndef ANDROID
   // Affiche le curseur
   Ec[0].Affiche(curseur,NumSp,X,Y);
+#endif
 }
