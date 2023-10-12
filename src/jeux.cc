@@ -108,7 +108,19 @@ eMenu Jeux::SDLMain(void)
 	break;
       case SDL_MOUSEBUTTONDOWN:
 	if(event.button.state==SDL_PRESSED) {
-	  if(Pause) {
+	  // Add a Pause event if we click on the top right loco
+	  int Px=event.button.x;
+	  int Py=event.button.y;
+	  if(Px>=680 && Py<=90) {
+	    mRet=MenuPrincipale.SDLMain_InGame();
+	    if(mRet==mJeux) {
+	      DrawLevel(NumN);
+	      SDL_RenderPresent(sdlRenderer);
+	      Pause=true;
+	    }
+	    else return mRet;
+	  }
+	  else if(Pause) {
 	    Pause = false;
 	  }
 	  else {
