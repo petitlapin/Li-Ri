@@ -378,7 +378,7 @@ void Editeur::PrendTouche(int Tou)
     
     // Sauve le niveau
     if(Niveau.Save()==false) {
-      std::cerr <<"ERREUR Saving levels!"<<std::endl;
+      SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Error while saving levels");
       exit(-1);
     }
     

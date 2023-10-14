@@ -77,14 +77,12 @@ long Utils::ChargeFichier(const char *Path,unsigned char *&Buf)
 
   file=fopen(Path,"r");
   if(!file) {
-    std::cerr <<"ERREUR: Impossible d'ouvrir '"<<Path<<"'"<<std::endl;
-    perror("fopen");
+    SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Unable to open '%s'", Path);
     return -1;
   }
   
   if(fseek(file,0,2)!=0) {
-    perror("fseek");
-    fclose(file);
+    SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Unable to compute file size");
     return -1;
   }
 
@@ -93,7 +91,7 @@ long Utils::ChargeFichier(const char *Path,unsigned char *&Buf)
 
   Buf=new unsigned char [L+1];
   if(Buf==NULL) {
-    std::cerr <<"ERREUR: Memoire insuffisante!"<<std::endl;
+    SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Not enough memory");
     fclose(file);
     return -1;
   }
@@ -104,8 +102,7 @@ long Utils::ChargeFichier(const char *Path,unsigned char *&Buf)
   while(Compt>1024) {
     AfficheChargeur();
     if( fread(Po,1,1024,file) != 1024 ) {
-      std::cerr <<"ERREUR de lecture du fichier '"<<Path<<"'"<<std::endl;
-      perror("fread");
+      SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Error while reading '%s'", Path);
       fclose(file);
       delete [] Buf;
       return -1;
@@ -131,14 +128,13 @@ long Utils::ChargeFichier(const char *Path,unsigned char *&Buf)
 
   file=_lopen(Path,OF_READ);
   if(file==-1) {
-    std::cerr <<"Impossible d'ouvrir "<<Path<<std::endl;
+    SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Unable to open '%s'", Path);
     exit(-1);
   }
   
   long L=(long)_llseek(file,0,SEEK_END);
   if(L==-1) {
-    std::cerr <<"Impossible de trouver la longueur du fichier"<<std::endl;
-    perror("lseek");
+    SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Unable to compute file size");
     _lclose(file);
     return -1;
   }
@@ -146,7 +142,7 @@ long Utils::ChargeFichier(const char *Path,unsigned char *&Buf)
   
   Buf=new unsigned char [L+1];
   if(Buf==NULL) {
-    std::cerr <<"ERREUR: Memoire insuffisante!"<<std::endl;
+    SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Not enough memory");
     _lclose(file);
     return -1;
   }
@@ -169,15 +165,13 @@ bool Utils::SauveFichier(const char *Path,char *Buf,long L)
   
   file=fopen(Path,"w");
   if(!file) {
-    std::cerr <<"ERREUR: Impossible d'ouvrir '"<<Path<<"'"<<std::endl;
-    perror("fopen");
+    SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Unable to open '%s'", Path);
     return false;
   }
   
   while(L>512) {
     if( fwrite(Buf,1,512,file) != 512 ) {
-      std::cerr <<"ERREUR d'ecriture du fichier '"<<Path<<"'"<<std::endl;
-      perror("fwrite");
+      SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Unable to write in '%s'", Path);
       fclose(file);
       return false;
     }
@@ -187,8 +181,7 @@ bool Utils::SauveFichier(const char *Path,char *Buf,long L)
 
   if(L>0) {
     if( fwrite(Buf,1,(size_t)L,file) != (size_t)L ) {
-      std::cerr <<"ERREUR d'ecriture du fichier '"<<Path<<"'"<<std::endl;
-      perror("fwrite");
+      SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Unable to write in '%s'", Path);
       fclose(file);
       return false;
     }
@@ -208,7 +201,7 @@ bool Utils::SauveFichier(const char *Path,char *Buf,long L)
 
   file=_lcreat(Path,0);
   if(!file) {
-    std::cerr <<"ERREUR: Impossible de créer le fichier '"<<Path<<"'"<<std::endl;
+    SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Unable to create '%s'", Path);
     return false;
   }
   
@@ -216,7 +209,7 @@ bool Utils::SauveFichier(const char *Path,char *Buf,long L)
   _lclose(file);
 
   if(Lec!=L) {
-    std::cerr <<"Problème d'ecriture du fichier '"<<Path<<"' ecris="<<Lec<<" au lieux de ="<<L<<std::endl;
+    SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Issue when writing file '%s', write %d instead of %d", Path, Lec, L);
     return false;
   }
 
@@ -250,7 +243,7 @@ void Utils::GetPath(char *Path)
   sprintf(Path,"/usr/share/games/Ri-li/%s",Provi);
   if(Utils::FileExiste(Path)) return;
   
-  std::cerr <<"Impossible de trouver le fichier '"<<Provi<<std::endl;
+  SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Unable to find '%s'", Path);
   exit(-1);
 }
 #endif
@@ -266,7 +259,7 @@ void Utils::GetPath(char *Path)
   sprintf(Path,"PROGDIR:%s",Provi);
   if(Utils::FileExiste(Path)) return;
   
-  std::cerr <<"Impossible de trouver le fichier '"<<Path<<std::endl;
+  SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Unable to find '%s'", Path);
   exit(-1);
 }
 #endif
@@ -282,7 +275,7 @@ void Utils::GetPath(char *Path)
   sprintf(Path,"Ri-li.app/Contents/Resources/%s",Provi);
   if(Utils::FileExiste(Path)) return;
   
-  std::cerr <<"Impossible de trouver le fichier '"<<Path<<std::endl;
+  SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Unable to find '%s'", Path);
   exit(-1);
 }
 #endif

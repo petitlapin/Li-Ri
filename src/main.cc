@@ -112,7 +112,7 @@ int main(int narg,char *argv[])
  
   // Initiliase SDL
   if(SDL_Init(SDL_INIT_VIDEO|SDL_INIT_TIMER|SDL_INIT_AUDIO) < 0 ) {
-    std::cerr <<"Impossible d'initialiser SDL:"<<SDL_GetError()<<std::endl;
+    SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Unable to initialize SDL: %s", SDL_GetError());
     exit(-1);
   }
   // Ferme le programme correctement quand quit

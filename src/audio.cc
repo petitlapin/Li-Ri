@@ -57,7 +57,7 @@ bool Audio::Init(void)
   char PathFile[512];
 
   if(Mix_OpenAudio(22050,AUDIO_S16,1,1024)) {
-    std::cerr <<"Enable to init Sound card ! "<<SDL_GetError()<<std::endl;
+      SDL_LogInfo(SDL_LOG_CATEGORY_APPLICATION, "Enable to init Sound card: %s", SDL_GetError());
     return false;
   }
   

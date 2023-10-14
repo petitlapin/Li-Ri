@@ -109,8 +109,6 @@ eMenu Menu::SDLMain(void)
   Sourie.Init(Menu_Py); // Initialise la sourie
   PyE=0;
 
-  printf("Menu::SDLMain\n");
-  
   // Prend les evenements
   do {
     SDL_RenderClear(sdlRenderer);
@@ -213,7 +211,6 @@ eMenu Menu::SDLMain_Langue(void)
   int i;
   int x,y;
   int OldLangue=Pref.Langue;
-  printf("Menu::SDLMain_Langue\n");
 
   // Initialisations Divers
   Sourie.Init(Menu_Py); // Initialise la sourie

@@ -83,7 +83,7 @@ bool LoadLangue()
   strcpy(PathFile,Langue[Pref.Langue]);
   Utils::GetPath(PathFile);
   if(Utils::FileExiste(PathFile)==false) {
-    std::cerr <<"Impossible de trouver "<<Langue[Pref.Langue]<<std::endl;
+    SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Unable to find '%s'", Langue[Pref.Langue]);
     return false;
   }
   L=Utils::ChargeFichier(PathFile,Buf);
@@ -127,7 +127,7 @@ bool LoadSprites()
   // *** Charge le fichier des langues ***
   // *************************************
   if(Utils::FileExiste(PathFile)==false) {
-    std::cerr <<"Impossible de trouver 'language.dat'"<<std::endl;
+    SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Unable to find 'language.dat'");
     return false;
   }
   L=Utils::ChargeFichier(PathFile,Buf);
@@ -162,7 +162,7 @@ bool LoadSprites()
   strcpy(PathFile,"sprites.dat");
   Utils::GetPath(PathFile);
   if(Utils::FileExiste(PathFile)==false) {
-    std::cerr <<"Impossible de trouver 'sprites.dat'"<<std::endl;
+    SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Unable to find 'sprites.dat'");
     return false;
   }
   L=Utils::ChargeFichier(PathFile,Buf);
@@ -351,7 +351,7 @@ bool Sprite::Load(unsigned char *Buf,long &P)
     SDL_Surface *surface = SDL_CreateRGBSurface(0,Dim[i].L,Dim[i].H,Dim[i].bpp*8,
 				  0xff,0xff00,0xff0000,0xff000000*(Dim[i].bpp-3));
     if(surface==NULL) {
-      std::cerr <<"Impossible de créer une Surface SDL!"<<std::endl;
+      SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Unable to create the SDL Surface");
       return false;
     }
     
@@ -482,7 +482,7 @@ bool Sprite::Nouveau(int Lx,int Ly)
   SDL_Surface *surface = SDL_CreateRGBSurface(0,Dim[0].L,Dim[0].H,Dim[0].bpp*8,
 				  0xff,0xff00,0xff0000,0xff000000*(Dim[0].bpp-3));
   if(surface==NULL) {
-    std::cerr <<"Impossible de créer une Surface SDL!"<<std::endl;
+    SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Unable to create the SDL Surface");
     return false;
   }
   Image[0] = SDL_CreateTextureFromSurface(sdlRenderer, surface);
