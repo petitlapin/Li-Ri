@@ -57,12 +57,12 @@ extern char DefPath[]; // Chemin par defaut dans arg
 /********************************/
 bool Utils::FileExiste(const char *Path)
 {
-  FILE* file=fopen(Path,"r");
+  SDL_RWops* file=SDL_RWFromFile(Path,"rb");
 
   if(file==NULL)
     return false;
 
-  fclose(file);
+  SDL_RWclose(file);
   return true;
 }
 
@@ -73,26 +73,24 @@ bool Utils::FileExiste(const char *Path)
 // Version linux
 long Utils::ChargeFichier(const char *Path,unsigned char *&Buf)
 {
-  FILE *file;
-
-  file=fopen(Path,"r");
+  SDL_RWops* file=SDL_RWFromFile(Path,"rb");
   if(!file) {
     SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Unable to open '%s'", Path);
     return -1;
   }
   
-  if(fseek(file,0,2)!=0) {
+  if(SDL_RWseek(file,0,RW_SEEK_END)<0) {
     SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Unable to compute file size");
     return -1;
   }
 
-  long L=ftell(file); // récupère la longueur
-  fseek(file,0,0);
+  long L=SDL_RWtell(file); // récupère la longueur
+  SDL_RWseek(file,0,RW_SEEK_SET);
 
   Buf=new unsigned char [L+1];
   if(Buf==NULL) {
     SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Not enough memory");
-    fclose(file);
+    SDL_RWclose(file);
     return -1;
   }
 
@@ -101,9 +99,9 @@ long Utils::ChargeFichier(const char *Path,unsigned char *&Buf)
 
   while(Compt>1024) {
     AfficheChargeur();
-    if( fread(Po,1,1024,file) != 1024 ) {
+    if( SDL_RWread(file,Po,1,1024) != 1024 ) {
       SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Error while reading '%s'", Path);
-      fclose(file);
+      SDL_RWclose(file);
       delete [] Buf;
       return -1;
     }
@@ -112,10 +110,10 @@ long Utils::ChargeFichier(const char *Path,unsigned char *&Buf)
   }
   
   if(Compt) { // Ne fait pas le test à cause d'un bug dans windows
-    fread(Po,1,(unsigned int)Compt,file);
+    SDL_RWread(file,Po,1,(unsigned int)Compt);
   }
   
-  fclose(file);
+  SDL_RWclose(file);
   return L;
 }
 #endif
