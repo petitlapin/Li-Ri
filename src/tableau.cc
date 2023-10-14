@@ -49,8 +49,8 @@ bool Tableau::Load(void)
   int i,j;
   char NameLevelFile[512]="levels.dat";
 
-  GetPath(NameLevelFile);
-  L=ChargeFichier(NameLevelFile,Buf);
+  Utils::GetPath(NameLevelFile);
+  L=Utils::ChargeFichier(NameLevelFile,Buf);
   if(L<=0) return false;
   
   // Charge les tableaux
@@ -117,8 +117,8 @@ bool Tableau::Save(void)
   }
 
   // Sauve les tableaux
-  GetPath(NameLevelFile);
-  if(SauveFichier(NameLevelFile,(char*)Buf,P)==false) {
+  Utils::GetPath(NameLevelFile);
+  if(Utils::SauveFichier(NameLevelFile,(char*)Buf,P)==false) {
     delete [] Buf;
     return false;
   }

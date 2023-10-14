@@ -87,7 +87,7 @@ void InitPref(void)
 /*   Pref.Sco[1].Score=678; */
 /*   sprintf(Pref.Sco[1].Name,"%s","Veronique"); */
 
-  LoadPref();
+  Utils::LoadPref();
 
   Pref.Difficulte=Normal;
   Pref.Vitesse=VITESSE_MOY;
@@ -188,7 +188,7 @@ int main(int narg,char *argv[])
   }
   delete [] Sprites;
 
-  SauvePref(); // Sauve les preferences
+  Utils::SauvePref(); // Sauve les preferences
   SDL_DestroyRenderer(sdlRenderer);
   SDL_DestroyWindow(sdlWindow);
 

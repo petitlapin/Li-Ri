@@ -81,12 +81,12 @@ bool LoadLangue()
   char PathFile[512];
 
   strcpy(PathFile,Langue[Pref.Langue]);
-  GetPath(PathFile);
-  if(FileExiste(PathFile)==false) {
+  Utils::GetPath(PathFile);
+  if(Utils::FileExiste(PathFile)==false) {
     std::cerr <<"Impossible de trouver "<<Langue[Pref.Langue]<<std::endl;
     return false;
   }
-  L=ChargeFichier(PathFile,Buf);
+  L=Utils::ChargeFichier(PathFile,Buf);
 
   // Lit les sprites
   P=0;
@@ -109,7 +109,7 @@ bool LoadSprites()
   int NSp;
 
   char PathFile[512]="language.dat";
-  GetPath(PathFile);
+  Utils::GetPath(PathFile);
 
   // Initialise la table de caractaire des textes
   for(i=0;i<256;i++) TableTexte[i]=-1;
@@ -126,11 +126,11 @@ bool LoadSprites()
   
   // *** Charge le fichier des langues ***
   // *************************************
-  if(FileExiste(PathFile)==false) {
+  if(Utils::FileExiste(PathFile)==false) {
     std::cerr <<"Impossible de trouver 'language.dat'"<<std::endl;
     return false;
   }
-  L=ChargeFichier(PathFile,Buf);
+  L=Utils::ChargeFichier(PathFile,Buf);
 
   // Prend le nombre de sprites
   NSp=(int)(Buf[0])*256+(int)(Buf[1]);
@@ -160,12 +160,12 @@ bool LoadSprites()
   // *** Charge le fichier des sprites ***
   // *************************************
   strcpy(PathFile,"sprites.dat");
-  GetPath(PathFile);
-  if(FileExiste(PathFile)==false) {
+  Utils::GetPath(PathFile);
+  if(Utils::FileExiste(PathFile)==false) {
     std::cerr <<"Impossible de trouver 'sprites.dat'"<<std::endl;
     return false;
   }
-  L=ChargeFichier(PathFile,Buf);
+  L=Utils::ChargeFichier(PathFile,Buf);
   
   // Lit les sprites
   P=0;

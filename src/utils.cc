@@ -55,7 +55,7 @@ extern char DefPath[]; // Chemin par defaut dans arg
 
 /*** Test si un fichier exite ***/
 /********************************/
-bool FileExiste(const char *Path)
+bool Utils::FileExiste(const char *Path)
 {
   FILE* file=fopen(Path,"r");
 
@@ -71,7 +71,7 @@ bool FileExiste(const char *Path)
 /************************************/
 #ifdef MAC_LINUX
 // Version linux
-long ChargeFichier(const char *Path,unsigned char *&Buf)
+long Utils::ChargeFichier(const char *Path,unsigned char *&Buf)
 {
   FILE *file;
 
@@ -125,7 +125,7 @@ long ChargeFichier(const char *Path,unsigned char *&Buf)
 
 #ifdef WINDOWS
 // Version windows
-long ChargeFichier(const char *Path,unsigned char *&Buf)
+long Utils::ChargeFichier(const char *Path,unsigned char *&Buf)
 {
   HFILE file;
 
@@ -163,7 +163,7 @@ long ChargeFichier(const char *Path,unsigned char *&Buf)
 /************************/
 #ifdef MAC_LINUX
 // Version linux
-bool SauveFichier(const char *Path,char *Buf,long L)
+bool Utils::SauveFichier(const char *Path,char *Buf,long L)
 {
   FILE *file;
   
@@ -201,7 +201,7 @@ bool SauveFichier(const char *Path,char *Buf,long L)
 
 #ifdef WINDOWS
 // Version windows
-bool SauveFichier(const char *Path,char *Buf,long L)
+bool Utils::SauveFichier(const char *Path,char *Buf,long L)
 {
   HFILE file;
   int Lec;
@@ -228,7 +228,7 @@ bool SauveFichier(const char *Path,char *Buf,long L)
 /*************************************************/
 #if defined(LINUX) && !defined(__AMIGAOS4__)
 // Version Linux
-void GetPath(char *Path)
+void Utils::GetPath(char *Path)
 {
   char Provi[512];
 
@@ -236,19 +236,19 @@ void GetPath(char *Path)
 
   if(DefPath[0]) {
     sprintf(Path,"%s%s",DefPath,Provi);
-    if(FileExiste(Path)) return;
+    if(Utils::FileExiste(Path)) return;
   }
 
   sprintf(Path,"%s/%s",DATA_DIR,Provi);
-  if(FileExiste(Path)) return;
+  if(Utils::FileExiste(Path)) return;
   sprintf(Path,"./%s",Provi);
-  if(FileExiste(Path)) return;
+  if(Utils::FileExiste(Path)) return;
   sprintf(Path,"/usr/local/share/Ri-li/%s",Provi);
-  if(FileExiste(Path)) return;
+  if(Utils::FileExiste(Path)) return;
   sprintf(Path,"/usr/share/Ri-li/%s",Provi);
-  if(FileExiste(Path)) return;
+  if(Utils::FileExiste(Path)) return;
   sprintf(Path,"/usr/share/games/Ri-li/%s",Provi);
-  if(FileExiste(Path)) return;
+  if(Utils::FileExiste(Path)) return;
   
   std::cerr <<"Impossible de trouver le fichier '"<<Provi<<std::endl;
   exit(-1);
@@ -257,14 +257,14 @@ void GetPath(char *Path)
 
 #ifdef __AMIGAOS4__
 // Version AmigaOS4
-void GetPath(char *Path)
+void Utils::GetPath(char *Path)
 {
   char Provi[512];
 
   strcpy(Provi,Path);
 
   sprintf(Path,"PROGDIR:%s",Provi);
-  if(FileExiste(Path)) return;
+  if(Utils::FileExiste(Path)) return;
   
   std::cerr <<"Impossible de trouver le fichier '"<<Path<<std::endl;
   exit(-1);
@@ -273,14 +273,14 @@ void GetPath(char *Path)
 
 #ifdef MAC_OSX
 // Version Mac OSX
-void GetPath(char *Path)
+void Utils::GetPath(char *Path)
 {
   char Provi[512];
 
   strcpy(Provi,Path);
 
   sprintf(Path,"Ri-li.app/Contents/Resources/%s",Provi);
-  if(FileExiste(Path)) return;
+  if(Utils::FileExiste(Path)) return;
   
   std::cerr <<"Impossible de trouver le fichier '"<<Path<<std::endl;
   exit(-1);
@@ -289,13 +289,13 @@ void GetPath(char *Path)
 
 #ifdef WINDOWS
 //  Version Windows , chemin directe
-void GetPath(char *Path)
+void Utils::GetPath(char *Path)
 { }
 #endif
 
 /*** Charge les préferences ***/
 /******************************/
-bool LoadPref(void)
+bool Utils::LoadPref(void)
 {
   int L;
   unsigned char *Provi;
@@ -319,8 +319,8 @@ bool LoadPref(void)
   strcpy(PathPref, "ri-li.pref");
 #endif
   
-  if(FileExiste(PathPref)) {
-    L=ChargeFichier(PathPref,Provi);
+  if(Utils::FileExiste(PathPref)) {
+    L=Utils::ChargeFichier(PathPref,Provi);
     if(L>0) {
       memcpy((char*)&Pref,Provi,L);
       delete [] Provi;
@@ -333,30 +333,30 @@ bool LoadPref(void)
 
 /*** Sauve les preferences ***/
 /*****************************/
-void SauvePref(void)
+void Utils::SauvePref(void)
 {  
 #if defined(LINUX) && !defined(__AMIGAOS4__)
   char Provi[512];
   char *Env=getenv("HOME");
   sprintf(Provi,"%s/.ri-li.pref",Env);
-  SauveFichier(Provi,(char*)&Pref,sizeof(sPreference));
+  Utils::SauveFichier(Provi,(char*)&Pref,sizeof(sPreference));
 #elif defined(__AMIGAOS4__)
   char Provi[512];
   char *Env="PROGDIR:";
   sprintf(Provi,"%s.ri-li.pref",Env);
-  SauveFichier(Provi,(char*)&Pref,sizeof(sPreference));
+  Utils::SauveFichier(Provi,(char*)&Pref,sizeof(sPreference));
 #endif
 
 #ifdef MAC_OSX
   char Provi[512];
   char *Env=getenv("HOME");
   sprintf(Provi,"%s/Library/Preferences/Ri-li.pref",Env);
-  SauveFichier(Provi,(char*)&Pref,sizeof(sPreference));
+  Utils::SauveFichier(Provi,(char*)&Pref,sizeof(sPreference));
 #endif
 
 #ifdef WINDOWS
   // Version Windows, chemin directe
-  SauveFichier("ri-li.pref",(char*)&Pref,sizeof(sPreference));
+  Utils::SauveFichier("ri-li.pref",(char*)&Pref,sizeof(sPreference));
 #endif
 }
 

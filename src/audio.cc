@@ -67,43 +67,43 @@ bool Audio::Init(void)
   
   /*** Chargement des sons ***/
   strcpy(PathFile,"Sounds/clic.wav");
-  GetPath(PathFile);
+  Utils::GetPath(PathFile);
   Son[sClic]=Mix_LoadWAV(PathFile);
 
   strcpy(PathFile,"Sounds/speed.wav");
-  GetPath(PathFile);
+  Utils::GetPath(PathFile);
   Son[sSpeed]=Mix_LoadWAV(PathFile);
 
   strcpy(PathFile,"Sounds/crash.wav");
-  GetPath(PathFile);
+  Utils::GetPath(PathFile);
   Son[sCrash]=Mix_LoadWAV(PathFile);
 
   strcpy(PathFile,"Sounds/end.wav");
-  GetPath(PathFile);
+  Utils::GetPath(PathFile);
   Son[sEnd]=Mix_LoadWAV(PathFile);
 
   strcpy(PathFile,"Sounds/lose.wav");
-  GetPath(PathFile);
+  Utils::GetPath(PathFile);
   Son[sLose]=Mix_LoadWAV(PathFile);
 
   strcpy(PathFile,"Sounds/etire.wav");
-  GetPath(PathFile);
+  Utils::GetPath(PathFile);
   Son[sEtire]=Mix_LoadWAV(PathFile);
 
   strcpy(PathFile,"Sounds/wagon.wav");
-  GetPath(PathFile);
+  Utils::GetPath(PathFile);
   Son[sWagon]=Mix_LoadWAV(PathFile);
 
   strcpy(PathFile,"Sounds/reduit.wav");
-  GetPath(PathFile);
+  Utils::GetPath(PathFile);
   Son[sReduit]=Mix_LoadWAV(PathFile);
 
   strcpy(PathFile,"Sounds/live.wav");
-  GetPath(PathFile);
+  Utils::GetPath(PathFile);
   Son[sLive]=Mix_LoadWAV(PathFile);
 
   strcpy(PathFile,"Sounds/menu.mod");
-  GetPath(PathFile);
+  Utils::GetPath(PathFile);
   Music=Mix_LoadMUS(PathFile);
     
   return true;
@@ -128,12 +128,12 @@ void Audio::LoadMusic(int Num)
 
   if(Num==0) { // Si music du menu
     strcpy(Provi,"Sounds/menu.mod");
-    GetPath(Provi);
+    Utils::GetPath(Provi);
     Music=Mix_LoadMUS(Provi);
   }
   else {
     Provi[10]=(char)(Num)+'0';
-    GetPath(Provi);
+    Utils::GetPath(Provi);
     Music=Mix_LoadMUS(Provi);
   }
   PlayMusic();

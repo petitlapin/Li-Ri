@@ -24,12 +24,16 @@
 #ifndef _UTILS_DOM_
 #define _UTILS_DOM_
 
-bool FileExiste(const char *Path);    // Si un fichier existe
-long ChargeFichier(const char *Path,unsigned char *&Buf); // Charge un ficher en mémoire
-bool SauveFichier(const char *Path,char *Buf,long L); // Sauve un Fichier
+class Utils {
+ public:
+    static bool FileExiste(const char *Path);    // Si un fichier existe
+    static long ChargeFichier(const char *Path,unsigned char *&Buf); // Charge un ficher en mémoire
+    static bool SauveFichier(const char *Path,char *Buf,long L); // Sauve un Fichier
 
-void GetPath(char *Name); // Rajoute le chemin au nom du fichier (sprites, levels)
+    static void GetPath(char *Name); // Rajoute le chemin au nom du fichier (sprites, levels)
 
-bool LoadPref(void); // Charger les préferences
-void SauvePref(void); // Sauve les preferences
+    static bool LoadPref(void); // Charger les préferences
+    static void SauvePref(void); // Sauve les preferences
+};
+
 #endif
