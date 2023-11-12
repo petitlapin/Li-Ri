@@ -1216,7 +1216,6 @@ eMenu Menu::SDLMain_Score(bool EditScore)
     }
   
     // Efface le fond
-    SDL_RenderPresent(sdlRenderer);
     SDL_Event event;
     while(SDL_PollEvent(&event)) {
       Sourie.GetEvent(event,PyE); // Prend les evenements de la sourie
@@ -1271,12 +1270,7 @@ eMenu Menu::SDLMain_Score(bool EditScore)
     Horloge=SDL_GetTicks();
     Sleeping();
     
-    // Gère l'Affichage
-    Ec[0].Efface(fmenu);
-
     if(EditScore) { // Gère l'affiche pour l'édition des scores
-      Sprites[fmenu].EffaceCarre(140,120-360/14+NEdit*(360/7),140+LSCOREMAX,120-360/14+(NEdit+1)*(360/7),
-				 Sprites[fmenu].Image[0]);
       AfficheString(140,120+NEdit*(360/7),Pref.Sco[NEdit].Name);
       
       i=(Horloge/50)%20; // Affiche les curseurs
