@@ -2981,7 +2981,7 @@ fi
 
 # Define the identity of the package.
  PACKAGE=Ri-li
- VERSION=2.0.1
+ VERSION=3.0.0
 
 
 printf "%s\n" "#define PACKAGE \"$PACKAGE\"" >>confdefs.h
