@@ -221,7 +221,7 @@ bool Utils::SauveFichier(const char *Path,char *Buf,long L)
 
 /*** Met le bon chemin pour charger un fichier ***/
 /*************************************************/
-#if (defined(LINUX) || defined(ANDROID)) && !defined(__AMIGAOS4__) 
+#if (defined(LINUX) || defined(ANDROID)) && !defined(__AMIGAOS4__)
 // Version Linux
 void Utils::GetPath(char *Path)
 {
@@ -301,24 +301,11 @@ bool Utils::LoadPref(void)
   unsigned char *Provi;
   
   char PathPref[512];
-#if defined(LINUX) && !defined(__AMIGAOS4__)
-  char *Env=getenv("HOME");
-  sprintf(PathPref,"%s/.ri-li.pref",Env);
-#elif defined(__AMIGAOS4__)
-  char *Env="PROGDIR:";
-  sprintf(PathPref,"%s.ri-li.pref",Env);
-#endif
+  char *PrefFolder = SDL_GetPrefPath("Ri-Li", "Ri-Li");
+  sprintf(PathPref, "%sri-li.pref", PrefFolder);
 
-#ifdef MAC_OSX
-  char *Env=getenv("HOME");
-  sprintf(PathPref,"%s/Library/Preferences/Ri-li.pref",Env);
-#endif
+  SDL_free(PrefFolder);
 
-#ifdef WINDOWS
-  // Version Windows, Chemin directe
-  strcpy(PathPref, "ri-li.pref");
-#endif
-  
   if(Utils::FileExiste(PathPref)) {
     L=Utils::ChargeFichier(PathPref,Provi);
     if(L>0) {
@@ -335,28 +322,11 @@ bool Utils::LoadPref(void)
 /*****************************/
 void Utils::SauvePref(void)
 {  
-#if defined(LINUX) && !defined(__AMIGAOS4__)
-  char Provi[512];
-  char *Env=getenv("HOME");
-  sprintf(Provi,"%s/.ri-li.pref",Env);
-  Utils::SauveFichier(Provi,(char*)&Pref,sizeof(sPreference));
-#elif defined(__AMIGAOS4__)
-  char Provi[512];
-  char *Env="PROGDIR:";
-  sprintf(Provi,"%s.ri-li.pref",Env);
-  Utils::SauveFichier(Provi,(char*)&Pref,sizeof(sPreference));
-#endif
+  char PathPref[512];
+  char *PrefFolder = SDL_GetPrefPath("Ri-Li", "Ri-Li");
+  sprintf(PathPref, "%sri-li.pref", PrefFolder);
 
-#ifdef MAC_OSX
-  char Provi[512];
-  char *Env=getenv("HOME");
-  sprintf(Provi,"%s/Library/Preferences/Ri-li.pref",Env);
-  Utils::SauveFichier(Provi,(char*)&Pref,sizeof(sPreference));
-#endif
-
-#ifdef WINDOWS
-  // Version Windows, chemin directe
-  Utils::SauveFichier("ri-li.pref",(char*)&Pref,sizeof(sPreference));
-#endif
+  SDL_free(PrefFolder);
+  Utils::SauveFichier(PathPref,(char*)&Pref,sizeof(sPreference));
 }
 
