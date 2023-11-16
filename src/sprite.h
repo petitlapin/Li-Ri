@@ -184,7 +184,6 @@ bool CharExiste(char C); // Si un caracataire existe
 void AfficheChiffre(int x,int y,int Nombre,SDL_Texture *Fond=NULL); // Affiche un chiffre
 void AfficheString(int x,int y,char *Texte,SDL_Texture *Fond=NULL); // Affiche une chaine de caractaire
 
-void EffaceChiffre(int x,int y,int Nombre,SDL_Texture *Fond=NULL);  // Efface un chiffre
 void AfficheText(int x,int y,e_Sprite Text,SDL_Texture *Fond=NULL); // Affiche un text dans la langue
 
 
@@ -201,7 +200,6 @@ class Sprite
   void Affiche(int X,int Y,int NumSpr,SDL_Texture *Fond=NULL);  // Affiche un sprite
   void AfficheCorde(int dx,int dy,int fx,int fy); // Affiche une corde
   void Efface(int X,int Y,int NumSpr,SDL_Texture *Fond);   // Efface le sprite
-  void EffaceCarre(int dx,int dy,int fx,int fy,SDL_Texture *Fond); // Efface un carré à l'ecran
   bool Nouveau(int Lx,int Ly); // Alloue un nouveau sprite vide sans transparence
   void Delete(void); // Efface la mémoire du sprite
 

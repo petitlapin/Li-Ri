@@ -281,17 +281,6 @@ void AfficheString(int x,int y,char *Texte,SDL_Texture *Fond)
   }
 }
 
-/*** Efface un nombre ***/
-/************************/
-void EffaceChiffre(int x,int y,int Nombre,SDL_Texture *Fond)
-{
-  int l=LongueurChiffre(Nombre);
-  int h=Sprites[chiffres].Dim[0].H;
-
-  if(!Fond) Fond=Sprites[fjeu].Image[0];
-  Sprites[chiffres].EffaceCarre(x-l/2,y-h/2,x+l/2,y+h/2,Fond);
-}
-
 /*** Affiche un text dans la langue ***/
 /**************************************/
 void AfficheText(int x,int y,e_Sprite Text,SDL_Texture *Fond)
@@ -442,23 +431,6 @@ void Sprite::Efface(int X,int Y,int NumSpr,SDL_Texture *Fond)
   Position.x=X-Dim[NumSpr].cx;
   Position.y=Y-Dim[NumSpr].cy;
   //SDL_RenderCopy(sdlRenderer, Image[NumSpr],NULL, &Position);
-  //TODO SDL_BlitSurface(Fond,&Position,sdlVideo,&Position);
-}
-
-/*** Efface un carré à l'ecran ***/
-/*********************************/
-void Sprite::EffaceCarre(int dx,int dy,int fx,int fy,SDL_Texture *Fond)
-{
-  int p;
-  SDL_Rect Position;
-  
-  if(dx>fx) { p=dx; dx=fx; fx=p; }
-  if(dy>fy) { p=dy; dy=fy; fy=p; }
-
-  Position.w=fx-dx+1;
-  Position.h=fy-dy+1;
-  Position.x=dx;
-  Position.y=dy;
   //TODO SDL_BlitSurface(Fond,&Position,sdlVideo,&Position);
 }
 

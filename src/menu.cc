@@ -817,7 +817,6 @@ eMenu Menu::SDLMain_Niveau(void)
     
     // Gère l'Affichage
     Ec[0].Efface(fmenu);
-    //EffaceChiffre(400,380,999,Sprites[fmenu].Image[0]);
 
     // Affiche les flèches
     if(Niv>0) {
