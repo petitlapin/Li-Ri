@@ -108,13 +108,6 @@ void Ecran::AfficheOptions(int NV,int NScore)
 /**************************/
 void Ecran::Efface(e_Sprite NumSp)
 {
-  int i;
-  
-  for(i=0;i<N;i++) {
-    if(B[i].NumSpr==corde) Sprites[B[i].NumSpr].EffaceCarre(B[i].x,B[i].y,B[i].fx,B[i].fy,
-							    Sprites[NumSp].Image[0]); 
-    else Sprites[B[i].NumSpr].Efface(B[i].x,B[i].y,B[i].Num,Sprites[NumSp].Image[0]);
-  }
   N=0;
 }
 
