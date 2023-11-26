@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-      package="org.rili.app"
+      package="org.liri.app"
       android:versionCode="30000"
       android:versionName="3.0.0"
       android:installLocation="auto">
@@ -12,7 +12,7 @@
                   android:allowBackup="true"
                   android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
                   android:hardwareAccelerated="true" >
-        <activity android:name="RiLi"
+        <activity android:name="LiRi"
                   android:screenOrientation="landscape"
                   android:configChanges="orientation|keyboardHidden|screenSize|screenLayout"
                   android:label="@string/app_name"

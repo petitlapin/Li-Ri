@@ -244,11 +244,11 @@ void Utils::GetPath(char *Path)
 
   sprintf(Path,"./%s",Provi);
   if(Utils::FileExiste(Path)) return;
-  sprintf(Path,"/usr/local/share/Ri-li/%s",Provi);
+  sprintf(Path,"/usr/local/share/Li-ri/%s",Provi);
   if(Utils::FileExiste(Path)) return;
-  sprintf(Path,"/usr/share/Ri-li/%s",Provi);
+  sprintf(Path,"/usr/share/Li-ri/%s",Provi);
   if(Utils::FileExiste(Path)) return;
-  sprintf(Path,"/usr/share/games/Ri-li/%s",Provi);
+  sprintf(Path,"/usr/share/games/Li-ri/%s",Provi);
   if(Utils::FileExiste(Path)) return;
   
   SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Unable to find '%s'", Provi);
@@ -279,7 +279,7 @@ void Utils::GetPath(char *Path)
 
   strcpy(Provi,Path);
 
-  sprintf(Path,"Ri-li.app/Contents/Resources/%s",Provi);
+  sprintf(Path,"Li-ri.app/Contents/Resources/%s",Provi);
   if(Utils::FileExiste(Path)) return;
   
   SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Unable to find '%s'", Path);
@@ -301,8 +301,8 @@ bool Utils::LoadPref(void)
   unsigned char *Provi;
   
   char PathPref[512];
-  char *PrefFolder = SDL_GetPrefPath("Ri-Li", "Ri-Li");
-  sprintf(PathPref, "%sri-li.pref", PrefFolder);
+  char *PrefFolder = SDL_GetPrefPath("Li-Ri", "Li-Ri");
+  sprintf(PathPref, "%sli-ri.pref", PrefFolder);
 
   SDL_free(PrefFolder);
 
@@ -323,8 +323,8 @@ bool Utils::LoadPref(void)
 void Utils::SauvePref(void)
 {  
   char PathPref[512];
-  char *PrefFolder = SDL_GetPrefPath("Ri-Li", "Ri-Li");
-  sprintf(PathPref, "%sri-li.pref", PrefFolder);
+  char *PrefFolder = SDL_GetPrefPath("Li-Ri", "Li-Ri");
+  sprintf(PathPref, "%sli-ri.pref", PrefFolder);
 
   SDL_free(PrefFolder);
   Utils::SauveFichier(PathPref,(char*)&Pref,sizeof(sPreference));

@@ -2980,7 +2980,7 @@ fi
 
 
 # Define the identity of the package.
- PACKAGE=Ri-li
+ PACKAGE=Li-ri
  VERSION=3.0.0
 
 

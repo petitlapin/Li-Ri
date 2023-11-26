@@ -1,4 +1,4 @@
-package org.rili.app;
+package org.liri.app;
 
 import org.libsdl.app.SDLActivity;
 
@@ -9,7 +9,7 @@ import android.os.*;
  * A sample wrapper class that just calls SDLActivity 
  */ 
 
-public class RiLi extends SDLActivity { 
+public class LiRi extends SDLActivity { 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
