@@ -136,7 +136,7 @@ sharedstatedir = @sharedstatedir@
 sysconfdir = @sysconfdir@
 target_alias = @target_alias@
 datdir = $(datadir)/@PACKAGE@
-dat_HEADERS = games-arcade/Ri-li/Ri-li-2.0.0-r1.ebuild
+dat_HEADERS = games-arcade/Li-ri/Li-ri-2.0.0-r1.ebuild
 all: all-am
 
 .SUFFIXES:
@@ -237,7 +237,7 @@ distclean-tags:
 	-rm -f TAGS ID GTAGS GRTAGS GSYMS GPATH tags
 
 distdir: $(DISTFILES)
-	$(mkdir_p) $(distdir)/games-arcade/Ri-li
+	$(mkdir_p) $(distdir)/games-arcade/Li-ri
 	@srcdirstrip=`echo "$(srcdir)" | sed 's|.|.|g'`; \
 	topsrcdirstrip=`echo "$(top_srcdir)" | sed 's|.|.|g'`; \
 	list='$(DISTFILES)'; for file in $$list; do \

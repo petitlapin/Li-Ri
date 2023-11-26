@@ -1,6 +1,9 @@
-Ri-li Game
+Li-Ri Game
 
-Official site : http://www.ri-li.org
+Official site : http://github.com/petitlapin/Li-Ri
+
+Copyright (c) 2023
+Johnny Jazeix <jazeix@gmail.com>: port to SDL2 + android
 
 Copyright (c) 2006
 Dominique Roux-Serret: roux-serret@ifrance.com : design & programming & graphics & website.

@@ -12,7 +12,7 @@ android {
     sourceSets.main.jniLibs.srcDirs = ['src/main/libs']
 
     defaultConfig {
-        applicationId "org.rili.rili"
+        applicationId "org.liri.liri"
         minSdkVersion 16
         targetSdkVersion 33
     }

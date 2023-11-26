@@ -1,2 +1,2 @@
 datdir = $(datadir)/@PACKAGE@
-dat_HEADERS = levels.dat sprites.dat language.* Ri-li-icon-48x48.png  Ri-li-icon-32x32.png  Ri-li-icon-16x16.png ri-li.ico
+dat_HEADERS = levels.dat sprites.dat language.* Li-ri-icon-48x48.png  Li-ri-icon-32x32.png Li-ri-icon-16x16.png li-ri.ico
