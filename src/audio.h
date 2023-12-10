@@ -24,7 +24,6 @@
 #ifndef _AUDIO_DOM_
 #define _AUDIO_DOM_
 
-#include <SDL2/SDL.h>
 #include <SDL2/SDL_mixer.h>
 
 /*** Enumération des sons ***/

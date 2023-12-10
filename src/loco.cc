@@ -21,14 +21,12 @@
 //    with this program; if not, write to the Free Software Foundation, Inc.,
 //    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-#include <iostream>
-#include <stdio.h>
+#include <cmath>
 #include <stdlib.h>
-#include <string.h>
-#include <math.h>
 #include "preference.h"
 #include "loco.h"
 #include "audio.h"
+#include "ecran.h"
 
 #define PIQ (M_PI/2.0)
 #ifndef M_PI

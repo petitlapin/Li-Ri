@@ -21,7 +21,6 @@
 //    with this program; if not, write to the Free Software Foundation, Inc.,
 //    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-#include <iostream>
 #include <stdio.h>
 #include "mouse.h"
 #include "preference.h"
@@ -32,7 +31,7 @@
 /**************************/
 extern Audio Sons;
 extern int Horloge;
-extern Ecran Ec[2];
+extern Ecran Ec;
 extern SDL_Window *sdlWindow;
 
 /*** Constructeur et Destructeur ***/
@@ -146,6 +145,6 @@ void Mouse::Affiche(int NumVideo)
   
 #ifndef ANDROID
   // Affiche le curseur
-  Ec[0].Affiche(curseur,NumSp,X,Y);
+  Ec.Affiche(curseur,NumSp,X,Y);
 #endif
 }

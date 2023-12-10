@@ -24,7 +24,6 @@
 #ifndef _ECRAN_DOM_
 #define _ECRAN_DOM_
 
-#include <SDL2/SDL.h>
 #include "sprite.h"
 #include "preference.h"
 

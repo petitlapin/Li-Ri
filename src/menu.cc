@@ -21,11 +21,11 @@
 //    with this program; if not, write to the Free Software Foundation, Inc.,
 //    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-#include <iostream>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <array>
+#include <utility>
 #include "preference.h"
 #include "menu.h"
 #include "sprite.h"
@@ -43,7 +43,7 @@ extern SDL_Window *sdlWindow;
 extern SDL_Renderer *sdlRenderer;
 extern Sprite *Sprites;
 extern Mouse Sourie;
-extern Ecran Ec[2];
+extern Ecran Ec;
 extern sPreference Pref;
 extern Audio Sons;
 
@@ -189,7 +189,7 @@ eMenu Menu::SDLMain(void)
     Sleeping();
     
     // Gère l'Affichage
-    Ec[0].Efface(fmenu);
+    Ec.Efface(fmenu);
     Affiche_Main();
     Sourie.Affiche(0);
     
@@ -309,7 +309,7 @@ eMenu Menu::SDLMain_Langue(void)
     Sleeping();
     
     // Gère l'Affichage
-    Ec[0].Efface(fmenu); // Something is done in the Efface that prevents a crash (or maybe more computation)!
+    Ec.Efface(fmenu); // Something is done in the Efface that prevents a crash (or maybe more computation)!
     Affiche_Main_Centre();
 
     Sourie.Affiche(0);
@@ -386,10 +386,6 @@ void Menu::InitMain_Options(void)
   Menu_Py[8].Valide=true;
 
   Menu_Py[9].DepX=-1;
-
-  // Efface le fond
-  //SDL_RenderPresent(sdlRenderer);
-  //Ec[0].Cls(fmenu);
 }
   
 /*** Gestion du menu Options ***/
@@ -402,7 +398,7 @@ eMenu Menu::SDLMain_Options(void)
   PyE=4;
   // Prend les evenements
   do {
-    Ec[0].Cls(fmenu); // To not crash...
+    Ec.Cls(fmenu); // To not crash...
     SDL_RenderClear(sdlRenderer);
     InitMain_Options(); // Prépare le menu
     SDL_Event event;
@@ -546,35 +542,35 @@ eMenu Menu::SDLMain_Options(void)
     Sleeping();
     
     // Gère l'Affichage
-    //Ec[0].Efface(fmenu);
+    //Ec.Efface(fmenu);
 
     if(Pref.FullScreen) {
-      Ec[0].Affiche(fleches,1,350,300);
-      Ec[0].Affiche(fleches,3,450,300);
+      Ec.Affiche(fleches,1,350,300);
+      Ec.Affiche(fleches,3,450,300);
     }
     else {
-      Ec[0].Affiche(fleches,0,350,300);
-      Ec[0].Affiche(fleches,4,450,300);
+      Ec.Affiche(fleches,0,350,300);
+      Ec.Affiche(fleches,4,450,300);
     }
 
     NumSp=(Horloge/30)%25;
-    Ec[0].Affiche(bruitage,NumSp,150,110);
+    Ec.Affiche(bruitage,NumSp,150,110);
     NumSp=(Horloge/30)%25;
-    Ec[0].Affiche(music,NumSp,150,200);
+    Ec.Affiche(music,NumSp,150,200);
     NumSp=(Horloge/50)%50;
-    Ec[0].Affiche(monde,NumSp,180,400);
+    Ec.Affiche(monde,NumSp,180,400);
 
     N=(int)(Pref.Volume*10+1)/SDL_MIX_MAXVOLUME;
     NumSp=(Horloge/50)%40+120;
     for(i=0;i<N;i++) {
-      if(i==N-1) Ec[0].Affiche(locomotive,NumSp,(690-300)/10*i+300,110);
-      else Ec[0].Affiche(buches,NumSp,(690-300)/10*i+300,110);
+      if(i==N-1) Ec.Affiche(locomotive,NumSp,(690-300)/10*i+300,110);
+      else Ec.Affiche(buches,NumSp,(690-300)/10*i+300,110);
     }
 
     N=(int)(Pref.VolumeM*10+1)/SDL_MIX_MAXVOLUME;
     for(i=0;i<N;i++) {
-      if(i==N-1) Ec[0].Affiche(locomotive,NumSp,(690-300)/10*i+300,200);
-      else Ec[0].Affiche(buches,NumSp,(690-300)/10*i+300,200);
+      if(i==N-1) Ec.Affiche(locomotive,NumSp,(690-300)/10*i+300,200);
+      else Ec.Affiche(buches,NumSp,(690-300)/10*i+300,200);
     }
 
     switch(PyE) {
@@ -649,7 +645,7 @@ eMenu Menu::SDLMain_Speed(void)
       case SDL_WINDOWEVENT:
 	if(event.window.event==SDL_WINDOWEVENT_ENTER) {
 	  SDL_RenderPresent(sdlRenderer);
-	  Ec[0].Cls(fmenu);
+	  Ec.Cls(fmenu);
 	}
 	break;
       case SDL_KEYDOWN:
@@ -701,7 +697,7 @@ eMenu Menu::SDLMain_Speed(void)
     Sleeping();
     
     // Gère l'Affichage
-    Ec[0].Efface(fmenu);
+    Ec.Efface(fmenu);
     Affiche_Main();
     Sourie.Affiche(0);
     
@@ -816,20 +812,20 @@ eMenu Menu::SDLMain_Niveau(void)
     Sleeping();
     
     // Gère l'Affichage
-    Ec[0].Efface(fmenu);
+    Ec.Efface(fmenu);
 
     // Affiche les flèches
     if(Niv>0) {
-      if(PyE==3) Ec[0].Affiche(fleches,2,330,380);
-      else Ec[0].Affiche(fleches,1,330,380);
+      if(PyE==3) Ec.Affiche(fleches,2,330,380);
+      else Ec.Affiche(fleches,1,330,380);
     }
-    else Ec[0].Affiche(fleches,0,330,380);
+    else Ec.Affiche(fleches,0,330,380);
     
     if(Niv<Pref.NiveauMax) {
-      if(PyE==4) Ec[0].Affiche(fleches,5,470,380);
-      else Ec[0].Affiche(fleches,4,470,380);
+      if(PyE==4) Ec.Affiche(fleches,5,470,380);
+      else Ec.Affiche(fleches,4,470,380);
     }
-    else Ec[0].Affiche(fleches,3,470,380);
+    else Ec.Affiche(fleches,3,470,380);
     
     AfficheChiffre(400,380,Niv+1);
     
@@ -1003,26 +999,26 @@ eMenu Menu::SDLMain_HR(void)
     Sleeping();
     
     // Gère l'Affichage
-    Ec[0].Efface(fmenu);
+    Ec.Efface(fmenu);
   
     if(Ordre) {
-      Ec[0].Affiche(fond_hrr,0,240,492);
+      Ec.Affiche(fond_hrr,0,240,492);
       AfficheText(240,492,e_Sprite(T_tart1+N1));
     }
     else {
-      Ec[0].Affiche(fond_hrr,0,440,492);
+      Ec.Affiche(fond_hrr,0,440,492);
       AfficheText(440,492,e_Sprite(T_tart1+N1));
     }
     
     if(Fini==-1) {
       if(Ordre) {
-	Ec[0].Affiche(fond_hrr,0,440,492);
+	Ec.Affiche(fond_hrr,0,440,492);
 	AfficheText(440,492,e_Sprite(T_tart1+N2));
 	if(PyE==0) Affiche_Main(240);
 	else Affiche_Main(440);
       }
       else {
-	Ec[0].Affiche(fond_hrr,0,240,492);
+	Ec.Affiche(fond_hrr,0,240,492);
 	AfficheText(240,492,e_Sprite(T_tart1+N2));
 	if(PyE==1) Affiche_Main(240);
 	else Affiche_Main(440);
@@ -1064,10 +1060,6 @@ void Menu::Affiche_InGame(void)
   AfficheText(340,415,T_exit_game,Sprites[fmenu].Image[0]);
   AddBouton(2,T_exit_game,340,415);
   Menu_Py[3].DepX=-1;
-
-  // Efface le fond
-  //SDL_RenderPresent(sdlRenderer);
-  //Ec[0].Cls(fmenu);
 }
 
 /*** Gestion du menu dans le jeu ***/
@@ -1087,7 +1079,7 @@ eMenu Menu::SDLMain_InGame(void)
       case SDL_WINDOWEVENT:
 	if(event.window.event==SDL_WINDOWEVENT_ENTER) {
 	  //SDL_RenderPresent(sdlRenderer);
-	  //Ec[0].Cls(fmenu);
+	  //Ec.Cls(fmenu);
 	}
 	break;
       case SDL_KEYDOWN:
@@ -1139,7 +1131,7 @@ eMenu Menu::SDLMain_InGame(void)
     Sleeping();
     
     // Gère l'Affichage
-    Ec[0].Efface(fmenu);
+    Ec.Efface(fmenu);
     Affiche_InGame();
     Affiche_Main(340);
     Sourie.Affiche(0);
@@ -1222,7 +1214,7 @@ eMenu Menu::SDLMain_Score(bool EditScore)
       case SDL_WINDOWEVENT:
 	if(event.window.event==SDL_WINDOWEVENT_ENTER) {
 	  SDL_RenderPresent(sdlRenderer);
-	  Ec[0].Cls(fmenu);
+	  Ec.Cls(fmenu);
 	}
 	break;
       case SDL_KEYDOWN: // Prend un touche au clavier
@@ -1273,8 +1265,8 @@ eMenu Menu::SDLMain_Score(bool EditScore)
       AfficheString(140,120+NEdit*(360/7),Pref.Sco[NEdit].Name);
       
       i=(Horloge/50)%20; // Affiche les curseurs
-      Ec[0].Affiche(fleche_gauche,i,110,120+NEdit*(360/7));
-      Ec[0].Affiche(fleche_droite,i,180+LongueurString(Pref.Sco[NEdit].Name),120+NEdit*(360/7));
+      Ec.Affiche(fleche_gauche,i,110,120+NEdit*(360/7));
+      Ec.Affiche(fleche_droite,i,180+LongueurString(Pref.Sco[NEdit].Name),120+NEdit*(360/7));
 
     }
   
@@ -1295,8 +1287,8 @@ void Menu::Affiche_Main(int Centre)
   int x2=(Centre-x1)+Centre;
   int y=(Menu_Py[PyE].FinY+Menu_Py[PyE].DepY)/2;
   
-  Ec[0].Affiche(fleche_gauche,NumSp,x1,y);
-  Ec[0].Affiche(fleche_droite,NumSp,x2,y);
+  Ec.Affiche(fleche_gauche,NumSp,x1,y);
+  Ec.Affiche(fleche_droite,NumSp,x2,y);
 }
 
 /*** Centre les flèches sur le boutton ***/
@@ -1308,6 +1300,6 @@ void Menu::Affiche_Main_Centre()
   int x2=Menu_Py[PyE].FinX+5;
   int y=(Menu_Py[PyE].FinY+Menu_Py[PyE].DepY)/2;
   
-  Ec[0].Affiche(fleche_gauche,NumSp,x1,y);
-  Ec[0].Affiche(fleche_droite,NumSp,x2,y);
+  Ec.Affiche(fleche_gauche,NumSp,x1,y);
+  Ec.Affiche(fleche_droite,NumSp,x2,y);
 }

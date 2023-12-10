@@ -24,10 +24,9 @@
 #ifndef _LOCO_DOM_
 #define _LOCO_DOM_
 
-#include <SDL2/SDL.h>
 #include "sprite.h"
-#include "ecran.h"
-#include "preference.h"
+
+class Ecran;
 
 /*** Definition de la classe qui mémorise les cases ***/
 /******************************************************/

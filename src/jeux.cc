@@ -25,16 +25,14 @@
 #include <windows.h>
 #endif
 
-#include <iostream>
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
-#include <math.h>
 #include <SDL2/SDL.h>
 
 #include "jeux.h"
 #include "ecran.h"
 #include "menu.h"
+#include "sprite.h"
 #include "tableau.h"
 #include "audio.h"
 
@@ -48,7 +46,7 @@ extern sPreference Pref;
 extern int Horloge;
 extern int HorlogeAvant;
 
-extern Ecran Ec[2];
+extern Ecran Ec;
 extern Menu MenuPrincipale;
 
 extern Tableau Niveau;
@@ -82,7 +80,7 @@ eMenu Jeux::SDLMain(void)
   Help=true;
   Load(NumN); // Charge le tableau
   SDL_RenderPresent(sdlRenderer);
-  Ec[0].Cls(fjeu);
+  Ec.Cls(fjeu);
   Pause=true;
 
   Horloge=SDL_GetTicks(); // Prend l'horloge
@@ -134,9 +132,7 @@ eMenu Jeux::SDLMain(void)
 	    mRet=MenuPrincipale.SDLMain_InGame();
 	    if(mRet==mJeux) {
 	      DrawLevel(NumN);
-	      //Ec[0].Cls(fjeu);
 	      SDL_RenderPresent(sdlRenderer);
-	      //Ec[0].Cls(fjeu);
 	      Pause=true;
 	    }
 	    else return mRet;
@@ -480,10 +476,10 @@ void Jeux::AfficheEcran(void)
   int ndir=0;
 
   // Prépare pour nouvelle Affichage
-  Ec[0].Efface(fjeu);
+  Ec.Efface(fjeu);
   
   // Fait nouvelle Affichage
-  Lo.Affiche(Ec[0]); // Affiche la loco
+  Lo.Affiche(Ec); // Affiche la loco
 
   if(Lo.PInter!=-1 && Help) { // Affiche la fleche sur la futur intersection
     switch(Lo.PEntree) {
@@ -501,36 +497,36 @@ void Jeux::AfficheEcran(void)
       break;
     }
 
-    Ec[0].Affiche(dir,ndir,(Lo.PInter%LT)*D_Case+D_Case/2,(Lo.PInter/LT)*D_Case+D_Case/2);
+    Ec.Affiche(dir,ndir,(Lo.PInter%LT)*D_Case+D_Case/2,(Lo.PInter/LT)*D_Case+D_Case/2);
   }
   
   // Affiche les options
   for(i=0;i<LT*HT;i++) {
     switch(T[i]) {
     case C_Wagon: // Si un loco
-      Ec[0].Affiche(wagon,(DureeJeu*40/1000+i*7)%50,i%LT*D_Case+D_Case/2,i/LT*D_Case+D_Case/2);
+      Ec.Affiche(wagon,(DureeJeu*40/1000+i*7)%50,i%LT*D_Case+D_Case/2,i/LT*D_Case+D_Case/2);
       break;
     case C_Allonge: // Si plus long
-      Ec[0].Affiche(pluslong,(DureeJeu*40/1000+i*7)%50,i%LT*D_Case+D_Case/2,i/LT*D_Case+D_Case/2);
+      Ec.Affiche(pluslong,(DureeJeu*40/1000+i*7)%50,i%LT*D_Case+D_Case/2,i/LT*D_Case+D_Case/2);
       break;
     case C_Reduit: // Si plus court
-      Ec[0].Affiche(pluscourt,(DureeJeu*40/1000+i*7)%50,i%LT*D_Case+D_Case/2,i/LT*D_Case+D_Case/2);
+      Ec.Affiche(pluscourt,(DureeJeu*40/1000+i*7)%50,i%LT*D_Case+D_Case/2,i/LT*D_Case+D_Case/2);
       break;
     case C_Speed: // Si plus vite
-      Ec[0].Affiche(vitesse,(DureeJeu*40/1000+i*7)%50,i%LT*D_Case+D_Case/2,i/LT*D_Case+D_Case/2);
+      Ec.Affiche(vitesse,(DureeJeu*40/1000+i*7)%50,i%LT*D_Case+D_Case/2,i/LT*D_Case+D_Case/2);
       break;
     case C_Live: // Si une vie
-      Ec[0].Affiche(vie,(DureeJeu*40/1000+i*7)%50,i%LT*D_Case+D_Case/2,i/LT*D_Case+D_Case/2);
+      Ec.Affiche(vie,(DureeJeu*40/1000+i*7)%50,i%LT*D_Case+D_Case/2,i/LT*D_Case+D_Case/2);
       break;
     }
   }
 
   // Si en pose demande une touche
-  if(Pause) Ec[0].Affiche_Text(T_press_any_key,LT*D_Case/2,300);
+  if(Pause) Ec.Affiche_Text(T_press_any_key,LT*D_Case/2,300);
 
   // Affiche tableau de bord
-  Ec[0].AfficheOptions(Pref.NVie,Pref.Score);
-  if(Pref.EcartWagon<ECARTWAGON_MOY) Ec[0].Affiche(pluscourt,(DureeJeu*40/1000)%50,715,295);
-  if(Pref.EcartWagon>ECARTWAGON_MOY) Ec[0].Affiche(pluslong,(DureeJeu*40/1000)%50,715,295);
-  if(Pref.VitesseMoy>Pref.Vitesse) Ec[0].Affiche(vitesse,(DureeJeu*40/1000+7)%50,765,295);
+  Ec.AfficheOptions(Pref.NVie,Pref.Score);
+  if(Pref.EcartWagon<ECARTWAGON_MOY) Ec.Affiche(pluscourt,(DureeJeu*40/1000)%50,715,295);
+  if(Pref.EcartWagon>ECARTWAGON_MOY) Ec.Affiche(pluslong,(DureeJeu*40/1000)%50,715,295);
+  if(Pref.VitesseMoy>Pref.Vitesse) Ec.Affiche(vitesse,(DureeJeu*40/1000+7)%50,765,295);
 }

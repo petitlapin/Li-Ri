@@ -23,7 +23,6 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <iostream>
 #include <string.h>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_mixer.h>
@@ -48,7 +47,7 @@ char Titre[]="Li-ri V3.0.0";
 
 Sprite *Sprites=NULL; // Pointe sur les sprites
 int NSprites=0; // Nombre de sprites en mémoire
-Ecran Ec[2];          // Pointe sur les 2 buffets vidéo
+Ecran Ec;             // Pointe sur les 2 buffets vidéo
 sPreference Pref;     // Tableau des préférences.
 Jeux Jeu;             // Gère le jeu
 Mouse Sourie;         // Gère les mouvements de sourie
