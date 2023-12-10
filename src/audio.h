@@ -56,7 +56,6 @@ class Audio {
   void Play(eSon); // Joue un son
   void PlayMusic(void); // Joue la music
 
-  void Pause(bool Etat); // Met ou non en pause
   void PauseMusic(bool Etat); // Met ou no la music en pause
 
   void DoVolume(void); // Valide les volumes audio

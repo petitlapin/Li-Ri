@@ -170,16 +170,6 @@ void Audio::PlayMusic(void) {
   }
 }
 
-/*** Met ou non en pause ***/
-/***************************/
-void Audio::Pause(bool Et)
-{
-  if(!N) return;
-
-  if(Et) SDL_PauseAudio(1);
-  else SDL_PauseAudio(0);
-}
-
 void Audio::PauseMusic(bool Et)
 {
   if(!N) return;
