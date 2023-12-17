@@ -24,6 +24,8 @@ jobs:
               run: cmake -DCMAKE_TOOLCHAIN_FILE=build/Release/generators/conan_toolchain.cmake -DUSE_CONAN=ON -DCMAKE_BUILD_TYPE=Release -S . -B build
             - name: build
               run: cmake --build build --config Release
+            - name: package
+              run: cmake --build build --config Release --target package
 
     mac:
         runs-on: macos-latest
@@ -45,6 +47,8 @@ jobs:
               run: cmake -DCMAKE_TOOLCHAIN_FILE=build/Release/generators/conan_toolchain.cmake -DUSE_CONAN=ON -DCMAKE_BUILD_TYPE=Release -S . -B build
             - name: build
               run: cmake --build build --config Release
+            - name: package
+              run: cmake --build build --config Release --target package
 
     windows:
         runs-on: windows-latest
@@ -63,3 +67,9 @@ jobs:
               run: cmake -DCMAKE_TOOLCHAIN_FILE=${{github.workspace}}/build/generators/conan_toolchain.cmake -DUSE_CONAN=ON -DCMAKE_BUILD_TYPE=Release -S . -B build
             - name: build
               run: cmake --build build --config Release
+            - name: Install NSIS
+              uses: repolevedavaj/install-nsis@v1.0.1
+              with:
+                nsis-version: 3.08
+            - name: package
+              run: cmake --build build --config Release --target package

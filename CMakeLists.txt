@@ -93,3 +93,5 @@ if(RILI_ENABLE_IPO)
       "interprocedural optimization is not supported by the compiler")
   endif()
 endif()
+
+include(CPackLists.txt)
