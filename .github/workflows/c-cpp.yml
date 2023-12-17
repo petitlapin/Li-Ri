@@ -26,7 +26,10 @@ jobs:
               run: cmake --build build --config Release
             - name: package
               run: cmake --build build --config Release --target package
-
+            - uses: actions/upload-artifact@v4
+              with:
+                name: ubuntu
+                path: build/Li_ri-*.sh
     mac:
         runs-on: macos-latest
         steps:
@@ -49,6 +52,10 @@ jobs:
               run: cmake --build build --config Release
             - name: package
               run: cmake --build build --config Release --target package
+            - uses: actions/upload-artifact@v4
+              with:
+                name: macOS
+                path: build/Li_ri-*.dmg
 
     windows:
         runs-on: windows-latest
@@ -73,3 +80,7 @@ jobs:
                 nsis-version: 3.08
             - name: package
               run: cmake --build build --config Release --target package
+            - uses: actions/upload-artifact@v4
+              with:
+                name: windows
+                path: build/Li_ri-*.exe
