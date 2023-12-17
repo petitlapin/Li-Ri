@@ -59,7 +59,7 @@ Audio Sons;           // Gère les sons
 int Horloge=0; // Horloges du jeu
 int HorlogeAvant=0;
 
-#ifdef LINUX
+#ifdef __unix__
 char DefPath[256]; // Chemin par defaut dans arg
 #endif
 
@@ -67,7 +67,7 @@ char DefPath[256]; // Chemin par defaut dans arg
 /**********************************/
 void InitPref(void)
 {
-#ifdef LINUX
+#ifdef __unix__
   DefPath[0]=0;
 #endif
 
@@ -105,7 +105,7 @@ int main(int narg,char *argv[])
 
   // Initialise les préferences
   InitPref();
-#ifdef LINUX
+#ifdef __unix__
   if(narg>1) strcpy(DefPath,argv[1]);
 #endif
  

@@ -24,7 +24,7 @@
 #include <stdio.h>
 #include <string.h>
 
-#ifdef WINDOWS
+#ifdef _WIN32
 #include <windows.h>
 #include <windowsx.h>
 #include <commdlg.h>
@@ -37,17 +37,17 @@
 /*** Variables globales ***/
 /**************************/
 extern sPreference Pref;
-#ifdef LINUX
+#ifdef __unix__
 extern char DefPath[]; // Chemin par defaut dans arg
 #endif
 
 /*** Définition générals ***/
 /***************************/
-#ifdef MAC_OSX
+#ifdef __APPLE__
 #define MAC_LINUX
 #endif
 
-#ifdef LINUX
+#ifdef __unix__
 #define MAC_LINUX
 #endif
 
@@ -120,7 +120,7 @@ long Utils::ChargeFichier(const char *Path,unsigned char *&Buf)
 }
 #endif
 
-#ifdef WINDOWS
+#ifdef _WIN32
 // Version windows
 long Utils::ChargeFichier(const char *Path,unsigned char *&Buf)
 {
@@ -192,7 +192,7 @@ bool Utils::SauveFichier(const char *Path,char *Buf,long L)
 }
 #endif
 
-#ifdef WINDOWS
+#ifdef _WIN32
 // Version windows
 bool Utils::SauveFichier(const char *Path,char *Buf,long L)
 {
@@ -219,7 +219,7 @@ bool Utils::SauveFichier(const char *Path,char *Buf,long L)
 
 /*** Met le bon chemin pour charger un fichier ***/
 /*************************************************/
-#if (defined(LINUX) || defined(ANDROID)) && !defined(__AMIGAOS4__)
+#if (defined(__unix__) || defined(ANDROID)) && !defined(__AMIGAOS4__)
 // Version Linux
 void Utils::GetPath(char *Path)
 {
@@ -269,7 +269,7 @@ void Utils::GetPath(char *Path)
 }
 #endif
 
-#ifdef MAC_OSX
+#ifdef __APPLE__
 // Version Mac OSX
 void Utils::GetPath(char *Path)
 {
@@ -285,7 +285,7 @@ void Utils::GetPath(char *Path)
 }
 #endif
 
-#ifdef WINDOWS
+#ifdef _WIN32
 //  Version Windows , chemin directe
 void Utils::GetPath(char *Path)
 { }
