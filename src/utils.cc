@@ -24,12 +24,6 @@
 #include <stdio.h>
 #include <string.h>
 
-#ifdef _WIN32
-#include <windows.h>
-#include <windowsx.h>
-#include <commdlg.h>
-#endif
-
 #include "utils.h"
 #include "preference.h"
 #include "sprite.h"
@@ -71,8 +65,6 @@ bool Utils::FileExiste(const char *Path)
 
 /*** Charge un fichier en Mémoire ***/
 /************************************/
-#ifdef MAC_LINUX
-// Version linux
 long Utils::ChargeFichier(const char *Path,unsigned char *&Buf)
 {
   SDL_RWops* file=SDL_RWFromFile(Path,"rb");
@@ -118,47 +110,9 @@ long Utils::ChargeFichier(const char *Path,unsigned char *&Buf)
   SDL_RWclose(file);
   return L;
 }
-#endif
-
-#ifdef _WIN32
-// Version windows
-long Utils::ChargeFichier(const char *Path,unsigned char *&Buf)
-{
-  HFILE file;
-
-  file=_lopen(Path,OF_READ);
-  if(file==-1) {
-    SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Unable to open '%s'", Path);
-    exit(-1);
-  }
-  
-  long L=(long)_llseek(file,0,SEEK_END);
-  if(L==-1) {
-    SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Unable to compute file size");
-    _lclose(file);
-    return -1;
-  }
-  _llseek(file,0,SEEK_SET);
-  
-  Buf=new unsigned char [L+1];
-  if(Buf==NULL) {
-    SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Not enough memory");
-    _lclose(file);
-    return -1;
-  }
-
-  AfficheChargeur();
-  _hread(file,Buf,L); // Charge le fichier
-  _lclose(file);      // Ferme le fichier
-
-  return L;
-}
-#endif
 
 /*** Sauve un Fichier ***/
 /************************/
-#ifdef MAC_LINUX
-// Version linux
 bool Utils::SauveFichier(const char *Path,char *Buf,long L)
 {
   FILE *file;
@@ -190,32 +144,6 @@ bool Utils::SauveFichier(const char *Path,char *Buf,long L)
   fclose(file);
   return true;
 }
-#endif
-
-#ifdef _WIN32
-// Version windows
-bool Utils::SauveFichier(const char *Path,char *Buf,long L)
-{
-  HFILE file;
-  int Lec;
-
-  file=_lcreat(Path,0);
-  if(!file) {
-    SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Unable to create '%s'", Path);
-    return false;
-  }
-  
-  Lec=_hwrite(file,Buf,L);
-  _lclose(file);
-
-  if(Lec!=L) {
-    SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Issue when writing file '%s', write %d instead of %d", Path, Lec, L);
-    return false;
-  }
-
-  return true;
-}
-#endif
 
 /*** Met le bon chemin pour charger un fichier ***/
 /*************************************************/
