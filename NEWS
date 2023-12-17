@@ -1,3 +1,6 @@
+xx-xx-xxxx : Version 3.0.1
+           CMake compilation
+           Github workflow to provide binaries for Linux, Windows and macOS
 11-11-2023 : Version 3.0.0
            Update to SDL2
            Compilation ok on Android
