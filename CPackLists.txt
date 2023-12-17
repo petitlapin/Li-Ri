@@ -1,0 +1,45 @@
+#=============================================================================
+# SPDX-FileCopyrightText: 2023 Johnny Jazeix <jazeix@gmail.com>
+#
+# SPDX-License-Identifier: BSD-3-Clause
+#=============================================================================
+# Packaging
+# =========
+
+set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "Li-Ri is a arcade game licensed under the GPL (General Public License). You drive a toy wood engine in many levels and you must collect all the coaches for win.")
+set(CPACK_PACKAGE_VERSION_MAJOR ${LIRI_VERSION_MAJOR})
+set(CPACK_PACKAGE_VERSION_MINOR ${LIRI_VERSION_MINOR})
+set(CPACK_PACKAGE_VERSION_PATCH ${LIRI_VERSION_PATCH})
+set(CPACK_PACKAGE_VERSION ${LIRI_VERSION})
+set(CPACK_RESOURCE_FILE_LICENSE "${PROJECT_SOURCE_DIR}/COPYING")
+set(CPACK_RESOURCE_FILE_README "${PROJECT_SOURCE_DIR}/README")
+
+if(WIN32)
+  set(CPACK_PACKAGE_INSTALL_DIRECTORY "${LIRI_EXECUTABLE_NAME}")
+  set(CPACK_PACKAGE_INSTALL_REGISTRY_KEY "${LIRI_EXECUTABLE_NAME}")
+  #set(CPACK_PACKAGE_ICON "${PROJECT_SOURCE_DIR}/installer\\\\gcompris-header.bmp")
+  set(CPACK_NSIS_MUI_ICON "${PROJECT_SOURCE_DIR}/data\\\\li-ri.ico")
+  #set(CPACK_NSIS_MUI_UNIICON "${PROJECT_SOURCE_DIR}/installer\\\\Liri-uninstall.ico")
+  #set(CPACK_NSIS_MUI_WELCOMEFINISHPAGE_BITMAP "${PROJECT_SOURCE_DIR}/installer\\\\welcome-page.bmp")
+  #set(CPACK_NSIS_MUI_UNWELCOMEFINISHPAGE_BITMAP "${PROJECT_SOURCE_DIR}/installer\\\\welcome-page.bmp")
+  set(CPACK_NSIS_MANIFEST_DPI_AWARE ON)
+  set(CPACK_NSIS_EXECUTABLES_DIRECTORY "bin")
+  set(CPACK_PACKAGE_EXECUTABLES "${LIRI_EXECUTABLE_NAME};Li-Ri")
+  set(CPACK_CREATE_DESKTOP_LINKS "${LIRI_EXECUTABLE_NAME};Li-Ri")
+  set(CPACK_NSIS_MODIFY_PATH "ON")
+  set(CPACK_NSIS_DISPLAY_NAME "Li-Ri")
+  set(CPACK_NSIS_WELCOME_TITLE_3LINES "ON")
+  set(CPACK_NSIS_MUI_FINISHPAGE_RUN "${LIRI_EXECUTABLE_NAME}")
+  set(CPACK_PACKAGE_VENDOR "Li-Ri team")
+else()
+  set(CPACK_PACKAGE_ICON "${PROJECT_SOURCE_DIR}/data/Li-ri-icon-48x48.png")
+endif()
+
+if(APPLE)
+  set(CPACK_GENERATOR "DragNDrop")
+elseif(WIN32)
+  set(CPACK_GENERATOR "NSIS")
+else()
+  set(CPACK_GENERATOR "STGZ")
+endif()
+include(CPack)
