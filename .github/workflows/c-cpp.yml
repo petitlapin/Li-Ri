@@ -2,22 +2,64 @@ name: C/C++ CI
 
 on:
   push:
-    branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
 
 jobs:
-  build:
+    linux:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v4
+            - name: Install Conan
+              uses: turtlebrowser/get-conan@main
+              with:
+                version: 1.62.0
+            - name: Configure conan
+              run: conan profile new default --detect
+            - name: Update default profile
+              run: conan profile update settings.compiler.libcxx=libstdc++11 default
+            - name: Install deps
+              run: conan install . --install-folder=${{github.workspace}}/build --build=missing -c tools.system.package_manager:mode=install -c tools.system.package_manager:sudo=True
+            - name: "Configure and build"
+              run: cmake -DCMAKE_TOOLCHAIN_FILE=build/Release/generators/conan_toolchain.cmake -DUSE_CONAN=ON -DCMAKE_BUILD_TYPE=Release -S . -B build
+            - name: build
+              run: cmake --build build --config Release
 
-    runs-on: ubuntu-latest
+    mac:
+        runs-on: macos-latest
+        steps:
+            - uses: actions/checkout@v4
+            - name: Install Conan
+              uses: turtlebrowser/get-conan@main
+              with:
+                version: 1.62.0
 
-    steps:
-    - uses: actions/checkout@v3
-    - name: install deps
-      run: sudo apt-get install -y libsdl2-dev libsdl2-mixer-dev
-    - name: configure
-      run: ./configure
-    - name: make
-      run: make
-    - name: make check
-      run: make check
+            - name: Configure conan
+              run: conan profile new default --detect
+            - name: Update default profile
+              run: conan profile update settings.compiler.libcxx=libc++ default
+            - name: Install deps
+              run: conan install . --install-folder=${{github.workspace}}/build --build=missing
+
+            - name: "Configure and build"
+              run: cmake -DCMAKE_TOOLCHAIN_FILE=build/Release/generators/conan_toolchain.cmake -DUSE_CONAN=ON -DCMAKE_BUILD_TYPE=Release -S . -B build
+            - name: build
+              run: cmake --build build --config Release
+
+    windows:
+        runs-on: windows-latest
+        steps:
+            - uses: actions/checkout@v4
+            - name: Install Conan
+              uses: turtlebrowser/get-conan@main
+              with:
+                version: 1.62.0
+
+            - name: Configure conan
+              run: conan profile new default --detect
+            - name: Install deps
+              run: conan install . --install-folder=${{github.workspace}}/build --build=missing
+            - name: "Configure and build"
+              run: cmake -DCMAKE_TOOLCHAIN_FILE=${{github.workspace}}/build/generators/conan_toolchain.cmake -DUSE_CONAN=ON -DCMAKE_BUILD_TYPE=Release -S . -B build
+            - name: build
+              run: cmake --build build --config Release
