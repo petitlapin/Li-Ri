@@ -1,6 +1,7 @@
-xx-xx-xxxx : Version 3.0.1
+19-12-2023 : Version 3.0.1
            CMake compilation
            Github workflow to provide binaries for Linux, Windows and macOS
+           Add missing icon for F-Droid
 11-11-2023 : Version 3.0.0
            Update to SDL2
            Compilation ok on Android
