@@ -36,12 +36,12 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 add_executable(${LIRI_EXECUTABLE_NAME} WIN32
   src/audio.cc
   src/audio.h
-  src/ecran.cc
-  src/ecran.h
-  src/editeur.cc
-  src/editeur.h
-  src/jeux.cc
-  src/jeux.h
+  src/screen.cc
+  src/screen.h
+  src/editor.cc
+  src/editor.h
+  src/game.cc
+  src/game.h
   src/loco.cc
   src/loco.h
   src/main.cc
@@ -51,8 +51,8 @@ add_executable(${LIRI_EXECUTABLE_NAME} WIN32
   src/mouse.h
   src/sprite.cc
   src/sprite.h
-  src/tableau.cc
-  src/tableau.h
+  src/level.cc
+  src/level.h
   src/utils.cc
   src/utils.h
   )

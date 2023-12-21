@@ -1,12 +1,12 @@
 //      (_||_/
-//      (    )       Classe Loco
+//      (    )       
 //     ( o  0 )
 //-OOO°--(_)---°OOO---------------------------------------
 //                   Copyright (C) 2006 By Dominique Roux-Serret
 // .OOOo      oOOO.  roux-serret@ifrance.com
 //-(   )------(   )---------------------------------------
-//  ( (        ) /   Le 16/01/2006
-//   (_)      (_/
+//  ( (        ) /   Copyright (C) 2023 By Johnny Jazeix
+//   (_)      (_/    jazeix@gmail.com
 
 //    This program is free software; you can redistribute it and/or modify
 //    it under the terms of the GNU General Public License as published by
@@ -26,7 +26,7 @@
 #include "preference.h"
 #include "loco.h"
 #include "audio.h"
-#include "ecran.h"
+#include "screen.h"
 
 #define PIQ (M_PI/2.0)
 #ifndef M_PI
