@@ -1,12 +1,12 @@
 //      (_||_/
-//      (    )       Class de la Sourie
+//      (    )       
 //     ( o  0 )
 //-OOO°--(_)---°OOO---------------------------------------
 //                   Copyright (C) 2006 By Dominique Roux-Serret
 // .OOOo      oOOO.  roux-serret@ifrance.com
 //-(   )------(   )---------------------------------------
-//  ( (        ) /   Le 23/03/2006
-//   (_)      (_/
+//  ( (        ) /   Copyright (C) 2023 By Johnny Jazeix
+//   (_)      (_/    jazeix@gmail.com
 
 //    This program is free software; you can redistribute it and/or modify
 //    it under the terms of the GNU General Public License as published by
@@ -24,7 +24,7 @@
 #include <stdio.h>
 #include "mouse.h"
 #include "preference.h"
-#include "ecran.h"
+#include "screen.h"
 #include "audio.h"
 
 /*** Variables Globales ***/

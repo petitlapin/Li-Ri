@@ -1,12 +1,12 @@
 //      (_||_/
-//      (    )       Classe Editeur
+//      (    )       
 //     ( o  0 )
 //-OOO°--(_)---°OOO---------------------------------------
 //                   Copyright (C) 2006 By Dominique Roux-Serret
 // .OOOo      oOOO.  roux-serret@ifrance.com
 //-(   )------(   )---------------------------------------
-//  ( (        ) /   Le 04/04/2006
-//   (_)      (_/
+//  ( (        ) /   Copyright (C) 2023 By Johnny Jazeix
+//   (_)      (_/    jazeix@gmail.com
 
 //    This program is free software; you can redistribute it and/or modify
 //    it under the terms of the GNU General Public License as published by
@@ -25,10 +25,10 @@
 #include <stdlib.h>
 #include <SDL2/SDL.h>
 
-#include "editeur.h"
+#include "editor.h"
 #include "menu.h"
-#include "jeux.h"
-#include "tableau.h"
+#include "game.h"
+#include "level.h"
 #include "mouse.h"
 
 /*** Variables globales ***/

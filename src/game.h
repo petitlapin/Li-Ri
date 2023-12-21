@@ -1,12 +1,12 @@
 //      (_||_/
-//      (    )       Classe Editeur
+//      (    )       Game class
 //     ( o  0 )
 //-OOO°--(_)---°OOO---------------------------------------
 //                   Copyright (C) 2006 By Dominique Roux-Serret
 // .OOOo      oOOO.  roux-serret@ifrance.com
 //-(   )------(   )---------------------------------------
-//  ( (        ) /   Le 04/04/2006
-//   (_)      (_/
+//  ( (        ) /   Copyright (C) 2023 By Johnny Jazeix
+//   (_)      (_/    jazeix@gmail.com
 
 //    This program is free software; you can redistribute it and/or modify
 //    it under the terms of the GNU General Public License as published by
@@ -21,29 +21,43 @@
 //    with this program; if not, write to the Free Software Foundation, Inc.,
 //    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-#ifndef _EDITEUR_DOM_
-#define _EDITEUR_DOM_
+#ifndef _GAME_DOM_
+#define _GAME_DOM_
 
 #include "preference.h"
-#include "sprite.h"
+#include "loco.h"
 
 /*** Définition de la class ***/
 /******************************/
-class Editeur {
+class Jeux {
  public:
-  Editeur(void);
-  ~Editeur(void);
+  Jeux(void);
+  ~Jeux(void);
 
   /*** Fonctions ***/
   /*****************/
-  eMenu SDLMain(int NumNiveau);   // Boucle principale
-  void Affiche(void);       // Charge un tableau
+  eMenu SDLMain(void);   // Boucle principale
+  bool Load(int NiveauN); // Charge un tableau
+  bool DrawLevel(int NiveauN);   // Dessine le niveau
   void PrendTouche(int Touche); // Prend les touches enfoncées
-  
-  /*** Variables ***/ 
-  int N; // Numero du tableau à éditer
-  e_Sprite Option;
-  int NumDeco;
-  int NumN;
+
+  void TourneFleche(void); // Fait tourner la fleche d'un simple clic.
+  void BufTouche(int Touche); // Met une nouvelle touche dans le buffet
+  int TestFleche(int Haut,int Bas,int Gauche,int Droite); // Test la direction de sortie de la fleche
+  void AfficheEcran(void);    // Fait l'affichage d'un ecran de jeu
+
+  /*** Variables ***/
+  bool Pause; // Si en pose
+
+  long DureeJeu; // Horloge de durée du jeu 
+
+  int Key;       // Mémorise la touche enfoncée
+  int Touche[4]; // Direction demandée
+  int T[LT*HT]; // Pointe sur le tableau
+
+  Loco Lo;      // Gère la locomotive
+
+  int NumSS; // Numéro du Screen shot
+  bool Help; // Si doit affiche les fleches d'aide
 };
 #endif

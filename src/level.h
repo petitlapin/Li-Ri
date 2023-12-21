@@ -1,12 +1,12 @@
 //      (_||_/
-//      (    )       Classe Sprite
+//      (    )       Level class
 //     ( o  0 )
 //-OOO°--(_)---°OOO---------------------------------------
 //                   Copyright (C) 2006 By Dominique Roux-Serret
 // .OOOo      oOOO.  roux-serret@ifrance.com
 //-(   )------(   )---------------------------------------
-//  ( (        ) /   Le 1/04/2006
-//   (_)      (_/
+//  ( (        ) /   Copyright (C) 2023 By Johnny Jazeix
+//   (_)      (_/    jazeix@gmail.com
 
 //    This program is free software; you can redistribute it and/or modify
 //    it under the terms of the GNU General Public License as published by
@@ -21,8 +21,8 @@
 //    with this program; if not, write to the Free Software Foundation, Inc.,
 //    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-#ifndef _TABLEAU_DOM_
-#define _TABLEAU_DOM_
+#ifndef _LEVEL_DOM_
+#define _LEVEL_DOM_
 
 #include "preference.h"
 
