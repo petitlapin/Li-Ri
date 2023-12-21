@@ -26,14 +26,14 @@
 
 class Utils {
  public:
-    static bool FileExiste(const char *Path);    // Si un fichier existe
-    static long ChargeFichier(const char *Path,unsigned char *&Buf); // Charge un ficher en mémoire
-    static bool SauveFichier(const char *Path,char *Buf,long L); // Sauve un Fichier
+    static bool FileExists(const char *Path);    // Check if the file exists
+    static long LoadFile(const char *Path,unsigned char *&Buf); // Load a file in memory
+    static bool SaveFile(const char *Path,char *Buf,long L); // Save a file
 
-    static void GetPath(char *Name); // Rajoute le chemin au nom du fichier (sprites, levels)
+    static void GetPath(char *Name); // Add the path to the filename depending on the OS (sprites, levels)
 
-    static bool LoadPref(void); // Charger les préferences
-    static void SauvePref(void); // Sauve les preferences
+    static bool LoadPref(void); // Load preferences
+    static void SauvePref(void); // Save preferences
 };
 
 #endif

@@ -104,7 +104,7 @@ enum eMenu {
   mMenuSpeed,
   mMenuNiveau,
   mLangue,
-  mJeux,
+  mGame,
   mScore,
   mScoreEdit,
   mOption,

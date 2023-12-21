@@ -29,10 +29,10 @@
 
 /*** Définition de la class ***/
 /******************************/
-class Editeur {
+class Editor {
  public:
-  Editeur(void);
-  ~Editeur(void);
+  Editor(void);
+  ~Editor(void);
 
   /*** Fonctions ***/
   /*****************/

@@ -35,7 +35,7 @@ struct mPy {      // DepX==-1 si derniere entrée
   bool Valide;   // Si doit valider un enter quand click de la sourie
 };
 
-struct mBoutton { // DepX=-1 si derniere entrée
+struct mButton { // DepX=-1 si derniere entrée
   int DepX,DepY;
   int FinX,FinY;
   int Valeur;
@@ -50,13 +50,13 @@ class Mouse {
   ~Mouse(void);
 
   void InitStart(void); // Initialise les coordonnées de la sourie
-  void Init(struct mPy *tPy,struct mBoutton *B=NULL); // Initialise la sourie
+  void Init(struct mPy *tPy,struct mButton *B=NULL); // Initialise la sourie
   void GetEvent(SDL_Event &event,int &Py); // Prend les evenements
-  void Affiche(int NumEcran);             // Affiche le curseur
+  void Print();             // Affiche le curseur
 
   int Px,Py; // Position réel de la sourie
   struct mPy *tPy;   // Pointe sur coordonées pour Py
-  struct mBoutton *Bo; // Pointe sur les coordonnées des bouttons
+  struct mButton *Bo; // Pointe sur les coordonnées des bouttons
 };
 
 #endif

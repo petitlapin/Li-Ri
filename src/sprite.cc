@@ -80,11 +80,11 @@ bool LoadLangue()
 
   strcpy(PathFile,Langue[Pref.Langue]);
   Utils::GetPath(PathFile);
-  if(Utils::FileExiste(PathFile)==false) {
+  if(Utils::FileExists(PathFile)==false) {
     SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Unable to find '%s'", Langue[Pref.Langue]);
     return false;
   }
-  L=Utils::ChargeFichier(PathFile,Buf);
+  L=Utils::LoadFile(PathFile,Buf);
 
   // Lit les sprites
   P=0;
@@ -124,11 +124,11 @@ bool LoadSprites()
   
   // *** Charge le fichier des langues ***
   // *************************************
-  if(Utils::FileExiste(PathFile)==false) {
+  if(Utils::FileExists(PathFile)==false) {
     SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Unable to find 'language.dat'");
     return false;
   }
-  L=Utils::ChargeFichier(PathFile,Buf);
+  L=Utils::LoadFile(PathFile,Buf);
 
   // Prend le nombre de sprites
   NSp=(int)(Buf[0])*256+(int)(Buf[1]);
@@ -159,11 +159,11 @@ bool LoadSprites()
   // *************************************
   strcpy(PathFile,"sprites.dat");
   Utils::GetPath(PathFile);
-  if(Utils::FileExiste(PathFile)==false) {
+  if(Utils::FileExists(PathFile)==false) {
     SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Unable to find 'sprites.dat'");
     return false;
   }
-  L=Utils::ChargeFichier(PathFile,Buf);
+  L=Utils::LoadFile(PathFile,Buf);
   
   // Lit les sprites
   P=0;

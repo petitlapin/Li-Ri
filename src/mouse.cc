@@ -31,7 +31,7 @@
 /**************************/
 extern Audio Sons;
 extern int Horloge;
-extern Ecran Ec;
+extern Screen Ec;
 extern SDL_Window *sdlWindow;
 
 /*** Constructeur et Destructeur ***/
@@ -58,7 +58,7 @@ void Mouse::InitStart(void)
 
 /*** Initialise un bebut d'utilisation ***/
 /*****************************************/
-void Mouse::Init(struct mPy *TablePy,struct mBoutton *B)
+void Mouse::Init(struct mPy *TablePy,struct mButton *B)
 {
   // Sauve les adresses utils
   tPy=TablePy;
@@ -132,7 +132,7 @@ void Mouse::GetEvent(SDL_Event &event,int &pPy)
 
 /*** Affiche le curseur ***/
 /**************************/
-void Mouse::Affiche(int NumVideo)
+void Mouse::Print()
 {
   int X=Px,Y=Py;
   int NumSp=(Horloge/50)%20;
@@ -145,6 +145,6 @@ void Mouse::Affiche(int NumVideo)
   
 #ifndef ANDROID
   // Affiche le curseur
-  Ec.Affiche(curseur,NumSp,X,Y);
+  Ec.PrintSprite(curseur,NumSp,X,Y);
 #endif
 }

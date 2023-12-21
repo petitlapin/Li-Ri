@@ -41,23 +41,23 @@ extern sPreference Pref;
 extern int Horloge;
 extern int HorlogeAvant;
 
-extern Tableau Niveau;
-extern Mouse Sourie;
-extern Jeux Jeu;
+extern Level level;
+extern Mouse mouse;
+extern Game game;
 
 static int NumRail[]={ 10,10,10,0,10,1,2,3,10,4,5,6,7,8,9,10 };
 
 /*** Constructeur et Destructeur ***/
 /***********************************/
-Editeur::Editeur() : N(0), NumDeco(0)
+Editor::Editor() : N(0), NumDeco(0)
 { }
 
-Editeur::~Editeur()
+Editor::~Editor()
 { }
 
 /*** SDL Main ***/
 /****************/
-eMenu Editeur::SDLMain(int NumNiv)
+eMenu Editor::SDLMain(int NumNiv)
 {
   int PyE;
   int cx=0,cy=0;
@@ -75,13 +75,13 @@ eMenu Editeur::SDLMain(int NumNiv)
   Option=rail;
 
   // Initialise la sourie
-  Sourie.Init(NULL);
+  mouse.Init(NULL);
   
   // Prend les evenements
   do {
     SDL_Event event;
     while(SDL_PollEvent(&event)) {
-      Sourie.GetEvent(event,PyE); // Prend les evenements de la sourie
+      mouse.GetEvent(event,PyE); // Prend les evenements de la sourie
       switch(event.type) {
       case SDL_WINDOWEVENT:
 	if(event.window.event==SDL_WINDOWEVENT_ENTER) Affiche();
@@ -101,7 +101,7 @@ eMenu Editeur::SDLMain(int NumNiv)
       case SDL_MOUSEBUTTONUP:
 	Boutton=false;
 	if(TypeB!=-1 && Option==deco && cx>=LT) { // Si doit effacer une décoration
-	  Niveau.T[NumN].NDeco--;
+	  level.T[NumN].NDeco--;
 	}
 	TypeB=-1;
 	break;
@@ -112,75 +112,75 @@ eMenu Editeur::SDLMain(int NumNiv)
     }
     
     // Gère l'appuis du boutton de la sourie
-    cx=Sourie.Px/D_Case;
-    cy=Sourie.Py/D_Case;
+    cx=mouse.Px/D_Case;
+    cy=mouse.Py/D_Case;
     
     if(Boutton && cx<LT)
       switch(Option) {
       case deco:
 	if(TypeB==-1) { // Si première fois que appuis sur la touche
-	  for(i=0;i<Niveau.T[NumN].NDeco;i++) { // Recherche si décoration proche du clic
-	    dx=Niveau.T[NumN].Deco[i].x-Sourie.Px;
-	    dy=Niveau.T[NumN].Deco[i].y-Sourie.Py;
+	  for(i=0;i<level.T[NumN].NDeco;i++) { // Recherche si décoration proche du clic
+	    dx=level.T[NumN].Deco[i].x-mouse.Px;
+	    dy=level.T[NumN].Deco[i].y-mouse.Py;
 	    d=dx*dx+dy*dy;
 	    if(d<=(D_Case*2)*(D_Case*2)) { 
 	      TypeB=i;
 	    }
 	  }
 	  if(TypeB==-1) { // Si doit fair un nouveau décor
-	    Niveau.T[NumN].NDeco++;
-	    Niveau.T[NumN].Deco[(Niveau.T[NumN].NDeco-1)].NumSpr=NumDeco;
-	    Niveau.T[NumN].Deco[(Niveau.T[NumN].NDeco-1)].x=Sourie.Px;
-	    Niveau.T[NumN].Deco[(Niveau.T[NumN].NDeco-1)].y=Sourie.Py;
+	    level.T[NumN].NDeco++;
+	    level.T[NumN].Deco[(level.T[NumN].NDeco-1)].NumSpr=NumDeco;
+	    level.T[NumN].Deco[(level.T[NumN].NDeco-1)].x=mouse.Px;
+	    level.T[NumN].Deco[(level.T[NumN].NDeco-1)].y=mouse.Py;
 	    TypeB=1;
 	  }
 	  else { // Fait passe la selection au premier plan
-	    Niveau.T[NumN].Deco[Niveau.T[NumN].NDeco].NumSpr=Niveau.T[NumN].Deco[TypeB].NumSpr;
-	    Niveau.T[NumN].Deco[Niveau.T[NumN].NDeco].x=Niveau.T[NumN].Deco[TypeB].x;
-	    Niveau.T[NumN].Deco[Niveau.T[NumN].NDeco].y=Niveau.T[NumN].Deco[TypeB].y;
-	    for(d=TypeB;d<Niveau.T[NumN].NDeco;d++) {
-	      Niveau.T[NumN].Deco[d].NumSpr=Niveau.T[NumN].Deco[d+1].NumSpr;
-	      Niveau.T[NumN].Deco[d].x=Niveau.T[NumN].Deco[d+1].x;
-	      Niveau.T[NumN].Deco[d].y=Niveau.T[NumN].Deco[d+1].y;
+	    level.T[NumN].Deco[level.T[NumN].NDeco].NumSpr=level.T[NumN].Deco[TypeB].NumSpr;
+	    level.T[NumN].Deco[level.T[NumN].NDeco].x=level.T[NumN].Deco[TypeB].x;
+	    level.T[NumN].Deco[level.T[NumN].NDeco].y=level.T[NumN].Deco[TypeB].y;
+	    for(d=TypeB;d<level.T[NumN].NDeco;d++) {
+	      level.T[NumN].Deco[d].NumSpr=level.T[NumN].Deco[d+1].NumSpr;
+	      level.T[NumN].Deco[d].x=level.T[NumN].Deco[d+1].x;
+	      level.T[NumN].Deco[d].y=level.T[NumN].Deco[d+1].y;
 	    }
-	    NumDeco=Niveau.T[NumN].Deco[(Niveau.T[NumN].NDeco-1)].NumSpr;
+	    NumDeco=level.T[NumN].Deco[(level.T[NumN].NDeco-1)].NumSpr;
 	  }	 
 	}
 	else { // Si pas la première fois remplace
-	  Niveau.T[NumN].Deco[(Niveau.T[NumN].NDeco-1)].NumSpr=NumDeco;
-	  Niveau.T[NumN].Deco[(Niveau.T[NumN].NDeco-1)].x=Sourie.Px;
-	  Niveau.T[NumN].Deco[(Niveau.T[NumN].NDeco-1)].y=Sourie.Py;
+	  level.T[NumN].Deco[(level.T[NumN].NDeco-1)].NumSpr=NumDeco;
+	  level.T[NumN].Deco[(level.T[NumN].NDeco-1)].x=mouse.Px;
+	  level.T[NumN].Deco[(level.T[NumN].NDeco-1)].y=mouse.Py;
 	}
 	break;
       case rail:
 	if(TypeB==-1) {
-	  if(Niveau.T[NumN].T[cy*LT+cx]!=C_Rail) TypeB=C_Rail;
+	  if(level.T[NumN].T[cy*LT+cx]!=C_Rail) TypeB=C_Rail;
 	  else TypeB=C_None;
 	}
-	Niveau.T[NumN].T[cy*LT+cx]=TypeB;
+	level.T[NumN].T[cy*LT+cx]=TypeB;
 	break;
       case wagon:
-	Niveau.T[NumN].T[cy*LT+cx]=C_Wagon;
+	level.T[NumN].T[cy*LT+cx]=C_Wagon;
  	break;
       case pluslong:
-	Niveau.T[NumN].T[cy*LT+cx]=C_Allonge;
+	level.T[NumN].T[cy*LT+cx]=C_Allonge;
  	break;
       case pluscourt:
-	Niveau.T[NumN].T[cy*LT+cx]=C_Reduit;
+	level.T[NumN].T[cy*LT+cx]=C_Reduit;
  	break;
       case vitesse:
-	Niveau.T[NumN].T[cy*LT+cx]=C_Speed;
+	level.T[NumN].T[cy*LT+cx]=C_Speed;
  	break;
       case vie:
-	Niveau.T[NumN].T[cy*LT+cx]=C_Live;
+	level.T[NumN].T[cy*LT+cx]=C_Live;
  	break;
       case (e_Sprite)(locomotive+D_Haut):
       case (e_Sprite)(locomotive+D_Bas):
       case (e_Sprite)(locomotive+D_Gauche):
       case (e_Sprite)(locomotive+D_Droite):
-	Niveau.T[NumN].DepX=cx;
-	Niveau.T[NumN].DepY=cy;
-	Niveau.T[NumN].DepDir=(int)(Option)-(int)(locomotive);
+	level.T[NumN].DepX=cx;
+	level.T[NumN].DepY=cy;
+	level.T[NumN].DepDir=(int)(Option)-(int)(locomotive);
 	break;
       default:
         break;
@@ -202,13 +202,13 @@ eMenu Editeur::SDLMain(int NumNiv)
 
 /*** Charge un tableau ***/
 /*************************/
-void Editeur::Affiche()
+void Editor::Affiche()
 {
   int i,x,y,m,cx,cy;
   unsigned char *T;
 
   // Prend l'adresse du niveau
-  T=Niveau.T[NumN].T;
+  T=level.T[NumN].T;
 
   // Fabrique le fond du jeu
   Sprites[fond].Affiche(400,300,0);
@@ -232,8 +232,8 @@ void Editeur::Affiche()
   }
   
   // Affiche les décorations
-  for(i=0;i<Niveau.T[NumN].NDeco;i++)
-    Sprites[deco].Affiche(Niveau.T[NumN].Deco[i].x,Niveau.T[NumN].Deco[i].y,Niveau.T[NumN].Deco[i].NumSpr);
+  for(i=0;i<level.T[NumN].NDeco;i++)
+    Sprites[deco].Affiche(level.T[NumN].Deco[i].x,level.T[NumN].Deco[i].y,level.T[NumN].Deco[i].NumSpr);
   
   // Affiche numero du niveau
   AfficheChiffre(740,130,NumN+1);
@@ -260,18 +260,18 @@ void Editeur::Affiche()
   }
 
   // Affiche le départ de la locomotive
-  switch(Niveau.T[NumN].DepDir) {
+  switch(level.T[NumN].DepDir) {
   case D_Haut:
-    Sprites[locomotive].Affiche(Niveau.T[NumN].DepX*D_Case+D_Case/2,Niveau.T[NumN].DepY*D_Case+D_Case/2,0);
+    Sprites[locomotive].Affiche(level.T[NumN].DepX*D_Case+D_Case/2,level.T[NumN].DepY*D_Case+D_Case/2,0);
     break;
   case D_Bas:
-    Sprites[locomotive].Affiche(Niveau.T[NumN].DepX*D_Case+D_Case/2,Niveau.T[NumN].DepY*D_Case+D_Case/2,40);
+    Sprites[locomotive].Affiche(level.T[NumN].DepX*D_Case+D_Case/2,level.T[NumN].DepY*D_Case+D_Case/2,40);
     break;
   case D_Gauche:
-    Sprites[locomotive].Affiche(Niveau.T[NumN].DepX*D_Case+D_Case/2,Niveau.T[NumN].DepY*D_Case+D_Case/2,80);
+    Sprites[locomotive].Affiche(level.T[NumN].DepX*D_Case+D_Case/2,level.T[NumN].DepY*D_Case+D_Case/2,80);
     break;
   case D_Droite:
-    Sprites[locomotive].Affiche(Niveau.T[NumN].DepX*D_Case+D_Case/2,Niveau.T[NumN].DepY*D_Case+D_Case/2,120);
+    Sprites[locomotive].Affiche(level.T[NumN].DepX*D_Case+D_Case/2,level.T[NumN].DepY*D_Case+D_Case/2,120);
     break;
   }
 
@@ -305,26 +305,26 @@ void Editeur::Affiche()
   }
 
   // Affiche le curseur
-  if(Option!=deco) Sprites[curseur].Affiche(Sourie.Px,Sourie.Py,0);
-  else Sprites[deco].Affiche(Sourie.Px,Sourie.Py,NumDeco);
+  if(Option!=deco) Sprites[curseur].Affiche(mouse.Px,mouse.Py,0);
+  else Sprites[deco].Affiche(mouse.Px,mouse.Py,NumDeco);
 }
 
 /*** Prend les touches enfoncées ***/
 /***********************************/
-void Editeur::PrendTouche(int Tou)
+void Editor::PrendTouche(int Tou)
 {  
   int i,j;
   
   switch(Tou) {
   case SDLK_PAGEUP:
-    if(NumN<Niveau.N-1) NumN++;
+    if(NumN<level.N-1) NumN++;
     else {
       j=0;
-      for(i=0;i<LT*HT;i++) j+=Niveau.T[NumN].T[i];
+      for(i=0;i<LT*HT;i++) j+=level.T[NumN].T[i];
       if(j!=0) {
 	NumN++;
-	Niveau.N++;
-	Niveau.Clear(NumN);
+	level.N++;
+	level.Clear(NumN);
       }
     }
     break;
@@ -342,10 +342,10 @@ void Editeur::PrendTouche(int Tou)
     if(NumDeco<0) NumDeco=Sprites[deco].N-1;
     break;
   case SDLK_INSERT:
-    Niveau.Ins(NumN);
+    level.Ins(NumN);
     break;
   case SDLK_DELETE:
-    Niveau.Del(NumN);
+    level.Del(NumN);
     break;
   case SDLK_UP:
     Option=(e_Sprite)(locomotive+D_Haut);
@@ -360,25 +360,25 @@ void Editeur::PrendTouche(int Tou)
     Option=(e_Sprite)(locomotive+D_Droite);
     break;
   case 'c':
-    Niveau.Clear(NumN);
+    level.Clear(NumN);
     break;
   case '$':
     // test si le dernier niveau est vide
-    for(j=i=0;i<LT*HT;i++) j+=Niveau.T[Niveau.N-1].T[i];
+    for(j=i=0;i<LT*HT;i++) j+=level.T[level.N-1].T[i];
     if(j==0) {
-      if(NumN<Niveau.N-1) Niveau.N--; // Si vide ne le compte pas
+      if(NumN<level.N-1) level.N--; // Si vide ne le compte pas
     }
     
     // Sauve le niveau
-    if(Niveau.Save()==false) {
+    if(level.Save()==false) {
       SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Error while saving levels");
       exit(-1);
     }
     
     // test le niveau
     Pref.Niveau=NumN;
-    Jeu.SDLMain();
-    Sourie.Init(NULL);
+    game.SDLMain();
+    mouse.Init(NULL);
     Affiche();
     break;
   case 'a':

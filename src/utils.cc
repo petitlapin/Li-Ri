@@ -51,7 +51,7 @@ extern char DefPath[]; // Chemin par defaut dans arg
 
 /*** Test si un fichier exite ***/
 /********************************/
-bool Utils::FileExiste(const char *Path)
+bool Utils::FileExists(const char *Path)
 {
   SDL_RWops* file=SDL_RWFromFile(Path,"rb");
 
@@ -65,7 +65,7 @@ bool Utils::FileExiste(const char *Path)
 
 /*** Charge un fichier en Mémoire ***/
 /************************************/
-long Utils::ChargeFichier(const char *Path,unsigned char *&Buf)
+long Utils::LoadFile(const char *Path,unsigned char *&Buf)
 {
   SDL_RWops* file=SDL_RWFromFile(Path,"rb");
   if(!file) {
@@ -113,7 +113,7 @@ long Utils::ChargeFichier(const char *Path,unsigned char *&Buf)
 
 /*** Sauve un Fichier ***/
 /************************/
-bool Utils::SauveFichier(const char *Path,char *Buf,long L)
+bool Utils::SaveFile(const char *Path,char *Buf,long L)
 {
   FILE *file;
   
@@ -158,24 +158,24 @@ void Utils::GetPath(char *Path)
 #ifndef ANDROID
   if(DefPath[0]) {
     sprintf(Path,"%s%s",DefPath,Provi);
-    if(Utils::FileExiste(Path)) return;
+    if(Utils::FileExists(Path)) return;
   }
   sprintf(Path,"%s/%s",DATA_DIR,Provi);
-  if(Utils::FileExiste(Path)) return;
+  if(Utils::FileExists(Path)) return;
 #endif
 
   // Android is directly the filename
   sprintf(Path,"%s",Provi);
-  if(Utils::FileExiste(Path)) return;
+  if(Utils::FileExists(Path)) return;
 
   sprintf(Path,"./%s",Provi);
-  if(Utils::FileExiste(Path)) return;
+  if(Utils::FileExists(Path)) return;
   sprintf(Path,"/usr/local/share/Li-ri/%s",Provi);
-  if(Utils::FileExiste(Path)) return;
+  if(Utils::FileExists(Path)) return;
   sprintf(Path,"/usr/share/Li-ri/%s",Provi);
-  if(Utils::FileExiste(Path)) return;
+  if(Utils::FileExists(Path)) return;
   sprintf(Path,"/usr/share/games/Li-ri/%s",Provi);
-  if(Utils::FileExiste(Path)) return;
+  if(Utils::FileExists(Path)) return;
   
   SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Unable to find '%s'", Provi);
 }
@@ -190,7 +190,7 @@ void Utils::GetPath(char *Path)
   strcpy(Provi,Path);
 
   sprintf(Path,"PROGDIR:%s",Provi);
-  if(Utils::FileExiste(Path)) return;
+  if(Utils::FileExists(Path)) return;
   
   SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Unable to find '%s'", Path);
   exit(-1);
@@ -206,7 +206,7 @@ void Utils::GetPath(char *Path)
   strcpy(Provi,Path);
 
   sprintf(Path,"Li-ri.app/Contents/Resources/%s",Provi);
-  if(Utils::FileExiste(Path)) return;
+  if(Utils::FileExists(Path)) return;
   
   SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Unable to find '%s'", Path);
   exit(-1);
@@ -222,7 +222,7 @@ void Utils::GetPath(char *Path)
   strcpy(Provi,Path);
   char *basePath = SDL_GetBasePath();
   sprintf(Path,"%s/%s",basePath,Provi);
-  if(Utils::FileExiste(Path)) {
+  if(Utils::FileExists(Path)) {
       SDL_free(basePath);
       return;
   }
@@ -243,8 +243,8 @@ bool Utils::LoadPref(void)
 
   SDL_free(PrefFolder);
 
-  if(Utils::FileExiste(PathPref)) {
-    L=Utils::ChargeFichier(PathPref,Provi);
+  if(Utils::FileExists(PathPref)) {
+    L=Utils::LoadFile(PathPref,Provi);
     if(L>0) {
       memcpy((char*)&Pref,Provi,L);
       delete [] Provi;
@@ -264,6 +264,6 @@ void Utils::SauvePref(void)
   sprintf(PathPref, "%sli-ri.pref", PrefFolder);
 
   SDL_free(PrefFolder);
-  Utils::SauveFichier(PathPref,(char*)&Pref,sizeof(sPreference));
+  Utils::SaveFile(PathPref,(char*)&Pref,sizeof(sPreference));
 }
 

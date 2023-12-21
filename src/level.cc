@@ -28,19 +28,19 @@
 
 /*** Constructeurs ***/
 /*********************/
-Tableau::Tableau(void) : N(0)
+Level::Level(void) : N(0)
 {
   int i;
   for(i=0;i<MAX_N_LEVEL_IN_MEMORY;i++) Clear(i);
 }
 
-Tableau::~Tableau(void)
+Level::~Level(void)
 {
 }
 
 /*** Charge les tableaux ***/
 /***************************/
-bool Tableau::Load(void)
+bool Level::Load(void)
 {
   unsigned char *Buf;
   long L,P=2;
@@ -48,7 +48,7 @@ bool Tableau::Load(void)
   char NameLevelFile[512]="levels.dat";
 
   Utils::GetPath(NameLevelFile);
-  L=Utils::ChargeFichier(NameLevelFile,Buf);
+  L=Utils::LoadFile(NameLevelFile,Buf);
   if(L<=0) return false;
   
   // Charge les tableaux
@@ -76,7 +76,7 @@ bool Tableau::Load(void)
 
 /*** Sauve les tableaux ***/
 /**************************/
-bool Tableau::Save(void)
+bool Level::Save(void)
 {
   unsigned char *Buf;
   long P=2;
@@ -84,7 +84,7 @@ bool Tableau::Save(void)
   char NameLevelFile[512]="levels.dat";
   
   // Alloue la mémoire
-  Buf=new unsigned char [sizeof(s_Tableau)*N+sizeof(int)+1];
+  Buf=new unsigned char [sizeof(s_Level)*N+sizeof(int)+1];
   if(Buf==NULL) return false;
 
   // Charge les tableaux
@@ -116,7 +116,7 @@ bool Tableau::Save(void)
 
   // Sauve les tableaux
   Utils::GetPath(NameLevelFile);
-  if(Utils::SauveFichier(NameLevelFile,(char*)Buf,P)==false) {
+  if(Utils::SaveFile(NameLevelFile,(char*)Buf,P)==false) {
     delete [] Buf;
     return false;
   }
@@ -127,7 +127,7 @@ bool Tableau::Save(void)
 
 /*** Efface un Tableau ***/
 /*************************/
-void Tableau::Del(int Num)
+void Level::Del(int Num)
 {
   int i,j;
 
@@ -150,7 +150,7 @@ void Tableau::Del(int Num)
 
 /*** Insert un Tableau ***/
 /*************************/
-void Tableau::Ins(int Num)
+void Level::Ins(int Num)
 {
   int i,j;
   
@@ -175,7 +175,7 @@ void Tableau::Ins(int Num)
 
 /*** Vide un tableau ***/
 /***********************/
-void Tableau::Clear(int Num)
+void Level::Clear(int Num)
 {
   int i;
 

@@ -29,10 +29,10 @@
 
 /*** Définition de la class ***/
 /******************************/
-class Jeux {
+class Game {
  public:
-  Jeux(void);
-  ~Jeux(void);
+  Game(void);
+  ~Game(void);
 
   /*** Fonctions ***/
   /*****************/
