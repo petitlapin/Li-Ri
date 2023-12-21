@@ -31,15 +31,15 @@ extern Sprite *Sprites;
 
 /*** Constructeur ***/
 /********************/
-Ecran::Ecran(void) : N(0), Score(-1)
+Screen::Screen(void) : N(0), Score(-1)
 { }
 
-Ecran::~Ecran(void)
+Screen::~Screen(void)
 { }
 
 /*** Affiche un Sprite ***/
 /*************************/
-void Ecran::Affiche(e_Sprite NumSpr,int Num,int x,int y)
+void Screen::PrintSprite(e_Sprite NumSpr,int Num,int x,int y)
 {
   B[N].NumSpr=NumSpr;
   B[N].Num=Num;
@@ -52,7 +52,7 @@ void Ecran::Affiche(e_Sprite NumSpr,int Num,int x,int y)
 
 /*** Affiche un cable ***/
 /************************/
-void Ecran::AfficheCable(int dx,int dy,int fx,int fy)
+void Screen::PrintCable(int dx,int dy,int fx,int fy)
 {
   // Affiche la corde
   Sprites[corde].AfficheCorde(dx,dy,fx,fy);
@@ -69,7 +69,7 @@ void Ecran::AfficheCable(int dx,int dy,int fx,int fy)
 
 /*** Affiche un text ***/
 /***********************/
-void Ecran::Affiche_Text(e_Sprite Text,int x,int y)
+void Screen::PrintText(e_Sprite Text,int x,int y)
 {
   B[N].NumSpr=Text;
   B[N].Num=0;
@@ -82,7 +82,7 @@ void Ecran::Affiche_Text(e_Sprite Text,int x,int y)
 
 /*** Affiche les options du jeu ***/
 /**********************************/
-void Ecran::AfficheOptions(int NV,int NScore)
+void Screen::PrintOptions(int NV,int NScore)
 {
   int x,y;
 
@@ -101,14 +101,14 @@ void Ecran::AfficheOptions(int NV,int NScore)
 
 /*** Efface les sprites ***/
 /**************************/
-void Ecran::Efface(e_Sprite NumSp)
+void Screen::ClearSprite(e_Sprite NumSp)
 {
   N=0;
 }
 
 /*** Efface l'ecran avec l'image de fond ***/
 /*******************************************/
-void Ecran::Cls(e_Sprite NumSp)
+void Screen::CleanSpriteAndScreen(e_Sprite NumSp)
 {
   Sprites[NumSp].Affiche(Sprites[NumSp].Dim[0].L/2,Sprites[NumSp].Dim[0].H/2,0);
   N=0;

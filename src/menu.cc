@@ -42,8 +42,8 @@ extern int HorlogeAvant;
 extern SDL_Window *sdlWindow;
 extern SDL_Renderer *sdlRenderer;
 extern Sprite *Sprites;
-extern Mouse Sourie;
-extern Ecran Ec;
+extern Mouse mouse;
+extern Screen Ec;
 extern sPreference Pref;
 extern Audio Sons;
 
@@ -106,7 +106,7 @@ eMenu Menu::SDLMain(void)
   char key;
 
   // Initialisations Divers
-  Sourie.Init(Menu_Py); // Initialise la sourie
+  mouse.Init(Menu_Py); // Initialise la sourie
   PyE=0;
 
   // Prend les evenements
@@ -129,7 +129,7 @@ eMenu Menu::SDLMain(void)
     Menu_Py[4].DepX=-1;
     SDL_Event event;
     while(SDL_PollEvent(&event)) {
-      Sourie.GetEvent(event,PyE); // Prend les evenements de la sourie
+      mouse.GetEvent(event,PyE); // Prend les evenements de la sourie
       switch(event.type) {
       case SDL_WINDOWEVENT:
 	if(event.window.event==SDL_WINDOWEVENT_ENTER) {
@@ -189,9 +189,9 @@ eMenu Menu::SDLMain(void)
     Sleeping();
     
     // Gère l'Affichage
-    Ec.Efface(fmenu);
-    Affiche_Main();
-    Sourie.Affiche(0);
+    Ec.ClearSprite(fmenu);
+    Print_Main();
+    mouse.Print();
     
     // Echange les buffets video
     SDL_RenderPresent(sdlRenderer);
@@ -203,7 +203,7 @@ eMenu Menu::SDLMain(void)
 
 /*** SDL Main Menu Choix de la langue ***/
 /****************************************/
-eMenu Menu::SDLMain_Langue(void)
+eMenu Menu::SDLMain_Language(void)
 {
   int NCol=1;
   int NL;
@@ -213,7 +213,7 @@ eMenu Menu::SDLMain_Langue(void)
   int OldLangue=Pref.Langue;
 
   // Initialisations Divers
-  Sourie.Init(Menu_Py); // Initialise la sourie
+  mouse.Init(Menu_Py); // Initialise la sourie
   PyE=Pref.Langue;
   if(PyE==-1) PyE=1;
 
@@ -255,7 +255,7 @@ eMenu Menu::SDLMain_Langue(void)
     SDL_Event event;
     while(SDL_PollEvent(&event)) {
 
-      Sourie.GetEvent(event,PyE); // Prend les evenements de la sourie
+      mouse.GetEvent(event,PyE); // Prend les evenements de la sourie
       switch(event.type) {
       case SDL_WINDOWEVENT:
 	if(event.window.event==SDL_WINDOWEVENT_ENTER) {
@@ -309,10 +309,10 @@ eMenu Menu::SDLMain_Langue(void)
     Sleeping();
     
     // Gère l'Affichage
-    Ec.Efface(fmenu); // Something is done in the Efface that prevents a crash (or maybe more computation)!
+    Ec.ClearSprite(fmenu); // Something is done in the Efface that prevents a crash (or maybe more computation)!
     Affiche_Main_Centre();
 
-    Sourie.Affiche(0);
+    mouse.Print();
 
     // Echange les buffets video
     SDL_RenderPresent(sdlRenderer);
@@ -327,7 +327,7 @@ eMenu Menu::SDLMain_Langue(void)
 void Menu::InitMain_Options(void)
 {
   // Initialisations Divers
-  Sourie.Init(Menu_Py); // Initialise la sourie
+  mouse.Init(Menu_Py); // Initialise la sourie
   //PyE=4;
 
   // Prend l'image du fond et fait l'affichage 
@@ -398,12 +398,12 @@ eMenu Menu::SDLMain_Options(void)
   PyE=4;
   // Prend les evenements
   do {
-    Ec.Cls(fmenu); // To not crash...
+    Ec.CleanSpriteAndScreen(fmenu); // To not crash...
     SDL_RenderClear(sdlRenderer);
     InitMain_Options(); // Prépare le menu
     SDL_Event event;
     while(SDL_PollEvent(&event)) {
-      Sourie.GetEvent(event,PyE); // Prend les evenements de la sourie
+      mouse.GetEvent(event,PyE); // Prend les evenements de la sourie
       switch(event.type) {
       case SDL_WINDOWEVENT:
 	if(event.window.event==SDL_WINDOWEVENT_ENTER) {
@@ -495,7 +495,7 @@ eMenu Menu::SDLMain_Options(void)
 	      PyE=2;
 	      break;
 	    case 3: // Choix de la langue
-	      SDLMain_Langue();
+	      SDLMain_Language();
 	      //InitMain_Options();
 	      PyE=3;
 	      break;
@@ -545,66 +545,66 @@ eMenu Menu::SDLMain_Options(void)
     //Ec.Efface(fmenu);
 
     if(Pref.FullScreen) {
-      Ec.Affiche(fleches,1,350,300);
-      Ec.Affiche(fleches,3,450,300);
+      Ec.PrintSprite(fleches,1,350,300);
+      Ec.PrintSprite(fleches,3,450,300);
     }
     else {
-      Ec.Affiche(fleches,0,350,300);
-      Ec.Affiche(fleches,4,450,300);
+      Ec.PrintSprite(fleches,0,350,300);
+      Ec.PrintSprite(fleches,4,450,300);
     }
 
     NumSp=(Horloge/30)%25;
-    Ec.Affiche(bruitage,NumSp,150,110);
+    Ec.PrintSprite(bruitage,NumSp,150,110);
     NumSp=(Horloge/30)%25;
-    Ec.Affiche(music,NumSp,150,200);
+    Ec.PrintSprite(music,NumSp,150,200);
     NumSp=(Horloge/50)%50;
-    Ec.Affiche(monde,NumSp,180,400);
+    Ec.PrintSprite(monde,NumSp,180,400);
 
     N=(int)(Pref.Volume*10+1)/SDL_MIX_MAXVOLUME;
     NumSp=(Horloge/50)%40+120;
     for(i=0;i<N;i++) {
-      if(i==N-1) Ec.Affiche(locomotive,NumSp,(690-300)/10*i+300,110);
-      else Ec.Affiche(buches,NumSp,(690-300)/10*i+300,110);
+      if(i==N-1) Ec.PrintSprite(locomotive,NumSp,(690-300)/10*i+300,110);
+      else Ec.PrintSprite(buches,NumSp,(690-300)/10*i+300,110);
     }
 
     N=(int)(Pref.VolumeM*10+1)/SDL_MIX_MAXVOLUME;
     for(i=0;i<N;i++) {
-      if(i==N-1) Ec.Affiche(locomotive,NumSp,(690-300)/10*i+300,200);
-      else Ec.Affiche(buches,NumSp,(690-300)/10*i+300,200);
+      if(i==N-1) Ec.PrintSprite(locomotive,NumSp,(690-300)/10*i+300,200);
+      else Ec.PrintSprite(buches,NumSp,(690-300)/10*i+300,200);
     }
 
     switch(PyE) {
     case 3:
-      Affiche_Main(180);
+      Print_Main(180);
       break;
     case 4:
-      Affiche_Main(CentreM);
+      Print_Main(CentreM);
       break;
     case 5:
       PyE=0;
-      Affiche_Main();
+      Print_Main();
       PyE=5;
       break;
     case 6:
       PyE=0;
-      Affiche_Main();
+      Print_Main();
       PyE=6;
       break;
     case 7:
       PyE=1;
-      Affiche_Main();
+      Print_Main();
       PyE=7;
       break;
     case 8:
       PyE=1;
-      Affiche_Main();
+      Print_Main();
       PyE=8;
       break;
     default:
-      Affiche_Main();
+      Print_Main();
     }
     
-    Sourie.Affiche(0);
+    mouse.Print();
     
     // Echange les buffets video
     SDL_RenderPresent(sdlRenderer);
@@ -619,7 +619,7 @@ eMenu Menu::SDLMain_Options(void)
 eMenu Menu::SDLMain_Speed(void)
 {
   // Initialisations Divers
-  Sourie.Init(Menu_Py); // Initialise la sourie
+  mouse.Init(Menu_Py); // Initialise la sourie
   PyE=1;
   
   // Prend les evenements
@@ -640,12 +640,12 @@ eMenu Menu::SDLMain_Speed(void)
 
     SDL_Event event;
     while(SDL_PollEvent(&event)) {
-      Sourie.GetEvent(event,PyE); // Prend les evenements de la sourie
+      mouse.GetEvent(event,PyE); // Prend les evenements de la sourie
       switch(event.type) {
       case SDL_WINDOWEVENT:
 	if(event.window.event==SDL_WINDOWEVENT_ENTER) {
 	  SDL_RenderPresent(sdlRenderer);
-	  Ec.Cls(fmenu);
+	  Ec.CleanSpriteAndScreen(fmenu);
 	}
 	break;
       case SDL_KEYDOWN:
@@ -671,13 +671,13 @@ eMenu Menu::SDLMain_Speed(void)
 	    switch(PyE) {
 	    case 0:
 	      Pref.Difficulte=Easy;
-	      return mJeux;
+	      return mGame;
 	    case 1:
 	      Pref.Difficulte=Normal;
-	      return mJeux;
+	      return mGame;
 	    case 2:
 	      Pref.Difficulte=Hard;
-	      return mJeux;
+	      return mGame;
 	    }
 	    break;
           default:
@@ -697,9 +697,9 @@ eMenu Menu::SDLMain_Speed(void)
     Sleeping();
     
     // Gère l'Affichage
-    Ec.Efface(fmenu);
-    Affiche_Main();
-    Sourie.Affiche(0);
+    Ec.ClearSprite(fmenu);
+    Print_Main();
+    mouse.Print();
     
     // Echange les buffets video
     SDL_RenderPresent(sdlRenderer);
@@ -711,10 +711,10 @@ eMenu Menu::SDLMain_Speed(void)
 
 /*** SDL Main Menu Choix du niveau ***/
 /*************************************/
-eMenu Menu::SDLMain_Niveau(void)
+eMenu Menu::SDLMain_Level(void)
 {
   // Initialisations Divers
-  Sourie.Init(Menu_Py); // Initialise la sourie
+  mouse.Init(Menu_Py); // Initialise la sourie
   PyE=0;
   Niv=Pref.NiveauMax;
   Pref.Niveau=0;
@@ -744,7 +744,7 @@ eMenu Menu::SDLMain_Niveau(void)
   
     SDL_Event event;
     while(SDL_PollEvent(&event)) {
-      Sourie.GetEvent(event,PyE); // Prend les evenements de la sourie
+      mouse.GetEvent(event,PyE); // Prend les evenements de la sourie
       switch(event.type) {
       case SDL_WINDOWEVENT:
 	if(event.window.event==SDL_WINDOWEVENT_ENTER) {
@@ -812,25 +812,25 @@ eMenu Menu::SDLMain_Niveau(void)
     Sleeping();
     
     // Gère l'Affichage
-    Ec.Efface(fmenu);
+    Ec.ClearSprite(fmenu);
 
     // Affiche les flèches
     if(Niv>0) {
-      if(PyE==3) Ec.Affiche(fleches,2,330,380);
-      else Ec.Affiche(fleches,1,330,380);
+      if(PyE==3) Ec.PrintSprite(fleches,2,330,380);
+      else Ec.PrintSprite(fleches,1,330,380);
     }
-    else Ec.Affiche(fleches,0,330,380);
+    else Ec.PrintSprite(fleches,0,330,380);
     
     if(Niv<Pref.NiveauMax) {
-      if(PyE==4) Ec.Affiche(fleches,5,470,380);
-      else Ec.Affiche(fleches,4,470,380);
+      if(PyE==4) Ec.PrintSprite(fleches,5,470,380);
+      else Ec.PrintSprite(fleches,4,470,380);
     }
-    else Ec.Affiche(fleches,3,470,380);
+    else Ec.PrintSprite(fleches,3,470,380);
     
     AfficheChiffre(400,380,Niv+1);
     
-    if(PyE!=3 && PyE!=4) Affiche_Main();
-    Sourie.Affiche(0);
+    if(PyE!=3 && PyE!=4) Print_Main();
+    mouse.Print();
     
     // Echange les buffets video
     SDL_RenderPresent(sdlRenderer);
@@ -850,7 +850,7 @@ eMenu Menu::SDLMain_HR(void)
   SDL_Rect Position;
 
   // InitialisationsDivers
-  Sourie.Init(Menu_Py); // Initialise la sourie
+  mouse.Init(Menu_Py); // Initialise la sourie
   PyE=rand()%2;
   
   // Choix de la question N1=reponse
@@ -933,7 +933,7 @@ eMenu Menu::SDLMain_HR(void)
 */
     SDL_Event event;
     while(SDL_PollEvent(&event)) {
-      Sourie.GetEvent(event,PyE); // Prend les evenements de la sourie
+      mouse.GetEvent(event,PyE); // Prend les evenements de la sourie
       switch(event.type) {
       case SDL_WINDOWEVENT:
 	if(event.window.event==SDL_WINDOWEVENT_ENTER) {
@@ -944,7 +944,7 @@ eMenu Menu::SDLMain_HR(void)
 	  Sons.Play(sClic);
 	  switch(event.key.keysym.sym) {
 	  case SDLK_ESCAPE:
-	    return mJeux;
+	    return mGame;
 	  case SDLK_UP:
 	    PyE--;
 	    if(PyE<0) PyE=1;
@@ -991,7 +991,7 @@ eMenu Menu::SDLMain_HR(void)
     }
 
     // Test si fini
-    if(Fini!=-1 && Fini<Horloge) return mJeux;
+    if(Fini!=-1 && Fini<Horloge) return mGame;
     
     // Gère les variables
     HorlogeAvant=Horloge;
@@ -999,31 +999,31 @@ eMenu Menu::SDLMain_HR(void)
     Sleeping();
     
     // Gère l'Affichage
-    Ec.Efface(fmenu);
+    Ec.ClearSprite(fmenu);
   
     if(Ordre) {
-      Ec.Affiche(fond_hrr,0,240,492);
+      Ec.PrintSprite(fond_hrr,0,240,492);
       AfficheText(240,492,e_Sprite(T_tart1+N1));
     }
     else {
-      Ec.Affiche(fond_hrr,0,440,492);
+      Ec.PrintSprite(fond_hrr,0,440,492);
       AfficheText(440,492,e_Sprite(T_tart1+N1));
     }
     
     if(Fini==-1) {
       if(Ordre) {
-	Ec.Affiche(fond_hrr,0,440,492);
+	Ec.PrintSprite(fond_hrr,0,440,492);
 	AfficheText(440,492,e_Sprite(T_tart1+N2));
-	if(PyE==0) Affiche_Main(240);
-	else Affiche_Main(440);
+	if(PyE==0) Print_Main(240);
+	else Print_Main(440);
       }
       else {
-	Ec.Affiche(fond_hrr,0,240,492);
+	Ec.PrintSprite(fond_hrr,0,240,492);
 	AfficheText(240,492,e_Sprite(T_tart1+N2));
-	if(PyE==1) Affiche_Main(240);
-	else Affiche_Main(440);
+	if(PyE==1) Print_Main(240);
+	else Print_Main(440);
       }      
-      Sourie.Affiche(0);
+      mouse.Print();
     }
     
     // Echange les buffets video
@@ -1037,12 +1037,12 @@ eMenu Menu::SDLMain_HR(void)
 
 /*** SDL Main dans la partie ***/
 /*******************************/
-void Menu::Affiche_InGame(void)
+void Menu::Print_InGame(void)
 {
   SDL_Rect Position;
   
   // InitialisationsDivers
-  Sourie.Init(Menu_Py); // Initialise la sourie
+  mouse.Init(Menu_Py); // Initialise la sourie
   //PyE=0;
   
   // Prend l'image du fond et fait l'affichage
@@ -1066,7 +1066,7 @@ void Menu::Affiche_InGame(void)
 /***********************************/
 eMenu Menu::SDLMain_InGame(void)
 {
-  Affiche_InGame();
+  Print_InGame();
   
   // Prend les evenements
   do {
@@ -1074,7 +1074,7 @@ eMenu Menu::SDLMain_InGame(void)
     //Affiche_InGame();
     SDL_Event event;
     while(SDL_PollEvent(&event)) {
-      Sourie.GetEvent(event,PyE); // Prend les evenements de la sourie
+      mouse.GetEvent(event,PyE); // Prend les evenements de la sourie
       switch(event.type) {
       case SDL_WINDOWEVENT:
 	if(event.window.event==SDL_WINDOWEVENT_ENTER) {
@@ -1087,7 +1087,7 @@ eMenu Menu::SDLMain_InGame(void)
 	  Sons.Play(sClic);
 	  switch(event.key.keysym.sym) {
 	  case SDLK_ESCAPE:
-	    return mJeux;
+	    return mGame;
 	  case SDLK_UP:
 	    PyE--;
 	    if(PyE<0) PyE=2;
@@ -1104,7 +1104,7 @@ eMenu Menu::SDLMain_InGame(void)
 	  case SDLK_KP_ENTER:
 	    switch(PyE) {
 	    case 0:
-	      return mJeux;
+	      return mGame;
 	    case 1:
 	      SDLMain_Options();
 	      //Affiche_InGame();
@@ -1131,10 +1131,10 @@ eMenu Menu::SDLMain_InGame(void)
     Sleeping();
     
     // Gère l'Affichage
-    Ec.Efface(fmenu);
-    Affiche_InGame();
-    Affiche_Main(340);
-    Sourie.Affiche(0);
+    Ec.ClearSprite(fmenu);
+    Print_InGame();
+    Print_Main(340);
+    mouse.Print();
     
     // Echange les buffets video
     SDL_RenderPresent(sdlRenderer);
@@ -1171,7 +1171,7 @@ eMenu Menu::SDLMain_Score(bool EditScore)
   }
   
   // Met la sourie sur tous l'ecran
-  Sourie.Init(Menu_Py); // Initialise la sourie
+  mouse.Init(Menu_Py); // Initialise la sourie
   Menu_Py[0].DepX=0;
   Menu_Py[0].DepY=0;
   Menu_Py[0].FinX=800;
@@ -1209,12 +1209,12 @@ eMenu Menu::SDLMain_Score(bool EditScore)
     // Efface le fond
     SDL_Event event;
     while(SDL_PollEvent(&event)) {
-      Sourie.GetEvent(event,PyE); // Prend les evenements de la sourie
+      mouse.GetEvent(event,PyE); // Prend les evenements de la sourie
       switch(event.type) {
       case SDL_WINDOWEVENT:
 	if(event.window.event==SDL_WINDOWEVENT_ENTER) {
 	  SDL_RenderPresent(sdlRenderer);
-	  Ec.Cls(fmenu);
+	  Ec.CleanSpriteAndScreen(fmenu);
 	}
 	break;
       case SDL_KEYDOWN: // Prend un touche au clavier
@@ -1265,8 +1265,8 @@ eMenu Menu::SDLMain_Score(bool EditScore)
       AfficheString(140,120+NEdit*(360/7),Pref.Sco[NEdit].Name);
       
       i=(Horloge/50)%20; // Affiche les curseurs
-      Ec.Affiche(fleche_gauche,i,110,120+NEdit*(360/7));
-      Ec.Affiche(fleche_droite,i,180+LongueurString(Pref.Sco[NEdit].Name),120+NEdit*(360/7));
+      Ec.PrintSprite(fleche_gauche,i,110,120+NEdit*(360/7));
+      Ec.PrintSprite(fleche_droite,i,180+LongueurString(Pref.Sco[NEdit].Name),120+NEdit*(360/7));
 
     }
   
@@ -1280,15 +1280,15 @@ eMenu Menu::SDLMain_Score(bool EditScore)
 
 /*** Affiche le menu Principale ***/
 /**********************************/
-void Menu::Affiche_Main(int Centre)
+void Menu::Print_Main(int Centre)
 {
   int NumSp=(Horloge/50)%20;
   int x1=Menu_Py[PyE].DepX-25;
   int x2=(Centre-x1)+Centre;
   int y=(Menu_Py[PyE].FinY+Menu_Py[PyE].DepY)/2;
   
-  Ec.Affiche(fleche_gauche,NumSp,x1,y);
-  Ec.Affiche(fleche_droite,NumSp,x2,y);
+  Ec.PrintSprite(fleche_gauche,NumSp,x1,y);
+  Ec.PrintSprite(fleche_droite,NumSp,x2,y);
 }
 
 /*** Centre les flèches sur le boutton ***/
@@ -1300,6 +1300,6 @@ void Menu::Affiche_Main_Centre()
   int x2=Menu_Py[PyE].FinX+5;
   int y=(Menu_Py[PyE].FinY+Menu_Py[PyE].DepY)/2;
   
-  Ec.Affiche(fleche_gauche,NumSp,x1,y);
-  Ec.Affiche(fleche_droite,NumSp,x2,y);
+  Ec.PrintSprite(fleche_gauche,NumSp,x1,y);
+  Ec.PrintSprite(fleche_droite,NumSp,x2,y);
 }

@@ -47,13 +47,13 @@ char Titre[]="Li-ri V3.0.1";
 
 Sprite *Sprites=NULL; // Pointe sur les sprites
 int NSprites=0; // Nombre de sprites en mémoire
-Ecran Ec;             // Pointe sur les 2 buffets vidéo
+Screen Ec;             // Pointe sur les 2 buffets vidéo
 sPreference Pref;     // Tableau des préférences.
-Jeux Jeu;             // Gère le jeu
-Mouse Sourie;         // Gère les mouvements de sourie
-Menu MenuPrincipale;  // Gère les menus
-Tableau Niveau;       // Gère les niveaux
-Editeur Edit;         // Gère le menu de l'éditeur
+Game game;             // Gère le jeu
+Mouse mouse;         // Gère les mouvements de sourie
+Menu MainMenu;  // Gère les menus
+Level level;       // Gère les niveaux
+Editor Edit;         // Gère le menu de l'éditeur
 Audio Sons;           // Gère les sons
 
 int Horloge=0; // Horloges du jeu
@@ -131,45 +131,45 @@ int main(int narg,char *argv[])
   // Chargement des sprites
   Sons.Init();
   if(LoadSprites()==false) exit(-1);
-  if(Niveau.Load()==false) exit(-1);
+  if(level.Load()==false) exit(-1);
 
   Sons.PlayMusic();
-  Sourie.InitStart();
+  mouse.InitStart();
 
   // Initialise l'horloge et le hazard
   HorlogeAvant=Horloge=SDL_GetTicks();
   srand(SDL_GetTicks());
 
   // Si pas de langues demande la langue
-  if(Pref.Langue==-1) MenuPrincipale.SDLMain_Langue();
+  if(Pref.Langue==-1) MainMenu.SDLMain_Language();
   
   // Gère les menus
   do {
     switch(RetMenu) {
     case mMenu:
-      RetM=MenuPrincipale.SDLMain();
+      RetM=MainMenu.SDLMain();
       break;
     case mLangue:
-      RetM=MenuPrincipale.SDLMain_Langue();
+      RetM=MainMenu.SDLMain_Language();
       break;
     case mOption:
-      RetM=MenuPrincipale.SDLMain_Options();
+      RetM=MainMenu.SDLMain_Options();
       break;
     case mScoreEdit:
-      RetM=MenuPrincipale.SDLMain_Score(true);
+      RetM=MainMenu.SDLMain_Score(true);
       break;
     case mScore:
-      RetM=MenuPrincipale.SDLMain_Score();
+      RetM=MainMenu.SDLMain_Score();
       break;
     case mMenuSpeed:
-      RetM=MenuPrincipale.SDLMain_Speed();
+      RetM=MainMenu.SDLMain_Speed();
       break;
     case mMenuNiveau:
-      RetM=MenuPrincipale.SDLMain_Niveau();
+      RetM=MainMenu.SDLMain_Level();
       break;
-    case mJeux:
+    case mGame:
       Sons.LoadMusic(1);
-      RetM=Jeu.SDLMain();
+      RetM=game.SDLMain();
       Sons.LoadMusic(0);
       break;
     case mEdit:

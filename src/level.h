@@ -34,7 +34,7 @@ struct s_Deco {
   int y;
 };
 
-struct s_Tableau {
+struct s_Level {
   unsigned char T[LT*HT]; // Définition du circuit et des options
   int DepX;  // Départ de la locomotive
   int DepY;
@@ -45,11 +45,11 @@ struct s_Tableau {
 
 /*** Définition de la classe ***/
 /*******************************/
-class Tableau
+class Level
 {
  public:
-  Tableau(void);
-  ~Tableau(void);
+  Level(void);
+  ~Level(void);
 
   /*** Fonctions ***/
   bool Load(void); // charge les tableaux
@@ -60,7 +60,7 @@ class Tableau
 
   /*** Variables ***/
   int N; // Nombre de niveau
-  s_Tableau T[MAX_N_LEVEL_IN_MEMORY]; // Pointe sur les tableaux
+  s_Level T[MAX_N_LEVEL_IN_MEMORY]; // Pointe sur les tableaux
 };
 
 #endif

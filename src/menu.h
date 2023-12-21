@@ -40,25 +40,24 @@ class Menu {
   /*** Fonctions ***/
   /*****************/
   eMenu SDLMain(void); // Menu principale
-  eMenu SDLMain_Langue(void);  // Menu du choix de la langue
+  eMenu SDLMain_Language(void);  // Menu du choix de la langue
   void InitMain_Options(void);   // Prépare l'affichage du menu options
   eMenu SDLMain_Options(void);  // Menu du choix des options
   eMenu SDLMain_Speed(void);  // Menu du choix de la difficulté
-  eMenu SDLMain_Niveau(void); // Choisi le niveau
+  eMenu SDLMain_Level(void); // Choisi le niveau
 #ifndef DCHILDREN
-  eMenu SDLMain_HR(void);      // Menu de question sur les doits de l'homme
+  eMenu SDLMain_HR(void);      // Menu de question sur les droits de l'homme
 #endif
-  void Affiche_InGame(void);  // Affiche le menu InGame
+  void Print_InGame(void);  // Affiche le menu InGame
   eMenu SDLMain_InGame(void); // Menu dans le jeu
   eMenu SDLMain_Score(bool EditScore=false);  // Affiche les scores
   
-  void Affiche_Main(int Centre=400);      // Affiche le menu principale
+  void Print_Main(int Centre=400);      // Affiche le menu principale
   void Affiche_Main_Centre(void);          // Centre les flèches sur le bouton
 
   /*** Variables ***/
   /*****************/
   int PyE; // Position du curseur dans le menu
-  int NumEc; // Numéro de l'ecran en cours d'affichage
   int Niv;
   int CentreM; // Variable pour le menu options
 };
