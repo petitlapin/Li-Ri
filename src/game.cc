@@ -124,7 +124,7 @@ eMenu Game::SDLMain(void)
 	break;
       case SDL_KEYDOWN:
 	if(event.key.state==SDL_PRESSED) {
-	  if(event.key.keysym.sym==SDLK_ESCAPE) {
+	  if(event.key.keysym.sym==SDLK_ESCAPE || event.key.keysym.sym==SDLK_AC_BACK) {
 	    mRet=MainMenu.SDLMain_InGame();
 	    if(mRet==mGame) {
 	      DrawLevel(NumN);
