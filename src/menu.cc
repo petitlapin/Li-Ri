@@ -141,6 +141,7 @@ eMenu Menu::SDLMain(void)
 	  Sons.Play(sClic);
 	  switch(event.key.keysym.sym) {
 	  case SDLK_ESCAPE:
+	  case SDLK_AC_BACK: // Android back button
 	    return mQuit;
 	  case SDLK_UP:
 	    PyE--;
@@ -267,6 +268,7 @@ eMenu Menu::SDLMain_Language(void)
 	  Sons.Play(sClic);
 	  switch(event.key.keysym.sym) {
 	  case SDLK_ESCAPE:
+	  case SDLK_AC_BACK: // Android back button
 	    if(Pref.Langue==-1) Pref.Langue=PyE;
 	    return mMenu;
 	  case SDLK_UP:
@@ -415,6 +417,7 @@ eMenu Menu::SDLMain_Options(void)
 	  Sons.Play(sClic);
 	  switch(event.key.keysym.sym) {
 	  case SDLK_ESCAPE:
+	  case SDLK_AC_BACK: // Android back button
 	    return mMenu;
 	  case SDLK_LEFT:
 	    switch(PyE) {
@@ -422,7 +425,6 @@ eMenu Menu::SDLMain_Options(void)
 	      if(Pref.FullScreen==false) {
 		Pref.FullScreen=true;
 		ChangeVideo();
-		//InitMain_Options();
 		PyE=2;
 	      }
 	      break;
@@ -449,7 +451,6 @@ eMenu Menu::SDLMain_Options(void)
 	      if(Pref.FullScreen==true) {
 		Pref.FullScreen=false;
 		ChangeVideo();
-		//InitMain_Options();
 		PyE=2;
 	      }
 	      break;
@@ -491,12 +492,10 @@ eMenu Menu::SDLMain_Options(void)
 	    case 2: // Type d'affichage
 	      Pref.FullScreen=(Pref.FullScreen+1)&1;
 	      ChangeVideo();
-	      //InitMain_Options();
 	      PyE=2;
 	      break;
 	    case 3: // Choix de la langue
 	      SDLMain_Language();
-	      //InitMain_Options();
 	      PyE=3;
 	      break;
 	    case 5: // Diminue volume sons
@@ -653,7 +652,8 @@ eMenu Menu::SDLMain_Speed(void)
 	  Sons.Play(sClic);
 	  switch(event.key.keysym.sym) {
 	  case SDLK_ESCAPE:
-	    return mMenu;
+          case SDLK_AC_BACK: // Android back button
+            return Niv==0 ? mMenu : mMenuNiveau;
 	  case SDLK_UP:
 	    PyE--;
 	    if(PyE<0) PyE=2;
@@ -756,6 +756,7 @@ eMenu Menu::SDLMain_Level(void)
 	  Sons.Play(sClic);
 	  switch(event.key.keysym.sym) {
 	  case SDLK_ESCAPE:
+          case SDLK_AC_BACK: // Android back button
 	    return mMenu;
 	  case SDLK_UP:
 	    PyE--;
@@ -944,6 +945,7 @@ eMenu Menu::SDLMain_HR(void)
 	  Sons.Play(sClic);
 	  switch(event.key.keysym.sym) {
 	  case SDLK_ESCAPE:
+          case SDLK_AC_BACK: // Android back button
 	    return mGame;
 	  case SDLK_UP:
 	    PyE--;
@@ -1071,7 +1073,6 @@ eMenu Menu::SDLMain_InGame(void)
   // Prend les evenements
   do {
     SDL_RenderClear(sdlRenderer);
-    //Affiche_InGame();
     SDL_Event event;
     while(SDL_PollEvent(&event)) {
       mouse.GetEvent(event,PyE); // Prend les evenements de la sourie
@@ -1087,6 +1088,7 @@ eMenu Menu::SDLMain_InGame(void)
 	  Sons.Play(sClic);
 	  switch(event.key.keysym.sym) {
 	  case SDLK_ESCAPE:
+          case SDLK_AC_BACK: // Android back button
 	    return mGame;
 	  case SDLK_UP:
 	    PyE--;
@@ -1107,7 +1109,6 @@ eMenu Menu::SDLMain_InGame(void)
 	      return mGame;
 	    case 1:
 	      SDLMain_Options();
-	      //Affiche_InGame();
 	      PyE=1;
 	      break;
 	    case 2:
