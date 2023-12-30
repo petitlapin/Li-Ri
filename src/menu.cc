@@ -624,6 +624,7 @@ eMenu Menu::SDLMain_Speed(void)
   
   // Prend les evenements
   do {
+    Ec.CleanSpriteAndScreen(fmenu);
     SDL_RenderClear(sdlRenderer);
     // Prend l'image du fond et fait l'affichage 
     Sprites[fond_menu].Affiche(400,300,0,Sprites[fmenu].Image[0]);
@@ -645,7 +646,6 @@ eMenu Menu::SDLMain_Speed(void)
       case SDL_WINDOWEVENT:
 	if(event.window.event==SDL_WINDOWEVENT_ENTER) {
 	  SDL_RenderPresent(sdlRenderer);
-	  Ec.CleanSpriteAndScreen(fmenu);
 	}
 	break;
       case SDL_KEYDOWN:
@@ -1184,6 +1184,7 @@ eMenu Menu::SDLMain_Score(bool EditScore)
   // Prend les evenements
   do {
     // Efface le fond
+    Ec.CleanSpriteAndScreen(fmenu);
     SDL_RenderClear(sdlRenderer);
     // Prend l'image du fond et fait l'affichage 
     Sprites[fond_menu].Affiche(400,300,0,Sprites[fmenu].Image[0]);
@@ -1214,7 +1215,6 @@ eMenu Menu::SDLMain_Score(bool EditScore)
       case SDL_WINDOWEVENT:
 	if(event.window.event==SDL_WINDOWEVENT_ENTER) {
 	  SDL_RenderPresent(sdlRenderer);
-	  Ec.CleanSpriteAndScreen(fmenu);
 	}
 	break;
       case SDL_KEYDOWN: // Prend un touche au clavier
