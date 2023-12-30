@@ -1180,8 +1180,9 @@ eMenu Menu::SDLMain_Score(bool EditScore)
   Menu_Py[0].Py=0;
   Menu_Py[0].Valide=true;
   Menu_Py[1].DepX=-1;
-  
-  
+
+  if(EditScore) SDL_StartTextInput();
+
   // Prend les evenements
   do {
     // Efface le fond
@@ -1229,6 +1230,7 @@ eMenu Menu::SDLMain_Score(bool EditScore)
 	  case SDLK_ESCAPE: // Valide l'entrée
 	  case SDLK_RETURN:
 	  case SDLK_KP_ENTER:
+ 	    if(EditScore) SDL_StopTextInput();
 	    return mMenu;
 	  case SDLK_BACKSPACE: // Fait un retour de chariot
 	    if(PosCur) {
@@ -1236,23 +1238,20 @@ eMenu Menu::SDLMain_Score(bool EditScore)
 	      Pref.Sco[NEdit].Name[PosCur]=0;
 	    }
 	    break;
-	  default: // Prend les touches
-	    key=event.key.keysym.sym&0x7F; // Prend le caracataire correspondant à la touche
-	    if(PosCur<79 && CharExiste(key)==true) { // Prend le caractaire
-	      Pref.Sco[NEdit].Name[PosCur]=key;
-	      Pref.Sco[NEdit].Name[PosCur+1]=0;
-	      if(LongueurString(Pref.Sco[NEdit].Name)<LSCOREMAX) { // Si longueur encore Ok
-		PosCur++;
-	      }
-	      else {
-		Pref.Sco[NEdit].Name[PosCur]=0; // Ne valide pas le caracataire
-	      }
-	    }
+	  default:
 	    break;
 	  }
 	}
 	break;
+      case SDL_TEXTINPUT:
+        /* Add new text onto the end of our text */
+          if(LongueurString(Pref.Sco[NEdit].Name)<LSCOREMAX && PosCur < 79 && CharExiste(event.text.text[0])) {
+          PosCur+=strlen(event.text.text);
+          strcat(Pref.Sco[NEdit].Name, event.text.text);
+        }
+        break;
       case SDL_QUIT:
+	if(EditScore) SDL_StopTextInput();
 	return mQuit;
       }
     }
@@ -1275,7 +1274,8 @@ eMenu Menu::SDLMain_Score(bool EditScore)
     SDL_RenderPresent(sdlRenderer);
     
   } while(true);
-  
+
+  if(EditScore) SDL_StopTextInput();
   return mQuit;
 }
 

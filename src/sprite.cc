@@ -237,6 +237,7 @@ int LongueurString(char *Texte)
 /*************************************/
 bool CharExiste(char C)
 {
+  if((int)(C) < 0) return false;
   if(C==' ') return true;
   if(TableTexte[(int)(C)]!=-1) return true;
   return false;
@@ -262,7 +263,8 @@ void AfficheString(int x,int y,char *Texte,SDL_Texture *Fond)
 {
   int i=0;
   int Le;
-  
+
+  // TODO Handle here unicode
   while(Texte[i]!=0) {
     Le=(int)(Texte[i]);
     
