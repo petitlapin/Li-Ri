@@ -85,9 +85,7 @@ eMenu Editor::SDLMain(int NumNiv)
                     if (event.key.keysym.sym == SDLK_ESCAPE) {
                         return mMenu;
                     }
-                    else {
-                        PrendTouche(event.key.keysym.sym);
-                    }
+                    PrendTouche(event.key.keysym.sym);
                 }
                 break;
             case SDL_MOUSEBUTTONDOWN:
