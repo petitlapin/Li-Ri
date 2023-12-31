@@ -21,8 +21,8 @@
 //    with this program; if not, write to the Free Software Foundation, Inc.,
 //    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-#ifndef _PREFERENCE_DOM_
-#define _PREFERENCE_DOM_
+#ifndef PREFERENCE_DOM_
+#define PREFERENCE_DOM_
 
 /*** Défintitions ***/
 #define VITESSE_MAX 180.0

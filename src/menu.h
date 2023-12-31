@@ -21,8 +21,8 @@
 //    with this program; if not, write to the Free Software Foundation, Inc.,
 //    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-#ifndef _MENU_DOM_
-#define _MENU_DOM_
+#ifndef MENU_DOM_
+#define MENU_DOM_
 
 #include "preference.h"
 

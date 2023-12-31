@@ -21,8 +21,8 @@
 //    with this program; if not, write to the Free Software Foundation, Inc.,
 //    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-#ifndef _LOCO_DOM_
-#define _LOCO_DOM_
+#ifndef LOCO_DOM_
+#define LOCO_DOM_
 
 #include "sprite.h"
 

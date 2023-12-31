@@ -21,8 +21,8 @@
 //    with this program; if not, write to the Free Software Foundation, Inc.,
 //    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-#ifndef _MOUSE_DOM_
-#define _MOUSE_DOM_
+#ifndef MOUSE_DOM_
+#define MOUSE_DOM_
 
 #include <SDL2/SDL.h>
 
