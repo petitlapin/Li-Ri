@@ -55,11 +55,11 @@ public:
     void NextMusic(); // Passe à la music suivante
 
     void Play(eSon); // Joue un son
-    void PlayMusic(); // Joue la music
+    void PlayMusic() const; // Joue la music
 
-    void PauseMusic(bool Etat); // Met ou no la music en pause
+    void PauseMusic(bool Etat) const; // Met ou no la music en pause
 
-    void DoVolume(); // Valide les volumes audio
+    void DoVolume() const; // Valide les volumes audio
 
     /*** Variables ***/
     int N { 0 }; // Nombre d'échantillon audio

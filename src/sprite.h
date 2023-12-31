@@ -197,9 +197,9 @@ public:
 
     /*** Fonctions ***/
     bool Load(unsigned char *Buf, long &P); // Charge les images
-    void Affiche(int X, int Y, int NumSpr, SDL_Texture *Fond = nullptr); // Affiche un sprite
+    void Affiche(int X, int Y, int NumSpr, SDL_Texture *Fond = nullptr) const; // Affiche un sprite
     void AfficheCorde(int dx, int dy, int fx, int fy); // Affiche une corde
-    void Efface(int X, int Y, int NumSpr, SDL_Texture *Fond); // Efface le sprite
+    void Efface(int X, int Y, int NumSpr, SDL_Texture *Fond) const; // Efface le sprite
     bool Nouveau(int Lx, int Ly); // Alloue un nouveau sprite vide sans transparence
     void Delete(); // Efface la mémoire du sprite
 

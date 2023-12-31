@@ -55,7 +55,7 @@ public:
     void InitStart(); // Initialise les coordonnées de la sourie
     void Init(struct mPy *TablePy, struct mButton *B = nullptr); // Initialise la sourie
     void GetEvent(SDL_Event &event, int &Py); // Prend les evenements
-    void Print(); // Affiche le curseur
+    void Print() const; // Affiche le curseur
 
     int Px { 400 }, Py { 300 }; // Mouse screen position
     struct mPy *tPy; // Pointe sur coordonées pour Py
