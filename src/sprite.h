@@ -21,8 +21,8 @@
 //    with this program; if not, write to the Free Software Foundation, Inc.,
 //    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-#ifndef _SPRITE_DOM_
-#define _SPRITE_DOM_
+#ifndef SPRITE_DOM_
+#define SPRITE_DOM_
 
 #include <SDL2/SDL.h>
 

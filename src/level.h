@@ -21,8 +21,8 @@
 //    with this program; if not, write to the Free Software Foundation, Inc.,
 //    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-#ifndef _LEVEL_DOM_
-#define _LEVEL_DOM_
+#ifndef LEVEL_DOM_
+#define LEVEL_DOM_
 
 #include "preference.h"
 

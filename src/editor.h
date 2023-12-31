@@ -21,8 +21,8 @@
 //    with this program; if not, write to the Free Software Foundation, Inc.,
 //    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-#ifndef _EDITOR_DOM_
-#define _EDITOR_DOM_
+#ifndef EDITOR_DOM_
+#define EDITOR_DOM_
 
 #include "preference.h"
 #include "sprite.h"
