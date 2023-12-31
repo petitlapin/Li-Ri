@@ -38,8 +38,8 @@ public:
     /*** Fonctions ***/
     /*****************/
     eMenu SDLMain(); // Boucle principale
-    bool Load(int NiveauN); // Charge un tableau
-    bool DrawLevel(int NiveauN); // Dessine le niveau
+    bool Load(int NivN); // Charge un tableau
+    bool DrawLevel(int NivN); // Dessine le niveau
     void PrendTouche(int Touche); // Prend les touches enfoncées
 
     void TourneFleche(); // Fait tourner la fleche d'un simple clic.
