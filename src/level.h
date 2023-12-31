@@ -50,12 +50,12 @@ struct s_Level
 class Level
 {
 public:
-    Level(void);
-    ~Level(void);
+    Level();
+    ~Level();
 
     /*** Fonctions ***/
-    bool Load(void); // charge les tableaux
-    bool Save(void); // Sauve les tableaux
+    bool Load(); // charge les tableaux
+    bool Save(); // Sauve les tableaux
     void Del(int Num); // efface un tableau
     void Ins(int Num); // Insert un tableau vièrge
     void Clear(int Num); // Vide un tableau

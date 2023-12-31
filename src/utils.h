@@ -33,8 +33,8 @@ public:
 
     static void GetPath(char *Name); // Add the path to the filename depending on the OS (sprites, levels)
 
-    static bool LoadPref(void); // Load preferences
-    static void SauvePref(void); // Save preferences
+    static bool LoadPref(); // Load preferences
+    static void SauvePref(); // Save preferences
 };
 
 #endif

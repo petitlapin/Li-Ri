@@ -174,9 +174,9 @@ enum e_Sprite {
 
 /*** Fonctions ***/
 /*****************/
-void AfficheChargeur(void); // Affiche le chargeur sur la page de départ
-bool LoadLangue(void); // Charge les sprites d'une langue
-bool LoadSprites(void); // Charge tous les sprites
+void AfficheChargeur(); // Affiche le chargeur sur la page de départ
+bool LoadLangue(); // Charge les sprites d'une langue
+bool LoadSprites(); // Charge tous les sprites
 
 int LongueurChiffre(int Nombre); // Retourne la longueur en pixels d'un nombre
 int LongueurString(char *Texte); // Retourne la longueur en pixels d'un texte
@@ -192,8 +192,8 @@ void AfficheText(int x, int y, e_Sprite Text, SDL_Texture *Fond = NULL); // Affi
 class Sprite
 {
 public:
-    Sprite(void);
-    ~Sprite(void);
+    Sprite();
+    ~Sprite();
 
     /*** Fonctions ***/
     bool Load(unsigned char *Buf, long &P); // Charge les images
@@ -201,7 +201,7 @@ public:
     void AfficheCorde(int dx, int dy, int fx, int fy); // Affiche une corde
     void Efface(int X, int Y, int NumSpr, SDL_Texture *Fond); // Efface le sprite
     bool Nouveau(int Lx, int Ly); // Alloue un nouveau sprite vide sans transparence
-    void Delete(void); // Efface la mémoire du sprite
+    void Delete(); // Efface la mémoire du sprite
 
     /*** Variables ***/
     int N; // Nombre de sprite

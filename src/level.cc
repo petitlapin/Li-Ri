@@ -28,7 +28,7 @@
 
 /*** Constructeurs ***/
 /*********************/
-Level::Level(void) :
+Level::Level() :
     N(0)
 {
     int i;
@@ -36,13 +36,13 @@ Level::Level(void) :
         Clear(i);
 }
 
-Level::~Level(void)
+Level::~Level()
 {
 }
 
 /*** Charge les tableaux ***/
 /***************************/
-bool Level::Load(void)
+bool Level::Load()
 {
     unsigned char *Buf;
     long L, P = 2;
@@ -80,7 +80,7 @@ bool Level::Load(void)
 
 /*** Sauve les tableaux ***/
 /**************************/
-bool Level::Save(void)
+bool Level::Save()
 {
     unsigned char *Buf;
     long P = 2;

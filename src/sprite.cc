@@ -303,12 +303,12 @@ void AfficheText(int x, int y, e_Sprite Text, SDL_Texture *Fond)
 
 /*** Constructeur ***/
 /********************/
-Sprite::Sprite(void) :
+Sprite::Sprite() :
     N(0), Image(NULL), Dim(NULL)
 {
 }
 
-Sprite::~Sprite(void)
+Sprite::~Sprite()
 {
     if (N) {
         for (int i = 0; i < N; i++) {
@@ -483,7 +483,7 @@ bool Sprite::Nouveau(int Lx, int Ly)
 
 /*** Efface le sprite ***/
 /************************/
-void Sprite::Delete(void)
+void Sprite::Delete()
 {
     if (N) {
         for (int i = 0; i < N; i++) {

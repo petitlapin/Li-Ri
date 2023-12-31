@@ -36,19 +36,19 @@ extern SDL_Window *sdlWindow;
 
 /*** Constructeur et Destructeur ***/
 /***********************************/
-Mouse::Mouse(void)
+Mouse::Mouse()
 {
     Px = 400;
     Py = 300;
 }
 
-Mouse::~Mouse(void)
+Mouse::~Mouse()
 {
 }
 
 /*** Initialise la sourie ***/
 /****************************/
-void Mouse::InitStart(void)
+void Mouse::InitStart()
 {
     // Initialise les coordonnées de la sourie
     Px = 400;

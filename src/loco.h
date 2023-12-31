@@ -50,8 +50,8 @@ struct s_PosWagon
 class Loco
 {
 public:
-    Loco(void);
-    ~Loco(void);
+    Loco();
+    ~Loco();
 
     /*** Fonctions ***/
     void Init(int Pos, int Direction); // Initialise la loco sur le tableau
@@ -60,7 +60,7 @@ public:
     void Avance(int Dureems, long DureeJeu, int *Touche, int *Tableau); // Fait avancer la locomotive
     void DoFleche(int *Tableau, int *Touche); // Recherche la position de la futur intersection
     bool TestDir(int FuturDir, int *Tableau); // Test si une direction est possible
-    void AddLoco(void); // Ajoute une loco au azard
+    void AddLoco(); // Ajoute une loco au azard
 
     /*** Fonctions privées ***/
     inline bool Go(int FuturDirection); // Fait avancer le tableau (retourne true si tourne)

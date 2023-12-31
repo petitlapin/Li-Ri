@@ -49,10 +49,10 @@ struct mButton
 class Mouse
 {
 public:
-    Mouse(void);
-    ~Mouse(void);
+    Mouse();
+    ~Mouse();
 
-    void InitStart(void); // Initialise les coordonnées de la sourie
+    void InitStart(); // Initialise les coordonnées de la sourie
     void Init(struct mPy *tPy, struct mButton *B = NULL); // Initialise la sourie
     void GetEvent(SDL_Event &event, int &Py); // Prend les evenements
     void Print(); // Affiche le curseur

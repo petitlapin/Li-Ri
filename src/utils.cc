@@ -240,7 +240,7 @@ void Utils::GetPath(char *Path)
 
 /*** Charge les préferences ***/
 /******************************/
-bool Utils::LoadPref(void)
+bool Utils::LoadPref()
 {
     int L;
     unsigned char *Provi;
@@ -265,7 +265,7 @@ bool Utils::LoadPref(void)
 
 /*** Sauve les preferences ***/
 /*****************************/
-void Utils::SauvePref(void)
+void Utils::SauvePref()
 {
     char PathPref[512];
     char *PrefFolder = SDL_GetPrefPath("Li-Ri", "Li-Ri");

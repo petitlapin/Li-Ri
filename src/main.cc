@@ -65,7 +65,7 @@ char DefPath[256]; // Chemin par defaut dans arg
 
 /*** Initialise les preferences ***/
 /**********************************/
-void InitPref(void)
+void InitPref()
 {
 #ifdef __unix__
     DefPath[0] = 0;
