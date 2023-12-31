@@ -22,7 +22,7 @@
 //    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 #include <cmath>
-#include <stdlib.h>
+#include <cstdlib>
 #include "preference.h"
 #include "loco.h"
 #include "audio.h"
