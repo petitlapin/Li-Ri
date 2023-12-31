@@ -34,18 +34,6 @@ extern int Horloge;
 extern Screen Ec;
 extern SDL_Window *sdlWindow;
 
-/*** Constructeur et Destructeur ***/
-/***********************************/
-Mouse::Mouse()
-{
-    Px = 400;
-    Py = 300;
-}
-
-Mouse::~Mouse()
-{
-}
-
 /*** Initialise la sourie ***/
 /****************************/
 void Mouse::InitStart()

@@ -49,10 +49,6 @@ Loco::Loco()
     Init(LT / 2 + HT / 2 * LT, D_Droite);
 }
 
-Loco::~Loco()
-{
-}
-
 /*** Initialise la locomotive ***/
 /********************************/
 void Loco::Init(int Pos, int Direction)

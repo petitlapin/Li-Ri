@@ -33,7 +33,7 @@ class Game
 {
 public:
     Game();
-    ~Game();
+    ~Game() = default;
 
     /*** Fonctions ***/
     /*****************/
@@ -58,7 +58,7 @@ public:
 
     Loco Lo; // Gère la locomotive
 
-    int NumSS; // Numéro du Screen shot
+    int NumSS { 0 }; // Numéro du Screen shot
     bool Help; // Si doit affiche les fleches d'aide
 };
 #endif

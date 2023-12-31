@@ -46,7 +46,7 @@ enum eSon {
 class Audio
 {
 public:
-    Audio();
+    Audio() = default;
     ~Audio();
 
     /*** Fonctions ***/
@@ -62,11 +62,11 @@ public:
     void DoVolume(); // Valide les volumes audio
 
     /*** Variables ***/
-    int N; // Nombre d'échantillon audio
-    int NMus; // Numéro de la music en cours
-    int MemoHorloge; // Mémorise l'horloge pour les clics
-    Mix_Chunk **Son; // Pointe sur les sons
-    Mix_Music *Music; // Pointe sur les musics
+    int N { 0 }; // Nombre d'échantillon audio
+    int NMus { 0 }; // Numéro de la music en cours
+    int MemoHorloge { 0 }; // Mémorise l'horloge pour les clics
+    Mix_Chunk **Son { nullptr }; // Pointe sur les sons
+    Mix_Music *Music { nullptr }; // Pointe sur les musics
 };
 
 #endif

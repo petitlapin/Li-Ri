@@ -28,16 +28,11 @@
 
 /*** Constructeurs ***/
 /*********************/
-Level::Level() :
-    N(0)
+Level::Level()
 {
     int i;
     for (i = 0; i < MAX_N_LEVEL_IN_MEMORY; i++)
         Clear(i);
-}
-
-Level::~Level()
-{
 }
 
 /*** Charge les tableaux ***/
