@@ -28,19 +28,19 @@
 #define VITESSE_MAX 180.0
 #define VITESSE_MOY 120.0
 #define VITESSE_MIN 80.0
-#define DUREE_VITESSE (10*1000)
+#define DUREE_VITESSE (10 * 1000)
 
-#define DUREE_PAUSE (3*1000)
+#define DUREE_PAUSE (3 * 1000)
 
-#define DUREE_REDUIT (10*1000)
-#define DUREE_ALONGE (10*1000)
+#define DUREE_REDUIT (10 * 1000)
+#define DUREE_ALONGE (10 * 1000)
 #define ECARTWAGON_MAX 27.0
 #define ECARTWAGON_MOY 13.0
 #define ECARTWAGON_MIN 4.0
 
 #define N_VIES_DEP 3
 
-#define RAYON_TOUCHE (32*32)
+#define RAYON_TOUCHE (32 * 32)
 
 #define LT 17
 #define HT 15
@@ -66,50 +66,52 @@
 
 /*** Difficultées possible ***/
 enum e_Difficulte {
-  Easy,
-  Normal,
-  Hard
+    Easy,
+    Normal,
+    Hard
 };
 
 /*** Mémorise un score ***/
 #define LSCOREMAX 460
 
-struct sScore {
-  int Score;
-  char Name[80];
+struct sScore
+{
+    int Score;
+    char Name[80];
 };
 
 /*** Structure des preferences Générales ***/
-struct sPreference {
-  e_Difficulte Difficulte; // Difficulté de la partie (Vitesse)
-  int Niveau;        // Niveau du joueur
-  int NVie;          // Nombre de vie du joueur
-  int Score;         // Score du joueur
-  double Vitesse;    // Vitesse suivant le niveau
-  double VitesseMoy; // Vitesse en cours de la loco
-  float EcartWagon;  // ecart en pixels entre 2 wagons
-  int NiveauMax;
-  int FullScreen;
-  int Langue;        // Langue à afficher
-  int NLangues;      // Nombre de langues disponible
-  float Volume;        // Volumes audio
-  float VolumeM;       // Volume de la music
-  struct sScore Sco[8]; // Mémorise les scores
+struct sPreference
+{
+    e_Difficulte Difficulte; // Difficulté de la partie (Vitesse)
+    int Niveau; // Niveau du joueur
+    int NVie; // Nombre de vie du joueur
+    int Score; // Score du joueur
+    double Vitesse; // Vitesse suivant le niveau
+    double VitesseMoy; // Vitesse en cours de la loco
+    float EcartWagon; // ecart en pixels entre 2 wagons
+    int NiveauMax;
+    int FullScreen;
+    int Langue; // Langue à afficher
+    int NLangues; // Nombre de langues disponible
+    float Volume; // Volumes audio
+    float VolumeM; // Volume de la music
+    struct sScore Sco[8]; // Mémorise les scores
 };
 
 /*** Valeur retournées pour le menu princiaple ***/
 enum eMenu {
-  mMenu,
-  mMenuJeux,
-  mMenuSpeed,
-  mMenuNiveau,
-  mLangue,
-  mGame,
-  mScore,
-  mScoreEdit,
-  mOption,
-  mQuit,
-  mEdit,
+    mMenu,
+    mMenuJeux,
+    mMenuSpeed,
+    mMenuNiveau,
+    mLangue,
+    mGame,
+    mScore,
+    mScoreEdit,
+    mOption,
+    mQuit,
+    mEdit,
 };
 
 #endif

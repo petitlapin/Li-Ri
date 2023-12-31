@@ -32,34 +32,35 @@ void Sleeping(void);
 
 /*** Définition de la class ***/
 /******************************/
-class Menu {
- public:
-  Menu(void);
-  ~Menu(void);
+class Menu
+{
+public:
+    Menu(void);
+    ~Menu(void);
 
-  /*** Fonctions ***/
-  /*****************/
-  eMenu SDLMain(void); // Menu principale
-  eMenu SDLMain_Language(void);  // Menu du choix de la langue
-  void InitMain_Options(void);   // Prépare l'affichage du menu options
-  eMenu SDLMain_Options(void);  // Menu du choix des options
-  eMenu SDLMain_Speed(void);  // Menu du choix de la difficulté
-  eMenu SDLMain_Level(void); // Choisi le niveau
+    /*** Fonctions ***/
+    /*****************/
+    eMenu SDLMain(void); // Menu principale
+    eMenu SDLMain_Language(void); // Menu du choix de la langue
+    void InitMain_Options(void); // Prépare l'affichage du menu options
+    eMenu SDLMain_Options(void); // Menu du choix des options
+    eMenu SDLMain_Speed(void); // Menu du choix de la difficulté
+    eMenu SDLMain_Level(void); // Choisi le niveau
 #ifndef DCHILDREN
-  eMenu SDLMain_HR(void);      // Menu de question sur les droits de l'homme
+    eMenu SDLMain_HR(void); // Menu de question sur les droits de l'homme
 #endif
-  void Print_InGame(void);  // Affiche le menu InGame
-  eMenu SDLMain_InGame(void); // Menu dans le jeu
-  eMenu SDLMain_Score(bool EditScore=false);  // Affiche les scores
-  
-  void Print_Main(int Centre=400);      // Affiche le menu principale
-  void Affiche_Main_Centre(void);          // Centre les flèches sur le bouton
+    void Print_InGame(void); // Affiche le menu InGame
+    eMenu SDLMain_InGame(void); // Menu dans le jeu
+    eMenu SDLMain_Score(bool EditScore = false); // Affiche les scores
 
-  /*** Variables ***/
-  /*****************/
-  int PyE; // Position du curseur dans le menu
-  int Niv;
-  int CentreM; // Variable pour le menu options
+    void Print_Main(int Centre = 400); // Affiche le menu principale
+    void Affiche_Main_Centre(void); // Centre les flèches sur le bouton
+
+    /*** Variables ***/
+    /*****************/
+    int PyE; // Position du curseur dans le menu
+    int Niv;
+    int CentreM; // Variable pour le menu options
 };
 
 #endif

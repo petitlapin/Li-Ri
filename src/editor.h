@@ -29,21 +29,22 @@
 
 /*** Définition de la class ***/
 /******************************/
-class Editor {
- public:
-  Editor(void);
-  ~Editor(void);
+class Editor
+{
+public:
+    Editor(void);
+    ~Editor(void);
 
-  /*** Fonctions ***/
-  /*****************/
-  eMenu SDLMain(int NumNiveau);   // Boucle principale
-  void Affiche(void);       // Charge un tableau
-  void PrendTouche(int Touche); // Prend les touches enfoncées
-  
-  /*** Variables ***/ 
-  int N; // Numero du tableau à éditer
-  e_Sprite Option;
-  int NumDeco;
-  int NumN;
+    /*** Fonctions ***/
+    /*****************/
+    eMenu SDLMain(int NumNiveau); // Boucle principale
+    void Affiche(void); // Charge un tableau
+    void PrendTouche(int Touche); // Prend les touches enfoncées
+
+    /*** Variables ***/
+    int N; // Numero du tableau à éditer
+    e_Sprite Option;
+    int NumDeco;
+    int NumN;
 };
 #endif

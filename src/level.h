@@ -28,39 +28,41 @@
 
 /*** Définition de la structure d'un tableau ***/
 /***********************************************/
-struct s_Deco {
-  int NumSpr; // Numéro et position du sprite décoratif
-  int x;
-  int y;
+struct s_Deco
+{
+    int NumSpr; // Numéro et position du sprite décoratif
+    int x;
+    int y;
 };
 
-struct s_Level {
-  unsigned char T[LT*HT]; // Définition du circuit et des options
-  int DepX;  // Départ de la locomotive
-  int DepY;
-  int DepDir; // Direction du départ
-  int NDeco;  // Nombre d'éléments décoratifs
-  struct s_Deco Deco[32];
+struct s_Level
+{
+    unsigned char T[LT * HT]; // Définition du circuit et des options
+    int DepX; // Départ de la locomotive
+    int DepY;
+    int DepDir; // Direction du départ
+    int NDeco; // Nombre d'éléments décoratifs
+    struct s_Deco Deco[32];
 };
 
 /*** Définition de la classe ***/
 /*******************************/
 class Level
 {
- public:
-  Level(void);
-  ~Level(void);
+public:
+    Level(void);
+    ~Level(void);
 
-  /*** Fonctions ***/
-  bool Load(void); // charge les tableaux
-  bool Save(void); // Sauve les tableaux
-  void Del(int Num); // efface un tableau
-  void Ins(int Num); // Insert un tableau vièrge
-  void Clear(int Num); // Vide un tableau
+    /*** Fonctions ***/
+    bool Load(void); // charge les tableaux
+    bool Save(void); // Sauve les tableaux
+    void Del(int Num); // efface un tableau
+    void Ins(int Num); // Insert un tableau vièrge
+    void Clear(int Num); // Vide un tableau
 
-  /*** Variables ***/
-  int N; // Nombre de niveau
-  s_Level T[MAX_N_LEVEL_IN_MEMORY]; // Pointe sur les tableaux
+    /*** Variables ***/
+    int N; // Nombre de niveau
+    s_Level T[MAX_N_LEVEL_IN_MEMORY]; // Pointe sur les tableaux
 };
 
 #endif

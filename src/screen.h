@@ -29,33 +29,34 @@
 
 /*** Définitions générales ***/
 /*****************************/
-struct s_Screen {
-  e_Sprite NumSpr;
-  int Num;
-  int x,y;
-  int fx,fy;
+struct s_Screen
+{
+    e_Sprite NumSpr;
+    int Num;
+    int x, y;
+    int fx, fy;
 };
 
 /*** Definitions de la class Ecran ***/
 /*************************************/
 class Screen
 {
- public:
-  Screen(void);
-  ~Screen(void);
+public:
+    Screen(void);
+    ~Screen(void);
 
-  /*** Fonctions ***/
-  void PrintSprite(e_Sprite NumSpr,int Num,int x,int y); // Affiche un sprite
-  void PrintCable(int dx,int dy,int fx,int fy); // Affiche un cable
-  void PrintText(e_Sprite Text,int x,int y);    // Affiche un text à l'ecran
-  void PrintOptions(int NVies,int NouveauScore); // Affiche les options sur le coté
-  void ClearSprite(e_Sprite NumSpriteFondEcran); // Efface tous ce qui a été affiché
-  void CleanSpriteAndScreen(e_Sprite NumSpriteFondEcran); // Efface l'ecran avec l'image de fond
+    /*** Fonctions ***/
+    void PrintSprite(e_Sprite NumSpr, int Num, int x, int y); // Affiche un sprite
+    void PrintCable(int dx, int dy, int fx, int fy); // Affiche un cable
+    void PrintText(e_Sprite Text, int x, int y); // Affiche un text à l'ecran
+    void PrintOptions(int NVies, int NouveauScore); // Affiche les options sur le coté
+    void ClearSprite(e_Sprite NumSpriteFondEcran); // Efface tous ce qui a été affiché
+    void CleanSpriteAndScreen(e_Sprite NumSpriteFondEcran); // Efface l'ecran avec l'image de fond
 
-  /*** Variables ***/
-  int N;               // Nombre de sprites mémorisés aprés l'affichage
-  int Score;           // Mémorise le score affiché
-  s_Screen B[LT*HT*2];  // N° des sprites à effacer plus tard
+    /*** Variables ***/
+    int N; // Nombre de sprites mémorisés aprés l'affichage
+    int Score; // Mémorise le score affiché
+    s_Screen B[LT * HT * 2]; // N° des sprites à effacer plus tard
 };
 
 #endif

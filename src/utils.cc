@@ -1,5 +1,5 @@
 //      (_||_/
-//      (    )       
+//      (    )
 //     ( o  0 )
 //-OOO°--(_)---°OOO---------------------------------------
 //                   Copyright (C) 2006 By Dominique Roux-Serret
@@ -53,96 +53,95 @@ extern char DefPath[]; // Chemin par defaut dans arg
 /********************************/
 bool Utils::FileExists(const char *Path)
 {
-  SDL_RWops* file=SDL_RWFromFile(Path,"rb");
+    SDL_RWops *file = SDL_RWFromFile(Path, "rb");
 
-  if(file==NULL)
-    return false;
+    if (file == NULL)
+        return false;
 
-  SDL_RWclose(file);
-  return true;
+    SDL_RWclose(file);
+    return true;
 }
-
 
 /*** Charge un fichier en Mémoire ***/
 /************************************/
-long Utils::LoadFile(const char *Path,unsigned char *&Buf)
+long Utils::LoadFile(const char *Path, unsigned char *&Buf)
 {
-  SDL_RWops* file=SDL_RWFromFile(Path,"rb");
-  if(!file) {
-    SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Unable to open '%s'", Path);
-    return -1;
-  }
-  
-  if(SDL_RWseek(file,0,RW_SEEK_END)<0) {
-    SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Unable to compute file size");
-    return -1;
-  }
-
-  long L=SDL_RWtell(file); // récupère la longueur
-  SDL_RWseek(file,0,RW_SEEK_SET);
-
-  Buf=new unsigned char [L+1];
-  if(Buf==NULL) {
-    SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Not enough memory");
-    SDL_RWclose(file);
-    return -1;
-  }
-
-  long Compt=L;
-  unsigned char *Po=Buf;
-
-  while(Compt>1024) {
-    AfficheChargeur();
-    if( SDL_RWread(file,Po,1,1024) != 1024 ) {
-      SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Error while reading '%s'", Path);
-      SDL_RWclose(file);
-      delete [] Buf;
-      return -1;
+    SDL_RWops *file = SDL_RWFromFile(Path, "rb");
+    if (!file) {
+        SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Unable to open '%s'", Path);
+        return -1;
     }
-    Compt-=1024;
-    Po+=1024;
-  }
-  
-  if(Compt) { // Ne fait pas le test à cause d'un bug dans windows
-    SDL_RWread(file,Po,1,(unsigned int)Compt);
-  }
-  
-  SDL_RWclose(file);
-  return L;
+
+    if (SDL_RWseek(file, 0, RW_SEEK_END) < 0) {
+        SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Unable to compute file size");
+        return -1;
+    }
+
+    long L = SDL_RWtell(file); // récupère la longueur
+    SDL_RWseek(file, 0, RW_SEEK_SET);
+
+    Buf = new unsigned char[L + 1];
+    if (Buf == NULL) {
+        SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Not enough memory");
+        SDL_RWclose(file);
+        return -1;
+    }
+
+    long Compt = L;
+    unsigned char *Po = Buf;
+
+    while (Compt > 1024) {
+        AfficheChargeur();
+        if (SDL_RWread(file, Po, 1, 1024) != 1024) {
+            SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Error while reading '%s'", Path);
+            SDL_RWclose(file);
+            delete[] Buf;
+            return -1;
+        }
+        Compt -= 1024;
+        Po += 1024;
+    }
+
+    if (Compt) { // Ne fait pas le test à cause d'un bug dans windows
+        SDL_RWread(file, Po, 1, (unsigned int)Compt);
+    }
+
+    SDL_RWclose(file);
+    return L;
 }
 
 /*** Sauve un Fichier ***/
 /************************/
-bool Utils::SaveFile(const char *Path,char *Buf,long L)
+bool Utils::SaveFile(const char *Path, char *Buf, long L)
 {
-  FILE *file;
-  
-  file=fopen(Path,"w");
-  if(!file) {
-    SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Unable to open '%s'", Path);
-    return false;
-  }
-  
-  while(L>512) {
-    if( fwrite(Buf,1,512,file) != 512 ) {
-      SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Unable to write in '%s'", Path);
-      fclose(file);
-      return false;
-    }
-    L-=512;
-    Buf+=512;
-  }
+    FILE *file;
 
-  if(L>0) {
-    if( fwrite(Buf,1,(size_t)L,file) != (size_t)L ) {
-      SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Unable to write in '%s'", Path);
-      fclose(file);
-      return false;
+    file = fopen(Path, "w");
+    if (!file) {
+        SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Unable to open '%s'", Path);
+        return false;
     }
-  }
-  
-  fclose(file);
-  return true;
+
+    while (L > 512) {
+        if (fwrite(Buf, 1, 512, file) != 512) {
+            SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Unable to write in '%s'", Path);
+            fclose(file);
+            return false;
+        }
+        L -= 512;
+        Buf += 512;
+    }
+
+    if (L > 0) {
+        if (fwrite(Buf, 1, (size_t)L, file) != (size_t)L) {
+            SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Unable to write in '%s'", Path);
+            fclose(file);
+            return false;
+        }
+    }
+
+    fclose(file);
+    return true;
 }
 
 /*** Met le bon chemin pour charger un fichier ***/
@@ -151,33 +150,40 @@ bool Utils::SaveFile(const char *Path,char *Buf,long L)
 // Version Linux
 void Utils::GetPath(char *Path)
 {
-  char Provi[512];
+    char Provi[512];
 
-  strcpy(Provi,Path);
+    strcpy(Provi, Path);
 
 #ifndef ANDROID
-  if(DefPath[0]) {
-    sprintf(Path,"%s%s",DefPath,Provi);
-    if(Utils::FileExists(Path)) return;
-  }
-  sprintf(Path,"%s/%s",DATA_DIR,Provi);
-  if(Utils::FileExists(Path)) return;
+    if (DefPath[0]) {
+        sprintf(Path, "%s%s", DefPath, Provi);
+        if (Utils::FileExists(Path))
+            return;
+    }
+    sprintf(Path, "%s/%s", DATA_DIR, Provi);
+    if (Utils::FileExists(Path))
+        return;
 #endif
 
-  // Android is directly the filename
-  sprintf(Path,"%s",Provi);
-  if(Utils::FileExists(Path)) return;
+    // Android is directly the filename
+    sprintf(Path, "%s", Provi);
+    if (Utils::FileExists(Path))
+        return;
 
-  sprintf(Path,"./%s",Provi);
-  if(Utils::FileExists(Path)) return;
-  sprintf(Path,"/usr/local/share/Li-ri/%s",Provi);
-  if(Utils::FileExists(Path)) return;
-  sprintf(Path,"/usr/share/Li-ri/%s",Provi);
-  if(Utils::FileExists(Path)) return;
-  sprintf(Path,"/usr/share/games/Li-ri/%s",Provi);
-  if(Utils::FileExists(Path)) return;
-  
-  SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Unable to find '%s'", Provi);
+    sprintf(Path, "./%s", Provi);
+    if (Utils::FileExists(Path))
+        return;
+    sprintf(Path, "/usr/local/share/Li-ri/%s", Provi);
+    if (Utils::FileExists(Path))
+        return;
+    sprintf(Path, "/usr/share/Li-ri/%s", Provi);
+    if (Utils::FileExists(Path))
+        return;
+    sprintf(Path, "/usr/share/games/Li-ri/%s", Provi);
+    if (Utils::FileExists(Path))
+        return;
+
+    SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Unable to find '%s'", Provi);
 }
 #endif
 
@@ -185,15 +191,16 @@ void Utils::GetPath(char *Path)
 // Version AmigaOS4
 void Utils::GetPath(char *Path)
 {
-  char Provi[512];
+    char Provi[512];
 
-  strcpy(Provi,Path);
+    strcpy(Provi, Path);
 
-  sprintf(Path,"PROGDIR:%s",Provi);
-  if(Utils::FileExists(Path)) return;
-  
-  SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Unable to find '%s'", Path);
-  exit(-1);
+    sprintf(Path, "PROGDIR:%s", Provi);
+    if (Utils::FileExists(Path))
+        return;
+
+    SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Unable to find '%s'", Path);
+    exit(-1);
 }
 #endif
 
@@ -201,15 +208,16 @@ void Utils::GetPath(char *Path)
 // Version Mac OSX
 void Utils::GetPath(char *Path)
 {
-  char Provi[512];
+    char Provi[512];
 
-  strcpy(Provi,Path);
+    strcpy(Provi, Path);
 
-  sprintf(Path,"Li-ri.app/Contents/Resources/%s",Provi);
-  if(Utils::FileExists(Path)) return;
-  
-  SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Unable to find '%s'", Path);
-  exit(-1);
+    sprintf(Path, "Li-ri.app/Contents/Resources/%s", Provi);
+    if (Utils::FileExists(Path))
+        return;
+
+    SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Unable to find '%s'", Path);
+    exit(-1);
 }
 #endif
 
@@ -217,16 +225,16 @@ void Utils::GetPath(char *Path)
 //  Version Windows , chemin directe
 void Utils::GetPath(char *Path)
 {
-  char Provi[512];
-   
-  strcpy(Provi,Path);
-  char *basePath = SDL_GetBasePath();
-  sprintf(Path,"%s/%s",basePath,Provi);
-  if(Utils::FileExists(Path)) {
-      SDL_free(basePath);
-      return;
-  }
-  SDL_free(basePath);
+    char Provi[512];
+
+    strcpy(Provi, Path);
+    char *basePath = SDL_GetBasePath();
+    sprintf(Path, "%s/%s", basePath, Provi);
+    if (Utils::FileExists(Path)) {
+        SDL_free(basePath);
+        return;
+    }
+    SDL_free(basePath);
 }
 #endif
 
@@ -234,36 +242,35 @@ void Utils::GetPath(char *Path)
 /******************************/
 bool Utils::LoadPref(void)
 {
-  int L;
-  unsigned char *Provi;
-  
-  char PathPref[512];
-  char *PrefFolder = SDL_GetPrefPath("Li-Ri", "Li-Ri");
-  sprintf(PathPref, "%sli-ri.pref", PrefFolder);
+    int L;
+    unsigned char *Provi;
 
-  SDL_free(PrefFolder);
+    char PathPref[512];
+    char *PrefFolder = SDL_GetPrefPath("Li-Ri", "Li-Ri");
+    sprintf(PathPref, "%sli-ri.pref", PrefFolder);
 
-  if(Utils::FileExists(PathPref)) {
-    L=Utils::LoadFile(PathPref,Provi);
-    if(L>0) {
-      memcpy((char*)&Pref,Provi,L);
-      delete [] Provi;
-      return true;
+    SDL_free(PrefFolder);
+
+    if (Utils::FileExists(PathPref)) {
+        L = Utils::LoadFile(PathPref, Provi);
+        if (L > 0) {
+            memcpy((char *)&Pref, Provi, L);
+            delete[] Provi;
+            return true;
+        }
     }
-  }
-  
-  return false;
+
+    return false;
 }
 
 /*** Sauve les preferences ***/
 /*****************************/
 void Utils::SauvePref(void)
-{  
-  char PathPref[512];
-  char *PrefFolder = SDL_GetPrefPath("Li-Ri", "Li-Ri");
-  sprintf(PathPref, "%sli-ri.pref", PrefFolder);
+{
+    char PathPref[512];
+    char *PrefFolder = SDL_GetPrefPath("Li-Ri", "Li-Ri");
+    sprintf(PathPref, "%sli-ri.pref", PrefFolder);
 
-  SDL_free(PrefFolder);
-  Utils::SaveFile(PathPref,(char*)&Pref,sizeof(sPreference));
+    SDL_free(PrefFolder);
+    Utils::SaveFile(PathPref, (char *)&Pref, sizeof(sPreference));
 }
-
