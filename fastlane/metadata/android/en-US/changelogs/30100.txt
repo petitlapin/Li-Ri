@@ -1,0 +1,3 @@
+Fix crash on highscore when waiting too much (memory corruption)
+Add IME keyboard on Android
+Handle Back button on Android (same as Escape)

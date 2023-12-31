@@ -1,0 +1,3 @@
+CMake compilation
+Github workflow to provide binaries for Linux, Windows and macOS
+Add missing icon for F-Droid
