@@ -106,8 +106,9 @@ int main(int narg, char *argv[])
     // Initialise les préferences
     InitPref();
 #ifdef __unix__
-    if (narg > 1)
+    if (narg > 1) {
         strcpy(DefPath, argv[1]);
+    }
 #endif
 
     // Initiliase SDL
@@ -120,8 +121,9 @@ int main(int narg, char *argv[])
 
     // Demande la resolution Video
     int vOption = SDL_WINDOW_RESIZABLE;
-    if (Pref.FullScreen)
+    if (Pref.FullScreen) {
         vOption |= SDL_WINDOW_FULLSCREEN_DESKTOP;
+    }
 
     sdlWindow = SDL_CreateWindow(Titre, 0, 0, 800, 600, vOption);
     sdlRenderer = SDL_CreateRenderer(sdlWindow, -1, 0);
@@ -132,10 +134,12 @@ int main(int narg, char *argv[])
 
     // Chargement des sprites
     Sons.Init();
-    if (LoadSprites() == false)
+    if (LoadSprites() == false) {
         exit(-1);
-    if (level.Load() == false)
+    }
+    if (level.Load() == false) {
         exit(-1);
+    }
 
     Sons.PlayMusic();
     mouse.InitStart();
@@ -145,8 +149,9 @@ int main(int narg, char *argv[])
     srand(SDL_GetTicks());
 
     // Si pas de langues demande la langue
-    if (Pref.Langue == -1)
+    if (Pref.Langue == -1) {
         MainMenu.SDLMain_Language();
+    }
 
     // Gère les menus
     do {

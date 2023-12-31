@@ -137,13 +137,15 @@ eMenu Menu::SDLMain()
                         return mQuit;
                     case SDLK_UP:
                         PyE--;
-                        if (PyE < 0)
+                        if (PyE < 0) {
                             PyE = 3;
+                        }
                         break;
                     case SDLK_DOWN:
                         PyE++;
-                        if (PyE > 3)
+                        if (PyE > 3) {
                             PyE = 0;
+                        }
                         break;
                     case SDLK_F12: // Sauve un screenshot
                         // TODO SDL_SaveBMP(sdlVideo,"screenshot.bmp");
@@ -165,11 +167,13 @@ eMenu Menu::SDLMain()
                     default:
                         key = event.key.keysym.sym & 0x7F; // Prend le caracataire correspondant à la touche
                         if (CharExiste(key) == true) { // Si la caractaire existe bien
-                            for (i = 2; i >= 0; i--)
+                            for (i = 2; i >= 0; i--) {
                                 MCode[i + 1] = MCode[i]; // décale le code
+                            }
                             MCode[0] = key;
-                            if (strcmp(MCode, "tide") == 0 || strcmp(MCode, "TIDE") == 0)
+                            if (strcmp(MCode, "tide") == 0 || strcmp(MCode, "TIDE") == 0) {
                                 return mEdit; // Si editeur de niveau
+                            }
                         }
                     }
                 }
@@ -212,8 +216,9 @@ eMenu Menu::SDLMain_Language()
     // Initialisations Divers
     mouse.Init(Menu_Py); // Initialise la sourie
     PyE = Pref.Langue;
-    if (PyE == -1)
+    if (PyE == -1) {
         PyE = 1;
+    }
 
     SDL_RenderClear(sdlRenderer);
     // Prend l'image du fond et fait l'affichage
@@ -221,10 +226,12 @@ eMenu Menu::SDLMain_Language()
 
     // Affiche les langues possibles
     NCol = 3;
-    if (Pref.NLangues % NCol == 0)
+    if (Pref.NLangues % NCol == 0) {
         NL = Pref.NLangues / NCol;
-    else
+    }
+    else {
         NL = Pref.NLangues / NCol + 1;
+    }
     Ecart = 600 / (NL + 1);
 
     for (i = 0; i < Pref.NLangues; i++) {
@@ -268,26 +275,31 @@ eMenu Menu::SDLMain_Language()
                     switch (event.key.keysym.sym) {
                     case SDLK_ESCAPE:
                     case SDLK_AC_BACK: // Android back button
-                        if (Pref.Langue == -1)
+                        if (Pref.Langue == -1) {
                             Pref.Langue = PyE;
+                        }
                         return mMenu;
                     case SDLK_UP:
                         PyE--;
-                        if (PyE < 0)
+                        if (PyE < 0) {
                             PyE = Pref.NLangues - 1;
+                        }
                         break;
                     case SDLK_DOWN:
                         PyE++;
-                        if (PyE >= Pref.NLangues)
+                        if (PyE >= Pref.NLangues) {
                             PyE = 0;
+                        }
                         break;
                     case SDLK_LEFT:
-                        if (PyE - NL >= 0)
+                        if (PyE - NL >= 0) {
                             PyE -= NL;
+                        }
                         break;
                     case SDLK_RIGHT:
-                        if (PyE + NL < Pref.NLangues)
+                        if (PyE + NL < Pref.NLangues) {
                             PyE += NL;
+                        }
                         break;
                     case SDLK_F12: // Sauve un screenshot
                         // TODO SDL_SaveBMP(sdlVideo,"screenshot.bmp");
@@ -296,8 +308,9 @@ eMenu Menu::SDLMain_Language()
                     case SDLK_RETURN:
                     case SDLK_KP_ENTER:
                         Pref.Langue = PyE;
-                        if (Pref.Langue != OldLangue)
+                        if (Pref.Langue != OldLangue) {
                             LoadLangue();
+                        }
                         return mMenu;
                     default:
                         break;
@@ -437,8 +450,9 @@ eMenu Menu::SDLMain_Options()
                         case 5: // Diminue volume sons
                         case 6:
                             Pref.Volume -= SDL_MIX_MAXVOLUME / 10.0;
-                            if (Pref.Volume < 0)
+                            if (Pref.Volume < 0) {
                                 Pref.Volume = 0;
+                            }
                             Sons.DoVolume();
                             Sons.Play(sLive);
                             break;
@@ -446,8 +460,9 @@ eMenu Menu::SDLMain_Options()
                         case 7: // Diminue volume music
                         case 8:
                             Pref.VolumeM -= SDL_MIX_MAXVOLUME / 10.0;
-                            if (Pref.VolumeM < 0)
+                            if (Pref.VolumeM < 0) {
                                 Pref.VolumeM = 0;
+                            }
                             Sons.DoVolume();
                             break;
                         }
@@ -465,8 +480,9 @@ eMenu Menu::SDLMain_Options()
                         case 5:
                         case 6:
                             Pref.Volume += SDL_MIX_MAXVOLUME / 10.0;
-                            if (Pref.Volume > SDL_MIX_MAXVOLUME)
+                            if (Pref.Volume > SDL_MIX_MAXVOLUME) {
                                 Pref.Volume = SDL_MIX_MAXVOLUME;
+                            }
                             Sons.DoVolume();
                             Sons.Play(sLive);
                             break;
@@ -474,21 +490,24 @@ eMenu Menu::SDLMain_Options()
                         case 7:
                         case 8:
                             Pref.VolumeM += SDL_MIX_MAXVOLUME / 10.0;
-                            if (Pref.VolumeM > SDL_MIX_MAXVOLUME)
+                            if (Pref.VolumeM > SDL_MIX_MAXVOLUME) {
                                 Pref.VolumeM = SDL_MIX_MAXVOLUME;
+                            }
                             Sons.DoVolume();
                             break;
                         }
                         break;
                     case SDLK_UP:
                         PyE--;
-                        if (PyE < 0)
+                        if (PyE < 0) {
                             PyE = 4;
+                        }
                         break;
                     case SDLK_DOWN:
                         PyE++;
-                        if (PyE >= 5)
+                        if (PyE >= 5) {
                             PyE = 0;
+                        }
                         break;
                     case SDLK_F12: // Sauve un screenshot
                         // TODO SDL_SaveBMP(sdlVideo,"screenshot.bmp");
@@ -511,28 +530,32 @@ eMenu Menu::SDLMain_Options()
                             break;
                         case 5: // Diminue volume sons
                             Pref.Volume -= SDL_MIX_MAXVOLUME / 10.0;
-                            if (Pref.Volume < 0)
+                            if (Pref.Volume < 0) {
                                 Pref.Volume = 0;
+                            }
                             Sons.DoVolume();
                             Sons.Play(sLive);
                             break;
                         case 6:
                             Pref.Volume += SDL_MIX_MAXVOLUME / 10.0;
-                            if (Pref.Volume > SDL_MIX_MAXVOLUME)
+                            if (Pref.Volume > SDL_MIX_MAXVOLUME) {
                                 Pref.Volume = SDL_MIX_MAXVOLUME;
+                            }
                             Sons.DoVolume();
                             Sons.Play(sLive);
                             break;
                         case 7: // Diminue volume music
                             Pref.VolumeM -= SDL_MIX_MAXVOLUME / 10.0;
-                            if (Pref.VolumeM < 0)
+                            if (Pref.VolumeM < 0) {
                                 Pref.VolumeM = 0;
+                            }
                             Sons.DoVolume();
                             break;
                         case 8:
                             Pref.VolumeM += SDL_MIX_MAXVOLUME / 10.0;
-                            if (Pref.VolumeM > SDL_MIX_MAXVOLUME)
+                            if (Pref.VolumeM > SDL_MIX_MAXVOLUME) {
                                 Pref.VolumeM = SDL_MIX_MAXVOLUME;
+                            }
                             Sons.DoVolume();
                             break;
                         default:
@@ -577,18 +600,22 @@ eMenu Menu::SDLMain_Options()
         N = (int)(Pref.Volume * 10 + 1) / SDL_MIX_MAXVOLUME;
         NumSp = (Horloge / 50) % 40 + 120;
         for (i = 0; i < N; i++) {
-            if (i == N - 1)
+            if (i == N - 1) {
                 Ec.PrintSprite(locomotive, NumSp, (690 - 300) / 10 * i + 300, 110);
-            else
+            }
+            else {
                 Ec.PrintSprite(buches, NumSp, (690 - 300) / 10 * i + 300, 110);
+            }
         }
 
         N = (int)(Pref.VolumeM * 10 + 1) / SDL_MIX_MAXVOLUME;
         for (i = 0; i < N; i++) {
-            if (i == N - 1)
+            if (i == N - 1) {
                 Ec.PrintSprite(locomotive, NumSp, (690 - 300) / 10 * i + 300, 200);
-            else
+            }
+            else {
                 Ec.PrintSprite(buches, NumSp, (690 - 300) / 10 * i + 300, 200);
+            }
         }
 
         switch (PyE) {
@@ -675,13 +702,15 @@ eMenu Menu::SDLMain_Speed()
                         return Niv == 0 ? mMenu : mMenuNiveau;
                     case SDLK_UP:
                         PyE--;
-                        if (PyE < 0)
+                        if (PyE < 0) {
                             PyE = 2;
+                        }
                         break;
                     case SDLK_DOWN:
                         PyE++;
-                        if (PyE > 2)
+                        if (PyE > 2) {
                             PyE = 0;
+                        }
                         break;
                     case SDLK_F12: // Sauve un screenshot
                         // TODO SDL_SaveBMP(sdlVideo,"screenshot.bmp");
@@ -740,8 +769,9 @@ eMenu Menu::SDLMain_Level()
     Niv = Pref.NiveauMax;
     Pref.Niveau = 0;
 
-    if (Niv == 0)
+    if (Niv == 0) {
         return mMenuSpeed; // Inutile si la première fois
+    }
 
     // Prend les evenements
     do {
@@ -782,22 +812,26 @@ eMenu Menu::SDLMain_Level()
                         return mMenu;
                     case SDLK_UP:
                         PyE--;
-                        if (PyE < 0 || PyE > 2)
+                        if (PyE < 0 || PyE > 2) {
                             PyE = 2;
+                        }
                         break;
                     case SDLK_DOWN:
                         PyE++;
-                        if (PyE > 2)
+                        if (PyE > 2) {
                             PyE = 0;
+                        }
                         break;
                     case SDLK_LEFT:
-                        if (Niv > 0)
+                        if (Niv > 0) {
                             Niv--;
+                        }
                         PyE = 1;
                         break;
                     case SDLK_RIGHT:
-                        if (Niv < Pref.NiveauMax)
+                        if (Niv < Pref.NiveauMax) {
                             Niv++;
+                        }
                         PyE = 1;
                         break;
                     case SDLK_F12: // Sauve un screenshot
@@ -815,12 +849,14 @@ eMenu Menu::SDLMain_Level()
                         case 2:
                             return mMenu;
                         case 3:
-                            if (Niv > 0)
+                            if (Niv > 0) {
                                 Niv--;
+                            }
                             break;
                         case 4:
-                            if (Niv < Pref.NiveauMax)
+                            if (Niv < Pref.NiveauMax) {
                                 Niv++;
+                            }
                             break;
                         }
                         break;
@@ -845,27 +881,34 @@ eMenu Menu::SDLMain_Level()
 
         // Affiche les flèches
         if (Niv > 0) {
-            if (PyE == 3)
+            if (PyE == 3) {
                 Ec.PrintSprite(fleches, 2, 330, 380);
-            else
+            }
+            else {
                 Ec.PrintSprite(fleches, 1, 330, 380);
+            }
         }
-        else
+        else {
             Ec.PrintSprite(fleches, 0, 330, 380);
+        }
 
         if (Niv < Pref.NiveauMax) {
-            if (PyE == 4)
+            if (PyE == 4) {
                 Ec.PrintSprite(fleches, 5, 470, 380);
-            else
+            }
+            else {
                 Ec.PrintSprite(fleches, 4, 470, 380);
+            }
         }
-        else
+        else {
             Ec.PrintSprite(fleches, 3, 470, 380);
+        }
 
         AfficheChiffre(400, 380, Niv + 1);
 
-        if (PyE != 3 && PyE != 4)
+        if (PyE != 3 && PyE != 4) {
             Print_Main();
+        }
         mouse.Print();
 
         // Echange les buffets video
@@ -984,25 +1027,31 @@ eMenu Menu::SDLMain_HR()
                         return mGame;
                     case SDLK_UP:
                         PyE--;
-                        if (PyE < 0)
+                        if (PyE < 0) {
                             PyE = 1;
+                        }
                         break;
                     case SDLK_DOWN:
                         PyE++;
-                        if (PyE > 1)
+                        if (PyE > 1) {
                             PyE = 0;
+                        }
                         break;
                     case SDLK_LEFT:
-                        if (Ordre)
+                        if (Ordre) {
                             PyE = 0;
-                        else
+                        }
+                        else {
                             PyE = 1;
+                        }
                         break;
                     case SDLK_RIGHT:
-                        if (Ordre)
+                        if (Ordre) {
                             PyE = 1;
-                        else
+                        }
+                        else {
                             PyE = 0;
+                        }
                         break;
                     case SDLK_F12: // Sauve un screenshot
                         // TODO SDL_SaveBMP(sdlVideo,"screenshot.bmp");
@@ -1034,8 +1083,9 @@ eMenu Menu::SDLMain_HR()
         }
 
         // Test si fini
-        if (Fini != -1 && Fini < Horloge)
+        if (Fini != -1 && Fini < Horloge) {
             return mGame;
+        }
 
         // Gère les variables
         HorlogeAvant = Horloge;
@@ -1058,18 +1108,22 @@ eMenu Menu::SDLMain_HR()
             if (Ordre) {
                 Ec.PrintSprite(fond_hrr, 0, 440, 492);
                 AfficheText(440, 492, e_Sprite(T_tart1 + N2));
-                if (PyE == 0)
+                if (PyE == 0) {
                     Print_Main(240);
-                else
+                }
+                else {
                     Print_Main(440);
+                }
             }
             else {
                 Ec.PrintSprite(fond_hrr, 0, 240, 492);
                 AfficheText(240, 492, e_Sprite(T_tart1 + N2));
-                if (PyE == 1)
+                if (PyE == 1) {
                     Print_Main(240);
-                else
+                }
+                else {
                     Print_Main(440);
+                }
             }
             mouse.Print();
         }
@@ -1138,13 +1192,15 @@ eMenu Menu::SDLMain_InGame()
                         return mGame;
                     case SDLK_UP:
                         PyE--;
-                        if (PyE < 0)
+                        if (PyE < 0) {
                             PyE = 2;
+                        }
                         break;
                     case SDLK_DOWN:
                         PyE++;
-                        if (PyE > 2)
+                        if (PyE > 2) {
                             PyE = 0;
+                        }
                         break;
                     case SDLK_F12: // Sauve un screenshot
                         // TODO SDL_SaveBMP(sdlVideo,"screenshot.bmp");
@@ -1205,17 +1261,21 @@ eMenu Menu::SDLMain_Score(bool EditScore)
 
     // Cherche le numéro du score à remplacer si edition des scores
     if (EditScore) {
-        for (i = 7; i >= 0; i--)
-            if (Pref.Sco[i].Score < Pref.Score)
+        for (i = 7; i >= 0; i--) {
+            if (Pref.Sco[i].Score < Pref.Score) {
                 NEdit = i;
-        if (NEdit == -1)
+            }
+        }
+        if (NEdit == -1) {
             return mMenu;
+        }
 
-        if (NEdit < 7) // Si doit fair un décalage
+        if (NEdit < 7) { // Si doit fair un décalage
             for (i = 7; i > NEdit; i--) {
                 Pref.Sco[i].Score = Pref.Sco[i - 1].Score;
                 strcpy(Pref.Sco[i].Name, Pref.Sco[i - 1].Name);
             }
+        }
 
         // Efface le nouveau nom et met le score
         Pref.Sco[NEdit].Score = Pref.Score;
@@ -1232,8 +1292,9 @@ eMenu Menu::SDLMain_Score(bool EditScore)
     Menu_Py[0].Valide = true;
     Menu_Py[1].DepX = -1;
 
-    if (EditScore)
+    if (EditScore) {
         SDL_StartTextInput();
+    }
 
     // Prend les evenements
     do {
@@ -1253,10 +1314,12 @@ eMenu Menu::SDLMain_Score(bool EditScore)
             AfficheString(70, 120 + i * (360 / 7), Provi, Sprites[fmenu].Image[0]);
 
             if (EditScore == false || NEdit != i) {
-                if (Pref.Sco[i].Name[0])
+                if (Pref.Sco[i].Name[0]) {
                     AfficheString(140, 120 + i * (360 / 7), Pref.Sco[i].Name, Sprites[fmenu].Image[0]);
-                else
+                }
+                else {
                     AfficheString(140, 120 + i * (360 / 7), Points, Sprites[fmenu].Image[0]);
+                }
             }
 
             sprintf(Provi, "%i", Pref.Sco[i].Score);
@@ -1276,8 +1339,9 @@ eMenu Menu::SDLMain_Score(bool EditScore)
             case SDL_KEYDOWN: // Prend un touche au clavier
                 if (event.key.state == SDL_PRESSED) {
                     Sons.Play(sClic);
-                    if (EditScore == false && event.key.keysym.sym != SDLK_F12)
+                    if (EditScore == false && event.key.keysym.sym != SDLK_F12) {
                         event.key.keysym.sym = SDLK_RETURN;
+                    }
                     switch (event.key.keysym.sym) {
                     case SDLK_F12: // Sauve un screenshot
                         // TODO SDL_SaveBMP(sdlVideo,"screenshot.bmp");
@@ -1285,8 +1349,9 @@ eMenu Menu::SDLMain_Score(bool EditScore)
                     case SDLK_ESCAPE: // Valide l'entrée
                     case SDLK_RETURN:
                     case SDLK_KP_ENTER:
-                        if (EditScore)
+                        if (EditScore) {
                             SDL_StopTextInput();
+                        }
                         return mMenu;
                     case SDLK_BACKSPACE: // Fait un retour de chariot
                         if (PosCur) {
@@ -1307,8 +1372,9 @@ eMenu Menu::SDLMain_Score(bool EditScore)
                 }
                 break;
             case SDL_QUIT:
-                if (EditScore)
+                if (EditScore) {
                     SDL_StopTextInput();
+                }
                 return mQuit;
             }
         }
@@ -1331,8 +1397,9 @@ eMenu Menu::SDLMain_Score(bool EditScore)
 
     } while (true);
 
-    if (EditScore)
+    if (EditScore) {
         SDL_StopTextInput();
+    }
     return mQuit;
 }
 

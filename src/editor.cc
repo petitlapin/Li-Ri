@@ -76,15 +76,18 @@ eMenu Editor::SDLMain(int NumNiv)
             mouse.GetEvent(event, PyE); // Prend les evenements de la sourie
             switch (event.type) {
             case SDL_WINDOWEVENT:
-                if (event.window.event == SDL_WINDOWEVENT_ENTER)
+                if (event.window.event == SDL_WINDOWEVENT_ENTER) {
                     Affiche();
+                }
                 break;
             case SDL_KEYDOWN:
                 if (event.key.state == SDL_PRESSED) {
-                    if (event.key.keysym.sym == SDLK_ESCAPE)
+                    if (event.key.keysym.sym == SDLK_ESCAPE) {
                         return mMenu;
-                    else
+                    }
+                    else {
                         PrendTouche(event.key.keysym.sym);
+                    }
                 }
                 break;
             case SDL_MOUSEBUTTONDOWN:
@@ -110,7 +113,7 @@ eMenu Editor::SDLMain(int NumNiv)
         cx = mouse.Px / D_Case;
         cy = mouse.Py / D_Case;
 
-        if (Boutton && cx < LT)
+        if (Boutton && cx < LT) {
             switch (Option) {
             case deco:
                 if (TypeB == -1) { // Si première fois que appuis sur la touche
@@ -149,10 +152,12 @@ eMenu Editor::SDLMain(int NumNiv)
                 break;
             case rail:
                 if (TypeB == -1) {
-                    if (level.T[NumN].T[cy * LT + cx] != C_Rail)
+                    if (level.T[NumN].T[cy * LT + cx] != C_Rail) {
                         TypeB = C_Rail;
-                    else
+                    }
+                    else {
                         TypeB = C_None;
+                    }
                 }
                 level.T[NumN].T[cy * LT + cx] = TypeB;
                 break;
@@ -182,6 +187,7 @@ eMenu Editor::SDLMain(int NumNiv)
             default:
                 break;
             }
+        }
 
         // Gère les Horloges et la pose
         HorlogeAvant = Horloge;
@@ -219,22 +225,27 @@ void Editor::Affiche()
             m = 0;
             cx = i % LT;
             cy = i / LT;
-            if (cy > 0 && T[i - LT] >= 1 && T[i - LT] < C_Fin)
+            if (cy > 0 && T[i - LT] >= 1 && T[i - LT] < C_Fin) {
                 m += 8;
-            if (cy < HT - 1 && T[i + LT] >= 1 && T[i + LT] < C_Fin)
+            }
+            if (cy < HT - 1 && T[i + LT] >= 1 && T[i + LT] < C_Fin) {
                 m += 4;
-            if (cx > 0 && T[i - 1] >= 1 && T[i - 1] < C_Fin)
+            }
+            if (cx > 0 && T[i - 1] >= 1 && T[i - 1] < C_Fin) {
                 m += 2;
-            if (cx < LT - 1 && T[i + 1] >= 1 && T[i + 1] < C_Fin)
+            }
+            if (cx < LT - 1 && T[i + 1] >= 1 && T[i + 1] < C_Fin) {
                 m += 1;
+            }
 
             Sprites[rail].Affiche(x, y, NumRail[m]);
         }
     }
 
     // Affiche les décorations
-    for (i = 0; i < level.T[NumN].NDeco; i++)
+    for (i = 0; i < level.T[NumN].NDeco; i++) {
         Sprites[deco].Affiche(level.T[NumN].Deco[i].x, level.T[NumN].Deco[i].y, level.T[NumN].Deco[i].NumSpr);
+    }
 
     // Affiche numero du niveau
     AfficheChiffre(740, 130, NumN + 1);
@@ -306,10 +317,12 @@ void Editor::Affiche()
     }
 
     // Affiche le curseur
-    if (Option != deco)
+    if (Option != deco) {
         Sprites[curseur].Affiche(mouse.Px, mouse.Py, 0);
-    else
+    }
+    else {
         Sprites[deco].Affiche(mouse.Px, mouse.Py, NumDeco);
+    }
 }
 
 /*** Prend les touches enfoncées ***/
@@ -320,12 +333,14 @@ void Editor::PrendTouche(int Tou)
 
     switch (Tou) {
     case SDLK_PAGEUP:
-        if (NumN < level.N - 1)
+        if (NumN < level.N - 1) {
             NumN++;
+        }
         else {
             j = 0;
-            for (i = 0; i < LT * HT; i++)
+            for (i = 0; i < LT * HT; i++) {
                 j += level.T[NumN].T[i];
+            }
             if (j != 0) {
                 NumN++;
                 level.N++;
@@ -334,20 +349,23 @@ void Editor::PrendTouche(int Tou)
         }
         break;
     case SDLK_PAGEDOWN:
-        if (NumN)
+        if (NumN) {
             NumN--;
+        }
         break;
     case 'p':
         Option = deco;
         NumDeco++;
-        if (NumDeco >= Sprites[deco].N)
+        if (NumDeco >= Sprites[deco].N) {
             NumDeco = 0;
+        }
         break;
     case 'o':
         Option = deco;
         NumDeco--;
-        if (NumDeco < 0)
+        if (NumDeco < 0) {
             NumDeco = Sprites[deco].N - 1;
+        }
         break;
     case SDLK_INSERT:
         level.Ins(NumN);
@@ -372,11 +390,13 @@ void Editor::PrendTouche(int Tou)
         break;
     case '$':
         // test si le dernier niveau est vide
-        for (j = i = 0; i < LT * HT; i++)
+        for (j = i = 0; i < LT * HT; i++) {
             j += level.T[level.N - 1].T[i];
+        }
         if (j == 0) {
-            if (NumN < level.N - 1)
+            if (NumN < level.N - 1) {
                 level.N--; // Si vide ne le compte pas
+            }
         }
 
         // Sauve le niveau

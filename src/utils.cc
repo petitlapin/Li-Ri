@@ -55,8 +55,9 @@ bool Utils::FileExists(const char *Path)
 {
     SDL_RWops *file = SDL_RWFromFile(Path, "rb");
 
-    if (file == nullptr)
+    if (file == nullptr) {
         return false;
+    }
 
     SDL_RWclose(file);
     return true;
@@ -157,31 +158,38 @@ void Utils::GetPath(char *Path)
 #ifndef ANDROID
     if (DefPath[0]) {
         sprintf(Path, "%s%s", DefPath, Provi);
-        if (Utils::FileExists(Path))
+        if (Utils::FileExists(Path)) {
             return;
+        }
     }
     sprintf(Path, "%s/%s", DATA_DIR, Provi);
-    if (Utils::FileExists(Path))
+    if (Utils::FileExists(Path)) {
         return;
+    }
 #endif
 
     // Android is directly the filename
     sprintf(Path, "%s", Provi);
-    if (Utils::FileExists(Path))
+    if (Utils::FileExists(Path)) {
         return;
+    }
 
     sprintf(Path, "./%s", Provi);
-    if (Utils::FileExists(Path))
+    if (Utils::FileExists(Path)) {
         return;
+    }
     sprintf(Path, "/usr/local/share/Li-ri/%s", Provi);
-    if (Utils::FileExists(Path))
+    if (Utils::FileExists(Path)) {
         return;
+    }
     sprintf(Path, "/usr/share/Li-ri/%s", Provi);
-    if (Utils::FileExists(Path))
+    if (Utils::FileExists(Path)) {
         return;
+    }
     sprintf(Path, "/usr/share/games/Li-ri/%s", Provi);
-    if (Utils::FileExists(Path))
+    if (Utils::FileExists(Path)) {
         return;
+    }
 
     SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Unable to find '%s'", Provi);
 }

@@ -64,8 +64,9 @@ void Loco::Init(int Pos, int Direction)
     Pref.EcartWagon = ECARTWAGON_MOY;
 
     // Initialise les variables
-    for (i = 0; i < 256; i++)
+    for (i = 0; i < 256; i++) {
         PosWagon[i].SprStart = 0;
+    }
 
     // Cherche le case Avant
     switch (Direction) {
@@ -153,22 +154,28 @@ void Loco::Display(Screen &Ec)
         if (x1 <= x2) { // Angle 0 à 180 compris
             vy = (float)(x2 - x1);
             vx = (float)(y2 - y1);
-            if (vx != 0)
+            if (vx != 0) {
                 a = atan(vy / vx) * 180.0 / M_PI;
-            else
+            }
+            else {
                 a = 90.0;
-            if (vx < 0)
+            }
+            if (vx < 0) {
                 a = 180.0 + a;
+            }
         }
         else { // Angle 180.001 à 359.999
             vy = (float)(x1 - x2);
             vx = (float)(y1 - y2);
-            if (vx != 0)
+            if (vx != 0) {
                 a = atan(vy / vx) * 180.0 / M_PI + 180.0;
-            else
+            }
+            else {
                 a = 270.0;
-            if (vx < 0)
+            }
+            if (vx < 0) {
                 a = 180.0 + a;
+            }
         }
         ar = a * M_PI / 180.0;
 
@@ -205,8 +212,9 @@ void Loco::Display(Screen &Ec)
             break;
         default:
             ns = (int)(a * 160.0 / 360.0);
-            if (ns >= 160)
+            if (ns >= 160) {
                 ns = 0;
+            }
             ns += 160;
         }
 
@@ -215,8 +223,9 @@ void Loco::Display(Screen &Ec)
         // Si pas fini la sequence d'affiche de départ du wagon
         if (PosWagon[i].SprStart < N_SPR_START) {
             PosWagon[i].SprStart += MemoDuree * N_SPR_START / 750.0;
-            if (PosWagon[i].SprStart < N_SPR_START)
+            if (PosWagon[i].SprStart < N_SPR_START) {
                 Ec.PrintSprite(nouveau_wagon, (int)(PosWagon[i].SprStart), x1, y1);
+            }
         }
 
         // Met l'ecart entre les wagons
@@ -244,9 +253,11 @@ void Loco::TestCase(float Dist, long DureeJeu, int *Tableau)
             AddLoco(); // Ajoute une loco au azard
 
             Gagne = true; // Test si la dernière loco
-            for (i = 0; i < LT * HT; i++)
-                if (Tableau[i] == C_Wagon)
+            for (i = 0; i < LT * HT; i++) {
+                if (Tableau[i] == C_Wagon) {
                     Gagne = false;
+                }
+            }
             if (Gagne) {
                 Mort = Horloge + DUREE_PAUSE;
                 Sons.Play(sEnd);
@@ -256,18 +267,22 @@ void Loco::TestCase(float Dist, long DureeJeu, int *Tableau)
             Sons.Play(sEtire);
             Tableau[T[PLoco].P] = 1; // efface l'option
             Pref.Score += 20;
-            if (Reduit > DureeJeu)
+            if (Reduit > DureeJeu) {
                 Reduit = DureeJeu - 1;
-            else
+            }
+            else {
                 Alonge = DureeJeu + DUREE_ALONGE;
+            }
             break;
         case C_Reduit: // Si réduit la loco
             Sons.Play(sReduit);
             Tableau[T[PLoco].P] = 1; // efface l'option
-            if (Alonge > DureeJeu)
+            if (Alonge > DureeJeu) {
                 Alonge = DureeJeu - 1;
-            else
+            }
+            else {
                 Reduit = DureeJeu + DUREE_REDUIT;
+            }
             break;
         case C_Speed: // Si Vitesse
             Sons.Play(sSpeed);
@@ -316,15 +331,17 @@ void Loco::Avance(int Duree, long DureeJeu, int *Touche, int *Tableau)
     if (Reduit > DureeJeu) {
         if (Pref.EcartWagon > ECARTWAGON_MIN) { // Si doit réduire
             Pref.EcartWagon -= (float)(Duree) * (Pref.VitesseMoy * 0.8 / (float)(NWagon - 1)) / 1000.0;
-            if (Pref.EcartWagon < ECARTWAGON_MIN)
+            if (Pref.EcartWagon < ECARTWAGON_MIN) {
                 Pref.EcartWagon = ECARTWAGON_MIN;
+            }
         }
     }
     else { // Si temps est passé
         if (Pref.EcartWagon < ECARTWAGON_MOY) { // Si doit ralonger le wagon
             Pref.EcartWagon += (float)(Duree) * (Pref.VitesseMoy * 0.8 / (float)(NWagon)) / 1000.0;
-            if (Pref.EcartWagon > ECARTWAGON_MOY)
+            if (Pref.EcartWagon > ECARTWAGON_MOY) {
                 Pref.EcartWagon = ECARTWAGON_MOY;
+            }
         }
     }
 
@@ -332,15 +349,17 @@ void Loco::Avance(int Duree, long DureeJeu, int *Touche, int *Tableau)
     if (Alonge > DureeJeu) {
         if (Pref.EcartWagon < ECARTWAGON_MAX) { // Si doit Ralonger
             Pref.EcartWagon += (float)(Duree) * (Pref.VitesseMoy * 0.8 / (float)(NWagon)) / 1000.0;
-            if (Pref.EcartWagon > ECARTWAGON_MAX)
+            if (Pref.EcartWagon > ECARTWAGON_MAX) {
                 Pref.EcartWagon = ECARTWAGON_MAX;
+            }
         }
     }
     else { // Si temps est passé
         if (Pref.EcartWagon > ECARTWAGON_MOY) { // Si doit ralonger le wagon
             Pref.EcartWagon -= (float)(Duree) * (Pref.VitesseMoy * 0.8 / (float)(NWagon - 1)) / 1000.0;
-            if (Pref.EcartWagon < ECARTWAGON_MOY)
+            if (Pref.EcartWagon < ECARTWAGON_MOY) {
                 Pref.EcartWagon = ECARTWAGON_MOY;
+            }
         }
     }
 
@@ -348,15 +367,17 @@ void Loco::Avance(int Duree, long DureeJeu, int *Touche, int *Tableau)
     if (Vitesse > DureeJeu) {
         if (Pref.VitesseMoy < Pref.Vitesse * 2) { // Si doit accelerer
             Pref.VitesseMoy += (float)(Duree) / 40.0;
-            if (Pref.VitesseMoy > Pref.Vitesse * 2)
+            if (Pref.VitesseMoy > Pref.Vitesse * 2) {
                 Pref.VitesseMoy = Pref.Vitesse * 2;
+            }
         }
     }
     else {
         if (Pref.VitesseMoy > Pref.Vitesse) { // Si doit ralentir
             Pref.VitesseMoy -= (float)(Duree) / 40.0;
-            if (Pref.VitesseMoy < Pref.Vitesse)
+            if (Pref.VitesseMoy < Pref.Vitesse) {
                 Pref.VitesseMoy = Pref.Vitesse;
+            }
         }
     }
 
@@ -366,8 +387,9 @@ void Loco::Avance(int Duree, long DureeJeu, int *Touche, int *Tableau)
         D = T[PLoco].D;
 
         i = 0; // Cherche la direction possible
-        while (TestDir(Touche[i], Tableau) == false)
+        while (TestDir(Touche[i], Tableau) == false) {
             i++;
+        }
 
         Go(Touche[i]); // Fait avancer le loco suivant le désir du joueur
 
@@ -378,8 +400,9 @@ void Loco::Avance(int Duree, long DureeJeu, int *Touche, int *Tableau)
 
     D += Dist; // Met à la bonne position finale
 
-    if (PInter == -1)
+    if (PInter == -1) {
         DoFleche(Tableau, Touche);
+    }
 }
 
 /*** Recherche la position de la futur intersection ***/
@@ -392,8 +415,9 @@ void Loco::DoFleche(int *Tableau, int *Touche)
     int x, y, Tou;
     int i = 0;
 
-    if (T[PLoco].P != PInter && PInter != -1)
+    if (T[PLoco].P != PInter && PInter != -1) {
         return; // Si pas encore arrivé sur la case de croisement
+    }
 
     PInter = T[PLoco].P; // Prend la position de la loco
 
@@ -443,8 +467,9 @@ void Loco::DoFleche(int *Tableau, int *Touche)
     } while (NVoie == 1);
 
     // Prend la direction de sortie comme direction par defaut
-    while (Touche[i] != MemoS)
+    while (Touche[i] != MemoS) {
         i++;
+    }
     if (i > 0 && !MasqueK) { // Prend la direction de la loco comme direction par defaut
         Tou = Touche[i];
         while (i) {
@@ -463,33 +488,42 @@ bool Loco::TestDir(int FDir, int *Tableau)
     int x, y;
 
     // Test si les directions ne sont pas opposées
-    if (T[PLoco].Sortie == D_Haut && FDir == D_Bas)
+    if (T[PLoco].Sortie == D_Haut && FDir == D_Bas) {
         return false;
-    if (T[PLoco].Sortie == D_Bas && FDir == D_Haut)
+    }
+    if (T[PLoco].Sortie == D_Bas && FDir == D_Haut) {
         return false;
-    if (T[PLoco].Sortie == D_Gauche && FDir == D_Droite)
+    }
+    if (T[PLoco].Sortie == D_Gauche && FDir == D_Droite) {
         return false;
-    if (T[PLoco].Sortie == D_Droite && FDir == D_Gauche)
+    }
+    if (T[PLoco].Sortie == D_Droite && FDir == D_Gauche) {
         return false;
+    }
 
     PAvant += AddDir[(T[PLoco].Sortie)]; // Position dans virage
 
     // Test si un bord
     x = PAvant % LT;
     y = PAvant / LT;
-    if (FDir == D_Haut && y == 0)
+    if (FDir == D_Haut && y == 0) {
         return false;
-    if (FDir == D_Bas && y + 1 == HT)
+    }
+    if (FDir == D_Bas && y + 1 == HT) {
         return false;
-    if (FDir == D_Gauche && x == 0)
+    }
+    if (FDir == D_Gauche && x == 0) {
         return false;
-    if (FDir == D_Droite && x + 1 == LT)
+    }
+    if (FDir == D_Droite && x + 1 == LT) {
         return false;
+    }
 
     PAvant += AddDir[FDir]; // Position futur
 
-    if (Tableau[PAvant] == 0)
+    if (Tableau[PAvant] == 0) {
         return false; // Test si il y a un rail
+    }
 
     return true;
 }
@@ -565,14 +599,16 @@ void Loco::FindPoint(float Dist, int &x, int &y)
     float D_Rest;
 
     // Recherche la case d'avant
-    while (T[NP - 1].D > Dist)
+    while (T[NP - 1].D > Dist) {
         NP--;
+    }
     P = T[NP].P;
 
     // Calcule les coordonnée suivant la direction
     D_Rest = T[NP].D - Dist;
-    if (D_Rest == 0)
+    if (D_Rest == 0) {
         D_Rest = D_Case / 1000.0; // Evite les erreurs de division
+    }
 
     switch (T[NP].Arrive * 4 + T[NP].Sortie) {
     case (D_Gauche * 4 + D_Droite):
@@ -635,10 +671,12 @@ void Loco::AddLoco()
 {
     Wagon[NWagon] = (e_Sprite)(rand() % (wagon - buches) + buches);
     if (Wagon[NWagon] == Wagon[NWagon - 1]) { // Evite 2 fois le meme wagon
-        if (Wagon[NWagon] + 1 == wagon)
+        if (Wagon[NWagon] + 1 == wagon) {
             Wagon[NWagon] = buches;
-        else
+        }
+        else {
             Wagon[NWagon] = (e_Sprite)(Wagon[NWagon] + 1);
+        }
     }
     PosWagon[NWagon].dx = PosWagon[NWagon].dy = -10;
     PosWagon[NWagon].fx = PosWagon[NWagon].fy = -10;

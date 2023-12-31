@@ -67,11 +67,12 @@ void Mouse::GetEvent(SDL_Event &event, int &pPy)
         if (tPy) { // Si bien une table
             i = 0;
             while (tPy[i].DepX != -1) { // Fait toutes les coordonnées
-                if (Px >= tPy[i].DepX && Px <= tPy[i].FinX && Py >= tPy[i].DepY && Py <= tPy[i].FinY)
+                if (Px >= tPy[i].DepX && Px <= tPy[i].FinX && Py >= tPy[i].DepY && Py <= tPy[i].FinY) {
                     if (pPy != tPy[i].Py) {
                         pPy = tPy[i].Py;
                         Sons.Play(sClic);
                     }
+                }
                 i++;
             };
         }
@@ -85,12 +86,13 @@ void Mouse::GetEvent(SDL_Event &event, int &pPy)
             if (tPy) { // Si bien une table
                 i = 0;
                 while (tPy[i].DepX != -1) { // Fait toutes les coordonnées
-                    if (Px >= tPy[i].DepX && Px <= tPy[i].FinX && Py >= tPy[i].DepY && Py <= tPy[i].FinY)
+                    if (Px >= tPy[i].DepX && Px <= tPy[i].FinX && Py >= tPy[i].DepY && Py <= tPy[i].FinY) {
                         if (tPy[i].Valide == true) {
                             event.type = SDL_KEYDOWN;
                             event.key.state = SDL_PRESSED;
                             event.key.keysym.sym = SDLK_RETURN;
                         }
+                    }
                     i++;
                 };
             }
@@ -125,14 +127,18 @@ void Mouse::Print()
     int NumSp = (Horloge / 50) % 20;
 
     // Corrige la position du curseur au cas ou déborde de l'écran
-    if (X < 5)
+    if (X < 5) {
         X = 5;
-    if (X >= 800 - 38)
+    }
+    if (X >= 800 - 38) {
         X = 800 - 39;
-    if (Y < 10)
+    }
+    if (Y < 10) {
         Y = 10;
-    if (Y >= 600 - 35)
+    }
+    if (Y >= 600 - 35) {
         Y = 600 - 36;
+    }
 
 #ifndef ANDROID
     // Affiche le curseur

@@ -40,9 +40,11 @@ Audio::~Audio()
 {
     if (N) {
         Mix_HaltChannel(-1);
-        for (int i = 0; i < N; i++)
-            if (Son[i])
+        for (int i = 0; i < N; i++) {
+            if (Son[i]) {
                 Mix_FreeChunk(Son[i]);
+            }
+        }
         delete[] Son;
     }
     Mix_CloseAudio();
@@ -113,8 +115,9 @@ void Audio::LoadMusic(int Num)
 {
     char Provi[512] = "Sounds/jeu1.xm";
 
-    if (!N)
+    if (!N) {
         return;
+    }
 
     NMus = Num;
 
@@ -143,8 +146,9 @@ void Audio::LoadMusic(int Num)
 void Audio::NextMusic()
 {
     NMus++;
-    if (NMus > 2)
+    if (NMus > 2) {
         NMus = 1;
+    }
     LoadMusic(NMus);
 }
 
@@ -152,12 +156,14 @@ void Audio::NextMusic()
 /********************************/
 void Audio::Play(eSon So)
 {
-    if (!N)
+    if (!N) {
         return;
+    }
 
     if (So == sClic) {
-        if (Horloge - MemoHorloge <= 120)
+        if (Horloge - MemoHorloge <= 120) {
             return;
+        }
         MemoHorloge = Horloge;
     }
 
@@ -176,25 +182,31 @@ void Audio::PlayMusic()
 
 void Audio::PauseMusic(bool Et)
 {
-    if (!N)
+    if (!N) {
         return;
+    }
 
-    if (Et)
+    if (Et) {
         Mix_PauseMusic();
-    else
+    }
+    else {
         Mix_ResumeMusic();
+    }
 }
 
 /*** Valide les Volumes ***/
 /**************************/
 void Audio::DoVolume()
 {
-    if (!N)
+    if (!N) {
         return;
+    }
 
     Mix_Volume(-1, (int)Pref.Volume);
-    if (NMus)
+    if (NMus) {
         Mix_VolumeMusic((int)Pref.VolumeM);
-    else
+    }
+    else {
         Mix_VolumeMusic((int)Pref.VolumeM / 2);
+    }
 }
