@@ -29,17 +29,6 @@
 /**************************/
 extern Sprite *Sprites;
 
-/*** Constructeur ***/
-/********************/
-Screen::Screen() :
-    N(0), Score(-1)
-{
-}
-
-Screen::~Screen()
-{
-}
-
 /*** Affiche un Sprite ***/
 /*************************/
 void Screen::PrintSprite(e_Sprite NumSpr, int Num, int x, int y)

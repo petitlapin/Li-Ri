@@ -36,11 +36,6 @@ extern int Horloge;
 
 /*** Constructeur et Destructeur ***/
 /***********************************/
-Audio::Audio() :
-    N(0), NMus(0), MemoHorloge(0), Son(nullptr), Music(nullptr)
-{
-}
-
 Audio::~Audio()
 {
     if (N) {

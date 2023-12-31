@@ -35,8 +35,8 @@ void Sleeping();
 class Menu
 {
 public:
-    Menu();
-    ~Menu();
+    Menu() = default;
+    ~Menu() = default;
 
     /*** Fonctions ***/
     /*****************/
@@ -58,7 +58,7 @@ public:
 
     /*** Variables ***/
     /*****************/
-    int PyE; // Position du curseur dans le menu
+    int PyE { 0 }; // Position du curseur dans le menu
     int Niv;
     int CentreM; // Variable pour le menu options
 };

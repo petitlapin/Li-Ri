@@ -192,7 +192,7 @@ void AfficheText(int x, int y, e_Sprite Text, SDL_Texture *Fond = nullptr); // A
 class Sprite
 {
 public:
-    Sprite();
+    Sprite() = default;
     ~Sprite();
 
     /*** Fonctions ***/
@@ -204,9 +204,9 @@ public:
     void Delete(); // Efface la mémoire du sprite
 
     /*** Variables ***/
-    int N; // Nombre de sprite
-    SDL_Texture **Image; // Pointe sur les sprites
-    s_Dim *Dim; // Dimensions des sprites
+    int N { 0 }; // Nombre de sprite
+    SDL_Texture **Image { nullptr }; // Pointe sur les sprites
+    s_Dim *Dim { nullptr }; // Dimensions des sprites
 };
 
 #endif

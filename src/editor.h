@@ -32,8 +32,8 @@
 class Editor
 {
 public:
-    Editor();
-    ~Editor();
+    Editor() = default;
+    ~Editor() = default;
 
     /*** Fonctions ***/
     /*****************/
@@ -42,9 +42,9 @@ public:
     void PrendTouche(int Touche); // Prend les touches enfoncées
 
     /*** Variables ***/
-    int N; // Numero du tableau à éditer
+    int N { 0 }; // Numero du tableau à éditer
     e_Sprite Option;
-    int NumDeco;
+    int NumDeco { 0 };
     int NumN;
 };
 #endif

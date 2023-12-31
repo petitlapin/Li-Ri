@@ -56,15 +56,10 @@ int MasqueK; // Masque pour les touches de déplacement
 /***********************************/
 Game::Game()
 {
-    NumSS = 0;
     Touche[0] = D_Haut;
     Touche[1] = D_Bas;
     Touche[2] = D_Gauche;
     Touche[3] = D_Droite;
-}
-
-Game::~Game()
-{
 }
 
 /*** SDL Main ***/

@@ -63,17 +63,6 @@ void Sleeping()
     }
 }
 
-/*** Constructeur et Destructeur ***/
-/***********************************/
-Menu::Menu() :
-    PyE(0)
-{
-}
-
-Menu::~Menu()
-{
-}
-
 /*** Ajoute une entrée dans le tableau des boutons ***/
 /*****************************************************/
 void AddBouton(int Num, e_Sprite NumSp, int X, int Y)

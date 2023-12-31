@@ -47,17 +47,6 @@ extern Game game;
 
 static int NumRail[] = { 10, 10, 10, 0, 10, 1, 2, 3, 10, 4, 5, 6, 7, 8, 9, 10 };
 
-/*** Constructeur et Destructeur ***/
-/***********************************/
-Editor::Editor() :
-    N(0), NumDeco(0)
-{
-}
-
-Editor::~Editor()
-{
-}
-
 /*** SDL Main ***/
 /****************/
 eMenu Editor::SDLMain(int NumNiv)

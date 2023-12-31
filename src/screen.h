@@ -42,8 +42,8 @@ struct s_Screen
 class Screen
 {
 public:
-    Screen();
-    ~Screen();
+    Screen() = default;
+    ~Screen() = default;
 
     /*** Fonctions ***/
     void PrintSprite(e_Sprite NumSpr, int Num, int x, int y); // Affiche un sprite
@@ -54,8 +54,8 @@ public:
     void CleanSpriteAndScreen(e_Sprite NumSpriteFondEcran); // Efface l'ecran avec l'image de fond
 
     /*** Variables ***/
-    int N; // Nombre de sprites mémorisés aprés l'affichage
-    int Score; // Mémorise le score affiché
+    int N { 0 }; // Nombre de sprites mémorisés aprés l'affichage
+    int Score { -1 }; // Mémorise le score affiché
     s_Screen B[LT * HT * 2]; // N° des sprites à effacer plus tard
 };
 

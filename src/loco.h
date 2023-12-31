@@ -51,7 +51,7 @@ class Loco
 {
 public:
     Loco();
-    ~Loco();
+    ~Loco() = default;
 
     /*** Fonctions ***/
     void Init(int Pos, int Direction); // Initialise la loco sur le tableau

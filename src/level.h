@@ -51,7 +51,7 @@ class Level
 {
 public:
     Level();
-    ~Level();
+    ~Level() = default;
 
     /*** Fonctions ***/
     bool Load(); // charge les tableaux
@@ -61,7 +61,7 @@ public:
     void Clear(int Num); // Vide un tableau
 
     /*** Variables ***/
-    int N; // Nombre de niveau
+    int N { 0 }; // Nombre de niveau
     s_Level T[MAX_N_LEVEL_IN_MEMORY]; // Pointe sur les tableaux
 };
 

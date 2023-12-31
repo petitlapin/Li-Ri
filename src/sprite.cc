@@ -303,11 +303,6 @@ void AfficheText(int x, int y, e_Sprite Text, SDL_Texture *Fond)
 
 /*** Constructeur ***/
 /********************/
-Sprite::Sprite() :
-    N(0), Image(nullptr), Dim(nullptr)
-{
-}
-
 Sprite::~Sprite()
 {
     if (N) {
