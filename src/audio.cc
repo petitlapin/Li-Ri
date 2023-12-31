@@ -37,7 +37,7 @@ extern int Horloge;
 /*** Constructeur et Destructeur ***/
 /***********************************/
 Audio::Audio() :
-    N(0), NMus(0), MemoHorloge(0), Son(NULL), Music(NULL)
+    N(0), NMus(0), MemoHorloge(0), Son(nullptr), Music(nullptr)
 {
 }
 
@@ -127,7 +127,7 @@ void Audio::LoadMusic(int Num)
         PauseMusic(true);
         Mix_HaltMusic(); // Arrete la music
         Mix_FreeMusic(Music);
-        Music = NULL;
+        Music = nullptr;
     }
 
     if (Num == 0) { // Si music du menu

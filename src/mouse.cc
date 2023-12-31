@@ -112,7 +112,7 @@ void Mouse::GetEvent(SDL_Event &event, int &pPy)
                 i = 0;
                 while (Bo[i].DepX != -1) { // Fait toutes les coordonnées
                     if (Px >= Bo[i].DepX && Px <= Bo[i].FinX && Py >= Bo[i].DepY && Py <= Bo[i].FinY) {
-                        if (Bo[i].Adr == NULL) { // Si doit fair une touche
+                        if (Bo[i].Adr == nullptr) { // Si doit fair une touche
                             event.type = SDL_KEYDOWN;
                             event.key.state = SDL_PRESSED;
                             event.key.keysym.sym = (SDL_Keycode)Bo[i].Valeur;

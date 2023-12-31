@@ -304,7 +304,7 @@ void AfficheText(int x, int y, e_Sprite Text, SDL_Texture *Fond)
 /*** Constructeur ***/
 /********************/
 Sprite::Sprite() :
-    N(0), Image(NULL), Dim(NULL)
+    N(0), Image(nullptr), Dim(nullptr)
 {
 }
 
@@ -354,7 +354,7 @@ bool Sprite::Load(unsigned char *Buf, long &P)
         // Fabrique la surface
         SDL_Surface *surface = SDL_CreateRGBSurface(0, Dim[i].L, Dim[i].H, Dim[i].bpp * 8,
                                                     0xff, 0xff00, 0xff0000, 0xff000000 * (Dim[i].bpp - 3));
-        if (surface == NULL) {
+        if (surface == nullptr) {
             SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Unable to create the SDL Surface");
             return false;
         }
@@ -401,7 +401,7 @@ void Sprite::Affiche(int X, int Y, int NumSpr, SDL_Texture *Fond)
     Position.h = Di.h;
     // TODO if(Fond==NULL) Fond=sdlRenderer;
 
-    SDL_RenderCopy(sdlRenderer, Image[NumSpr], NULL, &Position);
+    SDL_RenderCopy(sdlRenderer, Image[NumSpr], nullptr, &Position);
 }
 
 /*** Affiche un bout du sprite ***/
@@ -472,7 +472,7 @@ bool Sprite::Nouveau(int Lx, int Ly)
     // Fabrique la surface
     SDL_Surface *surface = SDL_CreateRGBSurface(0, Dim[0].L, Dim[0].H, Dim[0].bpp * 8,
                                                 0xff, 0xff00, 0xff0000, 0xff000000 * (Dim[0].bpp - 3));
-    if (surface == NULL) {
+    if (surface == nullptr) {
         SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Unable to create the SDL Surface");
         return false;
     }

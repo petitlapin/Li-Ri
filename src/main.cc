@@ -45,7 +45,7 @@ SDL_Renderer *sdlRenderer; // Pointe sur l'écran video
 
 char Titre[] = "Li-ri V3.0.1";
 
-Sprite *Sprites = NULL; // Pointe sur les sprites
+Sprite *Sprites = nullptr; // Pointe sur les sprites
 int NSprites = 0; // Nombre de sprites en mémoire
 Screen Ec; // Pointe sur les 2 buffets vidéo
 sPreference Pref; // Tableau des préférences.
