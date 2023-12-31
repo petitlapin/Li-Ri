@@ -28,33 +28,33 @@
 
 /*** Fonction d'attente ***/
 /**************************/
-void Sleeping(void);
+void Sleeping();
 
 /*** Définition de la class ***/
 /******************************/
 class Menu
 {
 public:
-    Menu(void);
-    ~Menu(void);
+    Menu();
+    ~Menu();
 
     /*** Fonctions ***/
     /*****************/
-    eMenu SDLMain(void); // Menu principale
-    eMenu SDLMain_Language(void); // Menu du choix de la langue
-    void InitMain_Options(void); // Prépare l'affichage du menu options
-    eMenu SDLMain_Options(void); // Menu du choix des options
-    eMenu SDLMain_Speed(void); // Menu du choix de la difficulté
-    eMenu SDLMain_Level(void); // Choisi le niveau
+    eMenu SDLMain(); // Menu principale
+    eMenu SDLMain_Language(); // Menu du choix de la langue
+    void InitMain_Options(); // Prépare l'affichage du menu options
+    eMenu SDLMain_Options(); // Menu du choix des options
+    eMenu SDLMain_Speed(); // Menu du choix de la difficulté
+    eMenu SDLMain_Level(); // Choisi le niveau
 #ifndef DCHILDREN
-    eMenu SDLMain_HR(void); // Menu de question sur les droits de l'homme
+    eMenu SDLMain_HR(); // Menu de question sur les droits de l'homme
 #endif
-    void Print_InGame(void); // Affiche le menu InGame
-    eMenu SDLMain_InGame(void); // Menu dans le jeu
+    void Print_InGame(); // Affiche le menu InGame
+    eMenu SDLMain_InGame(); // Menu dans le jeu
     eMenu SDLMain_Score(bool EditScore = false); // Affiche les scores
 
     void Print_Main(int Centre = 400); // Affiche le menu principale
-    void Affiche_Main_Centre(void); // Centre les flèches sur le bouton
+    void Affiche_Main_Centre(); // Centre les flèches sur le bouton
 
     /*** Variables ***/
     /*****************/

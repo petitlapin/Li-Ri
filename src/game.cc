@@ -69,7 +69,7 @@ Game::~Game()
 
 /*** SDL Main ***/
 /****************/
-eMenu Game::SDLMain(void)
+eMenu Game::SDLMain()
 {
     eMenu mRet;
     int NumN = Pref.Niveau;
@@ -377,7 +377,7 @@ void Game::PrendTouche(int Tou)
 
 /*** Fait tourner la fleche d'une simple touche ***/
 /**************************************************/
-void Game::TourneFleche(void)
+void Game::TourneFleche()
 {
     int To = Touche[0];
     bool Cherche = false;
@@ -495,7 +495,7 @@ int Game::TestFleche(int Haut, int Bas, int Gauche, int Droite)
 
 /*** Affiche un ecran du jeu ***/
 /*******************************/
-void Game::AfficheEcran(void)
+void Game::AfficheEcran()
 {
     int i;
     int ndir = 0;

@@ -32,13 +32,13 @@
 class Editor
 {
 public:
-    Editor(void);
-    ~Editor(void);
+    Editor();
+    ~Editor();
 
     /*** Fonctions ***/
     /*****************/
     eMenu SDLMain(int NumNiveau); // Boucle principale
-    void Affiche(void); // Charge un tableau
+    void Affiche(); // Charge un tableau
     void PrendTouche(int Touche); // Prend les touches enfoncées
 
     /*** Variables ***/

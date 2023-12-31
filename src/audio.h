@@ -46,20 +46,20 @@ enum eSon {
 class Audio
 {
 public:
-    Audio(void);
-    ~Audio(void);
+    Audio();
+    ~Audio();
 
     /*** Fonctions ***/
-    bool Init(void); // Initialise et charge les fichiers audio
+    bool Init(); // Initialise et charge les fichiers audio
     void LoadMusic(int Num); // Charge une music, 0 = music du menu 1,2,3,4=Jeu
-    void NextMusic(void); // Passe à la music suivante
+    void NextMusic(); // Passe à la music suivante
 
     void Play(eSon); // Joue un son
-    void PlayMusic(void); // Joue la music
+    void PlayMusic(); // Joue la music
 
     void PauseMusic(bool Etat); // Met ou no la music en pause
 
-    void DoVolume(void); // Valide les volumes audio
+    void DoVolume(); // Valide les volumes audio
 
     /*** Variables ***/
     int N; // Nombre d'échantillon audio

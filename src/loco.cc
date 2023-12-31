@@ -44,12 +44,12 @@ int AddDir[] = { -1, 1, -LT, LT };
 
 /*** Construteur et Destructeur ***/
 /**********************************/
-Loco::Loco(void)
+Loco::Loco()
 {
     Init(LT / 2 + HT / 2 * LT, D_Droite);
 }
 
-Loco::~Loco(void)
+Loco::~Loco()
 {
 }
 
@@ -635,7 +635,7 @@ void Loco::FindPoint(float Dist, int &x, int &y)
 
 /*** Ajoute une loco au azrard ***/
 /*********************************/
-void Loco::AddLoco(void)
+void Loco::AddLoco()
 {
     Wagon[NWagon] = (e_Sprite)(rand() % (wagon - buches) + buches);
     if (Wagon[NWagon] == Wagon[NWagon - 1]) { // Evite 2 fois le meme wagon

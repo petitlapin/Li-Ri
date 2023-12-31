@@ -31,12 +31,12 @@ extern Sprite *Sprites;
 
 /*** Constructeur ***/
 /********************/
-Screen::Screen(void) :
+Screen::Screen() :
     N(0), Score(-1)
 {
 }
 
-Screen::~Screen(void)
+Screen::~Screen()
 {
 }
 

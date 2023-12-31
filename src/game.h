@@ -32,20 +32,20 @@
 class Game
 {
 public:
-    Game(void);
-    ~Game(void);
+    Game();
+    ~Game();
 
     /*** Fonctions ***/
     /*****************/
-    eMenu SDLMain(void); // Boucle principale
+    eMenu SDLMain(); // Boucle principale
     bool Load(int NiveauN); // Charge un tableau
     bool DrawLevel(int NiveauN); // Dessine le niveau
     void PrendTouche(int Touche); // Prend les touches enfoncées
 
-    void TourneFleche(void); // Fait tourner la fleche d'un simple clic.
+    void TourneFleche(); // Fait tourner la fleche d'un simple clic.
     void BufTouche(int Touche); // Met une nouvelle touche dans le buffet
     int TestFleche(int Haut, int Bas, int Gauche, int Droite); // Test la direction de sortie de la fleche
-    void AfficheEcran(void); // Fait l'affichage d'un ecran de jeu
+    void AfficheEcran(); // Fait l'affichage d'un ecran de jeu
 
     /*** Variables ***/
     bool Pause; // Si en pose

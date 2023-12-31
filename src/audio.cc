@@ -36,12 +36,12 @@ extern int Horloge;
 
 /*** Constructeur et Destructeur ***/
 /***********************************/
-Audio::Audio(void) :
+Audio::Audio() :
     N(0), NMus(0), MemoHorloge(0), Son(NULL), Music(NULL)
 {
 }
 
-Audio::~Audio(void)
+Audio::~Audio()
 {
     if (N) {
         Mix_HaltChannel(-1);
@@ -55,7 +55,7 @@ Audio::~Audio(void)
 
 /*** Initialise l'Audio ***/
 /**************************/
-bool Audio::Init(void)
+bool Audio::Init()
 {
     char PathFile[512];
 
@@ -145,7 +145,7 @@ void Audio::LoadMusic(int Num)
 
 /*** Passe à la music de jeu suivante ***/
 /****************************************/
-void Audio::NextMusic(void)
+void Audio::NextMusic()
 {
     NMus++;
     if (NMus > 2)
@@ -171,7 +171,7 @@ void Audio::Play(eSon So)
 
 /*** Joue la music ***/
 /*********************/
-void Audio::PlayMusic(void)
+void Audio::PlayMusic()
 {
     if (Music && N) {
         Mix_PlayMusic(Music, -1);
@@ -192,7 +192,7 @@ void Audio::PauseMusic(bool Et)
 
 /*** Valide les Volumes ***/
 /**************************/
-void Audio::DoVolume(void)
+void Audio::DoVolume()
 {
     if (!N)
         return;

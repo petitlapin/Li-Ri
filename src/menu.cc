@@ -90,7 +90,7 @@ void AddBouton(int Num, e_Sprite NumSp, int X, int Y)
 
 /*** Change le vidéo ***/
 /***********************/
-void ChangeVideo(void)
+void ChangeVideo()
 {
     Uint32 flag = SDL_WINDOW_RESIZABLE;
     if (Pref.FullScreen) {
@@ -102,7 +102,7 @@ void ChangeVideo(void)
 
 /*** SDL Main Menu principale ***/
 /********************************/
-eMenu Menu::SDLMain(void)
+eMenu Menu::SDLMain()
 {
     int i;
     char MCode[5] = { 0, 0, 0, 0, 0 };
@@ -211,7 +211,7 @@ eMenu Menu::SDLMain(void)
 
 /*** SDL Main Menu Choix de la langue ***/
 /****************************************/
-eMenu Menu::SDLMain_Language(void)
+eMenu Menu::SDLMain_Language()
 {
     int NCol = 1;
     int NL;
@@ -342,7 +342,7 @@ eMenu Menu::SDLMain_Language(void)
 
 /*** SDL Main Menu Choix des Options ***/
 /***************************************/
-void Menu::InitMain_Options(void)
+void Menu::InitMain_Options()
 {
     // Initialisations Divers
     mouse.Init(Menu_Py); // Initialise la sourie
@@ -408,7 +408,7 @@ void Menu::InitMain_Options(void)
 
 /*** Gestion du menu Options ***/
 /*******************************/
-eMenu Menu::SDLMain_Options(void)
+eMenu Menu::SDLMain_Options()
 {
     int i, N;
     int NumSp;
@@ -645,7 +645,7 @@ eMenu Menu::SDLMain_Options(void)
 
 /*** SDL Main Menu Choix de la difficulté ***/
 /********************************************/
-eMenu Menu::SDLMain_Speed(void)
+eMenu Menu::SDLMain_Speed()
 {
     // Initialisations Divers
     mouse.Init(Menu_Py); // Initialise la sourie
@@ -743,7 +743,7 @@ eMenu Menu::SDLMain_Speed(void)
 
 /*** SDL Main Menu Choix du niveau ***/
 /*************************************/
-eMenu Menu::SDLMain_Level(void)
+eMenu Menu::SDLMain_Level()
 {
     // Initialisations Divers
     mouse.Init(Menu_Py); // Initialise la sourie
@@ -890,7 +890,7 @@ eMenu Menu::SDLMain_Level(void)
 /*** SDL Main questions sur les droits de l'homme ***/
 /****************************************************/
 #ifndef DCHILDREN
-eMenu Menu::SDLMain_HR(void)
+eMenu Menu::SDLMain_HR()
 {
     int Fini = -1;
     int N1, N2, Ordre;
@@ -1096,7 +1096,7 @@ eMenu Menu::SDLMain_HR(void)
 
 /*** SDL Main dans la partie ***/
 /*******************************/
-void Menu::Print_InGame(void)
+void Menu::Print_InGame()
 {
     SDL_Rect Position;
 
@@ -1123,7 +1123,7 @@ void Menu::Print_InGame(void)
 
 /*** Gestion du menu dans le jeu ***/
 /***********************************/
-eMenu Menu::SDLMain_InGame(void)
+eMenu Menu::SDLMain_InGame()
 {
     Print_InGame();
 

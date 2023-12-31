@@ -42,8 +42,8 @@ struct s_Screen
 class Screen
 {
 public:
-    Screen(void);
-    ~Screen(void);
+    Screen();
+    ~Screen();
 
     /*** Fonctions ***/
     void PrintSprite(e_Sprite NumSpr, int Num, int x, int y); // Affiche un sprite
