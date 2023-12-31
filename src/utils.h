@@ -24,11 +24,12 @@
 #ifndef _UTILS_DOM_
 #define _UTILS_DOM_
 
-class Utils {
- public:
-    static bool FileExists(const char *Path);    // Check if the file exists
-    static long LoadFile(const char *Path,unsigned char *&Buf); // Load a file in memory
-    static bool SaveFile(const char *Path,char *Buf,long L); // Save a file
+class Utils
+{
+public:
+    static bool FileExists(const char *Path); // Check if the file exists
+    static long LoadFile(const char *Path, unsigned char *&Buf); // Load a file in memory
+    static bool SaveFile(const char *Path, char *Buf, long L); // Save a file
 
     static void GetPath(char *Name); // Add the path to the filename depending on the OS (sprites, levels)
 

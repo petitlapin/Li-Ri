@@ -28,35 +28,38 @@
 
 /*** Structure pour la position dans le menu Py ***/
 /**************************************************/
-struct mPy {      // DepX==-1 si derniere entrée
-  int DepX,DepY;
-  int FinX,FinY;
-  int Py;
-  bool Valide;   // Si doit valider un enter quand click de la sourie
+struct mPy
+{ // DepX==-1 si derniere entrée
+    int DepX, DepY;
+    int FinX, FinY;
+    int Py;
+    bool Valide; // Si doit valider un enter quand click de la sourie
 };
 
-struct mButton { // DepX=-1 si derniere entrée
-  int DepX,DepY;
-  int FinX,FinY;
-  int Valeur;
-  int *Adr;
+struct mButton
+{ // DepX=-1 si derniere entrée
+    int DepX, DepY;
+    int FinX, FinY;
+    int Valeur;
+    int *Adr;
 };
 
 /*** Définition de la class Tableau ***/
 /**************************************/
-class Mouse {
- public:
-  Mouse(void);
-  ~Mouse(void);
+class Mouse
+{
+public:
+    Mouse(void);
+    ~Mouse(void);
 
-  void InitStart(void); // Initialise les coordonnées de la sourie
-  void Init(struct mPy *tPy,struct mButton *B=NULL); // Initialise la sourie
-  void GetEvent(SDL_Event &event,int &Py); // Prend les evenements
-  void Print();             // Affiche le curseur
+    void InitStart(void); // Initialise les coordonnées de la sourie
+    void Init(struct mPy *tPy, struct mButton *B = NULL); // Initialise la sourie
+    void GetEvent(SDL_Event &event, int &Py); // Prend les evenements
+    void Print(); // Affiche le curseur
 
-  int Px,Py; // Position réel de la sourie
-  struct mPy *tPy;   // Pointe sur coordonées pour Py
-  struct mButton *Bo; // Pointe sur les coordonnées des bouttons
+    int Px, Py; // Position réel de la sourie
+    struct mPy *tPy; // Pointe sur coordonées pour Py
+    struct mButton *Bo; // Pointe sur les coordonnées des bouttons
 };
 
 #endif

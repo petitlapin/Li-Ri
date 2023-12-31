@@ -1,5 +1,5 @@
 //      (_||_/
-//      (    )       
+//      (    )
 //     ( o  0 )
 //-OOO°--(_)---°OOO---------------------------------------
 //                   Copyright (C) 2006 By Dominique Roux-Serret
@@ -31,86 +31,90 @@ extern Sprite *Sprites;
 
 /*** Constructeur ***/
 /********************/
-Screen::Screen(void) : N(0), Score(-1)
-{ }
+Screen::Screen(void) :
+    N(0), Score(-1)
+{
+}
 
 Screen::~Screen(void)
-{ }
+{
+}
 
 /*** Affiche un Sprite ***/
 /*************************/
-void Screen::PrintSprite(e_Sprite NumSpr,int Num,int x,int y)
+void Screen::PrintSprite(e_Sprite NumSpr, int Num, int x, int y)
 {
-  B[N].NumSpr=NumSpr;
-  B[N].Num=Num;
-  B[N].x=x;
-  B[N].y=y;
-  N++;
+    B[N].NumSpr = NumSpr;
+    B[N].Num = Num;
+    B[N].x = x;
+    B[N].y = y;
+    N++;
 
-  Sprites[NumSpr].Affiche(x,y,Num);
+    Sprites[NumSpr].Affiche(x, y, Num);
 }
 
 /*** Affiche un cable ***/
 /************************/
-void Screen::PrintCable(int dx,int dy,int fx,int fy)
+void Screen::PrintCable(int dx, int dy, int fx, int fy)
 {
-  // Affiche la corde
-  Sprites[corde].AfficheCorde(dx,dy,fx,fy);
-  
-  // Sauve la position du cable pour l'effacer
-  B[N].NumSpr=corde;
-  B[N].Num=0;
-  B[N].x=dx;
-  B[N].y=dy;
-  B[N].fx=fx;
-  B[N].fy=fy;
-  N++;
+    // Affiche la corde
+    Sprites[corde].AfficheCorde(dx, dy, fx, fy);
+
+    // Sauve la position du cable pour l'effacer
+    B[N].NumSpr = corde;
+    B[N].Num = 0;
+    B[N].x = dx;
+    B[N].y = dy;
+    B[N].fx = fx;
+    B[N].fy = fy;
+    N++;
 }
 
 /*** Affiche un text ***/
 /***********************/
-void Screen::PrintText(e_Sprite Text,int x,int y)
+void Screen::PrintText(e_Sprite Text, int x, int y)
 {
-  B[N].NumSpr=Text;
-  B[N].Num=0;
-  B[N].x=x;
-  B[N].y=y;
-  N++;
+    B[N].NumSpr = Text;
+    B[N].Num = 0;
+    B[N].x = x;
+    B[N].y = y;
+    N++;
 
-  Sprites[Text].Affiche(x,y,0);
+    Sprites[Text].Affiche(x, y, 0);
 }
 
 /*** Affiche les options du jeu ***/
 /**********************************/
-void Screen::PrintOptions(int NV,int NScore)
+void Screen::PrintOptions(int NV, int NScore)
 {
-  int x,y;
+    int x, y;
 
-  Score=NScore;
-  AfficheChiffre(740,215,Score);
+    Score = NScore;
+    AfficheChiffre(740, 215, Score);
 
-  if(NV>10) NV=10; // Evite un dépassement de l'affichage
-  for(int i = 0; i < NV; ++i) { // Affiche les vies
-    x=i%2;
-    x=x*44+38+LT*D_Case;
-    y=i/2;
-    y=384+y*46;
-    Sprites[logo_vie].Affiche(x,y,0);
-  }
+    if (NV > 10)
+        NV = 10; // Evite un dépassement de l'affichage
+    for (int i = 0; i < NV; ++i) { // Affiche les vies
+        x = i % 2;
+        x = x * 44 + 38 + LT * D_Case;
+        y = i / 2;
+        y = 384 + y * 46;
+        Sprites[logo_vie].Affiche(x, y, 0);
+    }
 }
 
 /*** Efface les sprites ***/
 /**************************/
 void Screen::ClearSprite(e_Sprite NumSp)
 {
-  N=0;
+    N = 0;
 }
 
 /*** Efface l'ecran avec l'image de fond ***/
 /*******************************************/
 void Screen::CleanSpriteAndScreen(e_Sprite NumSp)
 {
-  Sprites[NumSp].Affiche(Sprites[NumSp].Dim[0].L/2,Sprites[NumSp].Dim[0].H/2,0);
-  N=0;
-  Score=-1;
+    Sprites[NumSp].Affiche(Sprites[NumSp].Dim[0].L / 2, Sprites[NumSp].Dim[0].H / 2, 0);
+    N = 0;
+    Score = -1;
 }

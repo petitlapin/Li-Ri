@@ -29,35 +29,36 @@
 
 /*** Définition de la class ***/
 /******************************/
-class Game {
- public:
-  Game(void);
-  ~Game(void);
+class Game
+{
+public:
+    Game(void);
+    ~Game(void);
 
-  /*** Fonctions ***/
-  /*****************/
-  eMenu SDLMain(void);   // Boucle principale
-  bool Load(int NiveauN); // Charge un tableau
-  bool DrawLevel(int NiveauN);   // Dessine le niveau
-  void PrendTouche(int Touche); // Prend les touches enfoncées
+    /*** Fonctions ***/
+    /*****************/
+    eMenu SDLMain(void); // Boucle principale
+    bool Load(int NiveauN); // Charge un tableau
+    bool DrawLevel(int NiveauN); // Dessine le niveau
+    void PrendTouche(int Touche); // Prend les touches enfoncées
 
-  void TourneFleche(void); // Fait tourner la fleche d'un simple clic.
-  void BufTouche(int Touche); // Met une nouvelle touche dans le buffet
-  int TestFleche(int Haut,int Bas,int Gauche,int Droite); // Test la direction de sortie de la fleche
-  void AfficheEcran(void);    // Fait l'affichage d'un ecran de jeu
+    void TourneFleche(void); // Fait tourner la fleche d'un simple clic.
+    void BufTouche(int Touche); // Met une nouvelle touche dans le buffet
+    int TestFleche(int Haut, int Bas, int Gauche, int Droite); // Test la direction de sortie de la fleche
+    void AfficheEcran(void); // Fait l'affichage d'un ecran de jeu
 
-  /*** Variables ***/
-  bool Pause; // Si en pose
+    /*** Variables ***/
+    bool Pause; // Si en pose
 
-  long DureeJeu; // Horloge de durée du jeu 
+    long DureeJeu; // Horloge de durée du jeu
 
-  int Key;       // Mémorise la touche enfoncée
-  int Touche[4]; // Direction demandée
-  int T[LT*HT]; // Pointe sur le tableau
+    int Key; // Mémorise la touche enfoncée
+    int Touche[4]; // Direction demandée
+    int T[LT * HT]; // Pointe sur le tableau
 
-  Loco Lo;      // Gère la locomotive
+    Loco Lo; // Gère la locomotive
 
-  int NumSS; // Numéro du Screen shot
-  bool Help; // Si doit affiche les fleches d'aide
+    int NumSS; // Numéro du Screen shot
+    bool Help; // Si doit affiche les fleches d'aide
 };
 #endif
