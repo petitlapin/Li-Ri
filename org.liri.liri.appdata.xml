@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  SPDX-License-Identifier: CC0-1.0
+  SPDX-FileCopyrightText: 2023 Johnny Jazeix <jazeix@gmail.com>
+-->
+<component type="desktop">
+  <id>org.liri.liri.desktop</id>
+  <metadata_license>CC0-1.0</metadata_license>
+  <project_license>GPL-2.0-or-later</project_license>
+  <name>Li-Ri</name>
+  <summary>Li-Ri is a arcade game where you drive a toy wood engine.</summary>
+  <description>
+    <p>Li-Ri is a arcade game licensed under the GPL (General Public License).</p>
+    <p>You drive a toy wood engine in many levels and you must collect
+    all the coaches for win. You can download it and play indefinitely.
+    It's Free. You can play on 'Windows', 'Linux', 'Mac OsX', 'Android'.</p>
+    <ul>
+      <li>19 languages: Arabic, Breton, Chinese, English, Esperanto, French, German, Italian, Japanese, Korean, Portuguese, Russian, Slovak, Spanish, Swedish, Polish, Turkish, Hungarian, Dutch.</li>
+      <li>50 levels in this version.</li>
+      <li>3 beautiful musics and many sound effects.</li>
+    </ul>
+    <p>Li-Ri is a fork of Ri-li (http://www.ri-li.org).</p>
+  </description>
+  <screenshots>
+    <screenshot type="default">
+      <caption>Li-ri main menu</caption>
+      <image width="1920" height="1080">https://github.com/petitlapin/Li-Ri/blob/287f0acce15a184ca9e653b4a398b1d2fdb84fd1/fastlane/metadata/android/en-US/images/tenInchScreenshots/01.png</image>
+    </screenshot>
+    <screenshot>
+      <caption>First level</caption>
+      <image width="1600" height="1040">https://github.com/petitlapin/Li-Ri/blob/287f0acce15a184ca9e653b4a398b1d2fdb84fd1/fastlane/metadata/android/en-US/images/tenInchScreenshots/02.png</image>
+    </screenshot>
+    <screenshot>
+      <caption>First level after a few seconds of play</caption>
+      <image width="1600" height="1040">https://github.com/petitlapin/Li-Ri/blob/287f0acce15a184ca9e653b4a398b1d2fdb84fd1/fastlane/metadata/android/en-US/images/tenInchScreenshots/03.png</image>
+    </screenshot>
+  </screenshots>
+  <url type="homepage">https://github.com/petitlapin/Li-Ri</url>
+  <url type="bugtracker">https://github.com/petitlapin/Li-Ri/issues</url>
+  <url type="help">https://github.com/petitlapin/Li-Ri</url>
+  <url type="translate">https://github.com/petitlapin/Li-Ri</url>
+  <update_contact>jazeix@gmail.com</update_contact>
+  <provides>
+    <binary>Li-ri</binary>
+  </provides>
+  <content_rating type="oars-1.1">
+    <content_attribute id="violence-cartoon">none</content_attribute>
+    <content_attribute id="violence-fantasy">none</content_attribute>
+    <content_attribute id="violence-realistic">none</content_attribute>
+    <content_attribute id="violence-bloodshed">none</content_attribute>
+    <content_attribute id="violence-sexual">none</content_attribute>
+    <content_attribute id="violence-desecration">none</content_attribute>
+    <content_attribute id="violence-slavery">none</content_attribute>
+    <content_attribute id="violence-worship">none</content_attribute>
+    <content_attribute id="drugs-alcohol">none</content_attribute>
+    <content_attribute id="drugs-narcotics">none</content_attribute>
+    <content_attribute id="drugs-tobacco">none</content_attribute>
+    <content_attribute id="sex-nudity">none</content_attribute>
+    <content_attribute id="sex-themes">none</content_attribute>
+    <content_attribute id="sex-homosexuality">none</content_attribute>
+    <content_attribute id="sex-prostitution">none</content_attribute>
+    <content_attribute id="sex-adultery">none</content_attribute>
+    <content_attribute id="sex-appearance">none</content_attribute>
+    <content_attribute id="language-profanity">none</content_attribute>
+    <content_attribute id="language-humor">none</content_attribute>
+    <content_attribute id="language-discrimination">none</content_attribute>
+    <content_attribute id="social-chat">none</content_attribute>
+    <content_attribute id="social-info">none</content_attribute>
+    <content_attribute id="social-audio">none</content_attribute>
+    <content_attribute id="social-location">none</content_attribute>
+    <content_attribute id="social-contacts">none</content_attribute>
+    <content_attribute id="money-purchasing">none</content_attribute>
+    <content_attribute id="money-gambling">none</content_attribute>
+  </content_rating>
+  <custom>
+    <value key="KDE::f_droid">https://f-droid.org/en/packages/org.liri.liri/</value>
+  </custom>
+  <releases>
+    <release version="3.0.1" date="2023-12-23"/>
+    <release version="3.0.0" date="2023-12-18"/>
+  </releases>
+</component>

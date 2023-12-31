@@ -1,0 +1,12 @@
+# SPDX-License-Identifier: CC0-1.0
+#  SPDX-FileCopyrightText: 2023 Johnny Jazeix <jazeix@gmail.com>
+[Desktop Entry]
+Name=Li-ri
+GenericName=Li-ri Arcade Game
+Comment=Multi-Activity Educational game for children 2 to 10
+Exec=Li-ri
+Icon=li-ri
+Terminal=false
+Type=Application
+Categories=Education;Game;KidsGame;
+StartupNotify=true

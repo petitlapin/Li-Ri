@@ -2,7 +2,7 @@ Li-Ri is a fork of Ri-li (http://www.ri-li.org).
 
 Li-Ri is a arcade game licensed under the GPL (General Public License).
 You drive a toy wood engine in many levels and you must collect
-all the coaches for win.You can dowload it and play indefinitely.
+all the coaches for win. You can download it and play indefinitely.
 It's Free. You can play on 'Windows', 'Linux', 'Mac OsX', 'Android'.
 
 Full-featured,
