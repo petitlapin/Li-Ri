@@ -124,7 +124,7 @@ void Mouse::GetEvent(SDL_Event &event, int &pPy)
 void Mouse::Print()
 {
     int X = Px, Y = Py;
-    int NumSp = (Horloge / 50) % 20;
+    int const NumSp = (Horloge / 50) % 20;
 
     // Corrige la position du curseur au cas ou déborde de l'écran
     if (X < 5) {

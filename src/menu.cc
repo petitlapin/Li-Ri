@@ -67,7 +67,7 @@ void Sleeping()
 /*****************************************************/
 void AddBouton(int Num, e_Sprite NumSp, int X, int Y)
 {
-    int NumS = (int)NumSp;
+    int const NumS = (int)NumSp;
 
     Menu_Py[Num].DepX = X - Sprites[NumS].Dim[0].L / 2;
     Menu_Py[Num].DepY = Y - Sprites[NumS].Dim[0].H / 2;
@@ -211,7 +211,7 @@ eMenu Menu::SDLMain_Language()
     int Ecart;
     int i;
     int x, y;
-    int OldLangue = Pref.Langue;
+    int const OldLangue = Pref.Langue;
 
     // Initialisations Divers
     mouse.Init(Menu_Py); // Initialise la sourie
@@ -973,7 +973,7 @@ eMenu Menu::SDLMain_HR()
     Menu_Py[2].DepX = -1;
 
     std::array<std::pair<int, int>, 4> posDeco = { std::make_pair(rand() % 130, rand() % 18), std::make_pair(rand() % 130, rand() % 18), std::make_pair(rand() % 130, rand() % 18), std::make_pair(rand() % 130, rand() % 18) };
-    int locoPosition = rand() % 320;
+    int const locoPosition = rand() % 320;
 
     // Prend les evenements
     do {
@@ -1407,10 +1407,10 @@ eMenu Menu::SDLMain_Score(bool EditScore)
 /**********************************/
 void Menu::Print_Main(int Centre)
 {
-    int NumSp = (Horloge / 50) % 20;
-    int x1 = Menu_Py[PyE].DepX - 25;
-    int x2 = (Centre - x1) + Centre;
-    int y = (Menu_Py[PyE].FinY + Menu_Py[PyE].DepY) / 2;
+    int const NumSp = (Horloge / 50) % 20;
+    int const x1 = Menu_Py[PyE].DepX - 25;
+    int const x2 = (Centre - x1) + Centre;
+    int const y = (Menu_Py[PyE].FinY + Menu_Py[PyE].DepY) / 2;
 
     Ec.PrintSprite(fleche_gauche, NumSp, x1, y);
     Ec.PrintSprite(fleche_droite, NumSp, x2, y);
@@ -1420,10 +1420,10 @@ void Menu::Print_Main(int Centre)
 /*****************************************/
 void Menu::Affiche_Main_Centre()
 {
-    int NumSp = (Horloge / 50) % 20;
-    int x1 = Menu_Py[PyE].DepX - 5;
-    int x2 = Menu_Py[PyE].FinX + 5;
-    int y = (Menu_Py[PyE].FinY + Menu_Py[PyE].DepY) / 2;
+    int const NumSp = (Horloge / 50) % 20;
+    int const x1 = Menu_Py[PyE].DepX - 5;
+    int const x2 = Menu_Py[PyE].FinX + 5;
+    int const y = (Menu_Py[PyE].FinY + Menu_Py[PyE].DepY) / 2;
 
     Ec.PrintSprite(fleche_gauche, NumSp, x1, y);
     Ec.PrintSprite(fleche_droite, NumSp, x2, y);

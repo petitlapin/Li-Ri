@@ -78,7 +78,7 @@ long Utils::LoadFile(const char *Path, unsigned char *&Buf)
         return -1;
     }
 
-    long L = SDL_RWtell(file); // récupère la longueur
+    long const L = SDL_RWtell(file); // récupère la longueur
     SDL_RWseek(file, 0, RW_SEEK_SET);
 
     Buf = new unsigned char[L + 1];
