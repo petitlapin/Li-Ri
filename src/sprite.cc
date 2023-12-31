@@ -274,7 +274,7 @@ bool CharExiste(char C)
 /*************************/
 void AfficheChiffre(int x, int y, int Nombre, SDL_Texture *Fond)
 {
-    int l = LongueurChiffre(Nombre);
+    int const l = LongueurChiffre(Nombre);
 
     x += l / 2;
     do {
@@ -423,12 +423,12 @@ void Sprite::Affiche(int X, int Y, int NumSpr, SDL_Texture *Fond)
 void Sprite::AfficheCorde(int dx, int dy, int fx, int fy)
 {
     float d;
-    float lx = float(fx - dx);
-    float ly = float(fy - dy);
+    float const lx = float(fx - dx);
+    float const ly = float(fy - dy);
     int P, n, i, j;
     unsigned char *B;
-    float x = dx;
-    float y = dy;
+    float const x = dx;
+    float const y = dy;
 
     d = sqrt(lx * lx + ly * ly); // Longueur de la corde
     if ((float)((int)(d)) != d) {

@@ -533,7 +533,7 @@ bool Loco::TestDir(int FDir, int *Tableau)
 bool Loco::Go(int FuturDir)
 {
     int PTab = T[PLoco].P;
-    int Dir = T[PLoco].Sortie;
+    int const Dir = T[PLoco].Sortie;
     int Mask;
     int i;
 

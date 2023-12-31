@@ -99,8 +99,8 @@ eMenu Game::SDLMain()
             case SDL_MOUSEBUTTONDOWN:
                 if (event.button.state == SDL_PRESSED) {
                     // Add a Pause event if we click on the top right loco
-                    int Px = event.button.x;
-                    int Py = event.button.y;
+                    int const Px = event.button.x;
+                    int const Py = event.button.y;
                     if (Px >= 680 && Py <= 90) {
                         mRet = MainMenu.SDLMain_InGame();
                         if (mRet == mGame) {
@@ -398,8 +398,8 @@ void Game::TourneFleche()
 {
     int To = Touche[0];
     bool Cherche = false;
-    int x = Lo.PInter % LT;
-    int y = Lo.PInter / LT;
+    int const x = Lo.PInter % LT;
+    int const y = Lo.PInter / LT;
 
     do {
         // Fait toucher la direction dans le sens des aiguilles d'une montre
@@ -490,8 +490,8 @@ void Game::BufTouche(int Tou)
 int Game::TestFleche(int Haut, int Bas, int Gauche, int Droite)
 {
     int i;
-    int x = Lo.PInter % LT;
-    int y = Lo.PInter / LT;
+    int const x = Lo.PInter % LT;
+    int const y = Lo.PInter / LT;
 
     for (i = 0; i < 4; i++) {
         switch (Touche[i]) {
