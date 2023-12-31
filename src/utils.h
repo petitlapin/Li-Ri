@@ -31,7 +31,7 @@ public:
     static long LoadFile(const char *Path, unsigned char *&Buf); // Load a file in memory
     static bool SaveFile(const char *Path, char *Buf, long L); // Save a file
 
-    static void GetPath(char *Name); // Add the path to the filename depending on the OS (sprites, levels)
+    static void GetPath(char *Path); // Add the path to the filename depending on the OS (sprites, levels)
 
     static bool LoadPref(); // Load preferences
     static void SauvePref(); // Save preferences

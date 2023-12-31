@@ -178,7 +178,7 @@ void AfficheChargeur(); // Affiche le chargeur sur la page de départ
 bool LoadLangue(); // Charge les sprites d'une langue
 bool LoadSprites(); // Charge tous les sprites
 
-int LongueurChiffre(int Nombre); // Retourne la longueur en pixels d'un nombre
+int LongueurChiffre(int C); // Retourne la longueur en pixels d'un nombre
 int LongueurString(char *Texte); // Retourne la longueur en pixels d'un texte
 bool CharExiste(char C); // Si un caracataire existe
 
