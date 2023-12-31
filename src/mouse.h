@@ -53,7 +53,7 @@ public:
     ~Mouse();
 
     void InitStart(); // Initialise les coordonnées de la sourie
-    void Init(struct mPy *tPy, struct mButton *B = NULL); // Initialise la sourie
+    void Init(struct mPy *tPy, struct mButton *B = nullptr); // Initialise la sourie
     void GetEvent(SDL_Event &event, int &Py); // Prend les evenements
     void Print(); // Affiche le curseur
 

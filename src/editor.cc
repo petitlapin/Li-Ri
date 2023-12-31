@@ -78,7 +78,7 @@ eMenu Editor::SDLMain(int NumNiv)
     Option = rail;
 
     // Initialise la sourie
-    mouse.Init(NULL);
+    mouse.Init(nullptr);
 
     // Prend les evenements
     do {
@@ -399,7 +399,7 @@ void Editor::PrendTouche(int Tou)
         // test le niveau
         Pref.Niveau = NumN;
         game.SDLMain();
-        mouse.Init(NULL);
+        mouse.Init(nullptr);
         Affiche();
         break;
     case 'a':

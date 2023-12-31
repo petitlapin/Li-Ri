@@ -89,7 +89,7 @@ bool Level::Save()
 
     // Alloue la mémoire
     Buf = new unsigned char[sizeof(s_Level) * N + sizeof(int) + 1];
-    if (Buf == NULL)
+    if (Buf == nullptr)
         return false;
 
     // Charge les tableaux

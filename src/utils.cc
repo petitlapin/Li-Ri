@@ -55,7 +55,7 @@ bool Utils::FileExists(const char *Path)
 {
     SDL_RWops *file = SDL_RWFromFile(Path, "rb");
 
-    if (file == NULL)
+    if (file == nullptr)
         return false;
 
     SDL_RWclose(file);
@@ -81,7 +81,7 @@ long Utils::LoadFile(const char *Path, unsigned char *&Buf)
     SDL_RWseek(file, 0, RW_SEEK_SET);
 
     Buf = new unsigned char[L + 1];
-    if (Buf == NULL) {
+    if (Buf == nullptr) {
         SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Not enough memory");
         SDL_RWclose(file);
         return -1;
