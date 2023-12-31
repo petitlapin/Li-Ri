@@ -88,10 +88,12 @@ bool LoadLangue()
     // Lit les sprites
     P = 0;
     for (i = 0; i < NTextes; i++) {
-        if (Sprites[T_level + i].N)
+        if (Sprites[T_level + i].N) {
             Sprites[T_level + i].Delete();
-        if (Sprites[T_level + i].Load(Buf, P) == false)
+        }
+        if (Sprites[T_level + i].Load(Buf, P) == false) {
             return false;
+        }
     }
     delete[] Buf; // Libère la mémoire du fichier des sprites
 
@@ -111,8 +113,9 @@ bool LoadSprites()
     Utils::GetPath(PathFile);
 
     // Initialise la table de caractaire des textes
-    for (i = 0; i < 256; i++)
+    for (i = 0; i < 256; i++) {
         TableTexte[i] = -1;
+    }
     i = 0;
     while (OrdreTexte[i] != 0) {
         TableTexte[(int)(OrdreTexte[i])] = i;
@@ -149,12 +152,15 @@ bool LoadSprites()
     }
 
     // Charge les sprites des langues
-    for (i = 0; i < Pref.NLangues; i++)
-        if (Sprites[T_Langue + i].Load(Buf, P) == false)
+    for (i = 0; i < Pref.NLangues; i++) {
+        if (Sprites[T_Langue + i].Load(Buf, P) == false) {
             return false;
+        }
+    }
 
-    if (Sprites[chargeur].Load(Buf, P) == false)
+    if (Sprites[chargeur].Load(Buf, P) == false) {
         return false; // Sprite du chargeur
+    }
     AfficheC = true; // Peut afficher le sprite du chargeur
 
     delete[] Buf;
@@ -176,8 +182,9 @@ bool LoadSprites()
         switch (i) {
         case fjeu:
         case fmenu:
-            if (Sprites[i].Nouveau(800, 600) == false)
+            if (Sprites[i].Nouveau(800, 600) == false) {
                 return false;
+            }
             break;
         case corde:
             Sprites[i].N = 0;
@@ -185,8 +192,9 @@ bool LoadSprites()
         case chargeur:
             break;
         default:
-            if (Sprites[i].Load(Buf, P) == false)
+            if (Sprites[i].Load(Buf, P) == false) {
                 return false;
+            }
         }
     }
 
@@ -194,8 +202,9 @@ bool LoadSprites()
 
     // *** Charge la langue ***
     // ************************
-    if (Pref.Langue != -1)
+    if (Pref.Langue != -1) {
         LoadLangue();
+    }
 
     AfficheC = false; // N'affiche plus les sprites du chargeur
     return true;
@@ -210,8 +219,9 @@ int LongueurChiffre(int C)
     do {
         l += Sprites[chiffres].Dim[(C % 10)].L;
         C /= 10;
-        if (C)
+        if (C) {
             l += ECART_ENTRE_CHIFFRE;
+        }
     } while (C);
 
     return l;
@@ -229,12 +239,14 @@ int LongueurString(char *Texte)
         Le = (int)(Texte[i]);
         if (TableTexte[Le] != -1) {
             l += Sprites[lettres].Dim[(TableTexte[Le])].L;
-            if (Texte[i + 1] != 0)
+            if (Texte[i + 1] != 0) {
                 l += ECART_ENTRE_LETTRE;
+            }
         }
         else {
-            if (Le == (int)(' '))
+            if (Le == (int)(' ')) {
                 l += LONGUEUR_ESPACE;
+            }
         }
 
         i++;
@@ -247,12 +259,15 @@ int LongueurString(char *Texte)
 /*************************************/
 bool CharExiste(char C)
 {
-    if ((int)(C) < 0)
+    if ((int)(C) < 0) {
         return false;
-    if (C == ' ')
+    }
+    if (C == ' ') {
         return true;
-    if (TableTexte[(int)(C)] != -1)
+    }
+    if (TableTexte[(int)(C)] != -1) {
         return true;
+    }
     return false;
 }
 /*** Affiche un nombre ***/
@@ -286,8 +301,9 @@ void AfficheString(int x, int y, char *Texte, SDL_Texture *Fond)
             x += Sprites[lettres].Dim[Le].L + ECART_ENTRE_LETTRE;
         }
         else { // Si un espace
-            if (Le == (int)(' '))
+            if (Le == (int)(' ')) {
                 x += LONGUEUR_ESPACE - ECART_ENTRE_LETTRE;
+            }
         }
 
         i++;
@@ -360,16 +376,19 @@ bool Sprite::Load(unsigned char *Buf, long &P)
 
         if (pul[0] == 0) { // Processeur type Power PC, 68000, ..
             for (j = 0; j < Dim[i].L * Dim[i].H * Dim[i].bpp; j += Dim[i].bpp) {
-                if (Dim[i].bpp == 4)
+                if (Dim[i].bpp == 4) {
                     B[j + 3] = Buf[P++];
+                }
                 B[j + 2] = Buf[P++];
                 B[j + 1] = Buf[P++];
                 B[j] = Buf[P++];
             }
         }
-        else
-            for (j = 0; j < Dim[i].L * Dim[i].H * Dim[i].bpp; j++)
+        else {
+            for (j = 0; j < Dim[i].L * Dim[i].H * Dim[i].bpp; j++) {
                 B[j] = Buf[P++];
+            }
+        }
 
         SDL_UnlockSurface(surface);
         Image[i] = SDL_CreateTextureFromSurface(sdlRenderer, surface);
@@ -412,10 +431,12 @@ void Sprite::AfficheCorde(int dx, int dy, int fx, int fy)
     float y = dy;
 
     d = sqrt(lx * lx + ly * ly); // Longueur de la corde
-    if ((float)((int)(d)) != d)
+    if ((float)((int)(d)) != d) {
         n = (int)(d) + 1; // Met en nombre de point
-    else
+    }
+    else {
         n = (int)d;
+    }
 
     // Trace la ligne
     /*TODO SDL_LockSurface(sdlVideo);

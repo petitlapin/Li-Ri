@@ -31,8 +31,9 @@
 Level::Level()
 {
     int i;
-    for (i = 0; i < MAX_N_LEVEL_IN_MEMORY; i++)
+    for (i = 0; i < MAX_N_LEVEL_IN_MEMORY; i++) {
         Clear(i);
+    }
 }
 
 /*** Charge les tableaux ***/
@@ -46,15 +47,17 @@ bool Level::Load()
 
     Utils::GetPath(NameLevelFile);
     L = Utils::LoadFile(NameLevelFile, Buf);
-    if (L <= 0)
+    if (L <= 0) {
         return false;
+    }
 
     // Charge les tableaux
     N = (int)(Buf[0]) * 256 + (int)(Buf[1]);
 
     for (i = 0; i < N; i++) {
-        for (j = 0; j < LT * HT; j++)
+        for (j = 0; j < LT * HT; j++) {
             T[i].T[j] = Buf[P++];
+        }
         T[i].DepX = (int)(Buf[P]) * 256 + (int)(Buf[P + 1]);
         T[i].DepY = (int)(Buf[P + 2]) * 256 + (int)(Buf[P + 3]);
         T[i].DepDir = (int)(Buf[P + 4]) * 256 + (int)(Buf[P + 5]);
@@ -84,16 +87,18 @@ bool Level::Save()
 
     // Alloue la mémoire
     Buf = new unsigned char[sizeof(s_Level) * N + sizeof(int) + 1];
-    if (Buf == nullptr)
+    if (Buf == nullptr) {
         return false;
+    }
 
     // Charge les tableaux
     Buf[0] = N / 256;
     Buf[1] = N % 256;
 
     for (i = 0; i < N; i++) {
-        for (j = 0; j < LT * HT; j++)
+        for (j = 0; j < LT * HT; j++) {
             Buf[P++] = T[i].T[j];
+        }
         Buf[P] = T[i].DepX / 256;
         Buf[P + 1] = T[i].DepX % 256;
         Buf[P + 2] = T[i].DepY / 256;
@@ -134,8 +139,9 @@ void Level::Del(int Num)
 
     if (Num < N) {
         for (i = Num; i < N - 1; i++) {
-            for (j = 0; j < LT * HT; j++)
+            for (j = 0; j < LT * HT; j++) {
                 T[i].T[j] = T[i + 1].T[j];
+            }
             T[i].DepX = T[i + 1].DepX;
             T[i].DepY = T[i + 1].DepY;
             T[i].DepDir = T[i + 1].DepDir;
@@ -158,8 +164,9 @@ void Level::Ins(int Num)
 
     if (Num < N) {
         for (i = N; i > Num; i--) {
-            for (j = 0; j < LT * HT; j++)
+            for (j = 0; j < LT * HT; j++) {
                 T[i].T[j] = T[i - 1].T[j];
+            }
             T[i].DepX = T[i - 1].DepX;
             T[i].DepY = T[i - 1].DepY;
             T[i].DepDir = T[i - 1].DepDir;
@@ -182,8 +189,9 @@ void Level::Clear(int Num)
 {
     int i;
 
-    for (i = 0; i < LT * HT; i++)
+    for (i = 0; i < LT * HT; i++) {
         T[Num].T[i] = C_None;
+    }
     T[Num].DepX = LT / 2;
     T[Num].DepY = HT / 2;
     T[Num].NDeco = 0;

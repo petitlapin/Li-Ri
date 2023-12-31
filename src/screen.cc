@@ -81,8 +81,9 @@ void Screen::PrintOptions(int NV, int NScore)
     Score = NScore;
     AfficheChiffre(740, 215, Score);
 
-    if (NV > 10)
+    if (NV > 10) {
         NV = 10; // Evite un dépassement de l'affichage
+    }
     for (int i = 0; i < NV; ++i) { // Affiche les vies
         x = i % 2;
         x = x * 44 + 38 + LT * D_Case;
