@@ -400,7 +400,7 @@ bool Sprite::Load(unsigned char *Buf, long &P)
 
 /*** Affiche le sprite ***/
 /*************************/
-void Sprite::Affiche(int X, int Y, int NumSpr, SDL_Texture *Fond)
+void Sprite::Affiche(int X, int Y, int NumSpr, SDL_Texture *Fond) const
 {
     SDL_Rect Position;
     SDL_Rect Di;
@@ -457,7 +457,7 @@ void Sprite::AfficheCorde(int dx, int dy, int fx, int fy)
 
 /*** Efface le sprite ***/
 /************************/
-void Sprite::Efface(int X, int Y, int NumSpr, SDL_Texture *Fond)
+void Sprite::Efface(int X, int Y, int NumSpr, SDL_Texture *Fond) const
 {
     SDL_Rect Position;
 

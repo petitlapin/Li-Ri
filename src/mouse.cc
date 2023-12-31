@@ -121,7 +121,7 @@ void Mouse::GetEvent(SDL_Event &event, int &pPy)
 
 /*** Affiche le curseur ***/
 /**************************/
-void Mouse::Print()
+void Mouse::Print() const
 {
     int X = Px, Y = Py;
     int const NumSp = (Horloge / 50) % 20;

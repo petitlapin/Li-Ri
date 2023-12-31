@@ -53,8 +53,8 @@ public:
     eMenu SDLMain_InGame(); // Menu dans le jeu
     eMenu SDLMain_Score(bool EditScore = false); // Affiche les scores
 
-    void Print_Main(int Centre = 400); // Affiche le menu principale
-    void Affiche_Main_Centre(); // Centre les flèches sur le bouton
+    void Print_Main(int Centre = 400) const; // Affiche le menu principale
+    void Affiche_Main_Centre() const; // Centre les flèches sur le bouton
 
     /*** Variables ***/
     /*****************/

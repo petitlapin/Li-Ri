@@ -1405,7 +1405,7 @@ eMenu Menu::SDLMain_Score(bool EditScore)
 
 /*** Affiche le menu Principale ***/
 /**********************************/
-void Menu::Print_Main(int Centre)
+void Menu::Print_Main(int Centre) const
 {
     int const NumSp = (Horloge / 50) % 20;
     int const x1 = Menu_Py[PyE].DepX - 25;
@@ -1418,7 +1418,7 @@ void Menu::Print_Main(int Centre)
 
 /*** Centre les flèches sur le boutton ***/
 /*****************************************/
-void Menu::Affiche_Main_Centre()
+void Menu::Affiche_Main_Centre() const
 {
     int const NumSp = (Horloge / 50) % 20;
     int const x1 = Menu_Py[PyE].DepX - 5;

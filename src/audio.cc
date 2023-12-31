@@ -172,7 +172,7 @@ void Audio::Play(eSon So)
 
 /*** Joue la music ***/
 /*********************/
-void Audio::PlayMusic()
+void Audio::PlayMusic() const
 {
     if (Music && N) {
         Mix_PlayMusic(Music, -1);
@@ -180,7 +180,7 @@ void Audio::PlayMusic()
     }
 }
 
-void Audio::PauseMusic(bool Et)
+void Audio::PauseMusic(bool Et) const
 {
     if (!N) {
         return;
@@ -196,7 +196,7 @@ void Audio::PauseMusic(bool Et)
 
 /*** Valide les Volumes ***/
 /**************************/
-void Audio::DoVolume()
+void Audio::DoVolume() const
 {
     if (!N) {
         return;

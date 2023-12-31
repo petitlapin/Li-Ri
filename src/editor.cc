@@ -203,7 +203,7 @@ eMenu Editor::SDLMain(int NumNiv)
 
 /*** Charge un tableau ***/
 /*************************/
-void Editor::Affiche()
+void Editor::Affiche() const
 {
     int i, x, y, m, cx, cy;
     unsigned char *T;
