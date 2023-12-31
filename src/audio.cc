@@ -22,8 +22,8 @@
 //    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 #include <SDL2/SDL.h>
-#include <stdlib.h>
-#include <string.h>
+#include <cstdlib>
+#include <cstring>
 
 #include "audio.h"
 #include "utils.h"
