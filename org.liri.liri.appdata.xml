@@ -76,6 +76,7 @@
     <value key="KDE::f_droid">https://f-droid.org/en/packages/org.liri.liri/</value>
   </custom>
   <releases>
+    <release version="3.1.0" date="2024-01-01"/>
     <release version="3.0.1" date="2023-12-23"/>
     <release version="3.0.0" date="2023-12-18"/>
   </releases>
