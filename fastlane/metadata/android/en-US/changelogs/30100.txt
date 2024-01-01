@@ -1,3 +1,4 @@
 Fix crash on highscore when waiting too much (memory corruption)
 Add IME keyboard on Android
 Handle Back button on Android (same as Escape)
+Fix audio not playing on Android when leaving the game via the menu and restarting it

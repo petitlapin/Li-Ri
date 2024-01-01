@@ -2,6 +2,7 @@ xx-01-2024 : Version 3.1.0
            Fix crash on highscore when waiting too much (memory corruption)
            Add IME keyboard on Android
            Handle Back button on Android (same as Escape)
+           Fix audio not playing on Android when leaving the game via the menu and restarting it
 19-12-2023 : Version 3.0.1
            CMake compilation
            Github workflow to provide binaries for Linux, Windows and macOS
