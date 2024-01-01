@@ -204,6 +204,8 @@ int main(int narg, char *argv[])
     SDL_DestroyRenderer(sdlRenderer);
     SDL_DestroyWindow(sdlWindow);
 
+    Mix_CloseAudio();
+    Mix_Quit();
     SDL_Quit();
     return 0;
 }
