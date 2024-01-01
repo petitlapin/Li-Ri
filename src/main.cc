@@ -100,7 +100,6 @@ void InitPref()
 int main(int narg, char *argv[])
 {
     int i;
-    Sprite const Spr;
     eMenu RetM, RetMenu = mMenu;
 
     // Initialise les préferences
