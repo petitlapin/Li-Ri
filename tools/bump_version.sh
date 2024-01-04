@@ -78,7 +78,9 @@ versioncode=$((${major}*10000 + ${minor}*100 + ${patch}))
 sed -i "s/android:versionCode=\"[0-9]\+\"$/android:versionCode=\"$versioncode\"/" android/app/src/main/AndroidManifest.xml
 sed -i "s/android:versionName=\"[0-9.]\+\"$/android:versionName=\"$version\"/" android/app/src/main/AndroidManifest.xml
 
-git add CMakeLists.txt android/app/src/main/AndroidManifest.xml && git commit -m "bump version to ${major}.${minor}.${patch}"
+sed -i "s/Li-ri V[0-9.]\+/Li-ri V$version/" src/main.cc
+
+git add CMakeLists.txt android/app/src/main/AndroidManifest.xml src/main.cc && git commit -m "bump version to ${major}.${minor}.${patch}"
 
 if [[ "${DATE}" ]]
 then
