@@ -3,10 +3,11 @@
 [Desktop Entry]
 Name=Li-ri
 GenericName=Li-ri Arcade Game
-Comment=Multi-Activity Educational game for children 2 to 10
+Comment=Drive a toy wood engine
 Exec=Li-ri
 Icon=li-ri
 Terminal=false
 Type=Application
-Categories=Education;Game;KidsGame;
+Categories=ArcadeGame;Simulation;Game;KidsGame;
 StartupNotify=true
+keywords=game;train;toy;wood;engine;switches;kids;
