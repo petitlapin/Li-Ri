@@ -1,8 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--
-  SPDX-License-Identifier: CC0-1.0
-  SPDX-FileCopyrightText: 2023 Johnny Jazeix <jazeix@gmail.com>
--->
 <component type="desktop-application">
   <id>org.liri.liri.desktop</id>
   <name>Li-Ri</name>
@@ -43,6 +39,11 @@
     </screenshot>
   </screenshots>
   <releases>
+    <release type="stable" version="3.1.1" date="2024-01-05T00:00:00Z">
+      <description>
+        <p>Fix Android start (3.1.0 does not work at all on Android)</p>
+      </description>
+    </release>
     <release type="stable" version="3.1.0" date="2024-01-01T00:00:00Z">
       <description>
         <ul>
@@ -57,9 +58,8 @@
       <description>
         <ul>
           <li>CMake compilation</li>
-          <li>Add IME keyboard on Android</li>
-          <li>Handle Back button on Android (same as Escape)</li>
-          <li>Fix audio not playing on Android when leaving the game via the menu and restarting it</li>
+          <li>Github workflow to provide binaries for Linux, Windows and macOS</li>
+          <li>Add missing icon for F-Droid</li>
         </ul>
       </description>
     </release>

@@ -1,1 +1,2 @@
-- First version with SDL 2
+Update to SDL2
+Compilation ok on Android

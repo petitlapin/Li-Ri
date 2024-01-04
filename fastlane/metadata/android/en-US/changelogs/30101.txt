@@ -1,1 +1,1 @@
-Fix run on Android failing on v3.1.0
+Fix Android start (3.1.0 does not work at all on Android)
