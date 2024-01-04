@@ -3,12 +3,12 @@
   SPDX-License-Identifier: CC0-1.0
   SPDX-FileCopyrightText: 2023 Johnny Jazeix <jazeix@gmail.com>
 -->
-<component type="desktop">
+<component type="desktop-application">
   <id>org.liri.liri.desktop</id>
-  <metadata_license>CC0-1.0</metadata_license>
-  <project_license>GPL-2.0-or-later</project_license>
   <name>Li-Ri</name>
   <summary>Li-Ri is a arcade game where you drive a toy wood engine.</summary>
+  <metadata_license>CC0-1.0</metadata_license>
+  <project_license>GPL-2.0-or-later</project_license>
   <description>
     <p>Li-Ri is a arcade game licensed under the GPL (General Public License).</p>
     <p>You drive a toy wood engine in many levels and you must collect
@@ -21,28 +21,131 @@
     </ul>
     <p>Li-Ri is a fork of Ri-li (http://www.ri-li.org).</p>
   </description>
-  <screenshots>
-    <screenshot type="default">
-      <caption>Li-ri main menu</caption>
-      <image width="1920" height="1080">https://github.com/petitlapin/Li-Ri/blob/287f0acce15a184ca9e653b4a398b1d2fdb84fd1/fastlane/metadata/android/en-US/images/tenInchScreenshots/01.png</image>
-    </screenshot>
-    <screenshot>
-      <caption>First level</caption>
-      <image width="1600" height="1040">https://github.com/petitlapin/Li-Ri/blob/287f0acce15a184ca9e653b4a398b1d2fdb84fd1/fastlane/metadata/android/en-US/images/tenInchScreenshots/02.png</image>
-    </screenshot>
-    <screenshot>
-      <caption>First level after a few seconds of play</caption>
-      <image width="1600" height="1040">https://github.com/petitlapin/Li-Ri/blob/287f0acce15a184ca9e653b4a398b1d2fdb84fd1/fastlane/metadata/android/en-US/images/tenInchScreenshots/03.png</image>
-    </screenshot>
-  </screenshots>
   <url type="homepage">https://github.com/petitlapin/Li-Ri</url>
   <url type="bugtracker">https://github.com/petitlapin/Li-Ri/issues</url>
   <url type="help">https://github.com/petitlapin/Li-Ri</url>
   <url type="translate">https://github.com/petitlapin/Li-Ri</url>
-  <update_contact>jazeix@gmail.com</update_contact>
   <provides>
     <binary>Li-ri</binary>
   </provides>
+  <screenshots>
+    <screenshot type="default">
+      <caption>Li-ri main menu</caption>
+      <image type="source" width="1920" height="1080">https://github.com/petitlapin/Li-Ri/blob/287f0acce15a184ca9e653b4a398b1d2fdb84fd1/fastlane/metadata/android/en-US/images/tenInchScreenshots/01.png</image>
+    </screenshot>
+    <screenshot>
+      <caption>First level</caption>
+      <image type="source" width="1600" height="1040">https://github.com/petitlapin/Li-Ri/blob/287f0acce15a184ca9e653b4a398b1d2fdb84fd1/fastlane/metadata/android/en-US/images/tenInchScreenshots/02.png</image>
+    </screenshot>
+    <screenshot>
+      <caption>First level after a few seconds of play</caption>
+      <image type="source" width="1600" height="1040">https://github.com/petitlapin/Li-Ri/blob/287f0acce15a184ca9e653b4a398b1d2fdb84fd1/fastlane/metadata/android/en-US/images/tenInchScreenshots/03.png</image>
+    </screenshot>
+  </screenshots>
+  <releases>
+    <release type="stable" version="3.1.0" date="2024-01-01T00:00:00Z">
+      <description>
+        <ul>
+          <li>Fix crash on highscore when waiting too much (memory corruption)</li>
+          <li>Add IME keyboard on Android</li>
+          <li>Handle Back button on Android (same as Escape)</li>
+          <li>Fix audio not playing on Android when leaving the game via the menu and restarting it</li>
+        </ul>
+      </description>
+    </release>
+    <release type="stable" version="3.0.1" date="2024-12-19T00:00:00Z">
+      <description>
+        <ul>
+          <li>CMake compilation</li>
+          <li>Add IME keyboard on Android</li>
+          <li>Handle Back button on Android (same as Escape)</li>
+          <li>Fix audio not playing on Android when leaving the game via the menu and restarting it</li>
+        </ul>
+      </description>
+    </release>
+    <release type="stable" version="3.0.0" date="2024-11-11T00:00:00Z">
+      <description>
+        <ul>
+          <li>Update to SDL2</li>
+          <li>Compilation ok on Android</li>
+        </ul>
+      </description>
+    </release>
+    <release type="stable" version="2.0.1" date="2007-11-01T00:00:00Z">
+      <description>
+        <ul>
+          <li>New Korean language.</li>
+          <li>Russian correction language.</li>
+          <li>Hungarian correction language.</li>
+          <li>License upgrade to 'GNU GPL Version 2 or Version 3'.</li>
+          <li>You can drive the train with the left mouse button.</li>
+          <li>That player who complete the final level be awarded 100</li>
+          <li>points for each remaining life. (Patch by E. Hikory).</li>
+        </ul>
+      </description>
+    </release>
+    <release type="stable" version="2.0.0" date="2006-10-16T00:00:00Z">
+      <description>
+        <ul>
+          <li>New Polish language.</li>
+          <li>New Turkish language.</li>
+          <li>New Hungarian language.</li>
+          <li>New Dutch language.</li>
+          <li>Animate when Ri-li is loading.</li>
+          <li>10 news levels. Now 50 levels.</li>
+          <li>Correction of the languages Japanese, German, Italian, Russian.</li>
+          <li>Define AMIGAOS4 flags for Amiga OS4 system.</li>
+          <li>Organization of the data files remade.</li>
+          <li>Ri-Li can be launched without a sound card.</li>
+          <li>Ri-li is limited to 60 fps to relieve the CPU.</li>
+          <li>Ri-li use less ram memory.</li>
+        </ul>
+      </description>
+    </release>
+    <release type="stable" version="1.0.4" date="2006-07-19T00:00:00Z">
+      <description>
+        <ul>
+          <li>Addition a help in the game to direct the engine.</li>
+          <li>New Breton language.</li>
+          <li>New Esperanto language.</li>
+          <li>New Italian language.</li>
+          <li>New Portuguese language.</li>
+          <li>New Slovak language.</li>
+          <li>New Swedish language.</li>
+          <li>Correction of the languages German, Japanese, Spanish.</li>
+        </ul>
+      </description>
+    </release>
+    <release type="stable" version="1.0.3" date="2006-07-07T00:00:00Z">
+      <description>
+        <ul>
+          <li>Upgrade source, now use $pkgdatadir</li>
+          <li>variable in autoconf for more compatibility with all</li>
+          <li>distributions. Thanks to "B. GANNE" for the sources</li>
+          <li>in his patch for gentoo linux distribution.</li>
+        </ul>
+      </description>
+    </release>
+    <release type="stable" version="1.0.2" date="2006-06-29T00:00:00Z"/>
+    <release type="stable" version="1.0.1" date="2006-06-27T00:00:00Z">
+      <description>
+        <ul>
+          <li>Upgrade source, compile on Mac OS X.</li>
+          <li>In the compile * Must define Mac_OSX for Mac OS X system. * Must define POWER_PC for PowerPC CPU. * Must define WINDOWS for Windows system. * Must define LINUX for Linux system.</li>
+        </ul>
+      </description>
+    </release>
+    <release type="stable" version="1.0.0" date="2006-06-23T00:00:00Z">
+      <description>
+        <p>First version for linux and windows</p>
+      </description>
+    </release>
+    <release type="stable" version="0.0.1" date="2006-06-18T00:00:00Z">
+      <description>
+        <p>First automake / autoconf</p>
+      </description>
+    </release>
+  </releases>
   <content_rating type="oars-1.1">
     <content_attribute id="violence-cartoon">none</content_attribute>
     <content_attribute id="violence-fantasy">none</content_attribute>
@@ -75,9 +178,4 @@
   <custom>
     <value key="KDE::f_droid">https://f-droid.org/en/packages/org.liri.liri/</value>
   </custom>
-  <releases>
-    <release version="3.1.0" date="2024-01-01"/>
-    <release version="3.0.1" date="2023-12-23"/>
-    <release version="3.0.0" date="2023-12-18"/>
-  </releases>
 </component>

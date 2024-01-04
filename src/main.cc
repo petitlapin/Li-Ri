@@ -43,7 +43,7 @@
 SDL_Window *sdlWindow; // Pointe sur l'écran video
 SDL_Renderer *sdlRenderer; // Pointe sur l'écran video
 
-char Titre[] = "Li-ri V3.1.0";
+char Titre[] = "Li-ri V3.1.1";
 
 Sprite *Sprites = nullptr; // Pointe sur les sprites
 int NSprites = 0; // Nombre de sprites en mémoire
