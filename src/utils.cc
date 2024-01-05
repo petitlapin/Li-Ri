@@ -168,6 +168,12 @@ void Utils::GetPath(char *Path)
     }
 #endif
 
+#ifdef __EMSCRIPTEN__
+    sprintf(Path, "/%s", Provi);
+    if (Utils::FileExists(Path)) {
+        return;
+    }
+#endif
     // Android is directly the filename
     sprintf(Path, "%s", Provi);
     if (Utils::FileExists(Path)) {

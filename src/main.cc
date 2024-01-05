@@ -38,6 +38,10 @@
 #include "editor.h"
 #include "utils.h"
 
+#ifdef __EMSCRIPTEN__
+#include <emscripten.h>
+#endif
+
 /*** Variables globales ***/
 /************************/
 SDL_Window *sdlWindow; // Pointe sur l'écran video
@@ -58,6 +62,8 @@ Audio Sons; // Gère les sons
 
 int Horloge = 0; // Horloges du jeu
 int HorlogeAvant = 0;
+eMenu RetM = mMenu;
+eMenu RetMenu = mMenu;
 
 #ifdef __unix__
 char DefPath[256]; // Chemin par defaut dans arg
@@ -81,10 +87,6 @@ void InitPref()
         Pref.Sco[i].Score = 0;
         Pref.Sco[i].Name[0] = 0;
     }
-    /*   Pref.Sco[0].Score=11425; */
-    /*   sprintf(Pref.Sco[0].Name,"%s","Dominique"); */
-    /*   Pref.Sco[1].Score=678; */
-    /*   sprintf(Pref.Sco[1].Name,"%s","Veronique"); */
 
     Utils::LoadPref();
 
@@ -95,12 +97,78 @@ void InitPref()
     Pref.EcartWagon = ECARTWAGON_MOY;
 }
 
+static void mainloop()
+{
+#ifdef __EMSCRIPTEN__
+    if(RetMenu == mQuit) {
+        // Ferme proprement le programme -> TODO don't duplicate the code...
+        Mix_HaltMusic(); // Arrete la music
+        Mix_FreeMusic(Sons.Music); // Efface la music
+
+        for (int i = 0; i < NSprites; i++) { // Efface les sprites
+            Sprites[i].Delete();
+        }
+        delete[] Sprites;
+
+        Utils::SauvePref(); // Sauve les preferences
+        SDL_DestroyRenderer(sdlRenderer);
+        SDL_DestroyWindow(sdlWindow);
+
+        Mix_CloseAudio();
+        Mix_Quit();
+        SDL_Quit();
+        // This exits the game
+        emscripten_cancel_main_loop();
+    }
+#endif
+    // Si pas de langues demande la langue
+    if (Pref.Langue != -1) {
+        RetMenu = MainMenu.SDLMain_Language();
+        printf("%d\n", RetMenu);
+    }
+
+    // Gère les menus
+    switch (RetMenu) {
+    case mMenu:
+        RetM = MainMenu.SDLMain();
+        break;
+    case mLangue:
+        RetM = MainMenu.SDLMain_Language();
+        break;
+    case mOption:
+        RetM = MainMenu.SDLMain_Options();
+        break;
+    case mScoreEdit:
+        RetM = MainMenu.SDLMain_Score(true);
+        break;
+    case mScore:
+        RetM = MainMenu.SDLMain_Score();
+        break;
+    case mMenuSpeed:
+        RetM = MainMenu.SDLMain_Speed();
+        break;
+    case mMenuNiveau:
+        RetM = MainMenu.SDLMain_Level();
+        break;
+    case mGame:
+        Sons.LoadMusic(1);
+        RetM = game.SDLMain();
+        Sons.LoadMusic(0);
+        break;
+    case mEdit:
+        RetM = Edit.SDLMain(0);
+        break;
+    default:
+        RetM = mQuit;
+    }
+    RetMenu = RetM;
+}
+
 /*** Preogramme principale ***/
 /*****************************/
 int main(int narg, char *argv[])
 {
     int i;
-    eMenu RetM, RetMenu = mMenu;
 
     // Initialise les préferences
     InitPref();
@@ -147,48 +215,13 @@ int main(int narg, char *argv[])
     HorlogeAvant = Horloge = SDL_GetTicks();
     srand(SDL_GetTicks());
 
-    // Si pas de langues demande la langue
-    if (Pref.Langue == -1) {
-        MainMenu.SDLMain_Language();
-    }
-
-    // Gère les menus
+#ifdef __EMSCRIPTEN__
+    emscripten_set_main_loop(mainloop, 0, 1);
+#else
     do {
-        switch (RetMenu) {
-        case mMenu:
-            RetM = MainMenu.SDLMain();
-            break;
-        case mLangue:
-            RetM = MainMenu.SDLMain_Language();
-            break;
-        case mOption:
-            RetM = MainMenu.SDLMain_Options();
-            break;
-        case mScoreEdit:
-            RetM = MainMenu.SDLMain_Score(true);
-            break;
-        case mScore:
-            RetM = MainMenu.SDLMain_Score();
-            break;
-        case mMenuSpeed:
-            RetM = MainMenu.SDLMain_Speed();
-            break;
-        case mMenuNiveau:
-            RetM = MainMenu.SDLMain_Level();
-            break;
-        case mGame:
-            Sons.LoadMusic(1);
-            RetM = game.SDLMain();
-            Sons.LoadMusic(0);
-            break;
-        case mEdit:
-            RetM = Edit.SDLMain(0);
-            break;
-        default:
-            RetM = mQuit;
-        }
-        RetMenu = RetM;
+        mainloop();
     } while (RetMenu != mQuit);
+#endif
 
     // Ferme proprement le programme
     Mix_HaltMusic(); // Arrete la music

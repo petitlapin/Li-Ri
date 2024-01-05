@@ -244,9 +244,6 @@ eMenu Menu::SDLMain_Language()
 
     Menu_Py[Pref.NLangues].DepX = -1;
 
-    // Efface le fond
-    SDL_RenderPresent(sdlRenderer);
-
     // Prend les evenements
     do {
         SDL_RenderClear(sdlRenderer);
@@ -260,7 +257,7 @@ eMenu Menu::SDLMain_Language()
         }
 
         SDL_Event event;
-        while (SDL_PollEvent(&event)) {
+        SDL_PollEvent(&event);
 
             mouse.GetEvent(event, PyE); // Prend les evenements de la sourie
             switch (event.type) {
@@ -321,12 +318,6 @@ eMenu Menu::SDLMain_Language()
                 return mQuit;
                 break;
             }
-        }
-
-        // Gère les variables
-        HorlogeAvant = Horloge;
-        Horloge = SDL_GetTicks();
-        Sleeping();
 
         // Gère l'Affichage
         Ec.ClearSprite(fmenu); // Something is done in the Efface that prevents a crash (or maybe more computation)!
@@ -337,9 +328,13 @@ eMenu Menu::SDLMain_Language()
         // Echange les buffets video
         SDL_RenderPresent(sdlRenderer);
 
-    } while (true);
+        // Gère les variables
+        HorlogeAvant = Horloge;
+        Horloge = SDL_GetTicks();
+        Sleeping();
+    } while (0);
 
-    return mQuit;
+    return mLangue;
 }
 
 /*** SDL Main Menu Choix des Options ***/

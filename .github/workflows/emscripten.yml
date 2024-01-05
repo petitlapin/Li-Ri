@@ -1,0 +1,21 @@
+name: emscripten
+
+on:
+  push:
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+    linux:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v4
+            - uses: mymindstorm/setup-emsdk@v13
+            - name: "Configure and build"
+              run: emcmake cmake -DEMSCRIPTEN=1 -DRILI_ENABLE_IPO=OFF -DCMAKE_BUILD_TYPE=Release -S . -B build
+            - name: build
+              run: cmake --build build --config Release
+            - uses: actions/upload-artifact@v4
+              with:
+                name: emscripten
+                path: build/Li-ri*
