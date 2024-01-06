@@ -24,6 +24,18 @@
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>
+
+#include <SDL2/SDL_audio.h> // for SDL_MIX_MAXVOLUME
+#include <SDL2/SDL_events.h> // for SDL_PollEvent, SDL_Event, SDL_KEYDOWN
+#include <SDL2/SDL_keyboard.h> // for SDL_StopTextInput, SDL_StartTextInput
+#include <SDL2/SDL_keycode.h> // for SDLK_F12, SDLK_RETURN, SDLK_ESCAPE
+#include <SDL2/SDL_mouse.h> // for SDL_ShowCursor
+#include <SDL2/SDL_rect.h> // for SDL_Rect
+#include <SDL2/SDL_render.h> // for SDL_RenderPresent, SDL_RenderClear
+#include <SDL2/SDL_stdinc.h> // for Uint32
+#include <SDL2/SDL_timer.h> // for SDL_GetTicks, SDL_Delay
+#include <SDL2/SDL_video.h> // for SDL_WINDOWEVENT_ENTER, SDL_SetWindowF...
+
 #include <array>
 #include <utility>
 #include "preference.h"

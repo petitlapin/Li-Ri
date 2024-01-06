@@ -21,9 +21,13 @@
 //    with this program; if not, write to the Free Software Foundation, Inc.,
 //    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
+#include <SDL2/SDL_events.h> // for SDL_PollEvent, SDL_PRESSED, SDL_Event
+#include <SDL2/SDL_keycode.h> // for SDLK_DOWN, SDLK_LEFT, SDLK_RIGHT, SDLK_UP
+#include <SDL2/SDL_render.h> // for SDL_RenderPresent, SDL_RenderClear
+#include <SDL2/SDL_timer.h> // for SDL_GetTicks
+#include <SDL2/SDL_video.h> // for SDL_WINDOWEVENT_ENTER, SDL_WINDOWEVENT...
 #include <cstdio>
 #include <cstdlib>
-#include <SDL2/SDL.h>
 
 #include "game.h"
 #include "screen.h"

@@ -21,7 +21,10 @@
 //    with this program; if not, write to the Free Software Foundation, Inc.,
 //    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-#include <cstdio>
+#include <SDL2/SDL_log.h> // for SDL_LogError, SDL_LOG_CATEGORY_APPLICA...
+#include <SDL2/SDL_rect.h> // for SDL_Rect
+#include <SDL2/SDL_surface.h> // for SDL_CreateRGBSurface, SDL_FreeSurface
+#include <SDL2/SDL_timer.h> // for SDL_GetTicks
 #include <cstring>
 #include <cmath>
 #include "sprite.h"

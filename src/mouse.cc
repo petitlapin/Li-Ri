@@ -21,11 +21,13 @@
 //    with this program; if not, write to the Free Software Foundation, Inc.,
 //    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-#include <cstdio>
-#include "mouse.h"
-#include "preference.h"
-#include "screen.h"
+#include <SDL2/SDL_keycode.h> // for SDLK_RETURN, SDL_Keycode
+#include <SDL2/SDL_mouse.h> // for SDL_WarpMouseInWindow
+#include <SDL2/SDL_video.h> // for SDL_Window
 #include "audio.h"
+#include "mouse.h"
+#include "screen.h"
+#include "sprite.h" // for e_Sprite
 
 /*** Variables Globales ***/
 /**************************/
