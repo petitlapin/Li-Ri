@@ -21,8 +21,9 @@
 //    with this program; if not, write to the Free Software Foundation, Inc.,
 //    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-#include <SDL2/SDL.h>
-#include <cstdlib>
+#include <SDL2/SDL_audio.h> // for AUDIO_S16
+#include <SDL2/SDL_error.h> // for SDL_GetError
+#include <SDL2/SDL_log.h> // for SDL_LogInfo, SDL_LOG_CATEGORY_APPLICATION
 #include <cstring>
 
 #include "audio.h"

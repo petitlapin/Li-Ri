@@ -24,6 +24,11 @@
 #include <cstdio>
 #include <cstring>
 
+#include <SDL2/SDL_filesystem.h> // for SDL_GetPrefPath
+#include <SDL2/SDL_log.h> // for SDL_LogError, SDL_LOG_CATEGORY_APPL...
+#include <SDL2/SDL_rwops.h> // for SDL_RWclose, SDL_RWFromFile, SDL_RW...
+#include <SDL2/SDL_stdinc.h> // for SDL_free
+
 #include "utils.h"
 #include "preference.h"
 #include "sprite.h"

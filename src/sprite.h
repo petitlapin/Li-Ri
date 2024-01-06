@@ -24,7 +24,7 @@
 #ifndef SPRITE_DOM_
 #define SPRITE_DOM_
 
-#include <SDL2/SDL.h>
+#include <SDL2/SDL_render.h>
 
 #define FCOLOR 128
 #define ALPHA_OMBRE 125
