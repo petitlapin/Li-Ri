@@ -41,6 +41,7 @@ public:
     void Affiche() const; // Charge un tableau
     void PrendTouche(int Touche); // Prend les touches enfoncées
 
+private:
     /*** Variables ***/
     int N { 0 }; // Numero du tableau à éditer
     e_Sprite Option;

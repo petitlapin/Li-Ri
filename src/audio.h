@@ -60,13 +60,14 @@ public:
     void PauseMusic(bool Etat) const; // Met ou no la music en pause
 
     void DoVolume() const; // Valide les volumes audio
+    Mix_Music *Music { nullptr }; // Pointe sur les musics
 
+private:
     /*** Variables ***/
     int N { 0 }; // Nombre d'échantillon audio
     int NMus { 0 }; // Numéro de la music en cours
     int MemoHorloge { 0 }; // Mémorise l'horloge pour les clics
     Mix_Chunk **Son { nullptr }; // Pointe sur les sons
-    Mix_Music *Music { nullptr }; // Pointe sur les musics
 };
 
 #endif
