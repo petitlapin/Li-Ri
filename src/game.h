@@ -47,6 +47,7 @@ public:
     int TestFleche(int Haut, int Bas, int Gauche, int Droite); // Test la direction de sortie de la fleche
     void AfficheEcran(); // Fait l'affichage d'un ecran de jeu
 
+private:
     /*** Variables ***/
     bool Pause; // Si en pose
 

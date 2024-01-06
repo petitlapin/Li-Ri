@@ -53,6 +53,7 @@ public:
     void ClearSprite(e_Sprite NumSpriteFondEcran); // Efface tous ce qui a été affiché
     void CleanSpriteAndScreen(e_Sprite NumSpriteFondEcran); // Efface l'ecran avec l'image de fond
 
+private:
     /*** Variables ***/
     int N { 0 }; // Nombre de sprites mémorisés aprés l'affichage
     int Score { -1 }; // Mémorise le score affiché

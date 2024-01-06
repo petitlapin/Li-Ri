@@ -56,6 +56,7 @@ public:
     void Print_Main(int Centre = 400) const; // Affiche le menu principale
     void Affiche_Main_Centre() const; // Centre les flèches sur le bouton
 
+private:
     /*** Variables ***/
     /*****************/
     int PyE { 0 }; // Position du curseur dans le menu

@@ -66,13 +66,15 @@ public:
     inline bool Go(int FuturDirection); // Fait avancer le tableau (retourne true si tourne)
     inline void FindPoint(float Dist, int &x, int &y); // Retourne la position d'un point sur le parcour
 
+    int Mort; // Mémorise l'heure + duree pour faire une pause aprés avoir touché un wagon
+    bool Gagne; // Si a fini le niveau
+    int PEntree; // Entrée le la loco sur une case pour la fleche
+    int PInter; // Position de la futur intersection pour afficher la fleche
+
+private:
     /*** Variables ***/
     long Reduit, Alonge, Vitesse; // Memorise l'horloge de fin si doit réduire ou alonger le train
     int PLoco; // Position de la tête de la loco dans le tableau
-    int PInter; // Position de la futur intersection pour afficher la fleche
-    int PEntree; // Entrée le la loco sur une case pour la fleche
-    int Mort; // Mémorise l'heure + duree pour faire une pause aprés avoir touché un wagon
-    bool Gagne; // Si a fini le niveau
     float D; // Distance parcourue par la loco
     struct s_TLoco T[256]; // Mémorise le parcour de la loco maxi = 256 cases
     int NWagon; // Mémorise le nombre de wagon
