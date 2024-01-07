@@ -23,6 +23,14 @@
 
 #include <cstdlib>
 #include <cstring>
+#include <SDL2/SDL_audio.h> // for SDL_MIX_MAXVOLUME
+#include <SDL2/SDL_error.h> // for SDL_GetError
+#include <SDL2/SDL_hints.h> // for SDL_SetHint, SDL_HINT_RENDER_SCALE_QUALITY
+#include <SDL2/SDL_log.h> // for SDL_LogError, SDL_LOG_CATEGORY_APPLICATION
+#include <SDL2/SDL_mouse.h> // for SDL_ShowCursor
+#include <SDL2/SDL_render.h> // for SDL_CreateRenderer, SDL_DestroyRenderer
+#include <SDL2/SDL_timer.h> // for SDL_GetTicks
+#include <SDL2/SDL_video.h> // for SDL_CreateWindow, SDL_DestroyWindow
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_mixer.h>
 
