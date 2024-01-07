@@ -13,6 +13,10 @@ Full-featured,
 - 50 levels in this first version
 - 3 beautiful musics and many sound effects.
 
+![Main menu](fastlane/metadata/android/en-US/images/sevenInchScreenshots/01.png)
+
+![Gameplay](fastlane/metadata/android/en-US/images/sevenInchScreenshots/03.png)
+
 This version updates the version to the SDL2 and updates the code to build and run on Android too.
 
 [<img src="https://fdroid.gitlab.io/artwork/badge/get-it-on.png"
