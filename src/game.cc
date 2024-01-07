@@ -210,11 +210,6 @@ eMenu Game::SDLMain()
             }
         }
 
-        // Gère l'appui des touches
-        if (Key && Lo.Mort == -1) {
-            // PrendTouche(Key);
-        }
-
         // Gère les Horloges et la pose
         HorlogeAvant = Horloge;
         Horloge = SDL_GetTicks();
