@@ -1322,7 +1322,7 @@ eMenu Menu::SDLMain_Score(bool EditScore)
 
         // Affiche les scores
         for (i = 0; i < 8; i++) {
-            sprintf(Provi, "%u", i + 1);
+            sprintf(Provi, "%d", i + 1);
             AfficheString(70, 120 + i * (360 / 7), Provi, Sprites[fmenu].Image[0]);
 
             if (EditScore == false || NEdit != i) {

@@ -199,7 +199,6 @@ public:
     bool Load(unsigned char *Buf, long &P); // Charge les images
     void Affiche(int X, int Y, int NumSpr, SDL_Texture *Fond = nullptr) const; // Affiche un sprite
     void PrintRope(int dx, int dy, int fx, int fy);
-    void Efface(int X, int Y, int NumSpr, SDL_Texture *Fond) const; // Efface le sprite
     bool Nouveau(int Lx, int Ly); // Alloue un nouveau sprite vide sans transparence
     void Delete(); // Efface la mémoire du sprite
 

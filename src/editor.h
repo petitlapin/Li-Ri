@@ -44,8 +44,8 @@ public:
 private:
     /*** Variables ***/
     int N { 0 }; // Numero du tableau à éditer
-    e_Sprite Option;
+    e_Sprite Option { locomotive };
     int NumDeco { 0 };
-    int NumN;
+    int NumN { 0 };
 };
 #endif

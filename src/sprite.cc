@@ -430,20 +430,6 @@ void Sprite::PrintRope(int dx, int dy, int fx, int fy)
     SDL_RenderSetScale(sdlRenderer, 1, 1);
 }
 
-/*** Efface le sprite ***/
-/************************/
-void Sprite::Efface(int X, int Y, int NumSpr, SDL_Texture *Fond) const
-{
-    SDL_Rect Position;
-
-    Position.w = Dim[NumSpr].L;
-    Position.h = Dim[NumSpr].H;
-    Position.x = X - Dim[NumSpr].cx;
-    Position.y = Y - Dim[NumSpr].cy;
-    // SDL_RenderCopy(sdlRenderer, Image[NumSpr],NULL, &Position);
-    // TODO SDL_BlitSurface(Fond,&Position,sdlVideo,&Position);
-}
-
 /*** Alloue un nouveau sprite vide ***/
 /*************************************/
 bool Sprite::Nouveau(int Lx, int Ly)
@@ -458,7 +444,7 @@ bool Sprite::Nouveau(int Lx, int Ly)
     Dim[0].H = Ly;
     Dim[0].cx = Lx / 2;
     Dim[0].cy = Ly / 2;
-    Dim[0].bpp = 3; // Pas de transparence
+    Dim[0].bpp = 3; // No transparency
 
     // Fabrique la surface
     SDL_Surface *surface = SDL_CreateRGBSurface(0, Dim[0].L, Dim[0].H, Dim[0].bpp * 8,
