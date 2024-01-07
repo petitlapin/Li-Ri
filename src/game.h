@@ -40,7 +40,6 @@ public:
     eMenu SDLMain(); // Boucle principale
     bool Load(int NivN); // Charge un tableau
     bool DrawLevel(int NivN); // Dessine le niveau
-    void PrendTouche(int Touche); // Prend les touches enfoncées
 
     void TourneFleche(); // Fait tourner la fleche d'un simple clic.
     void BufTouche(int Touche); // Met une nouvelle touche dans le buffet
@@ -59,7 +58,6 @@ private:
 
     Loco Lo; // Gère la locomotive
 
-    int NumSS { 0 }; // Numéro du Screen shot
     bool Help { true }; // Si doit affiche les fleches d'aide
 };
 #endif
