@@ -28,6 +28,8 @@
 #include <SDL2/SDL_log.h> // for SDL_LogError, SDL_LOG_CATEGORY_APPL...
 #include <SDL2/SDL_rwops.h> // for SDL_RWclose, SDL_RWFromFile, SDL_RW...
 #include <SDL2/SDL_stdinc.h> // for SDL_free
+#include <SDL2/SDL_pixels.h> // for SDL_PIXELFORMAT_ARGB8888
+#include <SDL2/SDL_surface.h> // for SDL_CreateRGBSurface, SDL_FreeSurface
 
 #include "utils.h"
 #include "preference.h"
@@ -286,4 +288,18 @@ void Utils::SauvePref()
 
     SDL_free(PrefFolder);
     Utils::SaveFile(PathPref, (char *)&Pref, sizeof(sPreference));
+}
+
+void Utils::doScreenshot(SDL_Renderer *renderer)
+{
+    static int screenshotNumber = 0;
+    char screenshotName[80];
+    int w, h;
+    SDL_GetRendererOutputSize(renderer, &w, &h);
+    SDL_Surface *surface = SDL_CreateRGBSurfaceWithFormat(0, w, h, 24,
+                                                          SDL_PIXELFORMAT_RGB24);
+    SDL_RenderReadPixels(renderer, nullptr, SDL_PIXELFORMAT_RGB24, surface->pixels, surface->pitch);
+    sprintf(screenshotName, "screenshot%i.bmp", screenshotNumber++);
+    SDL_SaveBMP(surface, screenshotName);
+    SDL_FreeSurface(surface);
 }

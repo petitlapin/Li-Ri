@@ -24,6 +24,8 @@
 #ifndef UTILS_DOM_
 #define UTILS_DOM_
 
+#include <SDL2/SDL_render.h>
+
 class Utils
 {
 public:
@@ -35,6 +37,8 @@ public:
 
     static bool LoadPref(); // Load preferences
     static void SauvePref(); // Save preferences
+
+    static void doScreenshot(SDL_Renderer *renderer);
 };
 
 #endif

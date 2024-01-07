@@ -34,6 +34,7 @@
 #include "menu.h"
 #include "sprite.h"
 #include "level.h"
+#include "utils.h"
 #include "audio.h"
 
 /*** Variables globales ***/
@@ -89,6 +90,7 @@ eMenu Game::SDLMain()
 
     // Prend les evenements
     do {
+        bool doScreenshot = false;
         SDL_RenderClear(sdlRenderer);
         SDL_Event event;
         while (SDL_PollEvent(&event)) {
@@ -139,53 +141,78 @@ eMenu Game::SDLMain()
                     }
                     else {
                         Key = event.key.keysym.sym;
-                        switch (Key) {
-                        case SDLK_UP:
-                            MasqueK |= 1;
-                            break;
-                        case SDLK_DOWN:
-                            MasqueK |= 2;
-                            break;
-                        case SDLK_LEFT:
-                            MasqueK |= 4;
-                            break;
-                        case SDLK_RIGHT:
-                            MasqueK |= 8;
-                            break;
+
+                        if (event.key.repeat == 0) {
+                            switch (Key) {
+                            case SDLK_UP:
+                                BufTouche(D_Haut);
+                                MasqueK |= 1;
+                                break;
+                            case SDLK_DOWN:
+                                BufTouche(D_Bas);
+                                MasqueK |= 2;
+                                break;
+                            case SDLK_LEFT:
+                                BufTouche(D_Gauche);
+                                MasqueK |= 4;
+                                break;
+                            case SDLK_RIGHT:
+                                BufTouche(D_Droite);
+                                MasqueK |= 8;
+                                break;
+                            case SDLK_F12: // Save screenshot
+                                doScreenshot = true;
+                                break;
+                            case 'p':
+                            case 'P':
+                                if (Pause == false) {
+                                    Pause = true;
+                                }
+                                break;
+                            case ' ':
+                                if (Pause) {
+                                    Pause = false;
+                                }
+                                break;
+                            case 'h':
+                            case 'H':
+                                Help = !Help;
+                                break;
+                            }
                         }
                     }
+                    break;
+                case SDL_KEYUP:
+                    switch (event.key.keysym.sym) {
+                    case SDLK_UP:
+                        MasqueK &= 14;
+                        break;
+                    case SDLK_DOWN:
+                        MasqueK &= 13;
+                        break;
+                    case SDLK_LEFT:
+                        MasqueK &= 11;
+                        break;
+                    case SDLK_RIGHT:
+                        MasqueK &= 7;
+                        break;
+                    default:
+                        break;
+                    }
+                    if (!MasqueK) {
+                        Key = 0;
+                    }
+                    break;
+                case SDL_QUIT:
+                    return mQuit;
+                    break;
                 }
-                break;
-            case SDL_KEYUP:
-                switch (event.key.keysym.sym) {
-                case SDLK_UP:
-                    MasqueK &= 14;
-                    break;
-                case SDLK_DOWN:
-                    MasqueK &= 13;
-                    break;
-                case SDLK_LEFT:
-                    MasqueK &= 11;
-                    break;
-                case SDLK_RIGHT:
-                    MasqueK &= 7;
-                    break;
-                default:
-                    break;
-                }
-                if (!MasqueK) {
-                    Key = 0;
-                }
-                break;
-            case SDL_QUIT:
-                return mQuit;
-                break;
             }
         }
 
         // Gère l'appui des touches
         if (Key && Lo.Mort == -1) {
-            PrendTouche(Key);
+            // PrendTouche(Key);
         }
 
         // Gère les Horloges et la pose
@@ -197,15 +224,19 @@ eMenu Game::SDLMain()
         }
         DureeJeu += Horloge - HorlogeAvant;
 
-        // Fait avancer la loco
-        if (Lo.Mort == -1 && Pause == false) {
-            Lo.Avance(Horloge - HorlogeAvant, DureeJeu, Touche, T);
-        }
-
         // Fait l'affichage
         DrawLevel(NumN);
         AfficheEcran();
         SDL_RenderPresent(sdlRenderer);
+
+        if (doScreenshot) {
+            Utils::doScreenshot(sdlRenderer);
+        }
+
+        // Fait avancer la loco
+        if (Lo.Mort == -1 && Pause == false) {
+            Lo.Avance(Horloge - HorlogeAvant, DureeJeu, Touche, T);
+        }
 
         // Test la fin d'une partie
         if (Lo.Mort > -1 && Lo.Mort < Horloge) { // Si est Mort test si doit continuer ou quitter
@@ -343,57 +374,6 @@ bool Game::DrawLevel(int NivN)
     AfficheChiffre(740, 140, Pref.Niveau + 1, Sprites[fjeu].Image[0]);
 
     return true;
-}
-
-/*** Prend les touches enfoncées ***/
-/***********************************/
-void Game::PrendTouche(int Tou)
-{
-    char NomSS[40];
-
-    if (Pause == true && (Tou == SDLK_RETURN || Tou >= 32) && Tou < SDLK_RALT && (Tou < SDLK_F12 || Tou > SDLK_F15)) {
-        Tou = (int)(' '); // Press any key!
-    }
-
-    switch (Tou) {
-    case SDLK_UP:
-        BufTouche(D_Haut);
-        break;
-    case SDLK_DOWN:
-        BufTouche(D_Bas);
-        break;
-    case SDLK_LEFT:
-        BufTouche(D_Gauche);
-        break;
-    case SDLK_RIGHT:
-        BufTouche(D_Droite);
-        break;
-    case SDLK_F12: // Sauve un screenshot
-        sprintf(NomSS, "screenshot%i.bmp", NumSS);
-        NumSS++;
-        // TODO SDL_SaveBMP(sdlVideo,NomSS);
-        break;
-    case 'p':
-    case 'P':
-        if (Pause == false) {
-            Pause = true;
-        }
-        break;
-    case ' ':
-        if (Pause) {
-            Pause = false;
-        }
-        break;
-    case 'h':
-    case 'H':
-        if (Help) {
-            Help = false;
-        }
-        else {
-            Help = true;
-        }
-        break;
-    }
 }
 
 /*** Fait tourner la fleche d'une simple touche ***/

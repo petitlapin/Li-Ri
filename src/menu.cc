@@ -44,6 +44,7 @@
 #include "screen.h"
 #include "mouse.h"
 #include "audio.h"
+#include "utils.h"
 
 #define PY 180
 
@@ -135,11 +136,6 @@ eMenu Menu::SDLMain()
         while (SDL_PollEvent(&event)) {
             mouse.GetEvent(event, PyE); // Prend les evenements de la sourie
             switch (event.type) {
-            case SDL_WINDOWEVENT:
-                if (event.window.event == SDL_WINDOWEVENT_ENTER) {
-                    // SDL_RenderPresent(sdlRenderer);
-                }
-                break;
             case SDL_KEYDOWN:
                 if (event.key.state == SDL_PRESSED) {
                     Sons.Play(sClic);
@@ -159,8 +155,10 @@ eMenu Menu::SDLMain()
                             PyE = 0;
                         }
                         break;
-                    case SDLK_F12: // Sauve un screenshot
-                        // TODO SDL_SaveBMP(sdlVideo,"screenshot.bmp");
+                    case SDLK_F12: // Save screenshot
+                        if (event.key.repeat == 0) {
+                            Utils::doScreenshot(sdlRenderer);
+                        }
                         break;
                     case ' ':
                     case SDLK_RETURN:
@@ -313,8 +311,10 @@ eMenu Menu::SDLMain_Language()
                             PyE += NL;
                         }
                         break;
-                    case SDLK_F12: // Sauve un screenshot
-                        // TODO SDL_SaveBMP(sdlVideo,"screenshot.bmp");
+                    case SDLK_F12: // Save screenshot
+                        if (event.key.repeat == 0) {
+                            Utils::doScreenshot(sdlRenderer);
+                        }
                         break;
                     case ' ':
                     case SDLK_RETURN:
@@ -521,8 +521,10 @@ eMenu Menu::SDLMain_Options()
                             PyE = 0;
                         }
                         break;
-                    case SDLK_F12: // Sauve un screenshot
-                        // TODO SDL_SaveBMP(sdlVideo,"screenshot.bmp");
+                    case SDLK_F12: // Save screenshot
+                        if (event.key.repeat == 0) {
+                            Utils::doScreenshot(sdlRenderer);
+                        }
                         break;
                     case ' ':
                     case SDLK_RETURN:
@@ -724,8 +726,10 @@ eMenu Menu::SDLMain_Speed()
                             PyE = 0;
                         }
                         break;
-                    case SDLK_F12: // Sauve un screenshot
-                        // TODO SDL_SaveBMP(sdlVideo,"screenshot.bmp");
+                    case SDLK_F12: // Save screenshot
+                        if (event.key.repeat == 0) {
+                            Utils::doScreenshot(sdlRenderer);
+                        }
                         break;
                     case ' ':
                     case SDLK_RETURN:
@@ -846,8 +850,10 @@ eMenu Menu::SDLMain_Level()
                         }
                         PyE = 1;
                         break;
-                    case SDLK_F12: // Sauve un screenshot
-                        // TODO SDL_SaveBMP(sdlVideo,"screenshot.bmp");
+                    case SDLK_F12: // Save screenshot
+                        if (event.key.repeat == 0) {
+                            Utils::doScreenshot(sdlRenderer);
+                        }
                         break;
                     case ' ':
                     case SDLK_RETURN:
@@ -1065,8 +1071,10 @@ eMenu Menu::SDLMain_HR()
                             PyE = 0;
                         }
                         break;
-                    case SDLK_F12: // Sauve un screenshot
-                        // TODO SDL_SaveBMP(sdlVideo,"screenshot.bmp");
+                    case SDLK_F12: // Save screenshot
+                        if (event.key.repeat == 0) {
+                            Utils::doScreenshot(sdlRenderer);
+                        }
                         break;
                     case ' ':
                     case SDLK_RETURN:
@@ -1214,8 +1222,10 @@ eMenu Menu::SDLMain_InGame()
                             PyE = 0;
                         }
                         break;
-                    case SDLK_F12: // Sauve un screenshot
-                        // TODO SDL_SaveBMP(sdlVideo,"screenshot.bmp");
+                    case SDLK_F12: // Save screenshot
+                        if (event.key.repeat == 0) {
+                            Utils::doScreenshot(sdlRenderer);
+                        }
                         break;
                     case ' ':
                     case SDLK_RETURN:
@@ -1355,8 +1365,10 @@ eMenu Menu::SDLMain_Score(bool EditScore)
                         event.key.keysym.sym = SDLK_RETURN;
                     }
                     switch (event.key.keysym.sym) {
-                    case SDLK_F12: // Sauve un screenshot
-                        // TODO SDL_SaveBMP(sdlVideo,"screenshot.bmp");
+                    case SDLK_F12: // Save screenshot
+                        if (event.key.repeat == 0) {
+                            Utils::doScreenshot(sdlRenderer);
+                        }
                         break;
                     case SDLK_ESCAPE: // Valide l'entrée
                     case SDLK_RETURN:
