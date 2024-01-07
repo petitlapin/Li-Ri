@@ -60,8 +60,8 @@ private:
     /*** Variables ***/
     /*****************/
     int PyE { 0 }; // Position du curseur dans le menu
-    int Niv;
-    int CentreM; // Variable pour le menu options
+    int Niv { 0 };
+    int CentreM { 0 }; // Variable pour le menu options
 };
 
 #endif

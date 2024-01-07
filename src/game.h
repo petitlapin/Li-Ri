@@ -49,17 +49,17 @@ public:
 
 private:
     /*** Variables ***/
-    bool Pause; // Si en pose
+    bool Pause { false }; // Si en pose
 
-    long DureeJeu; // Horloge de durée du jeu
+    long DureeJeu { 0 }; // Horloge de durée du jeu
 
-    int Key; // Mémorise la touche enfoncée
+    int Key { 0 }; // Mémorise la touche enfoncée
     int Touche[4]; // Direction demandée
     int T[LT * HT]; // Pointe sur le tableau
 
     Loco Lo; // Gère la locomotive
 
     int NumSS { 0 }; // Numéro du Screen shot
-    bool Help; // Si doit affiche les fleches d'aide
+    bool Help { true }; // Si doit affiche les fleches d'aide
 };
 #endif

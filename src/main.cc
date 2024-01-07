@@ -88,10 +88,6 @@ void InitPref()
         Pref.Sco[i].Score = 0;
         Pref.Sco[i].Name[0] = 0;
     }
-    /*   Pref.Sco[0].Score=11425; */
-    /*   sprintf(Pref.Sco[0].Name,"%s","Dominique"); */
-    /*   Pref.Sco[1].Score=678; */
-    /*   sprintf(Pref.Sco[1].Name,"%s","Veronique"); */
 
     Utils::LoadPref();
 

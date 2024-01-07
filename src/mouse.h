@@ -60,8 +60,8 @@ public:
     int Px { 400 }, Py { 300 }; // Mouse screen position
 
 private:
-    struct mPy *tPy; // Pointe sur coordonées pour Py
-    struct mButton *Bo; // Pointe sur les coordonnées des bouttons
+    struct mPy *tPy { nullptr }; // Pointe sur coordonées pour Py
+    struct mButton *Bo { nullptr }; // Pointe sur les coordonnées des bouttons
 };
 
 #endif
