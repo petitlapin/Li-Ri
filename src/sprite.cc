@@ -21,12 +21,11 @@
 //    with this program; if not, write to the Free Software Foundation, Inc.,
 //    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-#include <SDL2/SDL_log.h> // for SDL_LogError, SDL_LOG_CATEGORY_APPLICA...
-#include <SDL2/SDL_rect.h> // for SDL_Rect
-#include <SDL2/SDL_surface.h> // for SDL_CreateRGBSurface, SDL_FreeSurface
-#include <SDL2/SDL_timer.h> // for SDL_GetTicks
+#include <SDL2/SDL_log.h>
+#include <SDL2/SDL_rect.h>
+#include <SDL2/SDL_surface.h>
+#include <SDL2/SDL_timer.h>
 #include <cstring>
-#include <cmath>
 #include "sprite.h"
 #include "preference.h"
 #include "utils.h"
@@ -34,7 +33,6 @@
 /*** Variables Globales ***/
 /**************************/
 extern SDL_Renderer *sdlRenderer;
-// extern SDL_Surface *sdlVideo;
 extern Sprite *Sprites;
 extern int NSprites;
 extern sPreference Pref;
@@ -189,7 +187,7 @@ bool LoadSprites()
                 return false;
             }
             break;
-        case corde:
+        case rope:
             Sprites[i].N = 0;
             break;
         case chargeur:
@@ -421,41 +419,15 @@ void Sprite::Affiche(int X, int Y, int NumSpr, SDL_Texture *Fond) const
     SDL_RenderCopy(sdlRenderer, Image[NumSpr], nullptr, &Position);
 }
 
-/*** Affiche un bout du sprite ***/
+/*** Print the white rope between two wagons ***/
 /*********************************/
-void Sprite::AfficheCorde(int dx, int dy, int fx, int fy)
+void Sprite::PrintRope(int dx, int dy, int fx, int fy)
 {
-    float d;
-    float const lx = float(fx - dx);
-    float const ly = float(fy - dy);
-    int P, n, i, j;
-    unsigned char *B;
-    float const x = dx;
-    float const y = dy;
-
-    d = sqrt(lx * lx + ly * ly); // Longueur de la corde
-    if ((float)((int)(d)) != d) {
-        n = (int)(d) + 1; // Met en nombre de point
-    }
-    else {
-        n = (int)d;
-    }
-
-    // Trace la ligne
-    /*TODO SDL_LockSurface(sdlVideo);
-    B=(unsigned char*)sdlVideo->pixels;
-
-    lx=lx/(float)n;
-    ly=ly/(float)n;
-
-    for(i=0;i<=n;i++) {
-      P=((int)(x)+(int)(y)*800)*sdlVideo->format->BytesPerPixel;
-      for(j=0;j<sdlVideo->format->BytesPerPixel;j++) B[P+j]=255;
-      x+=lx;
-      y+=ly;
-    }
-
-    SDL_UnlockSurface(sdlVideo);*/
+    float ropeWidth = 2;
+    SDL_RenderSetScale(sdlRenderer, ropeWidth, ropeWidth);
+    SDL_SetRenderDrawColor(sdlRenderer, 255, 255, 255, 0);
+    SDL_RenderDrawLine(sdlRenderer, dx / ropeWidth, dy / ropeWidth, fx / ropeWidth, fy / ropeWidth);
+    SDL_RenderSetScale(sdlRenderer, 1, 1);
 }
 
 /*** Efface le sprite ***/

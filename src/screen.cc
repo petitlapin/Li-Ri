@@ -42,15 +42,13 @@ void Screen::PrintSprite(e_Sprite NumSpr, int Num, int x, int y)
     Sprites[NumSpr].Affiche(x, y, Num);
 }
 
-/*** Affiche un cable ***/
-/************************/
 void Screen::PrintCable(int dx, int dy, int fx, int fy)
 {
-    // Affiche la corde
-    Sprites[corde].AfficheCorde(dx, dy, fx, fy);
+    // Show the rope between the wagons
+    Sprites[rope].PrintRope(dx, dy, fx, fy);
 
-    // Sauve la position du cable pour l'effacer
-    B[N].NumSpr = corde;
+    // Save cable position to delete it later
+    B[N].NumSpr = rope;
     B[N].Num = 0;
     B[N].x = dx;
     B[N].y = dy;
