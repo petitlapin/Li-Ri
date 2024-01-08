@@ -24,6 +24,7 @@
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>
+#include <stack>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_mixer.h>
 
@@ -62,8 +63,8 @@ Audio Sons; // Gère les sons
 
 int Horloge = 0; // Horloges du jeu
 int HorlogeAvant = 0;
-eMenu RetM = mMenu;
-eMenu RetMenu = mMenu;
+
+std::stack<eMenu> menuStack = {};
 
 #ifdef __unix__
 char DefPath[256]; // Chemin par defaut dans arg
@@ -97,80 +98,92 @@ void InitPref()
     Pref.EcartWagon = ECARTWAGON_MOY;
 }
 
+void cleanResources() {
+    Mix_HaltMusic(); // Stop music
+    Mix_FreeMusic(Sons.Music); // Delete music
+
+    for (int i = 0; i < NSprites; i++) { // Delete sprites
+        Sprites[i].Delete();
+    }
+    delete[] Sprites;
+
+    Utils::SauvePref(); // Save preferences
+    SDL_DestroyRenderer(sdlRenderer);
+    SDL_DestroyWindow(sdlWindow);
+
+    Mix_Quit();
+    SDL_Quit();
+}
+
 static void mainloop()
 {
+    eMenu RetMenu = menuStack.top();
+    menuStack.pop();
+
 #ifdef __EMSCRIPTEN__
     if(RetMenu == mQuit) {
-        // Ferme proprement le programme -> TODO don't duplicate the code...
-        Mix_HaltMusic(); // Arrete la music
-        Mix_FreeMusic(Sons.Music); // Efface la music
-
-        for (int i = 0; i < NSprites; i++) { // Efface les sprites
-            Sprites[i].Delete();
-        }
-        delete[] Sprites;
-
-        Utils::SauvePref(); // Sauve les preferences
-        SDL_DestroyRenderer(sdlRenderer);
-        SDL_DestroyWindow(sdlWindow);
-
-        Mix_CloseAudio();
-        Mix_Quit();
-        SDL_Quit();
+        cleanResources();
         // This exits the game
         emscripten_cancel_main_loop();
     }
 #endif
-    // Si pas de langues demande la langue
-    if (Pref.Langue != -1) {
-        RetMenu = MainMenu.SDLMain_Language();
-        printf("%d\n", RetMenu);
+
+    SDL_RenderClear(sdlRenderer);
+
+    // Ask for locale if it is first run
+    if (Pref.Langue == -1) {
+        RetMenu = mLangue;
     }
 
     // Gère les menus
     switch (RetMenu) {
     case mMenu:
-        RetM = MainMenu.SDLMain();
+        RetMenu = MainMenu.SDLMain();
         break;
     case mLangue:
-        RetM = MainMenu.SDLMain_Language();
+        RetMenu = MainMenu.SDLMain_Language();
         break;
     case mOption:
-        RetM = MainMenu.SDLMain_Options();
+        RetMenu = MainMenu.SDLMain_Options();
         break;
     case mScoreEdit:
-        RetM = MainMenu.SDLMain_Score(true);
+        RetMenu = MainMenu.SDLMain_Score(true);
         break;
     case mScore:
-        RetM = MainMenu.SDLMain_Score();
+        RetMenu = MainMenu.SDLMain_Score();
         break;
     case mMenuSpeed:
-        RetM = MainMenu.SDLMain_Speed();
+        RetMenu = MainMenu.SDLMain_Speed();
         break;
     case mMenuNiveau:
-        RetM = MainMenu.SDLMain_Level();
+        RetMenu = MainMenu.SDLMain_Level();
         break;
     case mGame:
         Sons.LoadMusic(1);
-        RetM = game.SDLMain();
+        RetMenu = game.SDLMain();
         Sons.LoadMusic(0);
         break;
     case mEdit:
-        RetM = Edit.SDLMain(0);
+        RetMenu = Edit.SDLMain(0);
         break;
     default:
-        RetM = mQuit;
+        RetMenu = mQuit;
     }
-    RetMenu = RetM;
+    menuStack.push(RetMenu);
+    
+    // Keep track of time
+    HorlogeAvant = Horloge;
+    Horloge = SDL_GetTicks();
+
+    SDL_RenderPresent(sdlRenderer);
+
 }
 
-/*** Preogramme principale ***/
-/*****************************/
 int main(int narg, char *argv[])
 {
     int i;
 
-    // Initialise les préferences
+    // Initialize preferences
     InitPref();
 #ifdef __unix__
     if (narg > 1) {
@@ -178,8 +191,8 @@ int main(int narg, char *argv[])
     }
 #endif
 
-    // Initiliase SDL
-    if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER | SDL_INIT_AUDIO) < 0) {
+    // Initialize SDL
+    if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO) < 0) {
         SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Unable to initialize SDL: %s", SDL_GetError());
         exit(-1);
     }
@@ -193,7 +206,7 @@ int main(int narg, char *argv[])
     }
 
     sdlWindow = SDL_CreateWindow(Titre, 0, 0, 800, 600, vOption);
-    sdlRenderer = SDL_CreateRenderer(sdlWindow, -1, 0);
+    sdlRenderer = SDL_CreateRenderer(sdlWindow, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
     SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "linear");
     SDL_RenderSetLogicalSize(sdlRenderer, 800, 600);
 
@@ -215,29 +228,16 @@ int main(int narg, char *argv[])
     HorlogeAvant = Horloge = SDL_GetTicks();
     srand(SDL_GetTicks());
 
+    menuStack.push(mMenu);
+
 #ifdef __EMSCRIPTEN__
     emscripten_set_main_loop(mainloop, 0, 1);
 #else
     do {
         mainloop();
-    } while (RetMenu != mQuit);
+    } while (menuStack.top() != mQuit);
 #endif
 
-    // Ferme proprement le programme
-    Mix_HaltMusic(); // Arrete la music
-    Mix_FreeMusic(Sons.Music); // Efface la music
-
-    for (i = 0; i < NSprites; i++) { // Efface les sprites
-        Sprites[i].Delete();
-    }
-    delete[] Sprites;
-
-    Utils::SauvePref(); // Sauve les preferences
-    SDL_DestroyRenderer(sdlRenderer);
-    SDL_DestroyWindow(sdlWindow);
-
-    Mix_CloseAudio();
-    Mix_Quit();
-    SDL_Quit();
+    cleanResources();
     return 0;
 }
