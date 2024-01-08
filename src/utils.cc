@@ -80,13 +80,7 @@ long Utils::LoadFile(const char *Path, unsigned char *&Buf)
         return -1;
     }
 
-    if (SDL_RWseek(file, 0, RW_SEEK_END) < 0) {
-        SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Unable to compute file size");
-        return -1;
-    }
-
-    long const L = SDL_RWtell(file); // récupère la longueur
-    SDL_RWseek(file, 0, RW_SEEK_SET);
+    long const L = SDL_RWsize(file);
 
     Buf = new unsigned char[L + 1];
     if (Buf == nullptr) {
