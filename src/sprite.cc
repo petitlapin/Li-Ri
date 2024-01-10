@@ -423,11 +423,9 @@ void Sprite::Affiche(int X, int Y, int NumSpr, SDL_Texture *Fond) const
 /*********************************/
 void Sprite::PrintRope(int dx, int dy, int fx, int fy)
 {
-    float ropeWidth = 2;
-    SDL_RenderSetScale(sdlRenderer, ropeWidth, ropeWidth);
     SDL_SetRenderDrawColor(sdlRenderer, 255, 255, 255, 0);
-    SDL_RenderDrawLine(sdlRenderer, dx / ropeWidth, dy / ropeWidth, fx / ropeWidth, fy / ropeWidth);
-    SDL_RenderSetScale(sdlRenderer, 1, 1);
+    SDL_RenderDrawLine(sdlRenderer, dx, dy, fx, fy);
+    SDL_SetRenderDrawColor(sdlRenderer, 0, 0, 0, 0);
 }
 
 /*** Alloue un nouveau sprite vide ***/
