@@ -10,10 +10,10 @@ import sys
 import yaml
 
 from packaging import version
-
+import os
 
 def main(argv):
-    if argv[0] != "./tools/fdroid_create_fastlane_changelogs.py":
+    if not os.path.exists(argv[0]):
         print("Needs to be run from top level of Li-Ri")
         sys.exit(1)
 
