@@ -206,6 +206,13 @@ int main(int narg, char *argv[])
     SDL_DestroyRenderer(sdlRenderer);
     SDL_DestroyWindow(sdlWindow);
 
+#ifdef ANDROID
+    // This is not a clean fix.
+    // On Android, we don't destroy the Audio item (global variable?)
+    // So if we don't close the audio, it does not work at next run
+    // Need to clean better the code, but for now, workaround
+    Mix_CloseAudio();
+#endif
     Mix_Quit();
     SDL_Quit();
     return 0;
