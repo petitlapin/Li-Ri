@@ -31,7 +31,6 @@
 
 /*** Variables Globales ***/
 /**************************/
-extern Audio Sons;
 extern int Horloge;
 extern Screen Ec;
 extern SDL_Window *sdlWindow;
@@ -72,7 +71,7 @@ void Mouse::GetEvent(SDL_Event &event, int &pPy)
                 if (Px >= tPy[i].DepX && Px <= tPy[i].FinX && Py >= tPy[i].DepY && Py <= tPy[i].FinY) {
                     if (pPy != tPy[i].Py) {
                         pPy = tPy[i].Py;
-                        Sons.Play(sClic);
+                        m_audio.Play(sClic);
                     }
                 }
                 i++;

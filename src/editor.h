@@ -27,12 +27,16 @@
 #include "preference.h"
 #include "sprite.h"
 
+class Mouse;
+class Game;
+
 /*** Définition de la class ***/
 /******************************/
 class Editor
 {
 public:
-    Editor() = default;
+    Editor(Mouse &mouse, Game &game) :
+        m_mouse(mouse), m_game(game) {};
     ~Editor() = default;
 
     /*** Fonctions ***/
@@ -47,5 +51,8 @@ private:
     e_Sprite Option { locomotive };
     int NumDeco { 0 };
     int NumN { 0 };
+
+    Mouse &m_mouse;
+    Game &m_game;
 };
 #endif

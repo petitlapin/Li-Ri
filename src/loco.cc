@@ -37,14 +37,14 @@
 /**************************/
 extern sPreference Pref;
 extern int Horloge;
-extern Audio Sons;
 extern int MasqueK;
 
 int AddDir[] = { -1, 1, -LT, LT };
 
 /*** Construteur et Destructeur ***/
 /**********************************/
-Loco::Loco()
+Loco::Loco(Audio &audio) :
+    m_audio(audio)
 {
     Init(LT / 2 + HT / 2 * LT, D_Droite);
 }
@@ -247,7 +247,7 @@ void Loco::TestCase(float Dist, long DureeJeu, int *Tableau)
         // Test si sur une option
         switch (Tableau[T[PLoco].P]) {
         case C_Wagon: // Une nouvelle loco
-            Sons.Play(sWagon);
+            m_audio.Play(sWagon);
             Tableau[T[PLoco].P] = 1; // efface l'option
             Pref.Score += 5;
             AddLoco(); // Ajoute une loco au azard
@@ -260,11 +260,11 @@ void Loco::TestCase(float Dist, long DureeJeu, int *Tableau)
             }
             if (Gagne) {
                 Mort = Horloge + DUREE_PAUSE;
-                Sons.Play(sEnd);
+                m_audio.Play(sEnd);
             }
             break;
         case C_Allonge: // Alonge la loco
-            Sons.Play(sEtire);
+            m_audio.Play(sEtire);
             Tableau[T[PLoco].P] = 1; // efface l'option
             Pref.Score += 20;
             if (Reduit > DureeJeu) {
@@ -275,7 +275,7 @@ void Loco::TestCase(float Dist, long DureeJeu, int *Tableau)
             }
             break;
         case C_Reduit: // Si réduit la loco
-            Sons.Play(sReduit);
+            m_audio.Play(sReduit);
             Tableau[T[PLoco].P] = 1; // efface l'option
             if (Alonge > DureeJeu) {
                 Alonge = DureeJeu - 1;
@@ -285,13 +285,13 @@ void Loco::TestCase(float Dist, long DureeJeu, int *Tableau)
             }
             break;
         case C_Speed: // Si Vitesse
-            Sons.Play(sSpeed);
+            m_audio.Play(sSpeed);
             Tableau[T[PLoco].P] = 1; // efface l'option
             Pref.Score += 30;
             Vitesse = DureeJeu + DUREE_VITESSE;
             break;
         case C_Live: // Si Vie
-            Sons.Play(sLive);
+            m_audio.Play(sLive);
             Tableau[T[PLoco].P] = 1; // efface l'option
             Pref.NVie++;
             break;
@@ -308,7 +308,7 @@ void Loco::TestCase(float Dist, long DureeJeu, int *Tableau)
 
             // Si colition le signale
             if (Mort < Horloge && (Ec1 < RAYON_TOUCHE || Ec2 <= RAYON_TOUCHE)) {
-                Sons.Play(sCrash);
+                m_audio.Play(sCrash);
                 Pref.NVie--;
                 Mort = Horloge + DUREE_PAUSE;
             }

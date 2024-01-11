@@ -27,14 +27,18 @@
 #include "preference.h"
 #include "loco.h"
 
+class Audio;
+class Menu;
+
 /*** Définition de la class ***/
 /******************************/
 class Game
 {
 public:
-    Game();
+    explicit Game(Audio &sounds);
     ~Game() = default;
 
+    void setMenu(Menu *menu) { m_menu = menu; }
     /*** Fonctions ***/
     /*****************/
     eMenu SDLMain(); // Boucle principale
@@ -56,8 +60,11 @@ private:
     int Touche[4]; // Direction demandée
     int T[LT * HT]; // Pointe sur le tableau
 
-    Loco Lo; // Gère la locomotive
-
     bool Help { true }; // Si doit affiche les fleches d'aide
+
+    Audio &m_sounds;
+    Menu *m_menu { nullptr };
+
+    Loco Lo; // Gère la locomotive
 };
 #endif

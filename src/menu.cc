@@ -55,10 +55,8 @@ extern int HorlogeAvant;
 extern SDL_Window *sdlWindow;
 extern SDL_Renderer *sdlRenderer;
 extern Sprite *Sprites;
-extern Mouse mouse;
 extern Screen Ec;
 extern sPreference Pref;
-extern Audio Sons;
 
 static char Points[] = ". . . . . . . . . . . . . .";
 static struct mPy Menu_Py[20];
@@ -111,7 +109,7 @@ eMenu Menu::SDLMain()
     char key;
 
     // Initialisations Divers
-    mouse.Init(Menu_Py); // Initialise la sourie
+    m_mouse.Init(Menu_Py); // Initialise la sourie
     PyE = 0;
 
     // Prend les evenements
@@ -134,11 +132,11 @@ eMenu Menu::SDLMain()
         Menu_Py[4].DepX = -1;
         SDL_Event event;
         while (SDL_PollEvent(&event)) {
-            mouse.GetEvent(event, PyE); // Prend les evenements de la sourie
+            m_mouse.GetEvent(event, PyE); // Prend les evenements de la sourie
             switch (event.type) {
             case SDL_KEYDOWN:
                 if (event.key.state == SDL_PRESSED) {
-                    Sons.Play(sClic);
+                    m_audio.Play(sClic);
                     switch (event.key.keysym.sym) {
                     case SDLK_ESCAPE:
                     case SDLK_AC_BACK: // Android back button
@@ -202,7 +200,7 @@ eMenu Menu::SDLMain()
         // Gère l'Affichage
         Ec.ClearSprite(fmenu);
         Print_Main();
-        mouse.Print();
+        m_mouse.Print();
 
         // Echange les buffets video
         SDL_RenderPresent(sdlRenderer);
@@ -224,7 +222,7 @@ eMenu Menu::SDLMain_Language()
     int const OldLangue = Pref.Langue;
 
     // Initialisations Divers
-    mouse.Init(Menu_Py); // Initialise la sourie
+    m_mouse.Init(Menu_Py); // Initialise la sourie
     PyE = Pref.Langue;
     if (PyE == -1) {
         PyE = 1;
@@ -272,7 +270,7 @@ eMenu Menu::SDLMain_Language()
         SDL_Event event;
         while (SDL_PollEvent(&event)) {
 
-            mouse.GetEvent(event, PyE); // Prend les evenements de la sourie
+            m_mouse.GetEvent(event, PyE); // Prend les evenements de la sourie
             switch (event.type) {
             case SDL_WINDOWEVENT:
                 if (event.window.event == SDL_WINDOWEVENT_ENTER) {
@@ -281,7 +279,7 @@ eMenu Menu::SDLMain_Language()
                 break;
             case SDL_KEYDOWN:
                 if (event.key.state == SDL_PRESSED) {
-                    Sons.Play(sClic);
+                    m_audio.Play(sClic);
                     switch (event.key.keysym.sym) {
                     case SDLK_ESCAPE:
                     case SDLK_AC_BACK: // Android back button
@@ -344,7 +342,7 @@ eMenu Menu::SDLMain_Language()
         Ec.ClearSprite(fmenu); // Something is done in the Efface that prevents a crash (or maybe more computation)!
         Affiche_Main_Centre();
 
-        mouse.Print();
+        m_mouse.Print();
 
         // Echange les buffets video
         SDL_RenderPresent(sdlRenderer);
@@ -359,7 +357,7 @@ eMenu Menu::SDLMain_Language()
 void Menu::InitMain_Options()
 {
     // Initialisations Divers
-    mouse.Init(Menu_Py); // Initialise la sourie
+    m_mouse.Init(Menu_Py); // Initialise la sourie
     // PyE=4;
 
     // Prend l'image du fond et fait l'affichage
@@ -435,7 +433,7 @@ eMenu Menu::SDLMain_Options()
         InitMain_Options(); // Prépare le menu
         SDL_Event event;
         while (SDL_PollEvent(&event)) {
-            mouse.GetEvent(event, PyE); // Prend les evenements de la sourie
+            m_mouse.GetEvent(event, PyE); // Prend les evenements de la sourie
             switch (event.type) {
             case SDL_WINDOWEVENT:
                 if (event.window.event == SDL_WINDOWEVENT_ENTER) {
@@ -444,7 +442,7 @@ eMenu Menu::SDLMain_Options()
                 break;
             case SDL_KEYDOWN:
                 if (event.key.state == SDL_PRESSED) {
-                    Sons.Play(sClic);
+                    m_audio.Play(sClic);
                     switch (event.key.keysym.sym) {
                     case SDLK_ESCAPE:
                     case SDLK_AC_BACK: // Android back button
@@ -465,8 +463,8 @@ eMenu Menu::SDLMain_Options()
                             if (Pref.Volume < 0) {
                                 Pref.Volume = 0;
                             }
-                            Sons.DoVolume();
-                            Sons.Play(sLive);
+                            m_audio.DoVolume();
+                            m_audio.Play(sLive);
                             break;
                         case 1:
                         case 7: // Diminue volume music
@@ -475,7 +473,7 @@ eMenu Menu::SDLMain_Options()
                             if (Pref.VolumeM < 0) {
                                 Pref.VolumeM = 0;
                             }
-                            Sons.DoVolume();
+                            m_audio.DoVolume();
                             break;
                         }
                         break;
@@ -495,8 +493,8 @@ eMenu Menu::SDLMain_Options()
                             if (Pref.Volume > SDL_MIX_MAXVOLUME) {
                                 Pref.Volume = SDL_MIX_MAXVOLUME;
                             }
-                            Sons.DoVolume();
-                            Sons.Play(sLive);
+                            m_audio.DoVolume();
+                            m_audio.Play(sLive);
                             break;
                         case 1:
                         case 7:
@@ -505,7 +503,7 @@ eMenu Menu::SDLMain_Options()
                             if (Pref.VolumeM > SDL_MIX_MAXVOLUME) {
                                 Pref.VolumeM = SDL_MIX_MAXVOLUME;
                             }
-                            Sons.DoVolume();
+                            m_audio.DoVolume();
                             break;
                         }
                         break;
@@ -547,30 +545,30 @@ eMenu Menu::SDLMain_Options()
                             if (Pref.Volume < 0) {
                                 Pref.Volume = 0;
                             }
-                            Sons.DoVolume();
-                            Sons.Play(sLive);
+                            m_audio.DoVolume();
+                            m_audio.Play(sLive);
                             break;
                         case 6:
                             Pref.Volume += SDL_MIX_MAXVOLUME / 10.0;
                             if (Pref.Volume > SDL_MIX_MAXVOLUME) {
                                 Pref.Volume = SDL_MIX_MAXVOLUME;
                             }
-                            Sons.DoVolume();
-                            Sons.Play(sLive);
+                            m_audio.DoVolume();
+                            m_audio.Play(sLive);
                             break;
                         case 7: // Diminue volume music
                             Pref.VolumeM -= SDL_MIX_MAXVOLUME / 10.0;
                             if (Pref.VolumeM < 0) {
                                 Pref.VolumeM = 0;
                             }
-                            Sons.DoVolume();
+                            m_audio.DoVolume();
                             break;
                         case 8:
                             Pref.VolumeM += SDL_MIX_MAXVOLUME / 10.0;
                             if (Pref.VolumeM > SDL_MIX_MAXVOLUME) {
                                 Pref.VolumeM = SDL_MIX_MAXVOLUME;
                             }
-                            Sons.DoVolume();
+                            m_audio.DoVolume();
                             break;
                         default:
                             return mMenu;
@@ -663,7 +661,7 @@ eMenu Menu::SDLMain_Options()
             Print_Main();
         }
 
-        mouse.Print();
+        m_mouse.Print();
 
         // Echange les buffets video
         SDL_RenderPresent(sdlRenderer);
@@ -678,7 +676,7 @@ eMenu Menu::SDLMain_Options()
 eMenu Menu::SDLMain_Speed()
 {
     // Initialisations Divers
-    mouse.Init(Menu_Py); // Initialise la sourie
+    m_mouse.Init(Menu_Py); // Initialise la sourie
     PyE = 1;
 
     // Prend les evenements
@@ -700,7 +698,7 @@ eMenu Menu::SDLMain_Speed()
 
         SDL_Event event;
         while (SDL_PollEvent(&event)) {
-            mouse.GetEvent(event, PyE); // Prend les evenements de la sourie
+            m_mouse.GetEvent(event, PyE); // Prend les evenements de la sourie
             switch (event.type) {
             case SDL_WINDOWEVENT:
                 if (event.window.event == SDL_WINDOWEVENT_ENTER) {
@@ -709,7 +707,7 @@ eMenu Menu::SDLMain_Speed()
                 break;
             case SDL_KEYDOWN:
                 if (event.key.state == SDL_PRESSED) {
-                    Sons.Play(sClic);
+                    m_audio.Play(sClic);
                     switch (event.key.keysym.sym) {
                     case SDLK_ESCAPE:
                     case SDLK_AC_BACK: // Android back button
@@ -765,7 +763,7 @@ eMenu Menu::SDLMain_Speed()
         // Gère l'Affichage
         Ec.ClearSprite(fmenu);
         Print_Main();
-        mouse.Print();
+        m_mouse.Print();
 
         // Echange les buffets video
         SDL_RenderPresent(sdlRenderer);
@@ -780,7 +778,7 @@ eMenu Menu::SDLMain_Speed()
 eMenu Menu::SDLMain_Level()
 {
     // Initialisations Divers
-    mouse.Init(Menu_Py); // Initialise la sourie
+    m_mouse.Init(Menu_Py); // Initialise la sourie
     PyE = 0;
     Niv = Pref.NiveauMax;
     Pref.Niveau = 0;
@@ -812,7 +810,7 @@ eMenu Menu::SDLMain_Level()
 
         SDL_Event event;
         while (SDL_PollEvent(&event)) {
-            mouse.GetEvent(event, PyE); // Prend les evenements de la sourie
+            m_mouse.GetEvent(event, PyE); // Prend les evenements de la sourie
             switch (event.type) {
             case SDL_WINDOWEVENT:
                 if (event.window.event == SDL_WINDOWEVENT_ENTER) {
@@ -821,7 +819,7 @@ eMenu Menu::SDLMain_Level()
                 break;
             case SDL_KEYDOWN:
                 if (event.key.state == SDL_PRESSED) {
-                    Sons.Play(sClic);
+                    m_audio.Play(sClic);
                     switch (event.key.keysym.sym) {
                     case SDLK_ESCAPE:
                     case SDLK_AC_BACK: // Android back button
@@ -927,7 +925,7 @@ eMenu Menu::SDLMain_Level()
         if (PyE != 3 && PyE != 4) {
             Print_Main();
         }
-        mouse.Print();
+        m_mouse.Print();
 
         // Echange les buffets video
         SDL_RenderPresent(sdlRenderer);
@@ -947,7 +945,7 @@ eMenu Menu::SDLMain_HR()
     SDL_Rect Position;
 
     // InitialisationsDivers
-    mouse.Init(Menu_Py); // Initialise la sourie
+    m_mouse.Init(Menu_Py); // Initialise la sourie
     PyE = rand() % 2;
 
     // Choix de la question N1=reponse
@@ -1030,7 +1028,7 @@ eMenu Menu::SDLMain_HR()
       */
         SDL_Event event;
         while (SDL_PollEvent(&event)) {
-            mouse.GetEvent(event, PyE); // Prend les evenements de la sourie
+            m_mouse.GetEvent(event, PyE); // Prend les evenements de la sourie
             switch (event.type) {
             case SDL_WINDOWEVENT:
                 if (event.window.event == SDL_WINDOWEVENT_ENTER) {
@@ -1038,7 +1036,7 @@ eMenu Menu::SDLMain_HR()
                 break;
             case SDL_KEYDOWN:
                 if (Fini == -1 && event.key.state == SDL_PRESSED) {
-                    Sons.Play(sClic);
+                    m_audio.Play(sClic);
                     switch (event.key.keysym.sym) {
                     case SDLK_ESCAPE:
                     case SDLK_AC_BACK: // Android back button
@@ -1081,12 +1079,12 @@ eMenu Menu::SDLMain_HR()
                     case SDLK_KP_ENTER:
                         switch (PyE) {
                         case 0:
-                            Sons.Play(sEnd);
+                            m_audio.Play(sEnd);
                             Pref.Score += 50;
                             Fini = Horloge + 2000;
                             break;
                         case 1:
-                            Sons.Play(sLose);
+                            m_audio.Play(sLose);
                             Fini = Horloge + 2000;
                             break;
                         }
@@ -1145,7 +1143,7 @@ eMenu Menu::SDLMain_HR()
                     Print_Main(440);
                 }
             }
-            mouse.Print();
+            m_mouse.Print();
         }
 
         // Echange les buffets video
@@ -1164,7 +1162,7 @@ void Menu::Print_InGame()
     SDL_Rect Position;
 
     // InitialisationsDivers
-    mouse.Init(Menu_Py); // Initialise la sourie
+    m_mouse.Init(Menu_Py); // Initialise la sourie
     // PyE=0;
 
     // Prend l'image du fond et fait l'affichage
@@ -1195,7 +1193,7 @@ eMenu Menu::SDLMain_InGame()
         SDL_RenderClear(sdlRenderer);
         SDL_Event event;
         while (SDL_PollEvent(&event)) {
-            mouse.GetEvent(event, PyE); // Prend les evenements de la sourie
+            m_mouse.GetEvent(event, PyE); // Prend les evenements de la sourie
             switch (event.type) {
             case SDL_WINDOWEVENT:
                 if (event.window.event == SDL_WINDOWEVENT_ENTER) {
@@ -1205,7 +1203,7 @@ eMenu Menu::SDLMain_InGame()
                 break;
             case SDL_KEYDOWN:
                 if (event.key.state == SDL_PRESSED) {
-                    Sons.Play(sClic);
+                    m_audio.Play(sClic);
                     switch (event.key.keysym.sym) {
                     case SDLK_ESCAPE:
                     case SDLK_AC_BACK: // Android back button
@@ -1261,7 +1259,7 @@ eMenu Menu::SDLMain_InGame()
         Ec.ClearSprite(fmenu);
         Print_InGame();
         Print_Main(340);
-        mouse.Print();
+        m_mouse.Print();
 
         // Echange les buffets video
         SDL_RenderPresent(sdlRenderer);
@@ -1305,7 +1303,7 @@ eMenu Menu::SDLMain_Score(bool EditScore)
     }
 
     // Met la sourie sur tous l'ecran
-    mouse.Init(Menu_Py); // Initialise la sourie
+    m_mouse.Init(Menu_Py); // Initialise la sourie
     Menu_Py[0].DepX = 0;
     Menu_Py[0].DepY = 0;
     Menu_Py[0].FinX = 800;
@@ -1351,7 +1349,7 @@ eMenu Menu::SDLMain_Score(bool EditScore)
         // Efface le fond
         SDL_Event event;
         while (SDL_PollEvent(&event)) {
-            mouse.GetEvent(event, PyE); // Prend les evenements de la sourie
+            m_mouse.GetEvent(event, PyE); // Prend les evenements de la sourie
             switch (event.type) {
             case SDL_WINDOWEVENT:
                 if (event.window.event == SDL_WINDOWEVENT_ENTER) {
@@ -1360,7 +1358,7 @@ eMenu Menu::SDLMain_Score(bool EditScore)
                 break;
             case SDL_KEYDOWN: // Prend un touche au clavier
                 if (event.key.state == SDL_PRESSED) {
-                    Sons.Play(sClic);
+                    m_audio.Play(sClic);
                     if (EditScore == false && event.key.keysym.sym != SDLK_F12) {
                         event.key.keysym.sym = SDLK_RETURN;
                     }

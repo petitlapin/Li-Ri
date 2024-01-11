@@ -46,8 +46,6 @@ extern int Horloge;
 extern int HorlogeAvant;
 
 extern Level level;
-extern Mouse mouse;
-extern Game game;
 
 static int NumRail[] = { 10, 10, 10, 0, 10, 1, 2, 3, 10, 4, 5, 6, 7, 8, 9, 10 };
 
@@ -71,13 +69,13 @@ eMenu Editor::SDLMain(int NumNiv)
     Option = rail;
 
     // Initialise la sourie
-    mouse.Init(nullptr);
+    m_mouse.Init(nullptr);
 
     // Prend les evenements
     do {
         SDL_Event event;
         while (SDL_PollEvent(&event)) {
-            mouse.GetEvent(event, PyE); // Prend les evenements de la sourie
+            m_mouse.GetEvent(event, PyE); // Prend les evenements de la sourie
             switch (event.type) {
             case SDL_WINDOWEVENT:
                 if (event.window.event == SDL_WINDOWEVENT_ENTER) {
@@ -112,16 +110,16 @@ eMenu Editor::SDLMain(int NumNiv)
         }
 
         // Gère l'appuis du boutton de la sourie
-        cx = mouse.Px / D_Case;
-        cy = mouse.Py / D_Case;
+        cx = m_mouse.Px / D_Case;
+        cy = m_mouse.Py / D_Case;
 
         if (Boutton && cx < LT) {
             switch (Option) {
             case deco:
                 if (TypeB == -1) { // Si première fois que appuis sur la touche
                     for (i = 0; i < level.T[NumN].NDeco; i++) { // Recherche si décoration proche du clic
-                        dx = level.T[NumN].Deco[i].x - mouse.Px;
-                        dy = level.T[NumN].Deco[i].y - mouse.Py;
+                        dx = level.T[NumN].Deco[i].x - m_mouse.Px;
+                        dy = level.T[NumN].Deco[i].y - m_mouse.Py;
                         d = dx * dx + dy * dy;
                         if (d <= (D_Case * 2) * (D_Case * 2)) {
                             TypeB = i;
@@ -130,8 +128,8 @@ eMenu Editor::SDLMain(int NumNiv)
                     if (TypeB == -1) { // Si doit fair un nouveau décor
                         level.T[NumN].NDeco++;
                         level.T[NumN].Deco[(level.T[NumN].NDeco - 1)].NumSpr = NumDeco;
-                        level.T[NumN].Deco[(level.T[NumN].NDeco - 1)].x = mouse.Px;
-                        level.T[NumN].Deco[(level.T[NumN].NDeco - 1)].y = mouse.Py;
+                        level.T[NumN].Deco[(level.T[NumN].NDeco - 1)].x = m_mouse.Px;
+                        level.T[NumN].Deco[(level.T[NumN].NDeco - 1)].y = m_mouse.Py;
                         TypeB = 1;
                     }
                     else { // Fait passe la selection au premier plan
@@ -148,8 +146,8 @@ eMenu Editor::SDLMain(int NumNiv)
                 }
                 else { // Si pas la première fois remplace
                     level.T[NumN].Deco[(level.T[NumN].NDeco - 1)].NumSpr = NumDeco;
-                    level.T[NumN].Deco[(level.T[NumN].NDeco - 1)].x = mouse.Px;
-                    level.T[NumN].Deco[(level.T[NumN].NDeco - 1)].y = mouse.Py;
+                    level.T[NumN].Deco[(level.T[NumN].NDeco - 1)].x = m_mouse.Px;
+                    level.T[NumN].Deco[(level.T[NumN].NDeco - 1)].y = m_mouse.Py;
                 }
                 break;
             case rail:
@@ -320,10 +318,10 @@ void Editor::Affiche() const
 
     // Affiche le curseur
     if (Option != deco) {
-        Sprites[curseur].Affiche(mouse.Px, mouse.Py, 0);
+        Sprites[curseur].Affiche(m_mouse.Px, m_mouse.Py, 0);
     }
     else {
-        Sprites[deco].Affiche(mouse.Px, mouse.Py, NumDeco);
+        Sprites[deco].Affiche(m_mouse.Px, m_mouse.Py, NumDeco);
     }
 }
 
@@ -409,8 +407,8 @@ void Editor::PrendTouche(int Tou)
 
         // test le niveau
         Pref.Niveau = NumN;
-        game.SDLMain();
-        mouse.Init(nullptr);
+        m_game.SDLMain();
+        m_mouse.Init(nullptr);
         Affiche();
         break;
     case 'a':
