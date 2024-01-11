@@ -16,7 +16,7 @@ include(InstallRequiredSystemLibraries)
 set(LIRI_VERSION_MAJOR 3)
 set(LIRI_VERSION_MINOR 1)
 set(LIRI_VERSION_PATCH 1)
-set(LIRI_VERSION ${LIRI_VERSION_MAJOR}.${LIRI_VERSION_MINOR})
+set(LIRI_VERSION ${LIRI_VERSION_MAJOR}.${LIRI_VERSION_MINOR}.${LIRI_VERSION_PATCH})
 
 set(LIRI_EXECUTABLE_NAME Li-ri)
 
@@ -57,7 +57,8 @@ add_executable(${LIRI_EXECUTABLE_NAME} WIN32
   src/utils.h
   )
 
-target_compile_definitions(${LIRI_EXECUTABLE_NAME} PUBLIC DATA_DIR="share/Li-ri")
+configure_file(src/config.h.in "${CMAKE_CURRENT_BINARY_DIR}/config.h" @ONLY)
+target_include_directories(${LIRI_EXECUTABLE_NAME} PUBLIC ${CMAKE_CURRENT_BINARY_DIR})
 
 if(USE_CONAN)
   target_link_libraries(${LIRI_EXECUTABLE_NAME} PRIVATE SDL2::SDL2 SDL2_mixer::SDL2_mixer)

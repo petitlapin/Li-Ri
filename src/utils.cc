@@ -31,6 +31,7 @@
 #include <SDL2/SDL_pixels.h> // for SDL_PIXELFORMAT_ARGB8888
 #include <SDL2/SDL_surface.h> // for SDL_CreateRGBSurface, SDL_FreeSurface
 
+#include "config.h"
 #include "utils.h"
 #include "preference.h"
 #include "sprite.h"
@@ -163,10 +164,6 @@ void Utils::GetPath(char *Path)
             return;
         }
     }
-    sprintf(Path, "%s/%s", DATA_DIR, Provi);
-    if (Utils::FileExists(Path)) {
-        return;
-    }
 #endif
 
     // Android is directly the filename
@@ -175,19 +172,7 @@ void Utils::GetPath(char *Path)
         return;
     }
 
-    sprintf(Path, "./%s", Provi);
-    if (Utils::FileExists(Path)) {
-        return;
-    }
-    sprintf(Path, "/usr/local/share/Li-ri/%s", Provi);
-    if (Utils::FileExists(Path)) {
-        return;
-    }
-    sprintf(Path, "/usr/share/Li-ri/%s", Provi);
-    if (Utils::FileExists(Path)) {
-        return;
-    }
-    sprintf(Path, "/usr/share/games/Li-ri/%s", Provi);
+    sprintf(Path, "%s/%s", LIRI_DATA_DIR, Provi);
     if (Utils::FileExists(Path)) {
         return;
     }

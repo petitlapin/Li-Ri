@@ -34,6 +34,7 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_mixer.h>
 
+#include "config.h"
 #include "preference.h"
 #include "game.h"
 #include "audio.h"
@@ -50,7 +51,7 @@
 SDL_Window *sdlWindow; // Pointe sur l'écran video
 SDL_Renderer *sdlRenderer; // Pointe sur l'écran video
 
-char Titre[] = "Li-ri V3.1.1";
+char Titre[] = "Li-ri V" VERSION;
 
 Sprite *Sprites = nullptr; // Pointe sur les sprites
 int NSprites = 0; // Nombre de sprites en mémoire
