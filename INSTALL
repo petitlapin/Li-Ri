@@ -17,6 +17,8 @@ Use your favorite tools to install the development packages of SDL2 and SDL2_mix
 
 Then run cmake to generate the build files: `cmake -DCMAKE_BUILD_TYPE=Release -S . -B build`.
 
+To specify the folder where to look for the data files, you can set the variable `LIRI_DATA_DIR` to the value you want in the cmake invocation: `cmake -DCMAKE_BUILD_TYPE=Release -S . -B build -DLIRI_DATA_DIR=/usr/local/Li-ri/data/`.
+
 At last, run cmake to build the executable: `cmake --build build --config Release`.
 
 Installation:

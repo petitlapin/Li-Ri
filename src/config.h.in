@@ -1,0 +1,19 @@
+/* GCompris - config.h
+ *
+ * SPDX-FileCopyrightText: 2024 Johnny Jazeix <jazeix@gmail.com>
+ *
+ * Authors:
+ *   Johnny Jazeix <jazeix@gmail.com>
+ *
+ *   SPDX-License-Identifier: GPL-2.0-or-later
+ */
+#ifndef LIRI_CONFIG_H
+#define LIRI_CONFIG_H
+
+/* Version number of package (string) */
+#define VERSION "@LIRI_VERSION@"
+
+/* Folder where data is installed */
+#define LIRI_DATA_DIR "@LIRI_DATA_DIR@"
+
+#endif // LIRI_CONFIG_H
