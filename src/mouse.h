@@ -26,6 +26,7 @@
 
 #include <SDL2/SDL_events.h>
 
+class Audio;
 /*** Structure pour la position dans le menu Py ***/
 /**************************************************/
 struct mPy
@@ -49,7 +50,8 @@ struct mButton
 class Mouse
 {
 public:
-    Mouse() = default;
+    explicit Mouse(Audio &audio) :
+        m_audio(audio) { }
     ~Mouse() = default;
 
     void InitStart(); // Initialise les coordonnées de la sourie
@@ -60,6 +62,7 @@ public:
     int Px { 400 }, Py { 300 }; // Mouse screen position
 
 private:
+    Audio &m_audio;
     struct mPy *tPy { nullptr }; // Pointe sur coordonées pour Py
     struct mButton *Bo { nullptr }; // Pointe sur les coordonnées des bouttons
 };

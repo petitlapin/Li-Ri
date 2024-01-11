@@ -30,12 +30,17 @@
 /**************************/
 void Sleeping();
 
+class Game;
+class Audio;
+class Mouse;
+
 /*** Définition de la class ***/
 /******************************/
 class Menu
 {
 public:
-    Menu() = default;
+    Menu(Game &game, Audio &audio, Mouse &mouse) :
+        m_game(game), m_audio(audio), m_mouse(mouse) {};
     ~Menu() = default;
 
     /*** Fonctions ***/
@@ -62,6 +67,10 @@ private:
     int PyE { 0 }; // Position du curseur dans le menu
     int Niv { 0 };
     int CentreM { 0 }; // Variable pour le menu options
+
+    Game &m_game;
+    Audio &m_audio;
+    Mouse &m_mouse;
 };
 
 #endif

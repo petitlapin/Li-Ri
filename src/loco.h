@@ -27,6 +27,7 @@
 #include "sprite.h"
 
 class Screen;
+class Audio;
 
 /*** Definition de la classe qui mémorise les cases ***/
 /******************************************************/
@@ -50,7 +51,7 @@ struct s_PosWagon
 class Loco
 {
 public:
-    Loco();
+    explicit Loco(Audio &audio);
     ~Loco() = default;
 
     /*** Fonctions ***/
@@ -81,6 +82,8 @@ private:
     e_Sprite Wagon[256]; // Mémorise les wagons
     struct s_PosWagon PosWagon[256]; // Mémorise position des wagons à l'écran pour test de colision
     float MemoDuree; // Memorise la precedente durée pour faire avancer les explosions du depart
+
+    Audio &m_audio;
 };
 
 #endif

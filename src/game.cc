@@ -48,10 +48,8 @@ extern int Horloge;
 extern int HorlogeAvant;
 
 extern Screen Ec;
-extern Menu MainMenu;
 
 extern Level level;
-extern Audio Sons;
 
 static int NumRail[] = { -1, -1, -1, 0, -1, 1, 2, 3, -1, 4, 5, 6, 7, 8, 9, 10 };
 
@@ -59,7 +57,8 @@ int MasqueK; // Masque pour les touches de déplacement
 
 /*** Constructeur et Destructeur ***/
 /***********************************/
-Game::Game()
+Game::Game(Audio &sounds) :
+    m_sounds(sounds), Lo(m_sounds)
 {
     Touche[0] = D_Haut;
     Touche[1] = D_Bas;
@@ -108,7 +107,7 @@ eMenu Game::SDLMain()
                     int const Px = event.button.x;
                     int const Py = event.button.y;
                     if (Px >= 680 && Py <= 90) {
-                        mRet = MainMenu.SDLMain_InGame();
+                        mRet = m_menu->SDLMain_InGame();
                         if (mRet == mGame) {
                             DrawLevel(NumN);
                             SDL_RenderPresent(sdlRenderer);
@@ -129,7 +128,7 @@ eMenu Game::SDLMain()
             case SDL_KEYDOWN:
                 if (event.key.state == SDL_PRESSED) {
                     if (event.key.keysym.sym == SDLK_ESCAPE || event.key.keysym.sym == SDLK_AC_BACK) {
-                        mRet = MainMenu.SDLMain_InGame();
+                        mRet = m_menu->SDLMain_InGame();
                         if (mRet == mGame) {
                             DrawLevel(NumN);
                             SDL_RenderPresent(sdlRenderer);
@@ -240,7 +239,7 @@ eMenu Game::SDLMain()
             }
             if (Lo.Gagne) {
 #ifndef DCHILDREN
-                if (MainMenu.SDLMain_HR() == mQuit) {
+                if (m_menu->SDLMain_HR() == mQuit) {
                     return mQuit;
                 }
 #endif
@@ -253,7 +252,7 @@ eMenu Game::SDLMain()
                     Pref.NiveauMax = NumN;
                 }
             }
-            Sons.NextMusic();
+            m_sounds.NextMusic();
             DureeJeu = 0;
             Pause = true;
             Key = MasqueK = 0;

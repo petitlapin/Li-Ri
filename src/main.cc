@@ -57,12 +57,7 @@ Sprite *Sprites = nullptr; // Pointe sur les sprites
 int NSprites = 0; // Nombre de sprites en mémoire
 Screen Ec; // Pointe sur les 2 buffets vidéo
 sPreference Pref; // Tableau des préférences.
-Game game; // Gère le jeu
-Mouse mouse; // Gère les mouvements de sourie
-Menu MainMenu; // Gère les menus
 Level level; // Gère les niveaux
-Editor Edit; // Gère le menu de l'éditeur
-Audio Sons; // Gère les sons
 
 int Horloge = 0; // Horloges du jeu
 int HorlogeAvant = 0;
@@ -135,8 +130,8 @@ int main(int narg, char *argv[])
 
     SDL_ShowCursor(0); // Masque le curseur
 
-    // Chargement des sprites
-    Sons.Init();
+    Audio audio;
+    audio.Init();
     if (LoadSprites() == false) {
         exit(-1);
     }
@@ -144,14 +139,20 @@ int main(int narg, char *argv[])
         exit(-1);
     }
 
-    Sons.PlayMusic();
+    audio.PlayMusic();
+    Mouse mouse { audio };
     mouse.InitStart();
 
-    // Initialise l'horloge et le hazard
+    Game game { audio };
+    Editor editor { mouse, game };
+
+    Menu MainMenu { game, audio, mouse };
+    game.setMenu(&MainMenu);
+
     HorlogeAvant = Horloge = SDL_GetTicks();
     srand(SDL_GetTicks());
 
-    // Si pas de langues demande la langue
+    // ask locale if first run
     if (Pref.Langue == -1) {
         MainMenu.SDLMain_Language();
     }
@@ -181,12 +182,12 @@ int main(int narg, char *argv[])
             RetM = MainMenu.SDLMain_Level();
             break;
         case mGame:
-            Sons.LoadMusic(1);
+            audio.LoadMusic(1);
             RetM = game.SDLMain();
-            Sons.LoadMusic(0);
+            audio.LoadMusic(0);
             break;
         case mEdit:
-            RetM = Edit.SDLMain(0);
+            RetM = editor.SDLMain(0);
             break;
         default:
             RetM = mQuit;
@@ -196,7 +197,7 @@ int main(int narg, char *argv[])
 
     // Ferme proprement le programme
     Mix_HaltMusic(); // Arrete la music
-    Mix_FreeMusic(Sons.Music); // Efface la music
+    Mix_FreeMusic(audio.Music); // Efface la music
 
     for (i = 0; i < NSprites; i++) { // Efface les sprites
         Sprites[i].Delete();
@@ -207,13 +208,6 @@ int main(int narg, char *argv[])
     SDL_DestroyRenderer(sdlRenderer);
     SDL_DestroyWindow(sdlWindow);
 
-#ifdef ANDROID
-    // This is not a clean fix.
-    // On Android, we don't destroy the Audio item (global variable?)
-    // So if we don't close the audio, it does not work at next run
-    // Need to clean better the code, but for now, workaround
-    Mix_CloseAudio();
-#endif
     Mix_Quit();
     SDL_Quit();
     return 0;
