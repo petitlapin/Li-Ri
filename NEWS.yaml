@@ -21,14 +21,14 @@ Description:
   - Fix audio not playing on Android when leaving the game via the menu and restarting it
 ---
 Version: 3.0.1
-Date: 2024-12-19
+Date: 2023-12-19
 Description:
   - CMake compilation
   - Github workflow to provide binaries for Linux, Windows and macOS
   - Add missing icon for F-Droid
 ---
 Version: 3.0.0
-Date: 2024-11-11
+Date: 2023-11-11
 Description:
   - Update to SDL2
   - Compilation ok on Android
