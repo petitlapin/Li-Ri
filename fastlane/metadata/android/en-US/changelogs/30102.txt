@@ -1,0 +1,4 @@
+Add a rope between 2 wagons
+Add screenshot feature (key F12)
+Speed up compilation time (only use what is needed in SDL)
+Fix crash when exiting on Linux
