@@ -74,13 +74,13 @@ install(TARGETS ${LIRI_EXECUTABLE_NAME}
   LIBRARY DESTINATION lib
   BUNDLE DESTINATION .)
 
-install(FILES io.github.petitlapin.appdata.xml DESTINATION "${CMAKE_INSTALL_DATADIR}/appdata/")
-install(FILES io.github.petitlapin.desktop DESTINATION "${CMAKE_INSTALL_DATADIR}/applications/")
-install(FILES data/Li-ri-icon-16x16.png DESTINATION "${CMAKE_INSTALL_DATADIR}/icons/hicolor/16x16/apps/" RENAME li-ri.png)
-install(FILES data/Li-ri-icon-32x32.png DESTINATION "${CMAKE_INSTALL_DATADIR}/icons/hicolor/32x32/apps/" RENAME li-ri.png)
-install(FILES data/Li-ri-icon-48x48.png DESTINATION "${CMAKE_INSTALL_DATADIR}/icons/hicolor/48x48/apps/" RENAME li-ri.png)
-install(FILES data/Li-ri-icon-64x64.png DESTINATION "${CMAKE_INSTALL_DATADIR}/icons/hicolor/64x64/apps/" RENAME li-ri.png)
-install(FILES data/Li-ri-icon-128x128.png DESTINATION "${CMAKE_INSTALL_DATADIR}/icons/hicolor/128x128/apps/" RENAME li-ri.png)
+install(FILES io.github.petitlapin.Li-ri.appdata.xml DESTINATION "${CMAKE_INSTALL_DATADIR}/appdata/")
+install(FILES io.github.petitlapin.Li-ri.desktop DESTINATION "${CMAKE_INSTALL_DATADIR}/applications/")
+install(FILES data/Li-ri-icon-16x16.png DESTINATION "${CMAKE_INSTALL_DATADIR}/icons/hicolor/16x16/apps/" RENAME io.github.petitlapin.Li-ri.png)
+install(FILES data/Li-ri-icon-32x32.png DESTINATION "${CMAKE_INSTALL_DATADIR}/icons/hicolor/32x32/apps/" RENAME io.github.petitlapin.Li-ri.png)
+install(FILES data/Li-ri-icon-48x48.png DESTINATION "${CMAKE_INSTALL_DATADIR}/icons/hicolor/48x48/apps/" RENAME io.github.petitlapin.Li-ri.png)
+install(FILES data/Li-ri-icon-64x64.png DESTINATION "${CMAKE_INSTALL_DATADIR}/icons/hicolor/64x64/apps/" RENAME io.github.petitlapin.Li-ri.png)
+install(FILES data/Li-ri-icon-128x128.png DESTINATION "${CMAKE_INSTALL_DATADIR}/icons/hicolor/128x128/apps/" RENAME io.github.petitlapin.Li-ri.png)
 
 if(WIN32)
   install(DIRECTORY ${CMAKE_SOURCE_DIR}/data/ DESTINATION bin)

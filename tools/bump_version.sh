@@ -14,7 +14,7 @@ function usage() {
     echo "  -h, --help                displays this help"
 }
 
-if [ ! -f io.github.petitlapin.appdata.xml ]
+if [ ! -f io.github.petitlapin.Li-ri.appdata.xml ]
 then
     echo "ERROR: Run me from the top level source dir"
     exit 1
@@ -76,8 +76,8 @@ git add CMakeLists.txt android/app/src/main/AndroidManifest.xml src/main.cc && g
 
 if [[ "${CHANGELOG}" ]]
 then
-    appstreamcli news-to-metainfo ./NEWS.yaml ./io.github.petitlapin.appdata.xml
+    appstreamcli news-to-metainfo ./NEWS.yaml ./io.github.petitlapin.Li-ri.appdata.xml
     python tools/fdroid_create_fastlane_changelogs.py
 
-    git add fastlane/metadata/android/en-US/changelogs/ io.github.petitlapin.appdata.xml && git commit -m "update changelog for ${major}.${minor}.${patch}"
+    git add fastlane/metadata/android/en-US/changelogs/ io.github.petitlapin.Li-ri.appdata.xml && git commit -m "update changelog for ${major}.${minor}.${patch}"
 fi
