@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <component type="desktop-application">
-  <id>org.liri.liri.desktop</id>
+  <id>io.github.petitlapin.desktop</id>
   <name>Li-Ri</name>
   <summary>Li-Ri is a arcade game where you drive a toy wood engine.</summary>
   <metadata_license>CC0-1.0</metadata_license>
