@@ -1,22 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <component type="desktop-application">
-  <id>io.github.petitlapin.desktop</id>
+  <id>io.github.petitlapin.Li-ri.desktop</id>
   <name>Li-Ri</name>
-  <summary>Li-Ri is a arcade game where you drive a toy wood engine.</summary>
+  <summary>Li-Ri is a arcade game where you drive a toy wood engine</summary>
   <metadata_license>CC0-1.0</metadata_license>
   <project_license>GPL-2.0-or-later</project_license>
+  <developer_name>Johnny Jazeix</developer_name>
   <description>
-    <p>Li-Ri is a arcade game licensed under the GPL (General Public License).</p>
-    <p>You drive a toy wood engine in many levels and you must collect
-    all the coaches for win. You can download it and play indefinitely.
-    It's Free. You can play on 'Windows', 'Linux', 'Mac OsX', 'Android'.</p>
+    <p>Li-Ri is a arcade game where you drive a toy wood engine in many levels and you must collect all the coaches for win. You can download it and play indefinitely.</p>
+    <p>It's Free and licensed under the GPL (General Public License). You can play on 'Windows', 'Linux', 'Mac OsX', 'Android'.</p>
     <ul>
       <li>19 languages: Arabic, Breton, Chinese, English, Esperanto, French, German, Italian, Japanese, Korean, Portuguese, Russian, Slovak, Spanish, Swedish, Polish, Turkish, Hungarian, Dutch.</li>
       <li>50 levels in this version.</li>
       <li>3 beautiful musics and many sound effects.</li>
     </ul>
-    <p>Li-Ri is a fork of Ri-li (http://www.ri-li.org).</p>
+    <p>Li-Ri is a fork of Ri-li.</p>
   </description>
+  <launchable type="desktop-id">io.github.petitlapin.Li_ri.desktop</launchable>
+  <developer_name>Johnny Jazeix</developer_name>
   <url type="homepage">https://github.com/petitlapin/Li-Ri</url>
   <url type="bugtracker">https://github.com/petitlapin/Li-Ri/issues</url>
   <url type="help">https://github.com/petitlapin/Li-Ri</url>
@@ -64,7 +65,7 @@
         </ul>
       </description>
     </release>
-    <release type="stable" version="3.0.1" date="2024-12-19T00:00:00Z">
+    <release type="stable" version="3.0.1" date="2023-12-19T00:00:00Z">
       <description>
         <ul>
           <li>CMake compilation</li>
@@ -73,7 +74,7 @@
         </ul>
       </description>
     </release>
-    <release type="stable" version="3.0.0" date="2024-11-11T00:00:00Z">
+    <release type="stable" version="3.0.0" date="2023-11-11T00:00:00Z">
       <description>
         <ul>
           <li>Update to SDL2</li>
