@@ -163,7 +163,7 @@ eMenu Menu::SDLMain()
                     case SDLK_KP_ENTER:
                         switch (PyE) {
                         case 0:
-                            return mMenuNiveau;
+                            return mMenuSpeed;
                         case 1:
                             return mScore;
                         case 2:
@@ -711,7 +711,7 @@ eMenu Menu::SDLMain_Speed()
                     switch (event.key.keysym.sym) {
                     case SDLK_ESCAPE:
                     case SDLK_AC_BACK: // Android back button
-                        return Niv == 0 ? mMenu : mMenuNiveau;
+                        return mMenu;
                     case SDLK_UP:
                         PyE--;
                         if (PyE < 0) {
@@ -735,13 +735,13 @@ eMenu Menu::SDLMain_Speed()
                         switch (PyE) {
                         case 0:
                             Pref.Difficulte = Easy;
-                            return mGame;
+                            return Pref.NiveauMax[Pref.Difficulte] > 0 ? mMenuNiveau : mGame;
                         case 1:
                             Pref.Difficulte = Normal;
-                            return mGame;
+                            return Pref.NiveauMax[Pref.Difficulte] > 0 ? mMenuNiveau : mGame;
                         case 2:
                             Pref.Difficulte = Hard;
-                            return mGame;
+                            return Pref.NiveauMax[Pref.Difficulte] > 0 ? mMenuNiveau : mGame;
                         }
                         break;
                     default:
@@ -782,10 +782,6 @@ eMenu Menu::SDLMain_Level()
     PyE = 0;
     Niv = Pref.NiveauMax[Pref.Difficulte];
     Pref.Niveau = 0;
-
-    if (Niv == 0) {
-        return mMenuSpeed; // Inutile si la première fois
-    }
 
     // Prend les evenements
     do {
@@ -858,10 +854,10 @@ eMenu Menu::SDLMain_Level()
                     case SDLK_KP_ENTER:
                         switch (PyE) {
                         case 0:
-                            return mMenuSpeed;
+                            return mGame;
                         case 1:
                             Pref.Niveau = Niv;
-                            return mMenuSpeed;
+                            return mGame;
                         case 2:
                             return mMenu;
                         case 3:
