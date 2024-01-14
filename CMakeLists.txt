@@ -33,6 +33,13 @@ endif()
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
+include(FetchContent)
+FetchContent_Declare(simpleini
+  GIT_REPOSITORY https://github.com/brofield/simpleini.git
+  GIT_TAG        09c21bda1dc1b578fa55f4a005d79b0afd481296 # v4.22
+  )
+FetchContent_MakeAvailable(simpleini)
+
 add_executable(${LIRI_EXECUTABLE_NAME} WIN32
   src/audio.cc
   src/audio.h
@@ -64,8 +71,11 @@ if(USE_CONAN)
   target_link_libraries(${LIRI_EXECUTABLE_NAME} PRIVATE SDL2::SDL2 SDL2_mixer::SDL2_mixer)
 else()
   target_include_directories(${LIRI_EXECUTABLE_NAME} PUBLIC ${SDL2_INCLUDE_DIRS})
-  target_link_libraries(${LIRI_EXECUTABLE_NAME} ${SDL2_LINK_LIBRARIES})
+  target_link_libraries(${LIRI_EXECUTABLE_NAME} PRIVATE ${SDL2_LINK_LIBRARIES})
 endif()
+
+target_link_libraries(${LIRI_EXECUTABLE_NAME} PRIVATE SimpleIni::SimpleIni)
+
 
 include(GNUInstallDirs)
 install(TARGETS ${LIRI_EXECUTABLE_NAME}
