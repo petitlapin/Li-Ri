@@ -193,8 +193,9 @@ void Utils::GetPath(char *Path)
     strcpy(Provi, Path);
 
     sprintf(Path, "PROGDIR:%s", Provi);
-    if (Utils::FileExists(Path))
+    if (Utils::FileExists(Path)) {
         return;
+    }
 
     SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Unable to find '%s'", Path);
     exit(-1);
@@ -210,8 +211,9 @@ void Utils::GetPath(char *Path)
     strcpy(Provi, Path);
 
     sprintf(Path, "Li-ri.app/Contents/Resources/%s", Provi);
-    if (Utils::FileExists(Path))
+    if (Utils::FileExists(Path)) {
         return;
+    }
 
     SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Unable to find '%s'", Path);
     exit(-1);
@@ -257,25 +259,47 @@ bool Utils::LoadPref()
         SI_Error rc = ini.LoadFile(newPathPref);
         const char *pv;
         pv = ini.GetValue("main", "fullscreen");
-        Pref.FullScreen = std::stoi(pv);
+        if (pv) {
+            Pref.FullScreen = std::stoi(pv);
+        }
         pv = ini.GetValue("main", "locale");
-        Pref.Langue = std::stoi(pv);
+        if (pv) {
+            Pref.Langue = std::stoi(pv);
+        }
         pv = ini.GetValue("main", "audioVolume");
-        Pref.Volume = std::stof(pv);
+        if (pv) {
+            Pref.Volume = std::stof(pv);
+        }
         pv = ini.GetValue("main", "musicVolume");
-        Pref.VolumeM = std::stof(pv);
+        if (pv) {
+            Pref.VolumeM = std::stof(pv);
+        }
+        pv = ini.GetValue("main", "humanRightsQuiz");
+        if (pv) {
+            Pref.HumanRightsQuiz = std::stoi(pv);
+        }
         pv = ini.GetValue("easy", "maxLevel");
-        Pref.NiveauMax[0] = std::stof(pv);
+        if (pv) {
+            Pref.NiveauMax[0] = std::stof(pv);
+        }
         pv = ini.GetValue("normal", "maxLevel");
-        Pref.NiveauMax[1] = std::stof(pv);
+        if (pv) {
+            Pref.NiveauMax[1] = std::stof(pv);
+        }
         pv = ini.GetValue("difficult", "maxLevel");
-        Pref.NiveauMax[2] = std::stof(pv);
+        if (pv) {
+            Pref.NiveauMax[2] = std::stof(pv);
+        }
         for (int i = 0; i < 8; ++i) {
             std::string scoreKey = "score_" + std::to_string(i);
             std::string nameKey = "name_" + std::to_string(i);
-            pv = ini.GetValue("highscore", scoreKey.c_str());
+            if (pv) {
+                pv = ini.GetValue("highscore", scoreKey.c_str());
+            }
             Pref.Sco[i].Score = std::stoi(pv);
-            pv = ini.GetValue("highscore", nameKey.c_str(), Pref.Sco[i].Name);
+            if (pv) {
+                pv = ini.GetValue("highscore", nameKey.c_str(), Pref.Sco[i].Name);
+            }
             strncpy(Pref.Sco[i].Name, pv, 80);
         }
         return true;
@@ -322,6 +346,7 @@ void Utils::SauvePref()
     ini.SetValue("main", "locale", std::to_string(Pref.Langue).c_str());
     ini.SetValue("main", "audioVolume", std::to_string(Pref.Volume).c_str());
     ini.SetValue("main", "musicVolume", std::to_string(Pref.VolumeM).c_str());
+    ini.SetValue("main", "humanRightsQuiz", std::to_string(Pref.HumanRightsQuiz).c_str());
     ini.SetValue("easy", "maxLevel", std::to_string(Pref.NiveauMax[0]).c_str());
     ini.SetValue("normal", "maxLevel", std::to_string(Pref.NiveauMax[1]).c_str());
     ini.SetValue("difficult", "maxLevel", std::to_string(Pref.NiveauMax[2]).c_str());
