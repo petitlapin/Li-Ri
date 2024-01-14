@@ -32,7 +32,7 @@
 
 /*** Variable globales ***/
 /*************************/
-extern sPreference Pref;
+extern sNewPreference Pref;
 extern int Horloge;
 
 /*** Constructeur et Destructeur ***/

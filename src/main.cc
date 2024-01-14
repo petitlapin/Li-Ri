@@ -56,7 +56,7 @@ char Titre[] = "Li-ri V" VERSION;
 Sprite *Sprites = nullptr; // Pointe sur les sprites
 int NSprites = 0; // Nombre de sprites en mémoire
 Screen Ec; // Pointe sur les 2 buffets vidéo
-sPreference Pref; // Tableau des préférences.
+sNewPreference Pref; // Tableau des préférences.
 Level level; // Gère les niveaux
 
 int Horloge = 0; // Horloges du jeu
@@ -74,7 +74,9 @@ void InitPref()
     DefPath[0] = 0;
 #endif
 
-    Pref.NiveauMax = 0;
+    Pref.NiveauMax[0] = 0;
+    Pref.NiveauMax[1] = 0;
+    Pref.NiveauMax[2] = 0;
     Pref.FullScreen = false;
     Pref.Langue = -1;
     Pref.Volume = (float)SDL_MIX_MAXVOLUME;

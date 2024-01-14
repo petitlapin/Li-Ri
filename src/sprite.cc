@@ -35,7 +35,7 @@
 extern SDL_Renderer *sdlRenderer;
 extern Sprite *Sprites;
 extern int NSprites;
-extern sPreference Pref;
+extern sNewPreference Pref;
 
 static const char *OrdreTexte = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789.-!?*+<>%$()&;";
 static const char *OrdreTexte2 = "abcdefghijklmnopqrstuvwxyz0123456789,_|?*+<>%$[]&;";

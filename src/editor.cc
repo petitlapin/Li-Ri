@@ -40,7 +40,7 @@
 extern SDL_Renderer *sdlRenderer;
 
 extern Sprite *Sprites;
-extern sPreference Pref;
+extern sNewPreference Pref;
 
 extern int Horloge;
 extern int HorlogeAvant;

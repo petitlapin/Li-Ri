@@ -23,6 +23,7 @@
 
 #include <cstdio>
 #include <cstring>
+#include <string>
 
 #include <SDL2/SDL_filesystem.h> // for SDL_GetPrefPath
 #include <SDL2/SDL_log.h> // for SDL_LogError, SDL_LOG_CATEGORY_APPL...
@@ -36,9 +37,11 @@
 #include "preference.h"
 #include "sprite.h"
 
+#include "SimpleIni.h"
+
 /*** Variables globales ***/
 /**************************/
-extern sPreference Pref;
+extern sNewPreference Pref;
 #ifdef __unix__
 extern char DefPath[]; // Chemin par defaut dans arg
 #endif
@@ -239,17 +242,65 @@ bool Utils::LoadPref()
     int L;
     unsigned char *Provi;
 
-    char PathPref[512];
+    char oldPathPref[512];
     char *PrefFolder = SDL_GetPrefPath("Li-Ri", "Li-Ri");
-    sprintf(PathPref, "%sli-ri.pref", PrefFolder);
+    sprintf(oldPathPref, "%sli-ri.pref", PrefFolder);
+
+    char newPathPref[512];
+    sprintf(newPathPref, "%sli-ri.ini", PrefFolder);
 
     SDL_free(PrefFolder);
 
-    if (Utils::FileExists(PathPref)) {
-        L = Utils::LoadFile(PathPref, Provi);
+    // Load new config file if it exists
+    if (Utils::FileExists(newPathPref)) {
+        CSimpleIniA ini(true); // true for unicode
+        SI_Error rc = ini.LoadFile(newPathPref);
+        const char *pv;
+        pv = ini.GetValue("main", "fullscreen");
+        Pref.FullScreen = std::stoi(pv);
+        pv = ini.GetValue("main", "locale");
+        Pref.Langue = std::stoi(pv);
+        pv = ini.GetValue("main", "audioVolume");
+        Pref.Volume = std::stof(pv);
+        pv = ini.GetValue("main", "musicVolume");
+        Pref.VolumeM = std::stof(pv);
+        pv = ini.GetValue("easy", "maxLevel");
+        Pref.NiveauMax[0] = std::stof(pv);
+        pv = ini.GetValue("normal", "maxLevel");
+        Pref.NiveauMax[1] = std::stof(pv);
+        pv = ini.GetValue("difficult", "maxLevel");
+        Pref.NiveauMax[2] = std::stof(pv);
+        for (int i = 0; i < 8; ++i) {
+            std::string scoreKey = "score_" + std::to_string(i);
+            std::string nameKey = "name_" + std::to_string(i);
+            pv = ini.GetValue("highscore", scoreKey.c_str());
+            Pref.Sco[i].Score = std::stoi(pv);
+            pv = ini.GetValue("highscore", nameKey.c_str(), Pref.Sco[i].Name);
+            strncpy(Pref.Sco[i].Name, pv, 80);
+        }
+        return true;
+    }
+
+    // In case we don't have yet a file in the new format, we check if we don't have a file in the previous format to restore it.
+    if (Utils::FileExists(oldPathPref)) {
+        L = Utils::LoadFile(oldPathPref, Provi);
         if (L > 0) {
-            memcpy((char *)&Pref, Provi, L);
+            sOldPreference oldPref;
+            memcpy((char *)&oldPref, Provi, L);
             delete[] Provi;
+            Pref.FullScreen = oldPref.FullScreen;
+            Pref.Langue = oldPref.Langue;
+            Pref.Volume = oldPref.Volume;
+            Pref.VolumeM = oldPref.VolumeM;
+            // Try to restore max difficulty from the level stored in conf
+            Pref.NiveauMax[0] = oldPref.Difficulte == Easy ? oldPref.NiveauMax : 0;
+            Pref.NiveauMax[1] = oldPref.Difficulte == Normal ? oldPref.NiveauMax : 0;
+            Pref.NiveauMax[2] = oldPref.Difficulte == Hard ? oldPref.NiveauMax : 0;
+            for (int i = 0; i < 8; ++i) {
+                Pref.Sco[i].Score = oldPref.Sco[i].Score;
+                strncpy(Pref.Sco[i].Name, oldPref.Sco[i].Name, 80);
+            }
+            // TODO Delete old file at some file
             return true;
         }
     }
@@ -263,10 +314,24 @@ void Utils::SauvePref()
 {
     char PathPref[512];
     char *PrefFolder = SDL_GetPrefPath("Li-Ri", "Li-Ri");
-    sprintf(PathPref, "%sli-ri.pref", PrefFolder);
+    sprintf(PathPref, "%sli-ri.ini", PrefFolder);
 
     SDL_free(PrefFolder);
-    Utils::SaveFile(PathPref, (char *)&Pref, sizeof(sPreference));
+    CSimpleIniA ini(true); // true for unicode
+    ini.SetValue("main", "fullscreen", std::to_string(Pref.FullScreen).c_str());
+    ini.SetValue("main", "locale", std::to_string(Pref.Langue).c_str());
+    ini.SetValue("main", "audioVolume", std::to_string(Pref.Volume).c_str());
+    ini.SetValue("main", "musicVolume", std::to_string(Pref.VolumeM).c_str());
+    ini.SetValue("easy", "maxLevel", std::to_string(Pref.NiveauMax[0]).c_str());
+    ini.SetValue("normal", "maxLevel", std::to_string(Pref.NiveauMax[1]).c_str());
+    ini.SetValue("difficult", "maxLevel", std::to_string(Pref.NiveauMax[2]).c_str());
+    for (int i = 0; i < 8; ++i) {
+        std::string scoreKey = "score_" + std::to_string(i);
+        std::string nameKey = "name_" + std::to_string(i);
+        ini.SetValue("highscore", scoreKey.c_str(), std::to_string(Pref.Sco[i].Score).c_str());
+        ini.SetValue("highscore", nameKey.c_str(), Pref.Sco[i].Name);
+    }
+    ini.SaveFile(PathPref);
 }
 
 void Utils::doScreenshot(SDL_Renderer *renderer)

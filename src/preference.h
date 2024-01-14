@@ -81,7 +81,7 @@ struct sScore
 };
 
 /*** Structure des preferences Générales ***/
-struct sPreference
+struct sOldPreference
 {
     e_Difficulte Difficulte; // Difficulté de la partie (Vitesse)
     int Niveau; // Niveau du joueur
@@ -91,6 +91,24 @@ struct sPreference
     double VitesseMoy; // Vitesse en cours de la loco
     float EcartWagon; // ecart en pixels entre 2 wagons
     int NiveauMax;
+    int FullScreen;
+    int Langue; // Langue à afficher
+    int NLangues; // Nombre de langues disponible
+    float Volume; // Volumes audio
+    float VolumeM; // Volume de la music
+    struct sScore Sco[8]; // Mémorise les scores
+};
+
+struct sNewPreference
+{
+    e_Difficulte Difficulte; // Difficulté de la partie (Vitesse)
+    int Niveau; // Niveau du joueur
+    int NVie; // Nombre de vie du joueur
+    int Score; // Score du joueur
+    double Vitesse; // Vitesse suivant le niveau
+    double VitesseMoy; // Vitesse en cours de la loco
+    float EcartWagon; // ecart en pixels entre 2 wagons
+    int NiveauMax[3]; // One per difficulty
     int FullScreen;
     int Langue; // Langue à afficher
     int NLangues; // Nombre de langues disponible
