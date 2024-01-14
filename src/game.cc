@@ -59,10 +59,10 @@ int MasqueK; // Masque pour les touches de déplacement
 Game::Game(Audio &sounds) :
     m_sounds(sounds), Lo(m_sounds)
 {
-    Touche[0] = D_Haut;
-    Touche[1] = D_Bas;
-    Touche[2] = D_Gauche;
-    Touche[3] = D_Droite;
+    Touche[0] = D_Top;
+    Touche[1] = D_Bottom;
+    Touche[2] = D_Left;
+    Touche[3] = D_Right;
 }
 
 /*** SDL Main ***/
@@ -143,19 +143,19 @@ eMenu Game::SDLMain()
                         if (event.key.repeat == 0) {
                             switch (Key) {
                             case SDLK_UP:
-                                BufTouche(D_Haut);
+                                BufTouche(D_Top);
                                 MasqueK |= 1;
                                 break;
                             case SDLK_DOWN:
-                                BufTouche(D_Bas);
+                                BufTouche(D_Bottom);
                                 MasqueK |= 2;
                                 break;
                             case SDLK_LEFT:
-                                BufTouche(D_Gauche);
+                                BufTouche(D_Left);
                                 MasqueK |= 4;
                                 break;
                             case SDLK_RIGHT:
-                                BufTouche(D_Droite);
+                                BufTouche(D_Right);
                                 MasqueK |= 8;
                                 break;
                             case SDLK_F12: // Save screenshot
@@ -382,27 +382,27 @@ void Game::TourneFleche()
         // Fait toucher la direction dans le sens des aiguilles d'une montre
         // et test si la nouvelle direction est possible
         switch (To) {
-        case D_Haut:
-            To = D_Droite;
-            if (Lo.PEntree != D_Droite && x + 1 < LT && T[Lo.PInter + 1] != 0) {
+        case D_Top:
+            To = D_Right;
+            if (Lo.PEntree != D_Right && x + 1 < LT && T[Lo.PInter + 1] != 0) {
                 Cherche = true;
             }
             break;
-        case D_Droite:
-            To = D_Bas;
-            if (Lo.PEntree != D_Bas && y + 1 < HT && T[Lo.PInter + LT] != 0) {
+        case D_Right:
+            To = D_Bottom;
+            if (Lo.PEntree != D_Bottom && y + 1 < HT && T[Lo.PInter + LT] != 0) {
                 Cherche = true;
             }
             break;
-        case D_Bas:
-            To = D_Gauche;
-            if (Lo.PEntree != D_Gauche && x > 0 && T[Lo.PInter - 1] != 0) {
+        case D_Bottom:
+            To = D_Left;
+            if (Lo.PEntree != D_Left && x > 0 && T[Lo.PInter - 1] != 0) {
                 Cherche = true;
             }
             break;
-        case D_Gauche:
-            To = D_Haut;
-            if (Lo.PEntree != D_Haut && y > 0 && T[Lo.PInter - LT] != 0) {
+        case D_Left:
+            To = D_Top;
+            if (Lo.PEntree != D_Top && y > 0 && T[Lo.PInter - LT] != 0) {
                 Cherche = true;
             }
             break;
@@ -433,17 +433,17 @@ void Game::BufTouche(int Tou)
 
     // Cherche son oposé
     switch (Tou) {
-    case D_Haut:
-        Tou = D_Bas;
+    case D_Top:
+        Tou = D_Bottom;
         break;
-    case D_Bas:
-        Tou = D_Haut;
+    case D_Bottom:
+        Tou = D_Top;
         break;
-    case D_Gauche:
-        Tou = D_Droite;
+    case D_Left:
+        Tou = D_Right;
         break;
-    case D_Droite:
-        Tou = D_Gauche;
+    case D_Right:
+        Tou = D_Left;
         break;
     }
 
@@ -472,22 +472,22 @@ int Game::TestFleche(int Haut, int Bas, int Gauche, int Droite)
 
     for (i = 0; i < 4; i++) {
         switch (Touche[i]) {
-        case D_Haut:
+        case D_Top:
             if (y > 0 && Haut != -1 && T[Lo.PInter - LT] != 0) {
                 return Haut;
             }
             break;
-        case D_Bas:
+        case D_Bottom:
             if (y + 1 < HT && Bas != -1 && T[Lo.PInter + LT] != 0) {
                 return Bas;
             }
             break;
-        case D_Gauche:
+        case D_Left:
             if (x > 0 && Gauche != -1 && T[Lo.PInter - 1] != 0) {
                 return Gauche;
             }
             break;
-        case D_Droite:
+        case D_Right:
             if (x + 1 < LT && Droite != -1 && T[Lo.PInter + 1] != 0) {
                 return Droite;
             }
@@ -512,16 +512,16 @@ void Game::AfficheEcran()
 
     if (Lo.PInter != -1 && Help) { // Affiche la fleche sur la futur intersection
         switch (Lo.PEntree) {
-        case D_Gauche:
+        case D_Left:
             ndir = TestFleche(0, 2, -1, 1);
             break;
-        case D_Droite:
+        case D_Right:
             ndir = TestFleche(8, 6, 7, -1);
             break;
-        case D_Haut:
+        case D_Top:
             ndir = TestFleche(-1, 4, 5, 3);
             break;
-        case D_Bas:
+        case D_Bottom:
             ndir = TestFleche(10, -1, 9, 11);
             break;
         }

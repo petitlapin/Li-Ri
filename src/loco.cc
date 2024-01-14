@@ -46,7 +46,7 @@ int AddDir[] = { -1, 1, -LT, LT };
 Loco::Loco(Audio &audio) :
     m_audio(audio)
 {
-    Init(LT / 2 + HT / 2 * LT, D_Droite);
+    Init(LT / 2 + HT / 2 * LT, D_Right);
 }
 
 /*** Initialise la locomotive ***/
@@ -70,21 +70,21 @@ void Loco::Init(int Pos, int Direction)
 
     // Cherche le case Avant
     switch (Direction) {
-    case D_Haut:
+    case D_Top:
         Pos += LT;
-        Ar = D_Bas;
+        Ar = D_Bottom;
         break;
-    case D_Bas:
+    case D_Bottom:
         Pos -= LT;
-        Ar = D_Haut;
+        Ar = D_Top;
         break;
-    case D_Gauche:
+    case D_Left:
         Pos++;
-        Ar = D_Droite;
+        Ar = D_Right;
         break;
-    case D_Droite:
+    case D_Right:
         Pos--;
-        Ar = D_Gauche;
+        Ar = D_Left;
         break;
     }
 
@@ -424,21 +424,21 @@ void Loco::DoFleche(int *Tableau, int *Touche)
     do {
         // Vas à la nouvelle case
         switch (Sortie) {
-        case D_Haut:
+        case D_Top:
             PInter -= LT;
-            PEntree = D_Bas;
+            PEntree = D_Bottom;
             break;
-        case D_Gauche:
+        case D_Left:
             PInter--;
-            PEntree = D_Droite;
+            PEntree = D_Right;
             break;
-        case D_Bas:
+        case D_Bottom:
             PInter += LT;
-            PEntree = D_Haut;
+            PEntree = D_Top;
             break;
-        case D_Droite:
+        case D_Right:
             PInter++;
-            PEntree = D_Gauche;
+            PEntree = D_Left;
             break;
         }
 
@@ -447,20 +447,20 @@ void Loco::DoFleche(int *Tableau, int *Touche)
         x = PInter % LT;
         y = PInter / LT;
         NVoie = 0;
-        if (y > 0 && PEntree != D_Haut && Tableau[PInter - LT] != 0) {
-            Sortie = D_Haut;
+        if (y > 0 && PEntree != D_Top && Tableau[PInter - LT] != 0) {
+            Sortie = D_Top;
             NVoie++;
         }
-        if (y + 1 < HT && PEntree != D_Bas && Tableau[PInter + LT] != 0) {
-            Sortie = D_Bas;
+        if (y + 1 < HT && PEntree != D_Bottom && Tableau[PInter + LT] != 0) {
+            Sortie = D_Bottom;
             NVoie++;
         }
-        if (x > 0 && PEntree != D_Gauche && Tableau[PInter - 1] != 0) {
-            Sortie = D_Gauche;
+        if (x > 0 && PEntree != D_Left && Tableau[PInter - 1] != 0) {
+            Sortie = D_Left;
             NVoie++;
         }
-        if (x + 1 < LT && PEntree != D_Droite && Tableau[PInter + 1] != 0) {
-            Sortie = D_Droite;
+        if (x + 1 < LT && PEntree != D_Right && Tableau[PInter + 1] != 0) {
+            Sortie = D_Right;
             NVoie++;
         }
 
@@ -488,16 +488,16 @@ bool Loco::TestDir(int FDir, int *Tableau)
     int x, y;
 
     // Test si les directions ne sont pas opposées
-    if (T[PLoco].Sortie == D_Haut && FDir == D_Bas) {
+    if (T[PLoco].Sortie == D_Top && FDir == D_Bottom) {
         return false;
     }
-    if (T[PLoco].Sortie == D_Bas && FDir == D_Haut) {
+    if (T[PLoco].Sortie == D_Bottom && FDir == D_Top) {
         return false;
     }
-    if (T[PLoco].Sortie == D_Gauche && FDir == D_Droite) {
+    if (T[PLoco].Sortie == D_Left && FDir == D_Right) {
         return false;
     }
-    if (T[PLoco].Sortie == D_Droite && FDir == D_Gauche) {
+    if (T[PLoco].Sortie == D_Right && FDir == D_Left) {
         return false;
     }
 
@@ -506,16 +506,16 @@ bool Loco::TestDir(int FDir, int *Tableau)
     // Test si un bord
     x = PAvant % LT;
     y = PAvant / LT;
-    if (FDir == D_Haut && y == 0) {
+    if (FDir == D_Top && y == 0) {
         return false;
     }
-    if (FDir == D_Bas && y + 1 == HT) {
+    if (FDir == D_Bottom && y + 1 == HT) {
         return false;
     }
-    if (FDir == D_Gauche && x == 0) {
+    if (FDir == D_Left && x == 0) {
         return false;
     }
-    if (FDir == D_Droite && x + 1 == LT) {
+    if (FDir == D_Right && x + 1 == LT) {
         return false;
     }
 
@@ -552,21 +552,21 @@ bool Loco::Go(int FuturDir)
     PLoco++; // Passe à la case suivante
 
     switch (Dir) {
-    case D_Haut:
+    case D_Top:
         PTab -= LT;
-        T[PLoco].Arrive = D_Bas;
+        T[PLoco].Arrive = D_Bottom;
         break;
-    case D_Bas:
+    case D_Bottom:
         PTab += LT;
-        T[PLoco].Arrive = D_Haut;
+        T[PLoco].Arrive = D_Top;
         break;
-    case D_Gauche:
+    case D_Left:
         PTab--;
-        T[PLoco].Arrive = D_Droite;
+        T[PLoco].Arrive = D_Right;
         break;
     default:
         PTab++;
-        T[PLoco].Arrive = D_Gauche;
+        T[PLoco].Arrive = D_Left;
     }
 
     // Donne futur direction et N° case avant
@@ -576,10 +576,10 @@ bool Loco::Go(int FuturDir)
     // Calcule la distance
     Mask = T[PLoco].Arrive * 4 + T[PLoco].Sortie;
     switch (Mask) {
-    case (D_Gauche * 4 + D_Droite): // Si vas tous droit
-    case (D_Droite * 4 + D_Gauche):
-    case (D_Haut * 4 + D_Bas):
-    case (D_Bas * 4 + D_Haut):
+    case (D_Left * 4 + D_Right): // Si vas tous droit
+    case (D_Right * 4 + D_Left):
+    case (D_Top * 4 + D_Bottom):
+    case (D_Bottom * 4 + D_Top):
         T[PLoco].D = T[PLoco - 1].D + D_Case;
         break;
     default:
@@ -611,54 +611,54 @@ void Loco::FindPoint(float Dist, int &x, int &y)
     }
 
     switch (T[NP].Arrive * 4 + T[NP].Sortie) {
-    case (D_Gauche * 4 + D_Droite):
+    case (D_Left * 4 + D_Right):
         y = int(P / LT * D_Case + D_Case / 2);
         x = int(P % LT * D_Case + D_Case - D_Rest);
         break;
-    case (D_Gauche * 4 + D_Haut):
+    case (D_Left * 4 + D_Top):
         x = int(P % LT * D_Case + cos(D_Rest * PIQ / D_CaseR) * (D_Case / 2.0));
         y = int(P / LT * D_Case + sin(D_Rest * PIQ / D_CaseR) * (D_Case / 2.0));
         break;
-    case (D_Gauche * 4 + D_Bas):
+    case (D_Left * 4 + D_Bottom):
         x = int(P % LT * D_Case + cos(D_Rest * PIQ / D_CaseR) * (D_Case / 2.0));
         y = int(P / LT * D_Case + D_Case - sin(D_Rest * PIQ / D_CaseR) * (D_Case / 2.0));
         break;
 
-    case (D_Droite * 4 + D_Gauche):
+    case (D_Right * 4 + D_Left):
         y = int(P / LT * D_Case + D_Case / 2);
         x = int(P % LT * D_Case + D_Rest);
         break;
-    case (D_Droite * 4 + D_Haut):
+    case (D_Right * 4 + D_Top):
         x = int(P % LT * D_Case + D_Case - cos(D_Rest * PIQ / D_CaseR) * (D_Case / 2.0));
         y = int(P / LT * D_Case + sin(D_Rest * PIQ / D_CaseR) * (D_Case / 2.0));
         break;
-    case (D_Droite * 4 + D_Bas):
+    case (D_Right * 4 + D_Bottom):
         x = int(P % LT * D_Case + D_Case - cos(D_Rest * PIQ / D_CaseR) * (D_Case / 2.0));
         y = int(P / LT * D_Case + D_Case - sin(D_Rest * PIQ / D_CaseR) * (D_Case / 2.0));
         break;
 
-    case (D_Bas * 4 + D_Haut):
+    case (D_Bottom * 4 + D_Top):
         x = int(P % LT * D_Case + D_Case / 2);
         y = int(P / LT * D_Case + D_Rest);
         break;
-    case (D_Bas * 4 + D_Gauche):
+    case (D_Bottom * 4 + D_Left):
         x = int(P % LT * D_Case + sin(D_Rest * PIQ / D_CaseR) * (D_Case / 2.0));
         y = int(P / LT * D_Case + D_Case - cos(D_Rest * PIQ / D_CaseR) * (D_Case / 2.0));
         break;
-    case (D_Bas * 4 + D_Droite):
+    case (D_Bottom * 4 + D_Right):
         x = int(P % LT * D_Case + D_Case - sin(D_Rest * PIQ / D_CaseR) * (D_Case / 2.0));
         y = int(P / LT * D_Case + D_Case - cos(D_Rest * PIQ / D_CaseR) * (D_Case / 2.0));
         break;
 
-    case (D_Haut * 4 + D_Bas):
+    case (D_Top * 4 + D_Bottom):
         x = int(P % LT * D_Case + D_Case / 2);
         y = int(P / LT * D_Case + D_Case - D_Rest);
         break;
-    case (D_Haut * 4 + D_Gauche):
+    case (D_Top * 4 + D_Left):
         x = int(P % LT * D_Case + sin(D_Rest * PIQ / D_CaseR) * (D_Case / 2.0));
         y = int(P / LT * D_Case + cos(D_Rest * PIQ / D_CaseR) * (D_Case / 2.0));
         break;
-    case (D_Haut * 4 + D_Droite):
+    case (D_Top * 4 + D_Right):
         x = int(P % LT * D_Case + D_Case - sin(D_Rest * PIQ / D_CaseR) * (D_Case / 2.0));
         y = int(P / LT * D_Case + cos(D_Rest * PIQ / D_CaseR) * (D_Case / 2.0));
         break;

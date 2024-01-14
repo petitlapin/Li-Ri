@@ -176,10 +176,10 @@ eMenu Editor::SDLMain(int NumNiv)
             case vie:
                 level.T[NumN].T[cy * LT + cx] = C_Live;
                 break;
-            case (e_Sprite)(locomotive + D_Haut):
-            case (e_Sprite)(locomotive + D_Bas):
-            case (e_Sprite)(locomotive + D_Gauche):
-            case (e_Sprite)(locomotive + D_Droite):
+            case (e_Sprite)(locomotive + D_Top):
+            case (e_Sprite)(locomotive + D_Bottom):
+            case (e_Sprite)(locomotive + D_Left):
+            case (e_Sprite)(locomotive + D_Right):
                 level.T[NumN].DepX = cx;
                 level.T[NumN].DepY = cy;
                 level.T[NumN].DepDir = (int)(Option) - (int)(locomotive);
@@ -273,16 +273,16 @@ void Editor::Affiche() const
 
     // Affiche le départ de la locomotive
     switch (level.T[NumN].DepDir) {
-    case D_Haut:
+    case D_Top:
         Sprites[locomotive].Affiche(level.T[NumN].DepX * D_Case + D_Case / 2, level.T[NumN].DepY * D_Case + D_Case / 2, 0);
         break;
-    case D_Bas:
+    case D_Bottom:
         Sprites[locomotive].Affiche(level.T[NumN].DepX * D_Case + D_Case / 2, level.T[NumN].DepY * D_Case + D_Case / 2, 40);
         break;
-    case D_Gauche:
+    case D_Left:
         Sprites[locomotive].Affiche(level.T[NumN].DepX * D_Case + D_Case / 2, level.T[NumN].DepY * D_Case + D_Case / 2, 80);
         break;
-    case D_Droite:
+    case D_Right:
         Sprites[locomotive].Affiche(level.T[NumN].DepX * D_Case + D_Case / 2, level.T[NumN].DepY * D_Case + D_Case / 2, 120);
         break;
     }
@@ -297,16 +297,16 @@ void Editor::Affiche() const
     case vie:
         Sprites[Option].Affiche(740, 200, 0);
         break;
-    case (e_Sprite)(locomotive + D_Haut):
+    case (e_Sprite)(locomotive + D_Top):
         Sprites[locomotive].Affiche(740, 200, 0);
         break;
-    case (e_Sprite)(locomotive + D_Bas):
+    case (e_Sprite)(locomotive + D_Bottom):
         Sprites[locomotive].Affiche(740, 200, 40);
         break;
-    case (e_Sprite)(locomotive + D_Gauche):
+    case (e_Sprite)(locomotive + D_Left):
         Sprites[locomotive].Affiche(740, 200, 80);
         break;
-    case (e_Sprite)(locomotive + D_Droite):
+    case (e_Sprite)(locomotive + D_Right):
         Sprites[locomotive].Affiche(740, 200, 120);
         break;
     case deco:
@@ -374,16 +374,16 @@ void Editor::PrendTouche(int Tou)
         level.Del(NumN);
         break;
     case SDLK_UP:
-        Option = (e_Sprite)(locomotive + D_Haut);
+        Option = (e_Sprite)(locomotive + D_Top);
         break;
     case SDLK_DOWN:
-        Option = (e_Sprite)(locomotive + D_Bas);
+        Option = (e_Sprite)(locomotive + D_Bottom);
         break;
     case SDLK_LEFT:
-        Option = (e_Sprite)(locomotive + D_Gauche);
+        Option = (e_Sprite)(locomotive + D_Left);
         break;
     case SDLK_RIGHT:
-        Option = (e_Sprite)(locomotive + D_Droite);
+        Option = (e_Sprite)(locomotive + D_Right);
         break;
     case 'c':
         level.Clear(NumN);
