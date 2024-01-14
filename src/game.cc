@@ -26,7 +26,6 @@
 #include <SDL2/SDL_render.h> // for SDL_RenderPresent, SDL_RenderClear
 #include <SDL2/SDL_timer.h> // for SDL_GetTicks
 #include <SDL2/SDL_video.h> // for SDL_WINDOWEVENT_ENTER, SDL_WINDOWEVENT...
-#include <cstdio>
 #include <cstdlib>
 
 #include "game.h"
@@ -239,7 +238,7 @@ eMenu Game::SDLMain()
             }
             if (Lo.Gagne) {
 #ifndef DCHILDREN
-                if (m_menu->SDLMain_HR() == mQuit) {
+                if (Pref.HumanRightsQuiz && m_menu->SDLMain_HR() == mQuit) {
                     return mQuit;
                 }
 #endif

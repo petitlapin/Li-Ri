@@ -24,7 +24,8 @@
 #ifndef PREFERENCE_DOM_
 #define PREFERENCE_DOM_
 
-/*** Défintitions ***/
+#include <SDL2/SDL_audio.h> // for SDL_MIX_MAXVOLUME
+
 #define VITESSE_MAX 180.0
 #define VITESSE_MOY 120.0
 #define VITESSE_MIN 80.0
@@ -101,20 +102,21 @@ struct sOldPreference
 
 struct sNewPreference
 {
-    e_Difficulte Difficulte; // Difficulté de la partie (Vitesse)
-    int Niveau; // Niveau du joueur
-    int NVie; // Nombre de vie du joueur
-    int Score; // Score du joueur
-    double Vitesse; // Vitesse suivant le niveau
-    double VitesseMoy; // Vitesse en cours de la loco
-    float EcartWagon; // ecart en pixels entre 2 wagons
-    int NiveauMax[3]; // One per difficulty
-    int FullScreen;
-    int Langue; // Langue à afficher
+    e_Difficulte Difficulte { Normal }; // current game difficulty
+    int Niveau; // current level
+    int NVie { N_VIES_DEP }; // current number of life
+    int Score; // current score
+    double Vitesse { VITESSE_MOY }; // Vitesse suivant le niveau
+    double VitesseMoy { VITESSE_MOY }; // Vitesse en cours de la loco
+    float EcartWagon { ECARTWAGON_MOY }; // ecart en pixels entre 2 wagons
     int NLangues; // Nombre de langues disponible
-    float Volume; // Volumes audio
-    float VolumeM; // Volume de la music
-    struct sScore Sco[8]; // Mémorise les scores
+    int NiveauMax[3] { 0, 0, 0 }; // One per difficulty
+    int FullScreen { true };
+    int Langue { -1 }; // locale index
+    float Volume { (float)SDL_MIX_MAXVOLUME }; // audio volume
+    float VolumeM { (float)SDL_MIX_MAXVOLUME }; // Music volume
+    struct sScore Sco[8]; // store scores
+    int HumanRightsQuiz { 1 }; // enable the human rights questions at the end of a level
 };
 
 /*** Valeur retournées pour le menu princiaple ***/

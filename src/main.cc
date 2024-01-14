@@ -23,7 +23,6 @@
 
 #include <cstdlib>
 #include <cstring>
-#include <SDL2/SDL_audio.h> // for SDL_MIX_MAXVOLUME
 #include <SDL2/SDL_error.h> // for SDL_GetError
 #include <SDL2/SDL_hints.h> // for SDL_SetHint, SDL_HINT_RENDER_SCALE_QUALITY
 #include <SDL2/SDL_log.h> // for SDL_LogError, SDL_LOG_CATEGORY_APPLICATION
@@ -74,26 +73,12 @@ void InitPref()
     DefPath[0] = 0;
 #endif
 
-    Pref.NiveauMax[0] = 0;
-    Pref.NiveauMax[1] = 0;
-    Pref.NiveauMax[2] = 0;
-    Pref.FullScreen = false;
-    Pref.Langue = -1;
-    Pref.Volume = (float)SDL_MIX_MAXVOLUME;
-    Pref.VolumeM = (float)SDL_MIX_MAXVOLUME; //*6.0/10.0;
-
     for (int i = 0; i < 8; i++) { // Vide les scores
         Pref.Sco[i].Score = 0;
         Pref.Sco[i].Name[0] = 0;
     }
 
     Utils::LoadPref();
-
-    Pref.Difficulte = Normal;
-    Pref.Vitesse = VITESSE_MOY;
-    Pref.VitesseMoy = VITESSE_MOY;
-    Pref.NVie = N_VIES_DEP;
-    Pref.EcartWagon = ECARTWAGON_MOY;
 }
 
 /*** Preogramme principale ***/
