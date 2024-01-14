@@ -141,10 +141,11 @@ int main(int narg, char *argv[])
 
     // ask locale if first run
     if (Pref.Langue == -1) {
-        MainMenu.SDLMain_Language();
+        RetMenu = MainMenu.SDLMain_Language();
+        LoadLangue();
     }
 
-    // Gère les menus
+    // menu switch
     do {
         switch (RetMenu) {
         case mMenu:
@@ -182,16 +183,16 @@ int main(int narg, char *argv[])
         RetMenu = RetM;
     } while (RetMenu != mQuit);
 
-    // Ferme proprement le programme
-    Mix_HaltMusic(); // Arrete la music
-    Mix_FreeMusic(audio.Music); // Efface la music
+    // close program
+    Mix_HaltMusic();
+    Mix_FreeMusic(audio.Music);
 
-    for (i = 0; i < NSprites; i++) { // Efface les sprites
+    for (i = 0; i < NSprites; i++) {
         Sprites[i].Delete();
     }
     delete[] Sprites;
 
-    Utils::SauvePref(); // Sauve les preferences
+    Utils::SauvePref();
     SDL_DestroyRenderer(sdlRenderer);
     SDL_DestroyWindow(sdlWindow);
 
