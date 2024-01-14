@@ -56,7 +56,7 @@ extern SDL_Window *sdlWindow;
 extern SDL_Renderer *sdlRenderer;
 extern Sprite *Sprites;
 extern Screen Ec;
-extern sPreference Pref;
+extern sNewPreference Pref;
 
 static char Points[] = ". . . . . . . . . . . . . .";
 static struct mPy Menu_Py[20];
@@ -780,7 +780,7 @@ eMenu Menu::SDLMain_Level()
     // Initialisations Divers
     m_mouse.Init(Menu_Py); // Initialise la sourie
     PyE = 0;
-    Niv = Pref.NiveauMax;
+    Niv = Pref.NiveauMax[Pref.Difficulte];
     Pref.Niveau = 0;
 
     if (Niv == 0) {
@@ -843,7 +843,7 @@ eMenu Menu::SDLMain_Level()
                         PyE = 1;
                         break;
                     case SDLK_RIGHT:
-                        if (Niv < Pref.NiveauMax) {
+                        if (Niv < Pref.NiveauMax[Pref.Difficulte]) {
                             Niv++;
                         }
                         PyE = 1;
@@ -870,7 +870,7 @@ eMenu Menu::SDLMain_Level()
                             }
                             break;
                         case 4:
-                            if (Niv < Pref.NiveauMax) {
+                            if (Niv < Pref.NiveauMax[Pref.Difficulte]) {
                                 Niv++;
                             }
                             break;
@@ -908,7 +908,7 @@ eMenu Menu::SDLMain_Level()
             Ec.PrintSprite(fleches, 0, 330, 380);
         }
 
-        if (Niv < Pref.NiveauMax) {
+        if (Niv < Pref.NiveauMax[Pref.Difficulte]) {
             if (PyE == 4) {
                 Ec.PrintSprite(fleches, 5, 470, 380);
             }

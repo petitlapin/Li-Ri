@@ -42,7 +42,7 @@
 extern SDL_Renderer *sdlRenderer;
 
 extern Sprite *Sprites;
-extern sPreference Pref;
+extern sNewPreference Pref;
 
 extern int Horloge;
 extern int HorlogeAvant;
@@ -248,8 +248,8 @@ eMenu Game::SDLMain()
                     Pref.Score += Pref.NVie * 100;
                     return mScoreEdit;
                 }
-                if (Pref.NiveauMax < NumN) {
-                    Pref.NiveauMax = NumN;
+                if (Pref.NiveauMax[Pref.Difficulte] < NumN) {
+                    Pref.NiveauMax[Pref.Difficulte] = NumN;
                 }
             }
             m_sounds.NextMusic();
