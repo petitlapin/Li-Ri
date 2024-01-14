@@ -47,15 +47,15 @@
 #define HT 15
 #define MAX_N_LEVEL_IN_MEMORY 256
 
-#define D_Gauche 0
-#define D_Droite 1
-#define D_Haut 2
-#define D_Bas 3
+#define D_Left 0
+#define D_Right 1
+#define D_Top 2
+#define D_Bottom 3
 
 #define D_Case 40
 #define D_CaseR 31.416
 
-/*** Pieces Posibles sur le Tableau ***/
+/*** Possible pieces on the level ***/
 #define C_None 0
 #define C_Rail 1
 #define C_Wagon 2
@@ -65,7 +65,6 @@
 #define C_Live 6
 #define C_Fin 7
 
-/*** Difficultées possible ***/
 enum e_Difficulte {
     Easy,
     Normal,
@@ -114,12 +113,11 @@ struct sNewPreference
     int FullScreen { true };
     int Langue { -1 }; // locale index
     float Volume { (float)SDL_MIX_MAXVOLUME }; // audio volume
-    float VolumeM { (float)SDL_MIX_MAXVOLUME }; // Music volume
+    float VolumeM { (float)SDL_MIX_MAXVOLUME }; // music volume
     struct sScore Sco[8]; // store scores
     int HumanRightsQuiz { 1 }; // enable the human rights questions at the end of a level
 };
 
-/*** Valeur retournées pour le menu princiaple ***/
 enum eMenu {
     mMenu,
     mMenuJeux,
