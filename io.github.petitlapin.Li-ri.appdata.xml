@@ -15,8 +15,10 @@
     </ul>
     <p>Li-Ri is a fork of Ri-li.</p>
   </description>
+  <developer>
+    <name>Johnny Jazeix</name>
+  </developer>
   <launchable type="desktop-id">io.github.petitlapin.Li-ri.desktop</launchable>
-  <developer_name>Johnny Jazeix</developer_name>
   <url type="homepage">https://github.com/petitlapin/Li-Ri</url>
   <url type="bugtracker">https://github.com/petitlapin/Li-Ri/issues</url>
   <url type="help">https://github.com/petitlapin/Li-Ri</url>
@@ -39,6 +41,15 @@
     </screenshot>
   </screenshots>
   <releases>
+    <release type="stable" version="3.1.4" date="2024-01-15T00:00:00Z">
+      <description>
+        <ul>
+          <li>Store the maximum level reached per difficulty</li>
+          <li>Fix crash when exiting in the first run "choose language" window</li>
+          <li>Use standard .ini file to store the configuration</li>
+        </ul>
+      </description>
+    </release>
     <release type="stable" version="3.1.3" date="2024-01-13T00:00:00Z">
       <description>
         <p>Fix appdata linter errors</p>
