@@ -1,0 +1,3 @@
+Store the maximum level reached per difficulty
+Fix crash when exiting in the first run "choose language" window
+Use standard .ini file to store the configuration
