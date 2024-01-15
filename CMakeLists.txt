@@ -15,7 +15,7 @@ include(InstallRequiredSystemLibraries)
 ### The current version number
 set(LIRI_VERSION_MAJOR 3)
 set(LIRI_VERSION_MINOR 1)
-set(LIRI_VERSION_PATCH 3)
+set(LIRI_VERSION_PATCH 4)
 set(LIRI_VERSION ${LIRI_VERSION_MAJOR}.${LIRI_VERSION_MINOR}.${LIRI_VERSION_PATCH})
 
 set(LIRI_EXECUTABLE_NAME Li-ri)
