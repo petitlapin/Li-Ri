@@ -10,4 +10,4 @@ Terminal=false
 Type=Application
 Categories=ArcadeGame;Simulation;Game;KidsGame;
 StartupNotify=true
-keywords=game;train;toy;wood;engine;switches;kids;
+Keywords=game;train;toy;wood;engine;switches;kids;
