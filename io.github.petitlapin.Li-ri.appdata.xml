@@ -2,7 +2,7 @@
 <component type="desktop-application">
   <id>io.github.petitlapin.Li-ri</id>
   <name>Li-Ri</name>
-  <summary>Li-Ri is a arcade game where you drive a toy wood engine</summary>
+  <summary>Kids game, drive a toy wood engine</summary>
   <metadata_license>CC0-1.0</metadata_license>
   <project_license>GPL-2.0-or-later</project_license>
   <description>
@@ -29,15 +29,15 @@
   <screenshots>
     <screenshot type="default">
       <caption>Li-ri main menu</caption>
-      <image type="source" width="1920" height="1080">https://github.com/petitlapin/Li-Ri/blob/287f0acce15a184ca9e653b4a398b1d2fdb84fd1/fastlane/metadata/android/en-US/images/tenInchScreenshots/01.png</image>
+      <image type="source" width="1920" height="1080">https://raw.githubusercontent.com/petitlapin/Li-Ri/287f0acce15a184ca9e653b4a398b1d2fdb84fd1/fastlane/metadata/android/en-US/images/tenInchScreenshots/01.png</image>
     </screenshot>
     <screenshot>
       <caption>First level</caption>
-      <image type="source" width="1600" height="1040">https://github.com/petitlapin/Li-Ri/blob/287f0acce15a184ca9e653b4a398b1d2fdb84fd1/fastlane/metadata/android/en-US/images/tenInchScreenshots/02.png</image>
+      <image type="source" width="1600" height="1040">https://raw.githubusercontent.com/petitlapin/Li-Ri/287f0acce15a184ca9e653b4a398b1d2fdb84fd1/fastlane/metadata/android/en-US/images/tenInchScreenshots/02.png</image>
     </screenshot>
     <screenshot>
       <caption>First level after a few seconds of play</caption>
-      <image type="source" width="1600" height="1040">https://github.com/petitlapin/Li-Ri/blob/287f0acce15a184ca9e653b4a398b1d2fdb84fd1/fastlane/metadata/android/en-US/images/tenInchScreenshots/03.png</image>
+      <image type="source" width="1600" height="1040">https://raw.githubusercontent.com/petitlapin/Li-Ri/287f0acce15a184ca9e653b4a398b1d2fdb84fd1/fastlane/metadata/android/en-US/images/tenInchScreenshots/03.png</image>
     </screenshot>
   </screenshots>
   <releases>
