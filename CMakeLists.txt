@@ -33,12 +33,18 @@ endif()
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
-include(FetchContent)
-FetchContent_Declare(simpleini
-  GIT_REPOSITORY https://github.com/brofield/simpleini.git
-  GIT_TAG        09c21bda1dc1b578fa55f4a005d79b0afd481296 # v4.22
-  )
-FetchContent_MakeAvailable(simpleini)
+
+option (USE_SYSTEM_SIMPLEINI "Use system SimpleIni instead of FetchContent" OFF)
+if(USE_SYSTEM_SIMPLEINI)
+  find_package(SimpleIni REQUIRED CONFIG)
+else()
+  include(FetchContent)
+  FetchContent_Declare(simpleini
+    GIT_REPOSITORY https://github.com/brofield/simpleini.git
+    GIT_TAG        09c21bda1dc1b578fa55f4a005d79b0afd481296 # v4.22
+    )
+  FetchContent_MakeAvailable(simpleini)
+endif()
 
 add_executable(${LIRI_EXECUTABLE_NAME} WIN32
   src/audio.cc
