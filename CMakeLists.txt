@@ -73,6 +73,10 @@ add_executable(${LIRI_EXECUTABLE_NAME} WIN32
 configure_file(src/config.h.in "${CMAKE_CURRENT_BINARY_DIR}/config.h" @ONLY)
 target_include_directories(${LIRI_EXECUTABLE_NAME} PUBLIC ${CMAKE_CURRENT_BINARY_DIR})
 
+if(LINUX)
+  target_compile_definitions(${LIRI_EXECUTABLE_NAME} PUBLIC "-DSI_NO_CONVERSION=1")
+endif()
+
 if(USE_CONAN)
   target_link_libraries(${LIRI_EXECUTABLE_NAME} PRIVATE SDL2::SDL2 SDL2_mixer::SDL2_mixer)
 else()
