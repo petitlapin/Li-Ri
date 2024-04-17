@@ -141,6 +141,13 @@ eMenu Game::SDLMain()
                         Key = event.key.keysym.sym;
 
                         if (event.key.repeat == 0) {
+                            // The text says: "press any key to start"
+                            // so we allow any key press (except Escape)
+                            // to start the game
+                            if (Pause) {
+                                Pause = false;
+                                break;
+                            }
                             switch (Key) {
                             case SDLK_UP:
                                 BufTouche(D_Top);
