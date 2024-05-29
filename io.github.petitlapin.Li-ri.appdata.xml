@@ -27,15 +27,15 @@
   <screenshots>
     <screenshot type="default">
       <caption>Li-ri main menu</caption>
-      <image type="source" width="1920" height="1080">https://raw.githubusercontent.com/petitlapin/Li-Ri/287f0acce15a184ca9e653b4a398b1d2fdb84fd1/fastlane/metadata/android/en-US/images/tenInchScreenshots/01.png</image>
+      <image type="source" width="1920" height="1080">https://raw.githubusercontent.com/petitlapin/Li-Ri/1b9d756abe53fd2be5ac0ad4818a2ac9b436d6ec/fastlane/metadata/android/en-US/images/tenInchScreenshots/01.png</image>
     </screenshot>
     <screenshot>
       <caption>First level</caption>
-      <image type="source" width="1600" height="1040">https://raw.githubusercontent.com/petitlapin/Li-Ri/287f0acce15a184ca9e653b4a398b1d2fdb84fd1/fastlane/metadata/android/en-US/images/tenInchScreenshots/02.png</image>
+      <image type="source" width="1600" height="1040">https://raw.githubusercontent.com/petitlapin/Li-Ri/1b9d756abe53fd2be5ac0ad4818a2ac9b436d6ec/fastlane/metadata/android/en-US/images/tenInchScreenshots/02.png</image>
     </screenshot>
     <screenshot>
       <caption>First level after a few seconds of play</caption>
-      <image type="source" width="1600" height="1040">https://raw.githubusercontent.com/petitlapin/Li-Ri/287f0acce15a184ca9e653b4a398b1d2fdb84fd1/fastlane/metadata/android/en-US/images/tenInchScreenshots/03.png</image>
+      <image type="source" width="1600" height="1040">https://raw.githubusercontent.com/petitlapin/Li-Ri/1b9d756abe53fd2be5ac0ad4818a2ac9b436d6ec/fastlane/metadata/android/en-US/images/tenInchScreenshots/03.png</image>
     </screenshot>
   </screenshots>
   <releases>
