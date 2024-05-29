@@ -15,9 +15,7 @@
     </ul>
     <p>Li-Ri is a fork of Ri-li.</p>
   </description>
-  <developer>
-    <name>Johnny Jazeix</name>
-  </developer>
+  <developer_name>Johnny Jazeix</developer_name>
   <launchable type="desktop-id">io.github.petitlapin.Li-ri.desktop</launchable>
   <url type="homepage">https://github.com/petitlapin/Li-Ri</url>
   <url type="bugtracker">https://github.com/petitlapin/Li-Ri/issues</url>
@@ -41,6 +39,14 @@
     </screenshot>
   </screenshots>
   <releases>
+    <release type="stable" version="3.1.5" date="2024-05-29T00:00:00Z">
+      <description>
+        <ul>
+          <li>Allow to press any key to start the level as written in the text</li>
+          <li>New colors for icon to differentiate from original Ri-Li</li>
+        </ul>
+      </description>
+    </release>
     <release type="stable" version="3.1.4" date="2024-01-15T00:00:00Z">
       <description>
         <ul>
