@@ -31,7 +31,7 @@ jobs:
                 name: ubuntu
                 path: build/Li_ri-*.sh
     mac:
-        runs-on: macos-latest
+        runs-on: macos-12
         steps:
             - uses: actions/checkout@v4
             - name: Install Conan
