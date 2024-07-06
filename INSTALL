@@ -21,6 +21,21 @@ To specify the folder where to look for the data files, you can set the variable
 
 At last, run cmake to build the executable: `cmake --build build --config Release`.
 
+Compilation on emscripten:
+==========================
+Retrieve the sdk if needed and install it using:
+git clone https://github.com/emscripten-core/emsdk.git
+./emsdk install latest
+./emsdk activate latest
+
+Then, to compile Li-ri, create a build folder, go into it and run:
+source ~/emsdk/emsdk_env.sh
+emcmake cmake -DCMAKE_BUILD_TYPE=Release ..
+cmake --build .
+
+And to run it:
+emrun --verbose --browser firefox Li-ri.html
+
 Installation:
 =============
 Adding the option `-DCMAKE_INSTALL_PREFIX=install` will add a new target to install the package in the install/ folder inside your build folder: `cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=install -S . -B build`.

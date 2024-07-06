@@ -91,8 +91,13 @@ struct sOldPreference
     double VitesseMoy; // Vitesse en cours de la loco
     float EcartWagon; // ecart en pixels entre 2 wagons
     int NiveauMax;
-    int FullScreen;
-    int Langue; // Langue à afficher
+#ifdef __EMSCRIPTEN__
+    int FullScreen { false };
+    int Langue { 1 };
+#else
+    int FullScreen { true };
+    int Langue { -1 };
+#endif
     int NLangues; // Nombre de langues disponible
     float Volume; // Volumes audio
     float VolumeM; // Volume de la music
