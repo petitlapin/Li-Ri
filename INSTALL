@@ -5,7 +5,7 @@ Li-Ri depends on SDL2 and SDL2_mixer (and their dependencies).
 
 Compilation via conan:
 =======================
-Install conan (version 1 for now, it is not compatible with conan 2 yet as SDL2_mixer is not yet available) and run it: `conan install . --install-folder=build --build=missing`.
+Install conan 2 and run it: `conan install . --output-folder=build --build=missing`.
 
 Then, run cmake to generate the build files: `cmake -DCMAKE_TOOLCHAIN_FILE=build/Release/generators/conan_toolchain.cmake -DUSE_CONAN=ON -DCMAKE_BUILD_TYPE=Release -S . -B build`.
 
