@@ -29,13 +29,14 @@
 
 class Audio;
 class Menu;
+class Gamepad;
 
 /*** Définition de la class ***/
 /******************************/
 class Game
 {
 public:
-    explicit Game(Audio &sounds);
+    explicit Game(Audio &sounds, Gamepad &gamepad);
     ~Game() = default;
 
     void setMenu(Menu *menu) { m_menu = menu; }
@@ -63,6 +64,7 @@ private:
     bool Help { true }; // Si doit affiche les fleches d'aide
 
     Audio &m_sounds;
+    Gamepad &m_gamepad;
     Menu *m_menu { nullptr };
 
     Loco Lo; // Gère la locomotive

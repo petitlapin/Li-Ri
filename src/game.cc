@@ -29,6 +29,7 @@
 #include <cstdlib>
 
 #include "game.h"
+#include "gamepad.h"
 #include "screen.h"
 #include "menu.h"
 #include "sprite.h"
@@ -56,8 +57,8 @@ int MasqueK; // Masque pour les touches de déplacement
 
 /*** Constructeur et Destructeur ***/
 /***********************************/
-Game::Game(Audio &sounds) :
-    m_sounds(sounds), Lo(m_sounds)
+Game::Game(Audio &sounds, Gamepad &gamepad) :
+    m_sounds(sounds), m_gamepad(gamepad), Lo(m_sounds)
 {
     Touche[0] = D_Top;
     Touche[1] = D_Bottom;
@@ -92,6 +93,8 @@ eMenu Game::SDLMain()
         SDL_RenderClear(sdlRenderer);
         SDL_Event event;
         while (SDL_PollEvent(&event)) {
+            m_gamepad.GetEvent(event); // Handle gamepad
+
             switch (event.type) {
             case SDL_WINDOWEVENT:
                 if (event.window.event == SDL_WINDOWEVENT_ENTER) {

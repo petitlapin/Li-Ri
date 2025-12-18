@@ -55,6 +55,8 @@ add_executable(${LIRI_EXECUTABLE_NAME} WIN32
   src/editor.h
   src/game.cc
   src/game.h
+  src/gamepad.cc
+  src/gamepad.h
   src/loco.cc
   src/loco.h
   src/main.cc

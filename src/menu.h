@@ -32,6 +32,7 @@ void Sleeping();
 
 class Game;
 class Audio;
+class Gamepad;
 class Mouse;
 
 /*** Définition de la class ***/
@@ -39,8 +40,8 @@ class Mouse;
 class Menu
 {
 public:
-    Menu(Game &game, Audio &audio, Mouse &mouse) :
-        m_game(game), m_audio(audio), m_mouse(mouse) {};
+    Menu(Game &game, Audio &audio, Mouse &mouse, Gamepad &gamepad) :
+        m_game(game), m_audio(audio), m_mouse(mouse), m_gamepad(gamepad) { };
     ~Menu() = default;
 
     /*** Fonctions ***/
@@ -71,6 +72,7 @@ private:
     Game &m_game;
     Audio &m_audio;
     Mouse &m_mouse;
+    Gamepad &m_gamepad;
 };
 
 #endif

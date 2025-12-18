@@ -29,14 +29,15 @@
 
 class Mouse;
 class Game;
+class Gamepad;
 
 /*** Définition de la class ***/
 /******************************/
 class Editor
 {
 public:
-    Editor(Mouse &mouse, Game &game) :
-        m_mouse(mouse), m_game(game) {};
+    Editor(Mouse &mouse, Game &game, Gamepad &gamepad) :
+        m_mouse(mouse), m_game(game), m_gamepad(gamepad) { };
     ~Editor() = default;
 
     /*** Fonctions ***/
@@ -54,5 +55,6 @@ private:
 
     Mouse &m_mouse;
     Game &m_game;
+    Gamepad &m_gamepad;
 };
 #endif

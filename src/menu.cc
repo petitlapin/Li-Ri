@@ -42,6 +42,7 @@
 #include "menu.h"
 #include "sprite.h"
 #include "screen.h"
+#include "gamepad.h"
 #include "mouse.h"
 #include "audio.h"
 #include "utils.h"
@@ -132,7 +133,8 @@ eMenu Menu::SDLMain()
         Menu_Py[4].DepX = -1;
         SDL_Event event;
         while (SDL_PollEvent(&event)) {
-            m_mouse.GetEvent(event, PyE); // Prend les evenements de la sourie
+            m_mouse.GetEvent(event, PyE); // Handle mouse
+            m_gamepad.GetEvent(event); // Handle gamepad
             switch (event.type) {
             case SDL_KEYDOWN:
                 if (event.key.state == SDL_PRESSED) {
@@ -270,7 +272,8 @@ eMenu Menu::SDLMain_Language()
         SDL_Event event;
         while (SDL_PollEvent(&event)) {
 
-            m_mouse.GetEvent(event, PyE); // Prend les evenements de la sourie
+            m_mouse.GetEvent(event, PyE); // Handle mouse
+            m_gamepad.GetEvent(event); // Handle gamepad
             switch (event.type) {
             case SDL_WINDOWEVENT:
                 if (event.window.event == SDL_WINDOWEVENT_ENTER) {
@@ -433,7 +436,9 @@ eMenu Menu::SDLMain_Options()
         InitMain_Options(); // Prépare le menu
         SDL_Event event;
         while (SDL_PollEvent(&event)) {
-            m_mouse.GetEvent(event, PyE); // Prend les evenements de la sourie
+            m_mouse.GetEvent(event, PyE); // Handle mouse
+            m_gamepad.GetEvent(event); // Handle gamepad
+
             switch (event.type) {
             case SDL_WINDOWEVENT:
                 if (event.window.event == SDL_WINDOWEVENT_ENTER) {
@@ -698,7 +703,9 @@ eMenu Menu::SDLMain_Speed()
 
         SDL_Event event;
         while (SDL_PollEvent(&event)) {
-            m_mouse.GetEvent(event, PyE); // Prend les evenements de la sourie
+            m_mouse.GetEvent(event, PyE); // Handle mouse
+            m_gamepad.GetEvent(event); // Handle gamepad
+
             switch (event.type) {
             case SDL_WINDOWEVENT:
                 if (event.window.event == SDL_WINDOWEVENT_ENTER) {
@@ -806,7 +813,9 @@ eMenu Menu::SDLMain_Level()
 
         SDL_Event event;
         while (SDL_PollEvent(&event)) {
-            m_mouse.GetEvent(event, PyE); // Prend les evenements de la sourie
+            m_mouse.GetEvent(event, PyE); // Handle mouse
+            m_gamepad.GetEvent(event); // Handle gamepad
+
             switch (event.type) {
             case SDL_WINDOWEVENT:
                 if (event.window.event == SDL_WINDOWEVENT_ENTER) {
@@ -1024,7 +1033,9 @@ eMenu Menu::SDLMain_HR()
       */
         SDL_Event event;
         while (SDL_PollEvent(&event)) {
-            m_mouse.GetEvent(event, PyE); // Prend les evenements de la sourie
+            m_mouse.GetEvent(event, PyE); // Handle mouse
+            m_gamepad.GetEvent(event); // Handle gamepad
+
             switch (event.type) {
             case SDL_WINDOWEVENT:
                 if (event.window.event == SDL_WINDOWEVENT_ENTER) {
@@ -1189,7 +1200,9 @@ eMenu Menu::SDLMain_InGame()
         SDL_RenderClear(sdlRenderer);
         SDL_Event event;
         while (SDL_PollEvent(&event)) {
-            m_mouse.GetEvent(event, PyE); // Prend les evenements de la sourie
+            m_mouse.GetEvent(event, PyE); // Handle mouse
+            m_gamepad.GetEvent(event); // Handle gamepad
+
             switch (event.type) {
             case SDL_WINDOWEVENT:
                 if (event.window.event == SDL_WINDOWEVENT_ENTER) {
@@ -1345,7 +1358,9 @@ eMenu Menu::SDLMain_Score(bool EditScore)
         // Efface le fond
         SDL_Event event;
         while (SDL_PollEvent(&event)) {
-            m_mouse.GetEvent(event, PyE); // Prend les evenements de la sourie
+            m_mouse.GetEvent(event, PyE); // Handle mouse
+            m_gamepad.GetEvent(event); // Handle gamepad
+
             switch (event.type) {
             case SDL_WINDOWEVENT:
                 if (event.window.event == SDL_WINDOWEVENT_ENTER) {
