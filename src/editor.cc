@@ -33,6 +33,7 @@
 #include "menu.h"
 #include "game.h"
 #include "level.h"
+#include "gamepad.h"
 #include "mouse.h"
 
 /*** Variables globales ***/
@@ -75,7 +76,9 @@ eMenu Editor::SDLMain(int NumNiv)
     do {
         SDL_Event event;
         while (SDL_PollEvent(&event)) {
-            m_mouse.GetEvent(event, PyE); // Prend les evenements de la sourie
+            m_mouse.GetEvent(event, PyE); // Handle mouse
+            m_gamepad.GetEvent(event); // Handle gamepad
+
             switch (event.type) {
             case SDL_WINDOWEVENT:
                 if (event.window.event == SDL_WINDOWEVENT_ENTER) {

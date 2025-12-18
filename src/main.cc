@@ -36,6 +36,7 @@
 #include "config.h"
 #include "preference.h"
 #include "game.h"
+#include "gamepad.h"
 #include "audio.h"
 #include "sprite.h"
 #include "screen.h"
@@ -96,8 +97,9 @@ int main(int narg, char *argv[])
     }
 #endif
 
+    SDL_SetHint(SDL_HINT_JOYSTICK_ALLOW_BACKGROUND_EVENTS, "1");
     // Initiliase SDL
-    if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO) < 0) {
+    if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO | SDL_INIT_GAMECONTROLLER) < 0) {
         SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Unable to initialize SDL: %s", SDL_GetError());
         exit(-1);
     }
@@ -130,10 +132,13 @@ int main(int narg, char *argv[])
     Mouse mouse { audio };
     mouse.InitStart();
 
-    Game game { audio };
-    Editor editor { mouse, game };
+    Gamepad gamepad;
+    gamepad.Initialize();
 
-    Menu MainMenu { game, audio, mouse };
+    Game game { audio, gamepad };
+    Editor editor { mouse, game, gamepad };
+
+    Menu MainMenu { game, audio, mouse, gamepad };
     game.setMenu(&MainMenu);
 
     HorlogeAvant = Horloge = SDL_GetTicks();
