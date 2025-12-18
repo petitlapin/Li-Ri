@@ -9,7 +9,7 @@ jobs:
     linux:
         runs-on: ubuntu-latest
         steps:
-            - uses: actions/checkout@v4
+            - uses: actions/checkout@v6.0.1
             - name: Install Conan
               uses: turtlebrowser/get-conan@main
               with:
@@ -29,14 +29,16 @@ jobs:
                 name: ubuntu
                 path: build/Li_ri-*.sh
     mac:
-        runs-on: macos-12
+        runs-on: macos-14
         steps:
-            - uses: actions/checkout@v4
-            - name: Install Conan
+            - uses: actions/checkout@v6.0.1
+            - uses: actions/setup-python@v6.1.0
+              with:
+                python-version: '3.13'
+            - name: Get Conan
               uses: turtlebrowser/get-conan@main
               with:
                 version: 2.8.1
-
             - name: Configure conan
               run: conan profile detect
             - name: Install deps
@@ -56,7 +58,7 @@ jobs:
     windows:
         runs-on: windows-latest
         steps:
-            - uses: actions/checkout@v4
+            - uses: actions/checkout@v6.0.1
             - name: Install Conan
               uses: turtlebrowser/get-conan@main
               with:
@@ -72,7 +74,7 @@ jobs:
             - name: build
               run: cmake --build build --config Release
             - name: Install NSIS
-              uses: repolevedavaj/install-nsis@v1.0.2
+              uses: repolevedavaj/install-nsis@v1.1.0
               with:
                 nsis-version: "3.10"
             - name: package
