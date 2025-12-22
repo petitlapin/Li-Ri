@@ -29,6 +29,7 @@ jobs:
                 name: ubuntu
                 path: build/Li_ri-*.sh
     mac:
+        if: ${{ false }} # disable until libmodplug works with recent cmake version
         runs-on: macos-14
         steps:
             - uses: actions/checkout@v6.0.1
