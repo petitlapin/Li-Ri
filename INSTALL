@@ -30,7 +30,7 @@ This will copy the binary to the ${CMAKE_INSTALL_PREFIX}/bin/ and data in ${CMAK
 Packaging:
 ==========
 To create a package, use the *package* target from cmake invocation: `cmake --build build --config Release --target package`.
-* on Linux, it will create a self extractible tgz file. You can execute it and install it. Then, you can run `bin/Li-ri` from this folder to run Li-Ri.
+* on Linux, it will create a self extractible tgz file. You can execute it and install it. Then, you can run `bin/Li-ri.sh` from this folder to run Li-Ri.
 * on macOS, it will generate a .dmg (that has not been tested at all so it may not run at all).
 * on Windows, a NSIS installer (you need to install NSIS on your computer to generate it).
 

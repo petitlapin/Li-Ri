@@ -34,6 +34,10 @@ else()
   set(CPACK_PACKAGE_ICON "${PROJECT_SOURCE_DIR}/data/Li-ri-icon-48x48.png")
 endif()
 
+if(UNIX)
+  install(PROGRAMS tools/Li-ri.sh DESTINATION "${CMAKE_INSTALL_BINDIR}/")
+endif()
+
 if(APPLE)
   set(CPACK_GENERATOR "DragNDrop")
 elseif(WIN32)
