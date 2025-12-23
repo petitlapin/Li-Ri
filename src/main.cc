@@ -62,7 +62,7 @@ Level level; // Gère les niveaux
 int Horloge = 0; // Horloges du jeu
 int HorlogeAvant = 0;
 
-#ifdef __unix__
+#if defined(__unix__) || defined(__HAIKU__)
 char DefPath[256]; // Chemin par defaut dans arg
 #endif
 
@@ -70,7 +70,7 @@ char DefPath[256]; // Chemin par defaut dans arg
 /**********************************/
 void InitPref()
 {
-#ifdef __unix__
+#if defined(__unix__) || defined(__HAIKU__)
     DefPath[0] = 0;
 #endif
 
@@ -91,7 +91,7 @@ int main(int narg, char *argv[])
 
     // Initialise les préferences
     InitPref();
-#ifdef __unix__
+#if defined(__unix__) || defined(__HAIKU__)
     if (narg > 1) {
         strcpy(DefPath, argv[1]);
     }

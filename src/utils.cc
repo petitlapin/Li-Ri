@@ -42,7 +42,7 @@
 /*** Variables globales ***/
 /**************************/
 extern sNewPreference Pref;
-#ifdef __unix__
+#if defined(__unix__) || defined(__HAIKU__)
 extern char DefPath[]; // Chemin par defaut dans arg
 #endif
 
@@ -152,7 +152,7 @@ bool Utils::SaveFile(const char *Path, char *Buf, long L)
 
 /*** Met le bon chemin pour charger un fichier ***/
 /*************************************************/
-#if (defined(__unix__) || defined(ANDROID)) && !defined(__AMIGAOS4__)
+#if (defined(__unix__) || defined(ANDROID)) || defined(__HAIKU__) && !defined(__AMIGAOS4__)
 // Version Linux
 void Utils::GetPath(char *Path)
 {
