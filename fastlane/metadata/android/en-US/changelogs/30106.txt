@@ -1,0 +1,3 @@
+Fix Haiku build
+Add controller support
+Add support for android tv (not tested)
