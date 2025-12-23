@@ -152,7 +152,7 @@ bool Utils::SaveFile(const char *Path, char *Buf, long L)
 
 /*** Met le bon chemin pour charger un fichier ***/
 /*************************************************/
-#if (defined(__unix__) || defined(ANDROID)) && !defined(__AMIGAOS4__)
+#if (defined(__HAIKU__) || defined(__unix__) || defined(ANDROID)) && !defined(__AMIGAOS4__)
 // Version Linux
 void Utils::GetPath(char *Path)
 {
