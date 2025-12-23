@@ -39,6 +39,15 @@
     </screenshot>
   </screenshots>
   <releases>
+    <release type="stable" version="3.1.6" date="2025-12-24T00:00:00Z">
+      <description>
+        <ul>
+          <li>Fix Haiku build</li>
+          <li>Add controller support</li>
+          <li>Add support for android tv (not tested)</li>
+        </ul>
+      </description>
+    </release>
     <release type="stable" version="3.1.5" date="2024-05-29T00:00:00Z">
       <description>
         <ul>
@@ -58,7 +67,9 @@
     </release>
     <release type="stable" version="3.1.3" date="2024-01-13T00:00:00Z">
       <description>
-        <p>Fix appdata linter errors</p>
+        <ul>
+          <li>Fix appdata linter errors</li>
+        </ul>
       </description>
     </release>
     <release type="stable" version="3.1.2" date="2024-01-12T00:00:00Z">
@@ -73,7 +84,9 @@
     </release>
     <release type="stable" version="3.1.1" date="2024-01-05T00:00:00Z">
       <description>
-        <p>Fix Android start (3.1.0 does not work at all on Android)</p>
+        <ul>
+          <li>Fix Android start (3.1.0 does not work at all on Android)</li>
+        </ul>
       </description>
     </release>
     <release type="stable" version="3.1.0" date="2024-01-01T00:00:00Z">
@@ -169,12 +182,16 @@
     </release>
     <release type="stable" version="1.0.0" date="2006-06-23T00:00:00Z">
       <description>
-        <p>First version for linux and windows</p>
+        <ul>
+          <li>First version for linux and windows</li>
+        </ul>
       </description>
     </release>
     <release type="stable" version="0.0.1" date="2006-06-18T00:00:00Z">
       <description>
-        <p>First automake / autoconf</p>
+        <ul>
+          <li>First automake / autoconf</li>
+        </ul>
       </description>
     </release>
   </releases>

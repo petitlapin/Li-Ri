@@ -1,4 +1,11 @@
 ---
+Version: 3.1.6
+Date: 2025-12-24
+Description:
+  - Fix Haiku build
+  - Add controller support
+  - Add support for android tv (not tested)
+---
 Version: 3.1.5
 Date: 2024-05-29
 Description:
