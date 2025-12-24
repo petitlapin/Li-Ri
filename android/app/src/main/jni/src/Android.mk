@@ -15,6 +15,7 @@ LOCAL_SRC_FILES := $(SDL_PATH)/src/main/android/SDL_android_main.c \
 	../../../../../../src/audio.cc \
 	../../../../../../src/editor.cc \
 	../../../../../../src/game.cc \
+	../../../../../../src/gamepad.cc \
 	../../../../../../src/level.cc \
 	../../../../../../src/loco.cc \
 	../../../../../../src/main.cc \
