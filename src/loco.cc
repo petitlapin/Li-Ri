@@ -33,7 +33,7 @@
 #define M_PI 3.141592654
 #endif
 
-/*** Variables globales ***/
+/***   Global varibles  ***/
 /**************************/
 extern sNewPreference Pref;
 extern int Horloge;
@@ -41,7 +41,7 @@ extern int MasqueK;
 
 int AddDir[] = { -1, 1, -LT, LT };
 
-/*** Construteur et Destructeur ***/
+/*** Constructor and destructor ***/
 /**********************************/
 Loco::Loco(Audio &audio) :
     m_audio(audio)
@@ -49,26 +49,26 @@ Loco::Loco(Audio &audio) :
     Init(LT / 2 + HT / 2 * LT, D_Right);
 }
 
-/*** Initialise la locomotive ***/
-/********************************/
+/*** Locomotive initialisation ***/
+/*********************************/
 void Loco::Init(int Pos, int Direction)
 {
     int i;
     unsigned char Ar = 0;
 
-    PLoco = 0; // Pointe sur la première case
+    PLoco = 0;
     PInter = -1;
-    Vitesse = Reduit = Alonge = 0; // Pas d'alongement
+    Vitesse = Reduit = Alonge = 0;
     Mort = -1;
     Gagne = false;
     Pref.EcartWagon = ECARTWAGON_MOY;
 
-    // Initialise les variables
+    // Varibles initilization
     for (i = 0; i < 256; i++) {
         PosWagon[i].SprStart = 0;
     }
 
-    // Cherche le case Avant
+    // Look at direction
     switch (Direction) {
     case D_Top:
         Pos += LT;
@@ -88,19 +88,18 @@ void Loco::Init(int Pos, int Direction)
         break;
     }
 
-    // Initialise le Tableau et la loco
-    D = D_Case * 1.99; // Positionne la tete presque à la fin
+    D = D_Case * 1.99;
 
     T[PLoco].P = Pos;
     T[PLoco].Arrive = Ar;
     T[PLoco].Sortie = Direction;
     T[PLoco].D = D_Case;
 
-    // Fait avancer d'une case
+    // Moves forward one space
     Go(Direction);
     Go(Direction);
 
-    // Initialise la loco et son wagon à charbon
+    // Initialize the locomotive and its coal wagon
     NWagon = 2;
     Wagon[0] = locomotive;
     Wagon[1] = charbon;
@@ -113,20 +112,20 @@ void Loco::Init(int Pos, int Direction)
     MemoDuree = 0;
 }
 
-/*** Affiche la locomotive ***/
-/*****************************/
+/*** Render locomotive ***/
+/*************************/
 void Loco::Display(Screen &Ec)
 {
     float ltrain = 0;
     float p1, p2, a, ar, vx, vy;
     int x1, x2, y1, y2;
     int i, ns = 0;
-    int cdx, cdy, cfx = 0, cfy = 0; // Points d'accroche des cables
+    int cdx, cdy, cfx = 0, cfy = 0; // Cable attachment points
     float lv;
 
-    // Affiche tous les wagons
+    // Render wagons
     for (i = 0; i < NWagon; i++) {
-        // Cherche les points du wagons
+        // Find the points on the wagons
         switch (Wagon[i]) {
         case charbon:
             p1 = ltrain + 11;
@@ -141,17 +140,17 @@ void Loco::Display(Screen &Ec)
             lv = 20;
         }
 
-        // Calcule la position des points
+        // Calculate the position of the points
         FindPoint(D - p1, x1, y1);
         FindPoint(D - p2, x2, y2);
 
-        PosWagon[i].dx = x1; // Sauve la position des points pour test de colision futur
+        PosWagon[i].dx = x1; // Saves the position of the points for future collision testing
         PosWagon[i].dy = y1;
         PosWagon[i].fx = x2;
         PosWagon[i].fy = y2;
 
-        // Calcule l'angle de rotation de la loco et le N° du Sprite
-        if (x1 <= x2) { // Angle 0 à 180 compris
+        // Calculate locomotive rotation angle and sprite number
+        if (x1 <= x2) { // Angle 0 - 180
             vy = (float)(x2 - x1);
             vx = (float)(y2 - y1);
             if (vx != 0) {
@@ -164,7 +163,7 @@ void Loco::Display(Screen &Ec)
                 a = 180.0 + a;
             }
         }
-        else { // Angle 180.001 à 359.999
+        else { // Angle 180 - 359
             vy = (float)(x1 - x2);
             vx = (float)(y1 - y2);
             if (vx != 0) {
@@ -179,35 +178,35 @@ void Loco::Display(Screen &Ec)
         }
         ar = a * M_PI / 180.0;
 
-        // Prend le centre du sprite
+        // Take the center of the sprite
         x1 = (x1 + x2) / 2;
         y1 = (y1 + y2) / 2;
 
-        // Affiche les cables de liaison
-        if (i > 0) { // Si doit afficher les cables
-            // Calcule le point d'accroche en sortie
+        // Render cable
+        if (i > 0) { // If it should render cable
+            // Calculate the attachment point
             cdx = x1 - (int)(sin(ar) * lv);
             cdy = y1 - (int)(cos(ar) * lv);
 
-            // Affiche le cable
+            // Render cable
             Ec.PrintCable(cdx, cdy, cfx, cfy);
         }
         // Calcule le crocher de fin pour le prochaine wagon
         cfx = x1 - (int)(sin(ar + M_PI) * lv);
         cfy = y1 - (int)(cos(ar + M_PI) * lv);
 
-        // Cherche le N° du Sprite
+        // Find sprite number
         switch ((int)a) {
-        case 0: // En haut
+        case 0: // Up
             ns = (int)(y1 + D_Case / 2) % (int)D_Case;
             break;
-        case 180: // En bas
+        case 180: // Down
             ns = (int)(y1 + D_Case / 2) % (int)D_Case + 40;
             break;
-        case 90: // Gauche
+        case 90: // Left
             ns = (int)(x1 + D_Case / 2) % (int)D_Case + 80;
             break;
-        case 270: // Droite
+        case 270: // Right
             ns = (int)(x1 + D_Case / 2) % (int)D_Case + 120;
             break;
         default:
@@ -220,7 +219,6 @@ void Loco::Display(Screen &Ec)
 
         Ec.PrintSprite(Wagon[i], ns, x1, y1);
 
-        // Si pas fini la sequence d'affiche de départ du wagon
         if (PosWagon[i].SprStart < N_SPR_START) {
             PosWagon[i].SprStart += MemoDuree * N_SPR_START / 750.0;
             if (PosWagon[i].SprStart < N_SPR_START) {
@@ -228,31 +226,31 @@ void Loco::Display(Screen &Ec)
             }
         }
 
-        // Met l'ecart entre les wagons
+        // Place the gap between the wagons
         ltrain += Pref.EcartWagon;
     }
 }
 
-/*** Test les options sur une case ***/
-/*************************************/
+/*** Colision test ***/
+/*********************/
 void Loco::TestCase(float Dist, long DureeJeu, int *Tableau)
 {
     int i;
     float DMoy;
     float Ec1, vx, vy, Ec2;
 
-    // test si depasse milieu d'une case pour teste de colision
+    // Test if it crosses the middle of a cell for collision testing
     DMoy = (T[PLoco].D + T[PLoco - 1].D) / 2.0;
     if (D <= DMoy && D + Dist >= DMoy) {
-        // Test si sur une option
+        // Test if on an option
         switch (Tableau[T[PLoco].P]) {
-        case C_Wagon: // Une nouvelle loco
+        case C_Wagon: // A new wagon
             m_audio.Play(sWagon);
-            Tableau[T[PLoco].P] = 1; // efface l'option
+            Tableau[T[PLoco].P] = 1;
             Pref.Score += 5;
-            AddLoco(); // Ajoute une loco au azard
+            AddLoco(); // Add random wagon
 
-            Gagne = true; // Test si la dernière loco
+            Gagne = true; // Test if the last wagon
             for (i = 0; i < LT * HT; i++) {
                 if (Tableau[i] == C_Wagon) {
                     Gagne = false;
@@ -263,9 +261,9 @@ void Loco::TestCase(float Dist, long DureeJeu, int *Tableau)
                 m_audio.Play(sEnd);
             }
             break;
-        case C_Allonge: // Alonge la loco
+        case C_Allonge: // Allonge locomotive
             m_audio.Play(sEtire);
-            Tableau[T[PLoco].P] = 1; // efface l'option
+            Tableau[T[PLoco].P] = 1;
             Pref.Score += 20;
             if (Reduit > DureeJeu) {
                 Reduit = DureeJeu - 1;
@@ -274,9 +272,9 @@ void Loco::TestCase(float Dist, long DureeJeu, int *Tableau)
                 Alonge = DureeJeu + DUREE_ALONGE;
             }
             break;
-        case C_Reduit: // Si réduit la loco
+        case C_Reduit: // Reduit locomotive
             m_audio.Play(sReduit);
-            Tableau[T[PLoco].P] = 1; // efface l'option
+            Tableau[T[PLoco].P] = 1;
             if (Alonge > DureeJeu) {
                 Alonge = DureeJeu - 1;
             }
@@ -284,9 +282,9 @@ void Loco::TestCase(float Dist, long DureeJeu, int *Tableau)
                 Reduit = DureeJeu + DUREE_REDUIT;
             }
             break;
-        case C_Speed: // Si Vitesse
+        case C_Speed: // Speed up locomotive
             m_audio.Play(sSpeed);
-            Tableau[T[PLoco].P] = 1; // efface l'option
+            Tableau[T[PLoco].P] = 1;
             Pref.Score += 30;
             Vitesse = DureeJeu + DUREE_VITESSE;
             break;
@@ -297,7 +295,7 @@ void Loco::TestCase(float Dist, long DureeJeu, int *Tableau)
             break;
         }
 
-        // Test de colision avec un autre Wagon
+        // Test colision with other wagon
         for (i = 1; i < NWagon; i++) {
             vx = (float)(PosWagon[i].dx - PosWagon[0].dx);
             vy = (float)(PosWagon[i].dy - PosWagon[0].dy);
@@ -306,7 +304,7 @@ void Loco::TestCase(float Dist, long DureeJeu, int *Tableau)
             vy = (float)(PosWagon[i].fy - PosWagon[0].dy);
             Ec2 = vx * vx + vy * vy;
 
-            // Si colition le signale
+            // If signal
             if (Mort < Horloge && (Ec1 < RAYON_TOUCHE || Ec2 <= RAYON_TOUCHE)) {
                 m_audio.Play(sCrash);
                 Pref.NVie--;
@@ -316,8 +314,8 @@ void Loco::TestCase(float Dist, long DureeJeu, int *Tableau)
     }
 }
 
-/*** Fait Avancer la locomotive ***/
-/**********************************/
+/*** Move the locomotive forward ***/
+/***********************************/
 void Loco::Avance(int Duree, long DureeJeu, int *Touche, int *Tableau)
 {
     int i;
@@ -327,17 +325,17 @@ void Loco::Avance(int Duree, long DureeJeu, int *Touche, int *Tableau)
 
     TestCase(Dist, DureeJeu, Tableau);
 
-    // Test si doit Réduire le wagon
+    // Test if it needs to reduce the wagon
     if (Reduit > DureeJeu) {
-        if (Pref.EcartWagon > ECARTWAGON_MIN) { // Si doit réduire
+        if (Pref.EcartWagon > ECARTWAGON_MIN) { // If must reduce
             Pref.EcartWagon -= (float)(Duree) * (Pref.VitesseMoy * 0.8 / (float)(NWagon - 1)) / 1000.0;
             if (Pref.EcartWagon < ECARTWAGON_MIN) {
                 Pref.EcartWagon = ECARTWAGON_MIN;
             }
         }
     }
-    else { // Si temps est passé
-        if (Pref.EcartWagon < ECARTWAGON_MOY) { // Si doit ralonger le wagon
+    else { // If time has passed
+        if (Pref.EcartWagon < ECARTWAGON_MOY) { // If the wagon needs to be lengthened
             Pref.EcartWagon += (float)(Duree) * (Pref.VitesseMoy * 0.8 / (float)(NWagon)) / 1000.0;
             if (Pref.EcartWagon > ECARTWAGON_MOY) {
                 Pref.EcartWagon = ECARTWAGON_MOY;
@@ -345,17 +343,17 @@ void Loco::Avance(int Duree, long DureeJeu, int *Touche, int *Tableau)
         }
     }
 
-    // Test si doit Ralonger le wagon
+    // Test if the wagon needs to be lengthened
     if (Alonge > DureeJeu) {
-        if (Pref.EcartWagon < ECARTWAGON_MAX) { // Si doit Ralonger
+        if (Pref.EcartWagon < ECARTWAGON_MAX) { // If it needs to be extended
             Pref.EcartWagon += (float)(Duree) * (Pref.VitesseMoy * 0.8 / (float)(NWagon)) / 1000.0;
             if (Pref.EcartWagon > ECARTWAGON_MAX) {
                 Pref.EcartWagon = ECARTWAGON_MAX;
             }
         }
     }
-    else { // Si temps est passé
-        if (Pref.EcartWagon > ECARTWAGON_MOY) { // Si doit ralonger le wagon
+    else { // If time has passed
+        if (Pref.EcartWagon > ECARTWAGON_MOY) { // If the wagon needs to be lengthened
             Pref.EcartWagon -= (float)(Duree) * (Pref.VitesseMoy * 0.8 / (float)(NWagon - 1)) / 1000.0;
             if (Pref.EcartWagon < ECARTWAGON_MOY) {
                 Pref.EcartWagon = ECARTWAGON_MOY;

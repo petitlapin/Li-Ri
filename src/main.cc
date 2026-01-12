@@ -46,27 +46,27 @@
 #include "editor.h"
 #include "utils.h"
 
-/*** Variables globales ***/
+/*** Global varibles ***/
 /************************/
-SDL_Window *sdlWindow; // Pointe sur l'écran video
-SDL_Renderer *sdlRenderer; // Pointe sur l'écran video
+SDL_Window *sdlWindow; // Screen video pointer
+SDL_Renderer *sdlRenderer; // Screen video pointer
 
 char Titre[] = "Li-ri V" VERSION;
 
-Sprite *Sprites = nullptr; // Pointe sur les sprites
-int NSprites = 0; // Nombre de sprites en mémoire
-Screen Ec; // Pointe sur les 2 buffets vidéo
-sNewPreference Pref; // Tableau des préférences.
-Level level; // Gère les niveaux
+Sprite *Sprites = nullptr; // Sprite pointer
+int NSprites = 0; // Number of sprites in memory
+Screen Ec;
+sNewPreference Pref; // Preference table.
+Level level; // Manages the levels
 
-int Horloge = 0; // Horloges du jeu
+int Horloge = 0; // Game clocks
 int HorlogeAvant = 0;
 
 #if defined(__unix__) || defined(__HAIKU__)
-char DefPath[256]; // Chemin par defaut dans arg
+char DefPath[256]; // Default path in arg
 #endif
 
-/*** Initialise les preferences ***/
+/*** Initializate preferences ***/
 /**********************************/
 void InitPref()
 {
@@ -82,14 +82,14 @@ void InitPref()
     Utils::LoadPref();
 }
 
-/*** Preogramme principale ***/
+/*** Main program ***/
 /*****************************/
 int main(int narg, char *argv[])
 {
     int i;
     eMenu RetM, RetMenu = mMenu;
 
-    // Initialise les préferences
+    // Initializate preferences
     InitPref();
 #if defined(__unix__) || defined(__HAIKU__)
     if (narg > 1) {
@@ -98,15 +98,15 @@ int main(int narg, char *argv[])
 #endif
 
     SDL_SetHint(SDL_HINT_JOYSTICK_ALLOW_BACKGROUND_EVENTS, "1");
-    // Initiliase SDL
+    // Initializate SDL
     if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO | SDL_INIT_GAMECONTROLLER) < 0) {
         SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Unable to initialize SDL: %s", SDL_GetError());
         exit(-1);
     }
-    // Ferme le programme correctement quand quit
+    // Close the program properly when quitting
     atexit(SDL_Quit);
 
-    // Demande la resolution Video
+    // Set type of window
     int vOption = SDL_WINDOW_RESIZABLE;
     if (Pref.FullScreen) {
         vOption |= SDL_WINDOW_FULLSCREEN_DESKTOP;
@@ -117,7 +117,7 @@ int main(int narg, char *argv[])
     SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "linear");
     SDL_RenderSetLogicalSize(sdlRenderer, 800, 600);
 
-    SDL_ShowCursor(0); // Masque le curseur
+    SDL_ShowCursor(0); // Hide cursor
 
     Audio audio;
     audio.Init();

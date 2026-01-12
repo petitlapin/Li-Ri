@@ -25,7 +25,7 @@
 #include "utils.h"
 #include "level.h"
 
-/*** Constructeurs ***/
+/***   Contructor  ***/
 /*********************/
 Level::Level()
 {
@@ -35,7 +35,7 @@ Level::Level()
     }
 }
 
-/*** Charge les tableaux ***/
+/***   Load the table    ***/
 /***************************/
 bool Level::Load()
 {
@@ -50,7 +50,7 @@ bool Level::Load()
         return false;
     }
 
-    // Charge les tableaux
+    // Load the table
     N = (int)(Buf[0]) * 256 + (int)(Buf[1]);
 
     for (i = 0; i < N; i++) {
@@ -75,7 +75,7 @@ bool Level::Load()
     return true;
 }
 
-/*** Sauve les tableaux ***/
+/***   Save the table   ***/
 /**************************/
 bool Level::Save()
 {
@@ -84,13 +84,13 @@ bool Level::Save()
     int i, j;
     char NameLevelFile[512] = "levels.dat";
 
-    // Alloue la mémoire
+    // Allocate memory
     Buf = new unsigned char[sizeof(s_Level) * N + sizeof(int) + 1];
     if (Buf == nullptr) {
         return false;
     }
 
-    // Charge les tableaux
+    // Load the table
     Buf[0] = N / 256;
     Buf[1] = N % 256;
 
@@ -119,7 +119,7 @@ bool Level::Save()
         }
     }
 
-    // Sauve les tableaux
+    // Save the table
     Utils::GetPath(NameLevelFile);
     if (Utils::SaveFile(NameLevelFile, (char *)Buf, P) == false) {
         delete[] Buf;
@@ -130,7 +130,7 @@ bool Level::Save()
     return true;
 }
 
-/*** Efface un Tableau ***/
+/***  Clear the table  ***/
 /*************************/
 void Level::Del(int Num)
 {
@@ -155,7 +155,7 @@ void Level::Del(int Num)
     }
 }
 
-/*** Insert un Tableau ***/
+/***   Insert a Table  ***/
 /*************************/
 void Level::Ins(int Num)
 {
@@ -182,7 +182,7 @@ void Level::Ins(int Num)
     }
 }
 
-/*** Vide un tableau ***/
+/***  Clear a table  ***/
 /***********************/
 void Level::Clear(int Num)
 {

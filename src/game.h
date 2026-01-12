@@ -31,7 +31,7 @@ class Audio;
 class Menu;
 class Gamepad;
 
-/*** Définition de la class ***/
+/***    Game class define   ***/
 /******************************/
 class Game
 {
@@ -40,33 +40,33 @@ public:
     ~Game() = default;
 
     void setMenu(Menu *menu) { m_menu = menu; }
-    /*** Fonctions ***/
+    /*** Functions ***/
     /*****************/
-    eMenu SDLMain(); // Boucle principale
-    bool Load(int NivN); // Charge un tableau
-    bool DrawLevel(int NivN); // Dessine le niveau
+    eMenu SDLMain(); // SDL Main
+    bool Load(int NivN); // Load a table
+    bool DrawLevel(int NivN); // Draw background of game
 
-    void TourneFleche(); // Fait tourner la fleche d'un simple clic.
-    void BufTouche(int Touche); // Met une nouvelle touche dans le buffet
-    int TestFleche(int Haut, int Bas, int Gauche, int Droite); // Test la direction de sortie de la fleche
-    void AfficheEcran(); // Fait l'affichage d'un ecran de jeu
+    void TourneFleche(); // Rotates the arrow with a single touch.
+    void BufTouche(int Touche); // Stores a key in the keypad
+    int TestFleche(int Haut, int Bas, int Gauche, int Droite); // Test the possible directions for the arrows
+    void AfficheEcran(); // Render a screenshot of the game
 
 private:
     /*** Variables ***/
     bool Pause { false }; // Si en pose
 
-    long DureeJeu { 0 }; // Horloge de durée du jeu
+    long DureeJeu { 0 }; // Game duration clock
 
-    int Key { 0 }; // Mémorise la touche enfoncée
-    int Touche[4]; // Direction demandée
-    int T[LT * HT]; // Pointe sur le tableau
+    int Key { 0 }; // Key buffer
+    int Touche[4]; // Direction requested
+    int T[LT * HT]; // Table pointer
 
-    bool Help { true }; // Si doit affiche les fleches d'aide
+    bool Help { true }; // If it enabled should display the help arrows
 
     Audio &m_sounds;
     Gamepad &m_gamepad;
     Menu *m_menu { nullptr };
 
-    Loco Lo; // Gère la locomotive
+    Loco Lo; // Locomotive object
 };
 #endif

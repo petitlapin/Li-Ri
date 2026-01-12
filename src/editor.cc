@@ -36,7 +36,7 @@
 #include "gamepad.h"
 #include "mouse.h"
 
-/*** Variables globales ***/
+/*** Global varibles ***/
 /**************************/
 extern SDL_Renderer *sdlRenderer;
 
@@ -62,17 +62,17 @@ eMenu Editor::SDLMain(int NumNiv)
 
     NumN = NumNiv;
 
-    Affiche(); // Charge le tableau
+    Affiche(); // Load the table
     SDL_RenderPresent(sdlRenderer);
 
-    Horloge = SDL_GetTicks(); // Prend l'horloge
+    Horloge = SDL_GetTicks(); // Clock
 
     Option = rail;
 
-    // Initialise la sourie
+    // Initialize the mouse
     m_mouse.Init(nullptr);
 
-    // Prend les evenements
+    // Event listener
     do {
         SDL_Event event;
         while (SDL_PollEvent(&event)) {
@@ -112,15 +112,15 @@ eMenu Editor::SDLMain(int NumNiv)
             }
         }
 
-        // Gère l'appuis du boutton de la sourie
+        // Manages mouse button presses
         cx = m_mouse.Px / D_Case;
         cy = m_mouse.Py / D_Case;
 
         if (Boutton && cx < LT) {
             switch (Option) {
             case deco:
-                if (TypeB == -1) { // Si première fois que appuis sur la touche
-                    for (i = 0; i < level.T[NumN].NDeco; i++) { // Recherche si décoration proche du clic
+                if (TypeB == -1) { // If it's the first time you press the key
+                    for (i = 0; i < level.T[NumN].NDeco; i++) { // Search for decoration near the click
                         dx = level.T[NumN].Deco[i].x - m_mouse.Px;
                         dy = level.T[NumN].Deco[i].y - m_mouse.Py;
                         d = dx * dx + dy * dy;
@@ -135,7 +135,7 @@ eMenu Editor::SDLMain(int NumNiv)
                         level.T[NumN].Deco[(level.T[NumN].NDeco - 1)].y = m_mouse.Py;
                         TypeB = 1;
                     }
-                    else { // Fait passe la selection au premier plan
+                    else { // This brings the selection to the front
                         level.T[NumN].Deco[level.T[NumN].NDeco].NumSpr = level.T[NumN].Deco[TypeB].NumSpr;
                         level.T[NumN].Deco[level.T[NumN].NDeco].x = level.T[NumN].Deco[TypeB].x;
                         level.T[NumN].Deco[level.T[NumN].NDeco].y = level.T[NumN].Deco[TypeB].y;
@@ -147,7 +147,7 @@ eMenu Editor::SDLMain(int NumNiv)
                         NumDeco = level.T[NumN].Deco[(level.T[NumN].NDeco - 1)].NumSpr;
                     }
                 }
-                else { // Si pas la première fois remplace
+                else { // If not the first time replace
                     level.T[NumN].Deco[(level.T[NumN].NDeco - 1)].NumSpr = NumDeco;
                     level.T[NumN].Deco[(level.T[NumN].NDeco - 1)].x = m_mouse.Px;
                     level.T[NumN].Deco[(level.T[NumN].NDeco - 1)].y = m_mouse.Py;
@@ -192,7 +192,7 @@ eMenu Editor::SDLMain(int NumNiv)
             }
         }
 
-        // Gère les Horloges et la pose
+        // Manages the clocks and the installation
         HorlogeAvant = Horloge;
         Horloge = SDL_GetTicks();
         Sleeping();
@@ -206,20 +206,20 @@ eMenu Editor::SDLMain(int NumNiv)
     return mQuit;
 }
 
-/*** Charge un tableau ***/
+/***  Load the table   ***/
 /*************************/
 void Editor::Affiche() const
 {
     int i, x, y, m, cx, cy;
     unsigned char *T;
 
-    // Prend l'adresse du niveau
+    // Takes the level address
     T = level.T[NumN].T;
 
-    // Fabrique le fond du jeu
+    // Create the game background
     Sprites[fond].Affiche(400, 300, 0);
 
-    // Affiche le circuit
+    // Draw circuit
     for (i = 0; i < LT * HT; i++) {
         if (T[i] >= C_Rail && T[i] < C_Fin) {
             y = i / LT * D_Case + D_Case / 2;
@@ -245,36 +245,36 @@ void Editor::Affiche() const
         }
     }
 
-    // Affiche les décorations
+    // Draw decorations
     for (i = 0; i < level.T[NumN].NDeco; i++) {
         Sprites[deco].Affiche(level.T[NumN].Deco[i].x, level.T[NumN].Deco[i].y, level.T[NumN].Deco[i].NumSpr);
     }
 
-    // Affiche numero du niveau
+    // Draw level number
     AfficheChiffre(740, 130, NumN + 1);
 
     // Affiche les options
     for (i = 0; i < LT * HT; i++) {
         switch (T[i]) {
-        case C_Wagon: // Si un loco
+        case C_Wagon: // If wagon
             Sprites[wagon].Affiche(i % LT * D_Case + D_Case / 2, i / LT * D_Case + D_Case / 2, 25);
             break;
-        case C_Allonge: // Si plus long
+        case C_Allonge: // If long bonus
             Sprites[pluslong].Affiche(i % LT * D_Case + D_Case / 2, i / LT * D_Case + D_Case / 2, 25);
             break;
-        case C_Reduit: // Si plus court
+        case C_Reduit: // If short bonus
             Sprites[pluscourt].Affiche(i % LT * D_Case + D_Case / 2, i / LT * D_Case + D_Case / 2, 25);
             break;
-        case C_Speed: // Si plus vite
+        case C_Speed: // If speed bonus
             Sprites[vitesse].Affiche(i % LT * D_Case + D_Case / 2, i / LT * D_Case + D_Case / 2, 25);
             break;
-        case C_Live: // Si une vie
+        case C_Live: // If live bonus
             Sprites[vie].Affiche(i % LT * D_Case + D_Case / 2, i / LT * D_Case + D_Case / 2, 25);
             break;
         }
     }
 
-    // Affiche le départ de la locomotive
+    // Display locomotive direction
     switch (level.T[NumN].DepDir) {
     case D_Top:
         Sprites[locomotive].Affiche(level.T[NumN].DepX * D_Case + D_Case / 2, level.T[NumN].DepY * D_Case + D_Case / 2, 0);
@@ -290,7 +290,7 @@ void Editor::Affiche() const
         break;
     }
 
-    // Affiche l'option choisi dans le menu
+    // Displays the option selected in the menu
     switch (Option) {
     case rail:
     case wagon:
@@ -319,7 +319,7 @@ void Editor::Affiche() const
         break;
     }
 
-    // Affiche le curseur
+    // Show cursor
     if (Option != deco) {
         Sprites[curseur].Affiche(m_mouse.Px, m_mouse.Py, 0);
     }
@@ -328,7 +328,7 @@ void Editor::Affiche() const
     }
 }
 
-/*** Prend les touches enfoncées ***/
+/***      Keyboard callback      ***/
 /***********************************/
 void Editor::PrendTouche(int Tou)
 {
@@ -392,23 +392,23 @@ void Editor::PrendTouche(int Tou)
         level.Clear(NumN);
         break;
     case '$':
-        // test si le dernier niveau est vide
+        // test if the last level is empty
         for (j = i = 0; i < LT * HT; i++) {
             j += level.T[level.N - 1].T[i];
         }
         if (j == 0) {
             if (NumN < level.N - 1) {
-                level.N--; // Si vide ne le compte pas
+                level.N--; //If empty, don't count it.
             }
         }
 
-        // Sauve le niveau
+        // Save the level
         if (level.Save() == false) {
             SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Error while saving levels");
             exit(-1);
         }
 
-        // test le niveau
+        // Test the level
         Pref.Niveau = NumN;
         m_game.SDLMain();
         m_mouse.Init(nullptr);

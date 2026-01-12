@@ -26,7 +26,7 @@
 
 #include <SDL2/SDL_mixer.h>
 
-/*** Enumération des sons ***/
+/*** Enumeration of sounds***/
 /****************************/
 enum eSon {
     sClic = 0,
@@ -41,7 +41,7 @@ enum eSon {
     sFin
 };
 
-/*** Définition de la classe Audio ***/
+/***       Audio class define      ***/
 /*************************************/
 class Audio
 {
@@ -49,25 +49,25 @@ public:
     Audio() = default;
     ~Audio();
 
-    /*** Fonctions ***/
-    bool Init(); // Initialise et charge les fichiers audio
-    void LoadMusic(int Num); // Charge une music, 0 = music du menu 1,2,3,4=Jeu
-    void NextMusic(); // Passe à la music suivante
+    /*** Functions ***/
+    bool Init(); // Initialization of audio
+    void LoadMusic(int Num); // Load music, 0 = music for menu 1,2,3,4=Jeu
+    void NextMusic(); // Skip to the next game music
 
-    void Play(eSon); // Joue un son
-    void PlayMusic() const; // Joue la music
+    void Play(eSon); // Plays a sound
+    void PlayMusic() const; // Plays a music
 
-    void PauseMusic(bool Etat) const; // Met ou no la music en pause
+    void PauseMusic(bool Etat) const; // Pause music
 
-    void DoVolume() const; // Valide les volumes audio
-    Mix_Music *Music { nullptr }; // Pointe sur les musics
+    void DoVolume() const; // Validates Volumes
+    Mix_Music *Music { nullptr }; // Music pointer
 
 private:
     /*** Variables ***/
-    int N { 0 }; // Nombre d'échantillon audio
-    int NMus { 0 }; // Numéro de la music en cours
-    int MemoHorloge { 0 }; // Mémorise l'horloge pour les clics
-    Mix_Chunk **Son { nullptr }; // Pointe sur les sons
+    int N { 0 }; // Number of audio samples
+    int NMus { 0 }; // Current music number
+    int MemoHorloge { 0 }; // Remembers the time for clicks
+    Mix_Chunk **Son { nullptr }; // Sound pointer
 };
 
 #endif

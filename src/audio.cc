@@ -30,12 +30,12 @@
 #include "utils.h"
 #include "preference.h"
 
-/*** Variable globales ***/
+/*** Global varibles ***/
 /*************************/
 extern sNewPreference Pref;
 extern int Horloge;
 
-/*** Constructeur et Destructeur ***/
+/*** Contructor and Destructor ***/
 /***********************************/
 Audio::~Audio()
 {
@@ -51,7 +51,7 @@ Audio::~Audio()
     Mix_CloseAudio();
 }
 
-/*** Initialise l'Audio ***/
+/*** Audio initialization***/
 /**************************/
 bool Audio::Init()
 {
@@ -62,11 +62,11 @@ bool Audio::Init()
         return false;
     }
 
-    /*** Allocation de la mémoire ***/
+    /*** Memory allocation ***/
     N = sFin;
     Son = new Mix_Chunk *[sFin];
 
-    /*** Chargement des sons ***/
+    /*** Loading sounds ***/
     strcpy(PathFile, "Sounds/clic.wav");
     Utils::GetPath(PathFile);
     Son[sClic] = Mix_LoadWAV(PathFile);
@@ -110,7 +110,7 @@ bool Audio::Init()
     return true;
 }
 
-/*** Charge une music 0=menu 1,2,3,4 = game ***/
+/***    Load music 0=menu 1,2,3,4 = game    ***/
 /**********************************************/
 void Audio::LoadMusic(int Num)
 {
@@ -124,12 +124,12 @@ void Audio::LoadMusic(int Num)
 
     if (Music) {
         PauseMusic(true);
-        Mix_HaltMusic(); // Arrete la music
+        Mix_HaltMusic(); // Stop music
         Mix_FreeMusic(Music);
         Music = nullptr;
     }
 
-    if (Num == 0) { // Si music du menu
+    if (Num == 0) { // If music from the menu
         strcpy(Provi, "Sounds/menu.mod");
         Utils::GetPath(Provi);
         Music = Mix_LoadMUS(Provi);
@@ -142,7 +142,7 @@ void Audio::LoadMusic(int Num)
     PlayMusic();
 }
 
-/*** Passe à la music de jeu suivante ***/
+/***   Skip to the next game music    ***/
 /****************************************/
 void Audio::NextMusic()
 {
@@ -153,7 +153,7 @@ void Audio::NextMusic()
     LoadMusic(NMus);
 }
 
-/*** Fait la lecture d'un son ***/
+/***       Plays a sound      ***/
 /********************************/
 void Audio::Play(eSon So)
 {
@@ -171,7 +171,7 @@ void Audio::Play(eSon So)
     Mix_PlayChannel(-1, Son[So], 0);
 }
 
-/*** Joue la music ***/
+/***   Play music  ***/
 /*********************/
 void Audio::PlayMusic() const
 {
@@ -195,7 +195,7 @@ void Audio::PauseMusic(bool Et) const
     }
 }
 
-/*** Valide les Volumes ***/
+/*** Validates Volumes  ***/
 /**************************/
 void Audio::DoVolume() const
 {
