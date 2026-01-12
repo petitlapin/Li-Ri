@@ -26,43 +26,43 @@
 
 #include "preference.h"
 
-/*** Définition de la structure d'un tableau ***/
-/***********************************************/
+/***   Table/level structure define  ***/
+/***************************************/
 struct s_Deco
 {
-    int NumSpr; // Numéro et position du sprite décoratif
+    int NumSpr; // Number and position of the decorative sprite
     int x;
     int y;
 };
 
 struct s_Level
 {
-    unsigned char T[LT * HT]; // Définition du circuit et des options
-    int DepX; // Départ de la locomotive
+    unsigned char T[LT * HT]; // Circuit definition and options
+    int DepX; // Departure of the locomotive
     int DepY;
-    int DepDir; // Direction du départ
-    int NDeco; // Nombre d'éléments décoratifs
+    int DepDir; // Direction
+    int NDeco; // Number of decorative elements
     struct s_Deco Deco[32];
 };
 
-/*** Définition de la classe ***/
-/*******************************/
+/*** Table/level class define ***/
+/********************************/
 class Level
 {
 public:
     Level();
     ~Level() = default;
 
-    /*** Fonctions ***/
-    bool Load(); // charge les tableaux
-    bool Save(); // Sauve les tableaux
-    void Del(int Num); // efface un tableau
-    void Ins(int Num); // Insert un tableau vièrge
-    void Clear(int Num); // Vide un tableau
+    /*** Functions ***/
+    bool Load(); // Load the table
+    bool Save(); // Save the table
+    void Del(int Num); // Clear the table
+    void Ins(int Num); // Insert a Table
+    void Clear(int Num); // Clear a table
 
     /*** Variables ***/
-    int N { 0 }; // Nombre de niveau
-    s_Level T[MAX_N_LEVEL_IN_MEMORY]; // Pointe sur les tableaux
+    int N { 0 }; // Number of levels
+    s_Level T[MAX_N_LEVEL_IN_MEMORY]; // Table pointer
 };
 
 #endif

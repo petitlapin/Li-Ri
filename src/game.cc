@@ -37,7 +37,7 @@
 #include "utils.h"
 #include "audio.h"
 
-/*** Variables globales ***/
+/*** Global varibles ***/
 /**************************/
 extern SDL_Renderer *sdlRenderer;
 
@@ -53,9 +53,9 @@ extern Level level;
 
 static int NumRail[] = { -1, -1, -1, 0, -1, 1, 2, 3, -1, 4, 5, 6, 7, 8, 9, 10 };
 
-int MasqueK; // Masque pour les touches de déplacement
+int MasqueK; // Mask for the movement keys
 
-/*** Constructeur et Destructeur ***/
+/***  Constuctor and destructor  ***/
 /***********************************/
 Game::Game(Audio &sounds, Gamepad &gamepad) :
     m_sounds(sounds), m_gamepad(gamepad), Lo(m_sounds)
@@ -74,20 +74,20 @@ eMenu Game::SDLMain()
     int NumN = Pref.Niveau;
 
     Help = true;
-    Load(NumN); // Charge le tableau
+    Load(NumN); // Load the table
     SDL_RenderPresent(sdlRenderer);
     Ec.CleanSpriteAndScreen(fjeu);
     Pause = true;
 
-    Horloge = SDL_GetTicks(); // Prend l'horloge
+    Horloge = SDL_GetTicks(); // Clock
     DureeJeu = 0;
     Key = 0;
 
-    // Met le options de départ du joueur
+    // Set the player's starting options
     Pref.NVie = N_VIES_DEP;
     Pref.Score = 0;
 
-    // Prend les evenements
+    // Event listener
     do {
         bool doScreenshot = false;
         SDL_RenderClear(sdlRenderer);
@@ -99,8 +99,8 @@ eMenu Game::SDLMain()
             case SDL_WINDOWEVENT:
                 if (event.window.event == SDL_WINDOWEVENT_ENTER) {
                 }
-                else if (event.window.event == SDL_WINDOWEVENT_LEAVE) { // Si désactive l'ecran
-                    Pause = true; // Met en Pause
+                else if (event.window.event == SDL_WINDOWEVENT_LEAVE) { // If you turn off the screen
+                    Pause = true; // Enable pause
                 }
                 break;
             case SDL_MOUSEBUTTONDOWN:
@@ -218,7 +218,7 @@ eMenu Game::SDLMain()
             }
         }
 
-        // Gère les Horloges et la pose
+        // Manages the clocks and the installation
         HorlogeAvant = Horloge;
         Horloge = SDL_GetTicks();
         Sleeping();
@@ -227,7 +227,7 @@ eMenu Game::SDLMain()
         }
         DureeJeu += Horloge - HorlogeAvant;
 
-        // Fait l'affichage
+        // Display
         DrawLevel(NumN);
         AfficheEcran();
         SDL_RenderPresent(sdlRenderer);
@@ -236,15 +236,15 @@ eMenu Game::SDLMain()
             Utils::doScreenshot(sdlRenderer);
         }
 
-        // Fait avancer la loco
+        // Move the locomotive forward
         if (Lo.Mort == -1 && Pause == false) {
             Lo.Avance(Horloge - HorlogeAvant, DureeJeu, Touche, T);
         }
 
-        // Test la fin d'une partie
-        if (Lo.Mort > -1 && Lo.Mort < Horloge) { // Si est Mort test si doit continuer ou quitter
+        // Test the end of a game
+        if (Lo.Mort > -1 && Lo.Mort < Horloge) { // If it's dead, test to see if it should continue or quit.
             if (Pref.NVie < 0) {
-                return mScoreEdit; // Si mort fini
+                return mScoreEdit; // If death ends
             }
             if (Lo.Gagne) {
 #ifndef DCHILDREN
@@ -273,7 +273,7 @@ eMenu Game::SDLMain()
     return mQuit;
 }
 
-/*** Charge un tableau ***/
+/***   Load a table    ***/
 /*************************/
 bool Game::Load(int NivN)
 {
@@ -281,12 +281,12 @@ bool Game::Load(int NivN)
 
     Pref.Niveau = NivN;
 
-    // Recopie le tableau
+    // Copy the table
     for (i = 0; i < LT * HT; i++) {
         T[i] = (int)level.T[NivN].T[i];
     }
 
-    // Laisse ou efface la vie suivant le niveau
+    // Leave or erase life depending on the level
     switch (Pref.Difficulte) {
     case Easy:
         i = 5;
@@ -305,12 +305,12 @@ bool Game::Load(int NivN)
         }
     }
 
-    // Initialise la locomotive
+    // Initialisate locomotive
     Lo.Init(level.T[NivN].DepX + level.T[NivN].DepY * LT, level.T[NivN].DepDir);
     BufTouche(level.T[NivN].DepDir);
     MasqueK = 0;
 
-    // Met la vitesse suivant difficulté
+    // Set the speed according to difficulty
     switch (Pref.Difficulte) {
     case Easy:
         Pref.Vitesse = Pref.VitesseMoy = VITESSE_MIN;
@@ -325,16 +325,16 @@ bool Game::Load(int NivN)
     return DrawLevel(NivN);
 }
 
-/*** Dessine le fond de l'ecran de jeu ***/
+/***      Draw background of game      ***/
 /*****************************************/
 bool Game::DrawLevel(int NivN)
 {
     int i, x, y, m, cx, cy;
 
-    // Fabrique le fond du jeu
+    // Create the game's background
     Sprites[fond].Affiche(400, 300, 0, Sprites[fjeu].Image[0]);
 
-    // Affiche le circuit
+    // Draw the circuit
     for (i = 0; i < LT * HT; i++) {
         if (T[i] >= C_Rail && T[i] < C_Fin) {
             y = i / LT * D_Case + D_Case / 2;
@@ -360,7 +360,7 @@ bool Game::DrawLevel(int NivN)
         }
     }
 
-    // Affiche les décorations
+    // Draw decorations
 #ifndef DCHILDREN
     for (i = 0; i < level.T[NivN].NDeco; i++) {
         Sprites[deco].Affiche(level.T[NivN].Deco[i].x, level.T[NivN].Deco[i].y, level.T[NivN].Deco[i].NumSpr,
@@ -368,7 +368,7 @@ bool Game::DrawLevel(int NivN)
     }
 #endif
 
-    // Affiche les textes suivant la langue
+    // Displays texts according to language
     AfficheText(740, 110, T_level, Sprites[fjeu].Image[0]);
     AfficheText(740, 180, T_score, Sprites[fjeu].Image[0]);
     AfficheText(740, 260, T_options, Sprites[fjeu].Image[0]);
@@ -379,8 +379,8 @@ bool Game::DrawLevel(int NivN)
     return true;
 }
 
-/*** Fait tourner la fleche d'une simple touche ***/
-/**************************************************/
+/*** Rotates the arrow with a single touch ***/
+/*********************************************/
 void Game::TourneFleche()
 {
     int To = Touche[0];
@@ -389,8 +389,8 @@ void Game::TourneFleche()
     int const y = Lo.PInter / LT;
 
     do {
-        // Fait toucher la direction dans le sens des aiguilles d'une montre
-        // et test si la nouvelle direction est possible
+        // Makes the direction touch in a clockwise direction
+        // and test if the new direction is possible
         switch (To) {
         case D_Top:
             To = D_Right;
@@ -419,29 +419,29 @@ void Game::TourneFleche()
         }
     } while (Cherche == false);
 
-    BufTouche(To); // Mémorise la nouvelle touche par defaut.
+    BufTouche(To); // Remembers the new default key.
 }
 
-/*** Mémorise une touche dans le buffet des touches ***/
+/***           Stores a key in the keypad           ***/
 /******************************************************/
 void Game::BufTouche(int Tou)
 {
     int n = 0;
 
-    // Favorise la touche
+    // Promotes the touch
     while (Touche[n] != Tou) {
-        n++; // Prend position de la touche
+        n++; // Takes position of the key
     }
 
-    if (n) { // Si changement doit faire un décalage
+    if (n) { // If change is going to cause a shift
         while (n) {
             Touche[n] = Touche[n - 1];
             n--;
         }
-        Touche[0] = Tou; // Mémorise la touche
+        Touche[0] = Tou; // Remember key
     }
 
-    // Cherche son oposé
+    // Looking for its opposite
     switch (Tou) {
     case D_Top:
         Tou = D_Bottom;
@@ -457,22 +457,22 @@ void Game::BufTouche(int Tou)
         break;
     }
 
-    // Défavorise son oposé.
+    // Disadvantages its opposite.
     n = 3;
     while (Touche[n] != Tou) {
-        n--; // Prend position de la touche
+        n--; // Takes position of the key
     }
 
-    if (n < 3) { // Si changement doit faire un décalage
+    if (n < 3) { // If change is going to cause a shift
         while (n < 3) {
             Touche[n] = Touche[n + 1];
             n++;
         }
-        Touche[3] = Tou; // Mémorise la touche
+        Touche[3] = Tou; // Remember key
     }
 }
 
-/*** Test les directions possibles pour les fleches ***/
+/***   Test the possible directions for the arrows  ***/
 /******************************************************/
 int Game::TestFleche(int Haut, int Bas, int Gauche, int Droite)
 {
@@ -507,20 +507,19 @@ int Game::TestFleche(int Haut, int Bas, int Gauche, int Droite)
     return 0;
 }
 
-/*** Affiche un ecran du jeu ***/
-/*******************************/
+/*** Render a screenshot of the game ***/
+/***************************************/
 void Game::AfficheEcran()
 {
     int i;
     int ndir = 0;
 
-    // Prépare pour nouvelle Affichage
+    // Prepare for new display
     Ec.ClearSprite(fjeu);
 
-    // Fait nouvelle Affichage
-    Lo.Display(Ec); // Affiche la loco
+    Lo.Display(Ec); // Render locomotive
 
-    if (Lo.PInter != -1 && Help) { // Affiche la fleche sur la futur intersection
+    if (Lo.PInter != -1 && Help) { // Displays the arrow on the future intersection
         switch (Lo.PEntree) {
         case D_Left:
             ndir = TestFleche(0, 2, -1, 1);
@@ -539,33 +538,32 @@ void Game::AfficheEcran()
         Ec.PrintSprite(dir, ndir, (Lo.PInter % LT) * D_Case + D_Case / 2, (Lo.PInter / LT) * D_Case + D_Case / 2);
     }
 
-    // Affiche les options
+    // Render options section
     for (i = 0; i < LT * HT; i++) {
         switch (T[i]) {
-        case C_Wagon: // Si un loco
+        case C_Wagon: // If wagon
             Ec.PrintSprite(wagon, (DureeJeu * 40 / 1000 + i * 7) % 50, i % LT * D_Case + D_Case / 2, i / LT * D_Case + D_Case / 2);
             break;
-        case C_Allonge: // Si plus long
+        case C_Allonge: // If long bonus
             Ec.PrintSprite(pluslong, (DureeJeu * 40 / 1000 + i * 7) % 50, i % LT * D_Case + D_Case / 2, i / LT * D_Case + D_Case / 2);
             break;
-        case C_Reduit: // Si plus court
+        case C_Reduit: // If short bonus
             Ec.PrintSprite(pluscourt, (DureeJeu * 40 / 1000 + i * 7) % 50, i % LT * D_Case + D_Case / 2, i / LT * D_Case + D_Case / 2);
             break;
-        case C_Speed: // Si plus vite
+        case C_Speed: // If speed bonus
             Ec.PrintSprite(vitesse, (DureeJeu * 40 / 1000 + i * 7) % 50, i % LT * D_Case + D_Case / 2, i / LT * D_Case + D_Case / 2);
             break;
-        case C_Live: // Si une vie
+        case C_Live: // If live bonus
             Ec.PrintSprite(vie, (DureeJeu * 40 / 1000 + i * 7) % 50, i % LT * D_Case + D_Case / 2, i / LT * D_Case + D_Case / 2);
             break;
         }
     }
 
-    // Si en pose demande une touche
     if (Pause) {
         Ec.PrintText(T_press_any_key, LT * D_Case / 2, 300);
     }
 
-    // Affiche tableau de bord
+    // Render bonuses on board
     Ec.PrintOptions(Pref.NVie, Pref.Score);
     if (Pref.EcartWagon < ECARTWAGON_MOY) {
         Ec.PrintSprite(pluscourt, (DureeJeu * 40 / 1000) % 50, 715, 295);
