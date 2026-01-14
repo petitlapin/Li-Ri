@@ -51,8 +51,8 @@
 
 /*** Variables globales ***/
 /**************************/
-extern int Horloge;
-extern int HorlogeAvant;
+extern int currentTime;
+extern int previousTime;
 extern SDL_Window *sdlWindow;
 extern SDL_Renderer *sdlRenderer;
 extern Sprite *Sprites;
@@ -68,10 +68,10 @@ void Sleeping()
 {
     int delay;
 
-    if ((Horloge - HorlogeAvant) < (1000 / 60)) {
-        delay = 1000 / 60 - (Horloge - HorlogeAvant);
+    if ((currentTime - previousTime) < (1000 / 60)) {
+        delay = 1000 / 60 - (currentTime - previousTime);
         SDL_Delay(delay);
-        Horloge = SDL_GetTicks();
+        currentTime = SDL_GetTicks();
     }
 }
 
@@ -195,8 +195,8 @@ eMenu Menu::SDLMain()
         }
 
         // Gère les variables
-        HorlogeAvant = Horloge;
-        Horloge = SDL_GetTicks();
+        previousTime = currentTime;
+        currentTime = SDL_GetTicks();
         Sleeping();
 
         // Gère l'Affichage
@@ -221,11 +221,11 @@ eMenu Menu::SDLMain_Language()
     int Ecart;
     int i;
     int x, y;
-    int const OldLangue = Pref.Langue;
+    int const OldLangue = Pref.Language;
 
     // Initialisations Divers
     m_mouse.Init(Menu_Py); // Initialise la sourie
-    PyE = Pref.Langue;
+    PyE = Pref.Language;
     if (PyE == -1) {
         PyE = 1;
     }
@@ -286,8 +286,8 @@ eMenu Menu::SDLMain_Language()
                     switch (event.key.keysym.sym) {
                     case SDLK_ESCAPE:
                     case SDLK_AC_BACK: // Android back button
-                        if (Pref.Langue == -1) {
-                            Pref.Langue = PyE;
+                        if (Pref.Language == -1) {
+                            Pref.Language = PyE;
                         }
                         return mMenu;
                     case SDLK_UP:
@@ -320,8 +320,8 @@ eMenu Menu::SDLMain_Language()
                     case ' ':
                     case SDLK_RETURN:
                     case SDLK_KP_ENTER:
-                        Pref.Langue = PyE;
-                        if (Pref.Langue != OldLangue) {
+                        Pref.Language = PyE;
+                        if (Pref.Language != OldLangue) {
                             LoadLangue();
                         }
                         return mMenu;
@@ -337,8 +337,8 @@ eMenu Menu::SDLMain_Language()
         }
 
         // Gère les variables
-        HorlogeAvant = Horloge;
-        Horloge = SDL_GetTicks();
+        previousTime = currentTime;
+        currentTime = SDL_GetTicks();
         Sleeping();
 
         // Gère l'Affichage
@@ -591,8 +591,8 @@ eMenu Menu::SDLMain_Options()
 
         // SDL_RenderClear(sdlRenderer);
         //  Gère les variables
-        HorlogeAvant = Horloge;
-        Horloge = SDL_GetTicks();
+        previousTime = currentTime;
+        currentTime = SDL_GetTicks();
         Sleeping();
 
         // Gère l'Affichage
@@ -607,15 +607,15 @@ eMenu Menu::SDLMain_Options()
             Ec.PrintSprite(fleches, 4, 450, 300);
         }
 
-        NumSp = (Horloge / 30) % 25;
+        NumSp = (currentTime / 30) % 25;
         Ec.PrintSprite(bruitage, NumSp, 150, 110);
-        NumSp = (Horloge / 30) % 25;
+        NumSp = (currentTime / 30) % 25;
         Ec.PrintSprite(music, NumSp, 150, 200);
-        NumSp = (Horloge / 50) % 50;
+        NumSp = (currentTime / 50) % 50;
         Ec.PrintSprite(monde, NumSp, 180, 400);
 
         N = (int)(Pref.Volume * 10 + 1) / SDL_MIX_MAXVOLUME;
-        NumSp = (Horloge / 50) % 40 + 120;
+        NumSp = (currentTime / 50) % 40 + 120;
         for (i = 0; i < N; i++) {
             if (i == N - 1) {
                 Ec.PrintSprite(locomotive, NumSp, (690 - 300) / 10 * i + 300, 110);
@@ -763,8 +763,8 @@ eMenu Menu::SDLMain_Speed()
         }
 
         // Gère les variables
-        HorlogeAvant = Horloge;
-        Horloge = SDL_GetTicks();
+        previousTime = currentTime;
+        currentTime = SDL_GetTicks();
         Sleeping();
 
         // Gère l'Affichage
@@ -788,7 +788,7 @@ eMenu Menu::SDLMain_Level()
     m_mouse.Init(Menu_Py); // Initialise la sourie
     PyE = 0;
     Niv = Pref.NiveauMax[Pref.Difficulte];
-    Pref.Niveau = 0;
+    Pref.Level = 0;
 
     // Prend les evenements
     do {
@@ -865,7 +865,7 @@ eMenu Menu::SDLMain_Level()
                         case 0:
                             return mGame;
                         case 1:
-                            Pref.Niveau = Niv;
+                            Pref.Level = Niv;
                             return mGame;
                         case 2:
                             return mMenu;
@@ -893,8 +893,8 @@ eMenu Menu::SDLMain_Level()
         }
 
         // Gère les variables
-        HorlogeAvant = Horloge;
-        Horloge = SDL_GetTicks();
+        previousTime = currentTime;
+        currentTime = SDL_GetTicks();
         Sleeping();
 
         // Gère l'Affichage
@@ -1088,11 +1088,11 @@ eMenu Menu::SDLMain_HR()
                         case 0:
                             m_audio.Play(sEnd);
                             Pref.Score += 50;
-                            Fini = Horloge + 2000;
+                            Fini = currentTime + 2000;
                             break;
                         case 1:
                             m_audio.Play(sLose);
-                            Fini = Horloge + 2000;
+                            Fini = currentTime + 2000;
                             break;
                         }
                         break;
@@ -1108,13 +1108,13 @@ eMenu Menu::SDLMain_HR()
         }
 
         // Test si fini
-        if (Fini != -1 && Fini < Horloge) {
+        if (Fini != -1 && Fini < currentTime) {
             return mGame;
         }
 
         // Gère les variables
-        HorlogeAvant = Horloge;
-        Horloge = SDL_GetTicks();
+        previousTime = currentTime;
+        currentTime = SDL_GetTicks();
         Sleeping();
 
         // Gère l'Affichage
@@ -1260,8 +1260,8 @@ eMenu Menu::SDLMain_InGame()
         }
 
         // Gère les variables
-        HorlogeAvant = Horloge;
-        Horloge = SDL_GetTicks();
+        previousTime = currentTime;
+        currentTime = SDL_GetTicks();
         Sleeping();
 
         // Gère l'Affichage
@@ -1413,14 +1413,14 @@ eMenu Menu::SDLMain_Score(bool EditScore)
         }
 
         // Gère les variables
-        HorlogeAvant = Horloge;
-        Horloge = SDL_GetTicks();
+        previousTime = currentTime;
+        currentTime = SDL_GetTicks();
         Sleeping();
 
         if (EditScore) { // Gère l'affiche pour l'édition des scores
             AfficheString(140, 120 + NEdit * (360 / 7), Pref.Sco[NEdit].Name);
 
-            i = (Horloge / 50) % 20; // Affiche les curseurs
+            i = (currentTime / 50) % 20; // Affiche les curseurs
             Ec.PrintSprite(fleche_gauche, i, 110, 120 + NEdit * (360 / 7));
             Ec.PrintSprite(fleche_droite, i, 180 + LongueurString(Pref.Sco[NEdit].Name), 120 + NEdit * (360 / 7));
         }
@@ -1440,7 +1440,7 @@ eMenu Menu::SDLMain_Score(bool EditScore)
 /**********************************/
 void Menu::Print_Main(int Centre) const
 {
-    int const NumSp = (Horloge / 50) % 20;
+    int const NumSp = (currentTime / 50) % 20;
     int const x1 = Menu_Py[PyE].DepX - 25;
     int const x2 = (Centre - x1) + Centre;
     int const y = (Menu_Py[PyE].FinY + Menu_Py[PyE].DepY) / 2;
@@ -1453,7 +1453,7 @@ void Menu::Print_Main(int Centre) const
 /*****************************************/
 void Menu::Affiche_Main_Centre() const
 {
-    int const NumSp = (Horloge / 50) % 20;
+    int const NumSp = (currentTime / 50) % 20;
     int const x1 = Menu_Py[PyE].DepX - 5;
     int const x2 = Menu_Py[PyE].FinX + 5;
     int const y = (Menu_Py[PyE].FinY + Menu_Py[PyE].DepY) / 2;

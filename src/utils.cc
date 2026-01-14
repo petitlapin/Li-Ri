@@ -39,15 +39,15 @@
 
 #include "SimpleIni.h"
 
-/*** Variables globales ***/
+/*** Global variables ***/
 /**************************/
 extern sNewPreference Pref;
 #if defined(__unix__) || defined(__HAIKU__)
-extern char DefPath[]; // Chemin par defaut dans arg
+extern char DefPath[]; // Default path in argument
 #endif
 
-/*** Définition générals ***/
-/***************************/
+/*** General defines ***/
+/************************/
 #ifdef __APPLE__
 #define MAC_LINUX
 #endif
@@ -60,7 +60,7 @@ extern char DefPath[]; // Chemin par defaut dans arg
 #define MAC_LINUX
 #endif
 
-/*** Test si un fichier exite ***/
+/*** Check if the file exists ***/
 /********************************/
 bool Utils::FileExists(const char *Path)
 {
@@ -74,8 +74,8 @@ bool Utils::FileExists(const char *Path)
     return true;
 }
 
-/*** Charge un fichier en Mémoire ***/
-/************************************/
+/*** Load a file in memory ***/
+/*****************************/
 long Utils::LoadFile(const char *Path, unsigned char *&Buf)
 {
     SDL_RWops *file = SDL_RWFromFile(Path, "rb");
@@ -116,8 +116,8 @@ long Utils::LoadFile(const char *Path, unsigned char *&Buf)
     return L;
 }
 
-/*** Sauve un Fichier ***/
-/************************/
+/*** Save a file ***/
+/*******************/
 bool Utils::SaveFile(const char *Path, char *Buf, long L)
 {
     FILE *file;
@@ -150,8 +150,8 @@ bool Utils::SaveFile(const char *Path, char *Buf, long L)
     return true;
 }
 
-/*** Met le bon chemin pour charger un fichier ***/
-/*************************************************/
+/*** Add the path to the filename depending on the OS (sprites, levels) ***/
+/**************************************************************************/
 #if (defined(__unix__) || defined(ANDROID)) || defined(__HAIKU__) && !defined(__AMIGAOS4__)
 // Version Linux
 void Utils::GetPath(char *Path)
@@ -221,7 +221,7 @@ void Utils::GetPath(char *Path)
 #endif
 
 #ifdef _WIN32
-//  Version Windows , chemin directe
+// Windows version, direct path
 void Utils::GetPath(char *Path)
 {
     char Provi[512];
@@ -237,8 +237,8 @@ void Utils::GetPath(char *Path)
 }
 #endif
 
-/*** Charge les préferences ***/
-/******************************/
+/*** Load preferences ***/
+/************************/
 bool Utils::LoadPref()
 {
     int L;
@@ -264,7 +264,7 @@ bool Utils::LoadPref()
         }
         pv = ini.GetValue("main", "locale");
         if (pv) {
-            Pref.Langue = std::stoi(pv);
+            Pref.Language = std::stoi(pv);
         }
         pv = ini.GetValue("main", "audioVolume");
         if (pv) {
@@ -313,7 +313,7 @@ bool Utils::LoadPref()
             memcpy((char *)&oldPref, Provi, L);
             delete[] Provi;
             Pref.FullScreen = oldPref.FullScreen;
-            Pref.Langue = oldPref.Langue;
+            Pref.Language = oldPref.Langue;
             Pref.Volume = oldPref.Volume;
             Pref.VolumeM = oldPref.VolumeM;
             // Try to restore max difficulty from the level stored in conf
@@ -332,9 +332,9 @@ bool Utils::LoadPref()
     return false;
 }
 
-/*** Sauve les preferences ***/
-/*****************************/
-void Utils::SauvePref()
+/*** Save preferences ***/
+/************************/
+void Utils::SavePref()
 {
     char PathPref[512];
     char *PrefFolder = SDL_GetPrefPath("Li-Ri", "Li-Ri");
@@ -343,7 +343,7 @@ void Utils::SauvePref()
     SDL_free(PrefFolder);
     CSimpleIniA ini(true); // true for unicode
     ini.SetValue("main", "fullscreen", std::to_string(Pref.FullScreen).c_str());
-    ini.SetValue("main", "locale", std::to_string(Pref.Langue).c_str());
+    ini.SetValue("main", "locale", std::to_string(Pref.Language).c_str());
     ini.SetValue("main", "audioVolume", std::to_string(Pref.Volume).c_str());
     ini.SetValue("main", "musicVolume", std::to_string(Pref.VolumeM).c_str());
     ini.SetValue("main", "humanRightsQuiz", std::to_string(Pref.HumanRightsQuiz).c_str());

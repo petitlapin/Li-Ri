@@ -78,10 +78,10 @@ bool LoadLangue()
     unsigned char *Buf;
     char PathFile[512];
 
-    strcpy(PathFile, Langue[Pref.Langue]);
+    strcpy(PathFile, Langue[Pref.Language]);
     Utils::GetPath(PathFile);
     if (Utils::FileExists(PathFile) == false) {
-        SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Unable to find '%s'", Langue[Pref.Langue]);
+        SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Unable to find '%s'", Langue[Pref.Language]);
         return false;
     }
     L = Utils::LoadFile(PathFile, Buf);
@@ -203,7 +203,7 @@ bool LoadSprites()
 
     // *** Charge la langue ***
     // ************************
-    if (Pref.Langue != -1) {
+    if (Pref.Language != -1) {
         LoadLangue();
     }
 

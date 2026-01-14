@@ -36,7 +36,7 @@ public:
     static void GetPath(char *Path); // Add the path to the filename depending on the OS (sprites, levels)
 
     static bool LoadPref(); // Load preferences
-    static void SauvePref(); // Save preferences
+    static void SavePref(); // Save preferences
 
     static void doScreenshot(SDL_Renderer *renderer);
 };

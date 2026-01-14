@@ -43,8 +43,8 @@ extern SDL_Renderer *sdlRenderer;
 extern Sprite *Sprites;
 extern sNewPreference Pref;
 
-extern int Horloge;
-extern int HorlogeAvant;
+extern int currentTime;
+extern int previousTime;
 
 extern Level level;
 
@@ -65,7 +65,7 @@ eMenu Editor::SDLMain(int NumNiv)
     Affiche(); // Charge le tableau
     SDL_RenderPresent(sdlRenderer);
 
-    Horloge = SDL_GetTicks(); // Prend l'horloge
+    currentTime = SDL_GetTicks(); // Prend l'horloge
 
     Option = rail;
 
@@ -193,8 +193,8 @@ eMenu Editor::SDLMain(int NumNiv)
         }
 
         // Gère les Horloges et la pose
-        HorlogeAvant = Horloge;
-        Horloge = SDL_GetTicks();
+        previousTime = currentTime;
+        currentTime = SDL_GetTicks();
         Sleeping();
 
         // Fait l'affichage
@@ -409,7 +409,7 @@ void Editor::PrendTouche(int Tou)
         }
 
         // test le niveau
-        Pref.Niveau = NumN;
+        Pref.Level = NumN;
         m_game.SDLMain();
         m_mouse.Init(nullptr);
         Affiche();

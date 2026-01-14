@@ -26,20 +26,20 @@
 
 #include <SDL2/SDL_audio.h> // for SDL_MIX_MAXVOLUME
 
-#define VITESSE_MAX 180.0
-#define VITESSE_MOY 120.0
-#define VITESSE_MIN 80.0
-#define DUREE_VITESSE (10 * 1000)
+#define SPEED_MAX 180.0
+#define SPEED_AVERAGE 120.0
+#define SPEED_MIN 80.0
+#define SPEED_DURATION (10 * 1000)
 
-#define DUREE_PAUSE (3 * 1000)
+#define PAUSE_DURATION (3 * 1000)
 
-#define DUREE_REDUIT (10 * 1000)
-#define DUREE_ALONGE (10 * 1000)
-#define ECARTWAGON_MAX 27.0
-#define ECARTWAGON_MOY 13.0
-#define ECARTWAGON_MIN 4.0
+#define REDUCED_DURATION (10 * 1000)
+#define ALONGE_DURATION (10 * 1000)
+#define WAGON_GAP_MAX 27.0
+#define WAGON_GAP_AVERAGE 13.0
+#define WAGON_GAP_MIN 4.0
 
-#define N_VIES_DEP 3
+#define N_LIFES_COUNT 3
 
 #define RAYON_TOUCHE (32 * 32)
 
@@ -84,8 +84,8 @@ struct sScore
 struct sOldPreference
 {
     e_Difficulte Difficulte; // Difficulté de la partie (Vitesse)
-    int Niveau; // Niveau du joueur
-    int NVie; // Nombre de vie du joueur
+    int Level; // Niveau du joueur
+    int Lifes; // Nombre de vie du joueur
     int Score; // Score du joueur
     double Vitesse; // Vitesse suivant le niveau
     double VitesseMoy; // Vitesse en cours de la loco
@@ -99,26 +99,26 @@ struct sOldPreference
     struct sScore Sco[8]; // Mémorise les scores
 };
 
-struct sNewPreference
+struct sNewPreference // Here too
 {
     e_Difficulte Difficulte { Normal }; // current game difficulty
-    int Niveau; // current level
-    int NVie { N_VIES_DEP }; // current number of life
+    int Level; // current level
+    int Lifes { N_LIFES_COUNT }; // current number of life
     int Score; // current score
-    double Vitesse { VITESSE_MOY }; // Vitesse suivant le niveau
-    double VitesseMoy { VITESSE_MOY }; // Vitesse en cours de la loco
-    float EcartWagon { ECARTWAGON_MOY }; // ecart en pixels entre 2 wagons
+    double Speed { SPEED_AVERAGE }; // Vitesse suivant le niveau
+    double SpeedAverage { SPEED_AVERAGE }; // Vitesse en cours de la loco
+    float WagonGap { WAGON_GAP_AVERAGE }; // ecart en pixels entre 2 wagons
     int NLangues; // Nombre de langues disponible
     int NiveauMax[3] { 0, 0, 0 }; // One per difficulty
     int FullScreen { true };
-    int Langue { -1 }; // locale index
+    int Language { -1 }; // locale index
     float Volume { (float)SDL_MIX_MAXVOLUME }; // audio volume
     float VolumeM { (float)SDL_MIX_MAXVOLUME }; // music volume
     struct sScore Sco[8]; // store scores
     int HumanRightsQuiz { 1 }; // enable the human rights questions at the end of a level
 };
 
-enum eMenu {
+enum eMenu { // TODO: Rename
     mMenu,
     mMenuJeux,
     mMenuSpeed,

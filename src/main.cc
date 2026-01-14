@@ -33,7 +33,7 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_mixer.h>
 
-#include "config.h"
+#include "config.h" // Done
 #include "preference.h"
 #include "game.h"
 #include "gamepad.h"
@@ -44,37 +44,37 @@
 #include "menu.h"
 #include "level.h"
 #include "editor.h"
-#include "utils.h"
+#include "utils.h" // Done
 
-/*** Variables globales ***/
+/*** Global variables ***/
 /************************/
-SDL_Window *sdlWindow; // Pointe sur l'écran video
-SDL_Renderer *sdlRenderer; // Pointe sur l'écran video
+SDL_Window *sdlWindow; // Screen video pointer
+SDL_Renderer *sdlRenderer; // Screen video pointer
 
 char Titre[] = "Li-ri V" VERSION;
 
-Sprite *Sprites = nullptr; // Pointe sur les sprites
-int NSprites = 0; // Nombre de sprites en mémoire
-Screen Ec; // Pointe sur les 2 buffets vidéo
-sNewPreference Pref; // Tableau des préférences.
-Level level; // Gère les niveaux
+Sprite *Sprites = nullptr; // Sprites pointer
+int NSprites = 0; // Number of sprites in memory
+Screen Ec; // 2 Video buffer pointer TODO: RENAME
+sNewPreference Pref; // Preference table.
+Level level; // Level class
 
-int Horloge = 0; // Horloges du jeu
-int HorlogeAvant = 0;
+int currentTime = 0; // Game clock
+int previousTime = 0;
 
 #if defined(__unix__) || defined(__HAIKU__)
-char DefPath[256]; // Chemin par defaut dans arg
+char DefPath[256]; // Default path
 #endif
 
-/*** Initialise les preferences ***/
-/**********************************/
+/*** Initialize preferences ***/
+/******************************/
 void InitPref()
 {
 #if defined(__unix__) || defined(__HAIKU__)
     DefPath[0] = 0;
 #endif
 
-    for (int i = 0; i < 8; i++) { // Vide les scores
+    for (int i = 0; i < 8; i++) { // Empty the scores
         Pref.Sco[i].Score = 0;
         Pref.Sco[i].Name[0] = 0;
     }
@@ -82,14 +82,14 @@ void InitPref()
     Utils::LoadPref();
 }
 
-/*** Preogramme principale ***/
-/*****************************/
+/*** Main program ***/
+/********************/
 int main(int narg, char *argv[])
 {
     int i;
     eMenu RetM, RetMenu = mMenu;
 
-    // Initialise les préferences
+    // Initialize preferences
     InitPref();
 #if defined(__unix__) || defined(__HAIKU__)
     if (narg > 1) {
@@ -103,10 +103,10 @@ int main(int narg, char *argv[])
         SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Unable to initialize SDL: %s", SDL_GetError());
         exit(-1);
     }
-    // Ferme le programme correctement quand quit
+    // Close the program properly when quitting
     atexit(SDL_Quit);
 
-    // Demande la resolution Video
+    // Set resolution
     int vOption = SDL_WINDOW_RESIZABLE;
     if (Pref.FullScreen) {
         vOption |= SDL_WINDOW_FULLSCREEN_DESKTOP;
@@ -117,7 +117,7 @@ int main(int narg, char *argv[])
     SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "linear");
     SDL_RenderSetLogicalSize(sdlRenderer, 800, 600);
 
-    SDL_ShowCursor(0); // Masque le curseur
+    SDL_ShowCursor(0); // Hide cursor
 
     Audio audio;
     audio.Init();
@@ -141,11 +141,11 @@ int main(int narg, char *argv[])
     Menu MainMenu { game, audio, mouse, gamepad };
     game.setMenu(&MainMenu);
 
-    HorlogeAvant = Horloge = SDL_GetTicks();
+    previousTime = currentTime = SDL_GetTicks();
     srand(SDL_GetTicks());
 
     // ask locale if first run
-    if (Pref.Langue == -1) {
+    if (Pref.Language == -1) {
         RetMenu = MainMenu.SDLMain_Language();
         LoadLangue();
     }
@@ -197,7 +197,7 @@ int main(int narg, char *argv[])
     }
     delete[] Sprites;
 
-    Utils::SauvePref();
+    Utils::SavePref();
     SDL_DestroyRenderer(sdlRenderer);
     SDL_DestroyWindow(sdlWindow);
 

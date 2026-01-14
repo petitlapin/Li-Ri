@@ -44,8 +44,8 @@ extern SDL_Renderer *sdlRenderer;
 extern Sprite *Sprites;
 extern sNewPreference Pref;
 
-extern int Horloge;
-extern int HorlogeAvant;
+extern int currentTime;
+extern int previousTime;
 
 extern Screen Ec;
 
@@ -71,7 +71,7 @@ Game::Game(Audio &sounds, Gamepad &gamepad) :
 eMenu Game::SDLMain()
 {
     eMenu mRet;
-    int NumN = Pref.Niveau;
+    int NumN = Pref.Level;
 
     Help = true;
     Load(NumN); // Charge le tableau
@@ -79,12 +79,12 @@ eMenu Game::SDLMain()
     Ec.CleanSpriteAndScreen(fjeu);
     Pause = true;
 
-    Horloge = SDL_GetTicks(); // Prend l'horloge
+    currentTime = SDL_GetTicks(); // Prend l'horloge
     DureeJeu = 0;
     Key = 0;
 
     // Met le options de départ du joueur
-    Pref.NVie = N_VIES_DEP;
+    Pref.Lifes = N_LIFES_COUNT;
     Pref.Score = 0;
 
     // Prend les evenements
@@ -219,13 +219,13 @@ eMenu Game::SDLMain()
         }
 
         // Gère les Horloges et la pose
-        HorlogeAvant = Horloge;
-        Horloge = SDL_GetTicks();
+        previousTime = currentTime;
+        currentTime = SDL_GetTicks();
         Sleeping();
-        if (Pause == true || Lo.Mort > Horloge) {
-            HorlogeAvant = Horloge;
+        if (Pause == true || Lo.Mort > currentTime) {
+            previousTime = currentTime;
         }
-        DureeJeu += Horloge - HorlogeAvant;
+        DureeJeu += currentTime - previousTime;
 
         // Fait l'affichage
         DrawLevel(NumN);
@@ -238,12 +238,12 @@ eMenu Game::SDLMain()
 
         // Fait avancer la loco
         if (Lo.Mort == -1 && Pause == false) {
-            Lo.Avance(Horloge - HorlogeAvant, DureeJeu, Touche, T);
+            Lo.Avance(currentTime - previousTime, DureeJeu, Touche, T);
         }
 
         // Test la fin d'une partie
-        if (Lo.Mort > -1 && Lo.Mort < Horloge) { // Si est Mort test si doit continuer ou quitter
-            if (Pref.NVie < 0) {
+        if (Lo.Mort > -1 && Lo.Mort < currentTime) { // Si est Mort test si doit continuer ou quitter
+            if (Pref.Lifes < 0) {
                 return mScoreEdit; // Si mort fini
             }
             if (Lo.Gagne) {
@@ -254,7 +254,7 @@ eMenu Game::SDLMain()
 #endif
                 NumN++;
                 if (level.N == NumN) {
-                    Pref.Score += Pref.NVie * 100;
+                    Pref.Score += Pref.Lifes * 100;
                     return mScoreEdit;
                 }
                 if (Pref.NiveauMax[Pref.Difficulte] < NumN) {
@@ -279,7 +279,7 @@ bool Game::Load(int NivN)
 {
     int i;
 
-    Pref.Niveau = NivN;
+    Pref.Level = NivN;
 
     // Recopie le tableau
     for (i = 0; i < LT * HT; i++) {
@@ -313,13 +313,13 @@ bool Game::Load(int NivN)
     // Met la vitesse suivant difficulté
     switch (Pref.Difficulte) {
     case Easy:
-        Pref.Vitesse = Pref.VitesseMoy = VITESSE_MIN;
+        Pref.Speed = Pref.SpeedAverage = SPEED_MIN;
         break;
     case Hard:
-        Pref.Vitesse = Pref.VitesseMoy = VITESSE_MAX;
+        Pref.Speed = Pref.SpeedAverage = SPEED_MAX;
         break;
     default:
-        Pref.Vitesse = Pref.VitesseMoy = VITESSE_MOY;
+        Pref.Speed = Pref.SpeedAverage = SPEED_AVERAGE;
     }
 
     return DrawLevel(NivN);
@@ -374,7 +374,7 @@ bool Game::DrawLevel(int NivN)
     AfficheText(740, 260, T_options, Sprites[fjeu].Image[0]);
     AfficheText(740, 340, T_lives, Sprites[fjeu].Image[0]);
 
-    AfficheChiffre(740, 140, Pref.Niveau + 1, Sprites[fjeu].Image[0]);
+    AfficheChiffre(740, 140, Pref.Level + 1, Sprites[fjeu].Image[0]);
 
     return true;
 }
@@ -566,14 +566,14 @@ void Game::AfficheEcran()
     }
 
     // Affiche tableau de bord
-    Ec.PrintOptions(Pref.NVie, Pref.Score);
-    if (Pref.EcartWagon < ECARTWAGON_MOY) {
+    Ec.PrintOptions(Pref.Lifes, Pref.Score);
+    if (Pref.WagonGap < WAGON_GAP_MIN) {
         Ec.PrintSprite(pluscourt, (DureeJeu * 40 / 1000) % 50, 715, 295);
     }
-    if (Pref.EcartWagon > ECARTWAGON_MOY) {
+    if (Pref.WagonGap > WAGON_GAP_AVERAGE) {
         Ec.PrintSprite(pluslong, (DureeJeu * 40 / 1000) % 50, 715, 295);
     }
-    if (Pref.VitesseMoy > Pref.Vitesse) {
+    if (Pref.SpeedAverage > Pref.Speed) {
         Ec.PrintSprite(vitesse, (DureeJeu * 40 / 1000 + 7) % 50, 765, 295);
     }
 }

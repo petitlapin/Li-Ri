@@ -31,7 +31,7 @@
 
 /*** Variables Globales ***/
 /**************************/
-extern int Horloge;
+extern int currentTime;
 extern Screen Ec;
 extern SDL_Window *sdlWindow;
 
@@ -125,7 +125,7 @@ void Mouse::GetEvent(SDL_Event &event, int &pPy)
 void Mouse::Print() const
 {
     int X = Px, Y = Py;
-    int const NumSp = (Horloge / 50) % 20;
+    int const NumSp = (currentTime / 50) % 20;
 
     // Corrige la position du curseur au cas ou déborde de l'écran
     if (X < 5) {
