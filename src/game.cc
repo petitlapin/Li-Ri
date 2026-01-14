@@ -257,8 +257,8 @@ eMenu Game::SDLMain()
                     Pref.Score += Pref.Lifes * 100;
                     return mScoreEdit;
                 }
-                if (Pref.NiveauMax[Pref.Difficulte] < NumN) {
-                    Pref.NiveauMax[Pref.Difficulte] = NumN;
+                if (Pref.LevelMax[Pref.Difficulty] < NumN) {
+                    Pref.LevelMax[Pref.Difficulty] = NumN;
                 }
             }
             m_sounds.NextMusic();
@@ -287,7 +287,7 @@ bool Game::Load(int NivN)
     }
 
     // Laisse ou efface la vie suivant le niveau
-    switch (Pref.Difficulte) {
+    switch (Pref.Difficulty) {
     case Easy:
         i = 5;
         break;
@@ -311,7 +311,7 @@ bool Game::Load(int NivN)
     MasqueK = 0;
 
     // Met la vitesse suivant difficulté
-    switch (Pref.Difficulte) {
+    switch (Pref.Difficulty) {
     case Easy:
         Pref.Speed = Pref.SpeedAverage = SPEED_MIN;
         break;

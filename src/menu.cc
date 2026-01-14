@@ -236,15 +236,15 @@ eMenu Menu::SDLMain_Language()
 
     // Affiche les langues possibles
     NCol = 3;
-    if (Pref.NLangues % NCol == 0) {
-        NL = Pref.NLangues / NCol;
+    if (Pref.NLanguages % NCol == 0) {
+        NL = Pref.NLanguages / NCol;
     }
     else {
-        NL = Pref.NLangues / NCol + 1;
+        NL = Pref.NLanguages / NCol + 1;
     }
     Ecart = 600 / (NL + 1);
 
-    for (i = 0; i < Pref.NLangues; i++) {
+    for (i = 0; i < Pref.NLanguages; i++) {
         x = (i / NL) * (800 / 3) + (800 / 6);
         y = (i % NL) * Ecart + Ecart;
 
@@ -252,7 +252,7 @@ eMenu Menu::SDLMain_Language()
         AddBouton(i, (e_Sprite)(T_Langue + i), x, y);
     }
 
-    Menu_Py[Pref.NLangues].DepX = -1;
+    Menu_Py[Pref.NLanguages].DepX = -1;
 
     // Efface le fond
     SDL_RenderPresent(sdlRenderer);
@@ -261,7 +261,7 @@ eMenu Menu::SDLMain_Language()
     do {
         SDL_RenderClear(sdlRenderer);
         Sprites[fond_menu].Affiche(400, 300, 0, Sprites[fmenu].Image[0]);
-        for (i = 0; i < Pref.NLangues; i++) {
+        for (i = 0; i < Pref.NLanguages; i++) {
             x = (i / NL) * (800 / 3) + (800 / 6);
             y = (i % NL) * Ecart + Ecart;
 
@@ -293,12 +293,12 @@ eMenu Menu::SDLMain_Language()
                     case SDLK_UP:
                         PyE--;
                         if (PyE < 0) {
-                            PyE = Pref.NLangues - 1;
+                            PyE = Pref.NLanguages - 1;
                         }
                         break;
                     case SDLK_DOWN:
                         PyE++;
-                        if (PyE >= Pref.NLangues) {
+                        if (PyE >= Pref.NLanguages) {
                             PyE = 0;
                         }
                         break;
@@ -308,7 +308,7 @@ eMenu Menu::SDLMain_Language()
                         }
                         break;
                     case SDLK_RIGHT:
-                        if (PyE + NL < Pref.NLangues) {
+                        if (PyE + NL < Pref.NLanguages) {
                             PyE += NL;
                         }
                         break;
@@ -741,14 +741,14 @@ eMenu Menu::SDLMain_Speed()
                     case SDLK_KP_ENTER:
                         switch (PyE) {
                         case 0:
-                            Pref.Difficulte = Easy;
-                            return Pref.NiveauMax[Pref.Difficulte] > 0 ? mMenuNiveau : mGame;
+                            Pref.Difficulty = Easy;
+                            return Pref.LevelMax[Pref.Difficulty] > 0 ? mMenuLevel : mGame;
                         case 1:
-                            Pref.Difficulte = Normal;
-                            return Pref.NiveauMax[Pref.Difficulte] > 0 ? mMenuNiveau : mGame;
+                            Pref.Difficulty = Normal;
+                            return Pref.LevelMax[Pref.Difficulty] > 0 ? mMenuLevel : mGame;
                         case 2:
-                            Pref.Difficulte = Hard;
-                            return Pref.NiveauMax[Pref.Difficulte] > 0 ? mMenuNiveau : mGame;
+                            Pref.Difficulty = Hard;
+                            return Pref.LevelMax[Pref.Difficulty] > 0 ? mMenuLevel : mGame;
                         }
                         break;
                     default:
@@ -787,7 +787,7 @@ eMenu Menu::SDLMain_Level()
     // Initialisations Divers
     m_mouse.Init(Menu_Py); // Initialise la sourie
     PyE = 0;
-    Niv = Pref.NiveauMax[Pref.Difficulte];
+    Niv = Pref.LevelMax[Pref.Difficulty];
     Pref.Level = 0;
 
     // Prend les evenements
@@ -848,7 +848,7 @@ eMenu Menu::SDLMain_Level()
                         PyE = 1;
                         break;
                     case SDLK_RIGHT:
-                        if (Niv < Pref.NiveauMax[Pref.Difficulte]) {
+                        if (Niv < Pref.LevelMax[Pref.Difficulty]) {
                             Niv++;
                         }
                         PyE = 1;
@@ -875,7 +875,7 @@ eMenu Menu::SDLMain_Level()
                             }
                             break;
                         case 4:
-                            if (Niv < Pref.NiveauMax[Pref.Difficulte]) {
+                            if (Niv < Pref.LevelMax[Pref.Difficulty]) {
                                 Niv++;
                             }
                             break;
@@ -913,7 +913,7 @@ eMenu Menu::SDLMain_Level()
             Ec.PrintSprite(fleches, 0, 330, 380);
         }
 
-        if (Niv < Pref.NiveauMax[Pref.Difficulte]) {
+        if (Niv < Pref.LevelMax[Pref.Difficulty]) {
             if (PyE == 4) {
                 Ec.PrintSprite(fleches, 5, 470, 380);
             }

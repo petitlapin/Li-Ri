@@ -140,20 +140,20 @@ bool LoadSprites()
     NSp = (int)(Buf[0]) * 256 + (int)(Buf[1]);
     NSp += N_SPRITESFOND + 2;
     NTextes = (int)(Buf[2]) * 256 + (int)(Buf[3]);
-    Pref.NLangues = (int)(Buf[4]) * 256 + (int)(Buf[5]);
+    Pref.NLanguages = (int)(Buf[4]) * 256 + (int)(Buf[5]);
 
-    NSprites = NSp + NTextes + Pref.NLangues;
+    NSprites = NSp + NTextes + Pref.NLanguages;
     Sprites = new Sprite[NSprites];
 
     // Récupère les nom des langues
     P = 6;
-    for (i = 0; i < Pref.NLangues; i++) {
+    for (i = 0; i < Pref.NLanguages; i++) {
         strcpy(Langue[i], (char *)(Buf + P));
         P += strlen((char *)(Buf + P)) + 1;
     }
 
     // Charge les sprites des langues
-    for (i = 0; i < Pref.NLangues; i++) {
+    for (i = 0; i < Pref.NLanguages; i++) {
         if (Sprites[T_Langue + i].Load(Buf, P) == false) {
             return false;
         }

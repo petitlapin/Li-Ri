@@ -65,13 +65,13 @@
 #define C_Live 6
 #define C_Fin 7
 
-enum e_Difficulte {
+enum e_Difficulty {
     Easy,
     Normal,
     Hard
 };
 
-/*** Mémorise un score ***/
+/*** Remember score ***/
 #define LSCOREMAX 460
 
 struct sScore
@@ -80,10 +80,10 @@ struct sScore
     char Name[80];
 };
 
-/*** Structure des preferences Générales ***/
+/*** Preferences structures ***/
 struct sOldPreference
 {
-    e_Difficulte Difficulte; // Difficulté de la partie (Vitesse)
+    e_Difficulty Difficulte; // Difficulté de la partie (Vitesse)
     int Level; // Niveau du joueur
     int Lifes; // Nombre de vie du joueur
     int Score; // Score du joueur
@@ -101,15 +101,15 @@ struct sOldPreference
 
 struct sNewPreference // Here too
 {
-    e_Difficulte Difficulte { Normal }; // current game difficulty
+    e_Difficulty Difficulty { Normal }; // current game difficulty
     int Level; // current level
     int Lifes { N_LIFES_COUNT }; // current number of life
     int Score; // current score
-    double Speed { SPEED_AVERAGE }; // Vitesse suivant le niveau
-    double SpeedAverage { SPEED_AVERAGE }; // Vitesse en cours de la loco
-    float WagonGap { WAGON_GAP_AVERAGE }; // ecart en pixels entre 2 wagons
-    int NLangues; // Nombre de langues disponible
-    int NiveauMax[3] { 0, 0, 0 }; // One per difficulty
+    double Speed { SPEED_AVERAGE }; // speed ​​depending on level
+    double SpeedAverage { SPEED_AVERAGE }; // current speed of the locomotive
+    float WagonGap { WAGON_GAP_AVERAGE }; // size in pixels between wagons
+    int NLanguages; // number of languages ​​available
+    int LevelMax[3] { 0, 0, 0 }; // One per difficulty
     int FullScreen { true };
     int Language { -1 }; // locale index
     float Volume { (float)SDL_MIX_MAXVOLUME }; // audio volume
@@ -120,10 +120,10 @@ struct sNewPreference // Here too
 
 enum eMenu { // TODO: Rename
     mMenu,
-    mMenuJeux,
+    mMenuGame,
     mMenuSpeed,
-    mMenuNiveau,
-    mLangue,
+    mMenuLevel,
+    mLanguage,
     mGame,
     mScore,
     mScoreEdit,

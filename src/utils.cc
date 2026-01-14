@@ -280,15 +280,15 @@ bool Utils::LoadPref()
         }
         pv = ini.GetValue("easy", "maxLevel");
         if (pv) {
-            Pref.NiveauMax[0] = std::stof(pv);
+            Pref.LevelMax[0] = std::stof(pv);
         }
         pv = ini.GetValue("normal", "maxLevel");
         if (pv) {
-            Pref.NiveauMax[1] = std::stof(pv);
+            Pref.LevelMax[1] = std::stof(pv);
         }
         pv = ini.GetValue("difficult", "maxLevel");
         if (pv) {
-            Pref.NiveauMax[2] = std::stof(pv);
+            Pref.LevelMax[2] = std::stof(pv);
         }
         for (int i = 0; i < 8; ++i) {
             std::string scoreKey = "score_" + std::to_string(i);
@@ -317,9 +317,9 @@ bool Utils::LoadPref()
             Pref.Volume = oldPref.Volume;
             Pref.VolumeM = oldPref.VolumeM;
             // Try to restore max difficulty from the level stored in conf
-            Pref.NiveauMax[0] = oldPref.Difficulte == Easy ? oldPref.NiveauMax : 0;
-            Pref.NiveauMax[1] = oldPref.Difficulte == Normal ? oldPref.NiveauMax : 0;
-            Pref.NiveauMax[2] = oldPref.Difficulte == Hard ? oldPref.NiveauMax : 0;
+            Pref.LevelMax[0] = oldPref.Difficulte == Easy ? oldPref.NiveauMax : 0;
+            Pref.LevelMax[1] = oldPref.Difficulte == Normal ? oldPref.NiveauMax : 0;
+            Pref.LevelMax[2] = oldPref.Difficulte == Hard ? oldPref.NiveauMax : 0;
             for (int i = 0; i < 8; ++i) {
                 Pref.Sco[i].Score = oldPref.Sco[i].Score;
                 strncpy(Pref.Sco[i].Name, oldPref.Sco[i].Name, 80);
@@ -347,9 +347,9 @@ void Utils::SavePref()
     ini.SetValue("main", "audioVolume", std::to_string(Pref.Volume).c_str());
     ini.SetValue("main", "musicVolume", std::to_string(Pref.VolumeM).c_str());
     ini.SetValue("main", "humanRightsQuiz", std::to_string(Pref.HumanRightsQuiz).c_str());
-    ini.SetValue("easy", "maxLevel", std::to_string(Pref.NiveauMax[0]).c_str());
-    ini.SetValue("normal", "maxLevel", std::to_string(Pref.NiveauMax[1]).c_str());
-    ini.SetValue("difficult", "maxLevel", std::to_string(Pref.NiveauMax[2]).c_str());
+    ini.SetValue("easy", "maxLevel", std::to_string(Pref.LevelMax[0]).c_str());
+    ini.SetValue("normal", "maxLevel", std::to_string(Pref.LevelMax[1]).c_str());
+    ini.SetValue("difficult", "maxLevel", std::to_string(Pref.LevelMax[2]).c_str());
     for (int i = 0; i < 8; ++i) {
         std::string scoreKey = "score_" + std::to_string(i);
         std::string nameKey = "name_" + std::to_string(i);

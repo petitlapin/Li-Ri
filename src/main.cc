@@ -156,7 +156,7 @@ int main(int narg, char *argv[])
         case mMenu:
             RetM = MainMenu.SDLMain();
             break;
-        case mLangue:
+        case mLanguage:
             RetM = MainMenu.SDLMain_Language();
             break;
         case mOption:
@@ -171,7 +171,7 @@ int main(int narg, char *argv[])
         case mMenuSpeed:
             RetM = MainMenu.SDLMain_Speed();
             break;
-        case mMenuNiveau:
+        case mMenuLevel:
             RetM = MainMenu.SDLMain_Level();
             break;
         case mGame:
