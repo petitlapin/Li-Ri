@@ -84,7 +84,7 @@ eMenu Game::SDLMain()
     Key = 0;
 
     // Met le options de départ du joueur
-    Pref.Lifes = N_LIFES_COUNT;
+    Pref.Lives = N_LIVES_COUNT;
     Pref.Score = 0;
 
     // Prend les evenements
@@ -243,7 +243,7 @@ eMenu Game::SDLMain()
 
         // Test la fin d'une partie
         if (Lo.Mort > -1 && Lo.Mort < currentTime) { // Si est Mort test si doit continuer ou quitter
-            if (Pref.Lifes < 0) {
+            if (Pref.Lives < 0) {
                 return mScoreEdit; // Si mort fini
             }
             if (Lo.Gagne) {
@@ -254,7 +254,7 @@ eMenu Game::SDLMain()
 #endif
                 NumN++;
                 if (level.N == NumN) {
-                    Pref.Score += Pref.Lifes * 100;
+                    Pref.Score += Pref.Lives * 100;
                     return mScoreEdit;
                 }
                 if (Pref.LevelMax[Pref.Difficulty] < NumN) {
@@ -566,7 +566,7 @@ void Game::AfficheEcran()
     }
 
     // Affiche tableau de bord
-    Ec.PrintOptions(Pref.Lifes, Pref.Score);
+    Ec.PrintOptions(Pref.Lives, Pref.Score);
     if (Pref.WagonGap < WAGON_GAP_MIN) {
         Ec.PrintSprite(pluscourt, (DureeJeu * 40 / 1000) % 50, 715, 295);
     }

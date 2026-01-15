@@ -39,7 +39,7 @@
 #define WAGON_GAP_AVERAGE 13.0
 #define WAGON_GAP_MIN 4.0
 
-#define N_LIFES_COUNT 3
+#define N_LIVES_COUNT 3
 
 #define RAYON_TOUCHE (32 * 32)
 
@@ -85,7 +85,7 @@ struct sOldPreference
 {
     e_Difficulty Difficulte; // Difficulté de la partie (Vitesse)
     int Level; // Niveau du joueur
-    int Lifes; // Nombre de vie du joueur
+    int Lives; // Nombre de vie du joueur
     int Score; // Score du joueur
     double Vitesse; // Vitesse suivant le niveau
     double VitesseMoy; // Vitesse en cours de la loco
@@ -103,7 +103,7 @@ struct sNewPreference
 {
     e_Difficulty Difficulty { Normal }; // current game difficulty
     int Level; // current level
-    int Lifes { N_LIFES_COUNT }; // current number of life
+    int Lives { N_LIVES_COUNT }; // current number of life
     int Score; // current score
     double Speed { SPEED_AVERAGE }; // speed ​​depending on level
     double SpeedAverage { SPEED_AVERAGE }; // current speed of the locomotive

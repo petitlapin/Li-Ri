@@ -58,7 +58,7 @@ void Loco::Init(int Pos, int Direction)
 
     PLoco = 0; // Pointe sur la première case
     PInter = -1;
-    Vitesse = Reduit = Alonge = 0; // Pas d'alongement
+    Speed = Reduce = Extend = 0; // Pas d'alongement
     Mort = -1;
     Gagne = false;
     Pref.WagonGap = WAGON_GAP_AVERAGE;
@@ -267,33 +267,33 @@ void Loco::TestCase(float Dist, long DureeJeu, int *Tableau)
             m_audio.Play(sEtire);
             Tableau[T[PLoco].P] = 1; // efface l'option
             Pref.Score += 20;
-            if (Reduit > DureeJeu) {
-                Reduit = DureeJeu - 1;
+            if (Reduce > DureeJeu) {
+                Reduce = DureeJeu - 1;
             }
             else {
-                Alonge = DureeJeu + EXTENSION_DURATION;
+                Extend = DureeJeu + EXTENSION_DURATION;
             }
             break;
         case C_Reduit: // Si réduit la loco
             m_audio.Play(sReduit);
             Tableau[T[PLoco].P] = 1; // efface l'option
-            if (Alonge > DureeJeu) {
-                Alonge = DureeJeu - 1;
+            if (Extend > DureeJeu) {
+                Extend = DureeJeu - 1;
             }
             else {
-                Reduit = DureeJeu + REDUCTION_DURATION;
+                Reduce = DureeJeu + REDUCTION_DURATION;
             }
             break;
         case C_Speed: // Si Vitesse
             m_audio.Play(sSpeed);
             Tableau[T[PLoco].P] = 1; // efface l'option
             Pref.Score += 30;
-            Vitesse = DureeJeu + SPEED_DURATION;
+            Speed = DureeJeu + SPEED_DURATION;
             break;
         case C_Live: // Si Vie
             m_audio.Play(sLive);
             Tableau[T[PLoco].P] = 1; // efface l'option
-            Pref.Lifes++;
+            Pref.Lives++;
             break;
         }
 
@@ -309,7 +309,7 @@ void Loco::TestCase(float Dist, long DureeJeu, int *Tableau)
             // Si colition le signale
             if (Mort < currentTime && (Ec1 < RAYON_TOUCHE || Ec2 <= RAYON_TOUCHE)) {
                 m_audio.Play(sCrash);
-                Pref.Lifes--;
+                Pref.Lives--;
                 Mort = currentTime + PAUSE_DURATION;
             }
         }
@@ -328,7 +328,7 @@ void Loco::Avance(int Duree, long DureeJeu, int *Touche, int *Tableau)
     TestCase(Dist, DureeJeu, Tableau);
 
     // Test si doit Réduire le wagon
-    if (Reduit > DureeJeu) {
+    if (Reduce > DureeJeu) {
         if (Pref.WagonGap > WAGON_GAP_MIN) { // Si doit réduire
             Pref.WagonGap -= (float)(Duree) * (Pref.SpeedAverage * 0.8 / (float)(NWagon - 1)) / 1000.0;
             if (Pref.WagonGap < WAGON_GAP_MIN) {
@@ -346,7 +346,7 @@ void Loco::Avance(int Duree, long DureeJeu, int *Touche, int *Tableau)
     }
 
     // Test si doit Ralonger le wagon
-    if (Alonge > DureeJeu) {
+    if (Extend > DureeJeu) {
         if (Pref.WagonGap < WAGON_GAP_MAX) { // Si doit Ralonger
             Pref.WagonGap += (float)(Duree) * (Pref.SpeedAverage * 0.8 / (float)(NWagon)) / 1000.0;
             if (Pref.WagonGap > WAGON_GAP_MAX) {
@@ -364,7 +364,7 @@ void Loco::Avance(int Duree, long DureeJeu, int *Touche, int *Tableau)
     }
 
     // Test si doit modifier la vitesse de la loco
-    if (Vitesse > DureeJeu) {
+    if (Speed > DureeJeu) {
         if (Pref.SpeedAverage < Pref.Speed * 2) { // Si doit accelerer
             Pref.SpeedAverage += (float)(Duree) / 40.0;
             if (Pref.SpeedAverage > Pref.Speed * 2) {
