@@ -552,10 +552,10 @@ void Game::AfficheEcran()
             Ec.PrintSprite(pluscourt, (DureeJeu * 40 / 1000 + i * 7) % 50, i % LT * D_Case + D_Case / 2, i / LT * D_Case + D_Case / 2);
             break;
         case C_Speed: // Si plus vite
-            Ec.PrintSprite(vitesse, (DureeJeu * 40 / 1000 + i * 7) % 50, i % LT * D_Case + D_Case / 2, i / LT * D_Case + D_Case / 2);
+            Ec.PrintSprite(speed, (DureeJeu * 40 / 1000 + i * 7) % 50, i % LT * D_Case + D_Case / 2, i / LT * D_Case + D_Case / 2);
             break;
         case C_Live: // Si une vie
-            Ec.PrintSprite(vie, (DureeJeu * 40 / 1000 + i * 7) % 50, i % LT * D_Case + D_Case / 2, i / LT * D_Case + D_Case / 2);
+            Ec.PrintSprite(life, (DureeJeu * 40 / 1000 + i * 7) % 50, i % LT * D_Case + D_Case / 2, i / LT * D_Case + D_Case / 2);
             break;
         }
     }
@@ -574,6 +574,6 @@ void Game::AfficheEcran()
         Ec.PrintSprite(pluslong, (DureeJeu * 40 / 1000) % 50, 715, 295);
     }
     if (Pref.SpeedAverage > Pref.Speed) {
-        Ec.PrintSprite(vitesse, (DureeJeu * 40 / 1000 + 7) % 50, 765, 295);
+        Ec.PrintSprite(speed, (DureeJeu * 40 / 1000 + 7) % 50, 765, 295);
     }
 }

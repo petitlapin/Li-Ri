@@ -119,7 +119,7 @@ eMenu Menu::SDLMain()
         // Prend l'image du fond et fait l'affichage
         Sprites[fond_menu].Affiche(400, 300, 0, Sprites[fmenu].Image[0]);
         Sprites[menu].Affiche(400, 340, 0, Sprites[fmenu].Image[0]);
-        Sprites[titre].Affiche(400, 65, 0, Sprites[fmenu].Image[0]);
+        Sprites[title].Affiche(400, 65, 0, Sprites[fmenu].Image[0]);
         Sprites[copyright].Affiche(400, 587, 0, Sprites[fmenu].Image[0]);
 
         AfficheText(400, 229, T_play, Sprites[fmenu].Image[0]);
@@ -368,7 +368,7 @@ void Menu::InitMain_Options()
     Sprites[gmenu].Affiche(400, 300, 0, Sprites[fmenu].Image[0]);
     Sprites[keys].Affiche(610, 455, 0, Sprites[fmenu].Image[0]);
 
-    AddBouton(0, bruitage, 140, 110);
+    AddBouton(0, sound, 140, 110);
     AddBouton(1, music, 160, 200);
 
     AddBouton(2, fscreen, 190, 300);
@@ -377,16 +377,16 @@ void Menu::InitMain_Options()
     Sprites[fscreen].Affiche(185, 300, 0, Sprites[fmenu].Image[0]);
     Sprites[window].Affiche(625, 300, 0, Sprites[fmenu].Image[0]);
 
-    AddBouton(3, monde, 180, 400);
+    AddBouton(3, earth, 180, 400);
 
     // Centre à gauche le text de menu
     CentreM = 120 + Sprites[T_menu].Dim[0].L / 2;
     AfficheText(CentreM, 490, T_menu, Sprites[fmenu].Image[0]);
     AddBouton(4, T_menu, CentreM, 490);
 
-    // Boutons des bruitages
-    Sprites[fleches].Affiche(250, 110, 1, Sprites[fmenu].Image[0]);
-    Sprites[fleches].Affiche(700, 110, 4, Sprites[fmenu].Image[0]);
+    // Boutons des sounds
+    Sprites[arrows].Affiche(250, 110, 1, Sprites[fmenu].Image[0]);
+    Sprites[arrows].Affiche(700, 110, 4, Sprites[fmenu].Image[0]);
     Menu_Py[5].DepX = 230;
     Menu_Py[5].DepY = 70;
     Menu_Py[5].FinX = 475;
@@ -402,8 +402,8 @@ void Menu::InitMain_Options()
     Menu_Py[6].Valide = true;
 
     // Boutons de musics
-    Sprites[fleches].Affiche(250, 200, 1, Sprites[fmenu].Image[0]);
-    Sprites[fleches].Affiche(700, 200, 4, Sprites[fmenu].Image[0]);
+    Sprites[arrows].Affiche(250, 200, 1, Sprites[fmenu].Image[0]);
+    Sprites[arrows].Affiche(700, 200, 4, Sprites[fmenu].Image[0]);
     Menu_Py[7].DepX = 230;
     Menu_Py[7].DepY = 155;
     Menu_Py[7].FinX = 475;
@@ -599,20 +599,20 @@ eMenu Menu::SDLMain_Options()
         // Ec.Efface(fmenu);
 
         if (Pref.FullScreen) {
-            Ec.PrintSprite(fleches, 1, 350, 300);
-            Ec.PrintSprite(fleches, 3, 450, 300);
+            Ec.PrintSprite(arrows, 1, 350, 300);
+            Ec.PrintSprite(arrows, 3, 450, 300);
         }
         else {
-            Ec.PrintSprite(fleches, 0, 350, 300);
-            Ec.PrintSprite(fleches, 4, 450, 300);
+            Ec.PrintSprite(arrows, 0, 350, 300);
+            Ec.PrintSprite(arrows, 4, 450, 300);
         }
 
         NumSp = (currentTime / 30) % 25;
-        Ec.PrintSprite(bruitage, NumSp, 150, 110);
+        Ec.PrintSprite(sound, NumSp, 150, 110);
         NumSp = (currentTime / 30) % 25;
         Ec.PrintSprite(music, NumSp, 150, 200);
         NumSp = (currentTime / 50) % 50;
-        Ec.PrintSprite(monde, NumSp, 180, 400);
+        Ec.PrintSprite(earth, NumSp, 180, 400);
 
         N = (int)(Pref.Volume * 10 + 1) / SDL_MIX_MAXVOLUME;
         NumSp = (currentTime / 50) % 40 + 120;
@@ -621,7 +621,7 @@ eMenu Menu::SDLMain_Options()
                 Ec.PrintSprite(locomotive, NumSp, (690 - 300) / 10 * i + 300, 110);
             }
             else {
-                Ec.PrintSprite(buches, NumSp, (690 - 300) / 10 * i + 300, 110);
+                Ec.PrintSprite(logs_wagon, NumSp, (690 - 300) / 10 * i + 300, 110);
             }
         }
 
@@ -631,7 +631,7 @@ eMenu Menu::SDLMain_Options()
                 Ec.PrintSprite(locomotive, NumSp, (690 - 300) / 10 * i + 300, 200);
             }
             else {
-                Ec.PrintSprite(buches, NumSp, (690 - 300) / 10 * i + 300, 200);
+                Ec.PrintSprite(logs_wagon, NumSp, (690 - 300) / 10 * i + 300, 200);
             }
         }
 
@@ -691,7 +691,7 @@ eMenu Menu::SDLMain_Speed()
         // Prend l'image du fond et fait l'affichage
         Sprites[fond_menu].Affiche(400, 300, 0, Sprites[fmenu].Image[0]);
         Sprites[menu].Affiche(400, 340, 0, Sprites[fmenu].Image[0]);
-        Sprites[titre].Affiche(400, 65, 0, Sprites[fmenu].Image[0]);
+        Sprites[title].Affiche(400, 65, 0, Sprites[fmenu].Image[0]);
 
         AfficheText(400, 225, T_easy, Sprites[fmenu].Image[0]);
         AddBouton(0, T_easy, 400, 225);
@@ -797,7 +797,7 @@ eMenu Menu::SDLMain_Level()
         // Prend l'image du fond et fait l'affichage
         Sprites[fond_menu].Affiche(400, 300, 0, Sprites[fmenu].Image[0]);
         Sprites[menu].Affiche(400, 340, 0, Sprites[fmenu].Image[0]);
-        Sprites[titre].Affiche(400, 65, 0, Sprites[fmenu].Image[0]);
+        Sprites[title].Affiche(400, 65, 0, Sprites[fmenu].Image[0]);
 
         AfficheText(400, 225, T_new_game, Sprites[fmenu].Image[0]);
         AddBouton(0, T_new_game, 400, 225);
@@ -806,8 +806,8 @@ eMenu Menu::SDLMain_Level()
         AfficheText(400, 455, T_menu, Sprites[fmenu].Image[0]);
         AddBouton(2, T_menu, 400, 455);
 
-        AddBouton(3, fleches, 330, 380);
-        AddBouton(4, fleches, 470, 380);
+        AddBouton(3, arrows, 330, 380);
+        AddBouton(4, arrows, 470, 380);
 
         Menu_Py[5].DepX = -1;
 
@@ -903,26 +903,26 @@ eMenu Menu::SDLMain_Level()
         // Affiche les flèches
         if (Niv > 0) {
             if (PyE == 3) {
-                Ec.PrintSprite(fleches, 2, 330, 380);
+                Ec.PrintSprite(arrows, 2, 330, 380);
             }
             else {
-                Ec.PrintSprite(fleches, 1, 330, 380);
+                Ec.PrintSprite(arrows, 1, 330, 380);
             }
         }
         else {
-            Ec.PrintSprite(fleches, 0, 330, 380);
+            Ec.PrintSprite(arrows, 0, 330, 380);
         }
 
         if (Niv < Pref.LevelMax[Pref.Difficulty]) {
             if (PyE == 4) {
-                Ec.PrintSprite(fleches, 5, 470, 380);
+                Ec.PrintSprite(arrows, 5, 470, 380);
             }
             else {
-                Ec.PrintSprite(fleches, 4, 470, 380);
+                Ec.PrintSprite(arrows, 4, 470, 380);
             }
         }
         else {
-            Ec.PrintSprite(fleches, 3, 470, 380);
+            Ec.PrintSprite(arrows, 3, 470, 380);
         }
 
         AfficheChiffre(400, 380, Niv + 1);
@@ -1421,8 +1421,8 @@ eMenu Menu::SDLMain_Score(bool EditScore)
             AfficheString(140, 120 + NEdit * (360 / 7), Pref.Sco[NEdit].Name);
 
             i = (currentTime / 50) % 20; // Affiche les curseurs
-            Ec.PrintSprite(fleche_gauche, i, 110, 120 + NEdit * (360 / 7));
-            Ec.PrintSprite(fleche_droite, i, 180 + LongueurString(Pref.Sco[NEdit].Name), 120 + NEdit * (360 / 7));
+            Ec.PrintSprite(arrow_left, i, 110, 120 + NEdit * (360 / 7));
+            Ec.PrintSprite(arrow_right, i, 180 + LongueurString(Pref.Sco[NEdit].Name), 120 + NEdit * (360 / 7));
         }
 
         // Echange les buffets video
@@ -1445,8 +1445,8 @@ void Menu::Print_Main(int Centre) const
     int const x2 = (Centre - x1) + Centre;
     int const y = (Menu_Py[PyE].FinY + Menu_Py[PyE].DepY) / 2;
 
-    Ec.PrintSprite(fleche_gauche, NumSp, x1, y);
-    Ec.PrintSprite(fleche_droite, NumSp, x2, y);
+    Ec.PrintSprite(arrow_left, NumSp, x1, y);
+    Ec.PrintSprite(arrow_right, NumSp, x2, y);
 }
 
 /*** Centre les flèches sur le boutton ***/
@@ -1458,6 +1458,6 @@ void Menu::Affiche_Main_Centre() const
     int const x2 = Menu_Py[PyE].FinX + 5;
     int const y = (Menu_Py[PyE].FinY + Menu_Py[PyE].DepY) / 2;
 
-    Ec.PrintSprite(fleche_gauche, NumSp, x1, y);
-    Ec.PrintSprite(fleche_droite, NumSp, x2, y);
+    Ec.PrintSprite(arrow_left, NumSp, x1, y);
+    Ec.PrintSprite(arrow_right, NumSp, x2, y);
 }

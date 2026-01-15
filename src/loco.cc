@@ -103,7 +103,7 @@ void Loco::Init(int Pos, int Direction)
     // Initialise la loco et son wagon à charbon
     NWagon = 2;
     Wagon[0] = locomotive;
-    Wagon[1] = charbon;
+    Wagon[1] = coal_wagon;
     PosWagon[0].SprStart = PosWagon[1].SprStart = N_SPR_START;
     PosWagon[0].dx = PosWagon[0].dy = -10;
     PosWagon[0].fx = PosWagon[0].fy = -10;
@@ -128,7 +128,7 @@ void Loco::Display(Screen &Ec)
     for (i = 0; i < NWagon; i++) {
         // Cherche les points du wagons
         switch (Wagon[i]) {
-        case charbon:
+        case coal_wagon:
             p1 = ltrain + 11;
             p2 = ltrain + 36 - 11;
             ltrain += 36.0;
@@ -224,7 +224,7 @@ void Loco::Display(Screen &Ec)
         if (PosWagon[i].SprStart < N_SPR_START) {
             PosWagon[i].SprStart += MemoDuree * N_SPR_START / 750.0;
             if (PosWagon[i].SprStart < N_SPR_START) {
-                Ec.PrintSprite(nouveau_wagon, (int)(PosWagon[i].SprStart), x1, y1);
+                Ec.PrintSprite(new_wagon, (int)(PosWagon[i].SprStart), x1, y1);
             }
         }
 
@@ -669,10 +669,10 @@ void Loco::FindPoint(float Dist, int &x, int &y)
 /*********************************/
 void Loco::AddLoco()
 {
-    Wagon[NWagon] = (e_Sprite)(rand() % (wagon - buches) + buches);
+    Wagon[NWagon] = (e_Sprite)(rand() % (wagon - logs_wagon) + logs_wagon);
     if (Wagon[NWagon] == Wagon[NWagon - 1]) { // Evite 2 fois le meme wagon
         if (Wagon[NWagon] + 1 == wagon) {
-            Wagon[NWagon] = buches;
+            Wagon[NWagon] = logs_wagon;
         }
         else {
             Wagon[NWagon] = (e_Sprite)(Wagon[NWagon] + 1);

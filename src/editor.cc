@@ -173,10 +173,10 @@ eMenu Editor::SDLMain(int NumNiv)
             case pluscourt:
                 level.T[NumN].T[cy * LT + cx] = C_Reduit;
                 break;
-            case vitesse:
+            case speed:
                 level.T[NumN].T[cy * LT + cx] = C_Speed;
                 break;
-            case vie:
+            case life:
                 level.T[NumN].T[cy * LT + cx] = C_Live;
                 break;
             case (e_Sprite)(locomotive + D_Top):
@@ -266,10 +266,10 @@ void Editor::Affiche() const
             Sprites[pluscourt].Affiche(i % LT * D_Case + D_Case / 2, i / LT * D_Case + D_Case / 2, 25);
             break;
         case C_Speed: // Si plus vite
-            Sprites[vitesse].Affiche(i % LT * D_Case + D_Case / 2, i / LT * D_Case + D_Case / 2, 25);
+            Sprites[speed].Affiche(i % LT * D_Case + D_Case / 2, i / LT * D_Case + D_Case / 2, 25);
             break;
         case C_Live: // Si une vie
-            Sprites[vie].Affiche(i % LT * D_Case + D_Case / 2, i / LT * D_Case + D_Case / 2, 25);
+            Sprites[life].Affiche(i % LT * D_Case + D_Case / 2, i / LT * D_Case + D_Case / 2, 25);
             break;
         }
     }
@@ -296,8 +296,8 @@ void Editor::Affiche() const
     case wagon:
     case pluslong:
     case pluscourt:
-    case vitesse:
-    case vie:
+    case speed:
+    case life:
         Sprites[Option].Affiche(740, 200, 0);
         break;
     case (e_Sprite)(locomotive + D_Top):
@@ -321,7 +321,7 @@ void Editor::Affiche() const
 
     // Affiche le curseur
     if (Option != deco) {
-        Sprites[curseur].Affiche(m_mouse.Px, m_mouse.Py, 0);
+        Sprites[cursor].Affiche(m_mouse.Px, m_mouse.Py, 0);
     }
     else {
         Sprites[deco].Affiche(m_mouse.Px, m_mouse.Py, NumDeco);
@@ -427,10 +427,10 @@ void Editor::PrendTouche(int Tou)
         Option = pluscourt;
         break;
     case 't':
-        Option = vitesse;
+        Option = speed;
         break;
     case 'y':
-        Option = vie;
+        Option = life;
         break;
     }
 }

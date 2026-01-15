@@ -143,6 +143,6 @@ void Mouse::Print() const
 
 #ifndef ANDROID
     // Affiche le curseur
-    Ec.PrintSprite(curseur, NumSp, X, Y);
+    Ec.PrintSprite(cursor, NumSp, X, Y);
 #endif
 }

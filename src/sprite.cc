@@ -57,12 +57,12 @@ void AfficheChargeur()
 
     if (AfficheC == true) {
         Hor = SDL_GetTicks();
-        i = (Hor / (1000 / 25)) % Sprites[chargeur].N; // Calcule le numéro su sprite à afficher
+        i = (Hor / (1000 / 25)) % Sprites[digits].N; // Calcule le numéro su sprite à afficher
 
         if (i != NumAf) {
             Old = NumAf;
             NumAf = i;
-            Sprites[chargeur].Affiche(400, 300, NumAf);
+            Sprites[digits].Affiche(400, 300, NumAf);
             SDL_RenderPresent(sdlRenderer);
             // TODO if(Old!=-1) Sprites[chargeur].Efface(400,300,Old,sdlVideo);
         }
@@ -159,7 +159,7 @@ bool LoadSprites()
         }
     }
 
-    if (Sprites[chargeur].Load(Buf, P) == false) {
+    if (Sprites[digits].Load(Buf, P) == false) {
         return false; // Sprite du chargeur
     }
     AfficheC = true; // Peut afficher le sprite du chargeur
@@ -190,7 +190,7 @@ bool LoadSprites()
         case rope:
             Sprites[i].N = 0;
             break;
-        case chargeur:
+        case loading:
             break;
         default:
             if (Sprites[i].Load(Buf, P) == false) {
@@ -218,7 +218,7 @@ int LongueurChiffre(int C)
     int l = 0;
 
     do {
-        l += Sprites[chiffres].Dim[(C % 10)].L;
+        l += Sprites[digits].Dim[(C % 10)].L;
         C /= 10;
         if (C) {
             l += ECART_ENTRE_CHIFFRE;
@@ -279,8 +279,8 @@ void AfficheChiffre(int x, int y, int Nombre, SDL_Texture *Fond)
 
     x += l / 2;
     do {
-        Sprites[chiffres].Affiche(x - (Sprites[chiffres].Dim[(Nombre % 10)].L) / 2, y, Nombre % 10, Fond);
-        x -= Sprites[chiffres].Dim[(Nombre % 10)].L + ECART_ENTRE_CHIFFRE;
+        Sprites[digits].Affiche(x - (Sprites[digits].Dim[(Nombre % 10)].L) / 2, y, Nombre % 10, Fond);
+        x -= Sprites[digits].Dim[(Nombre % 10)].L + ECART_ENTRE_CHIFFRE;
         Nombre /= 10;
     } while (Nombre);
 }
