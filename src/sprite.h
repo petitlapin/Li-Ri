@@ -47,7 +47,7 @@ enum e_Sprite {
     locomotive = 0,
     coal_wagon,
     logs_wagon,
-    balles,
+    cargo_wagon,
     engine_wagon,
     cistern_wagon,
     wagon,
