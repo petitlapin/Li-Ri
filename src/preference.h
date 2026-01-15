@@ -33,8 +33,8 @@
 
 #define PAUSE_DURATION (3 * 1000)
 
-#define REDUCED_DURATION (10 * 1000)
-#define ALONGE_DURATION (10 * 1000)
+#define REDUCTION_DURATION (10 * 1000)
+#define EXTENSION_DURATION (10 * 1000)
 #define WAGON_GAP_MAX 27.0
 #define WAGON_GAP_AVERAGE 13.0
 #define WAGON_GAP_MIN 4.0
@@ -99,7 +99,7 @@ struct sOldPreference
     struct sScore Sco[8]; // Mémorise les scores
 };
 
-struct sNewPreference // Here too
+struct sNewPreference
 {
     e_Difficulty Difficulty { Normal }; // current game difficulty
     int Level; // current level
@@ -118,7 +118,7 @@ struct sNewPreference // Here too
     int HumanRightsQuiz { 1 }; // enable the human rights questions at the end of a level
 };
 
-enum eMenu { // TODO: Rename
+enum eMenu {
     mMenu,
     mMenuGame,
     mMenuSpeed,

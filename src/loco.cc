@@ -271,7 +271,7 @@ void Loco::TestCase(float Dist, long DureeJeu, int *Tableau)
                 Reduit = DureeJeu - 1;
             }
             else {
-                Alonge = DureeJeu + ALONGE_DURATION;
+                Alonge = DureeJeu + EXTENSION_DURATION;
             }
             break;
         case C_Reduit: // Si réduit la loco
@@ -281,7 +281,7 @@ void Loco::TestCase(float Dist, long DureeJeu, int *Tableau)
                 Alonge = DureeJeu - 1;
             }
             else {
-                Reduit = DureeJeu + REDUCED_DURATION;
+                Reduit = DureeJeu + REDUCTION_DURATION;
             }
             break;
         case C_Speed: // Si Vitesse

@@ -33,7 +33,7 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_mixer.h>
 
-#include "config.h" // Done
+#include "config.h"
 #include "preference.h"
 #include "game.h"
 #include "gamepad.h"
@@ -44,7 +44,7 @@
 #include "menu.h"
 #include "level.h"
 #include "editor.h"
-#include "utils.h" // Done
+#include "utils.h"
 
 /*** Global variables ***/
 /************************/
@@ -55,9 +55,9 @@ char Titre[] = "Li-ri V" VERSION;
 
 Sprite *Sprites = nullptr; // Sprites pointer
 int NSprites = 0; // Number of sprites in memory
-Screen Ec; // 2 Video buffer pointer TODO: RENAME
+Screen Ec; // 2 Video buffer pointer
 sNewPreference Pref; // Preference table.
-Level level; // Level class
+Level level;
 
 int currentTime = 0; // Game clock
 int previousTime = 0;
