@@ -162,10 +162,10 @@ void Audio::Play(eSon So)
     }
 
     if (So == sClic) {
-        if (currentTime - MemoHorloge <= 120) {
+        if (currentTime - MemorizedTime <= 120) {
             return;
         }
-        MemoHorloge = currentTime;
+        MemorizedTime = currentTime;
     }
 
     Mix_PlayChannel(-1, Son[So], 0);

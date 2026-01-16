@@ -66,7 +66,7 @@ private:
     /*** Variables ***/
     int N { 0 }; // Nombre d'échantillon audio
     int NMus { 0 }; // Numéro de la music en cours
-    int MemoHorloge { 0 }; // Mémorise l'horloge pour les clics
+    int MemorizedTime { 0 }; // Mémorise l'horloge pour les clics
     Mix_Chunk **Son { nullptr }; // Pointe sur les sons
 };
 

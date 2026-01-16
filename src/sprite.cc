@@ -57,12 +57,12 @@ void AfficheChargeur()
 
     if (AfficheC == true) {
         Hor = SDL_GetTicks();
-        i = (Hor / (1000 / 25)) % Sprites[digits].N; // Calcule le numéro su sprite à afficher
+        i = (Hor / (1000 / 25)) % Sprites[loading].N; // Calcule le numéro su sprite à afficher
 
         if (i != NumAf) {
             Old = NumAf;
             NumAf = i;
-            Sprites[digits].Affiche(400, 300, NumAf);
+            Sprites[loading].Affiche(400, 300, NumAf);
             SDL_RenderPresent(sdlRenderer);
             // TODO if(Old!=-1) Sprites[chargeur].Efface(400,300,Old,sdlVideo);
         }
@@ -159,7 +159,7 @@ bool LoadSprites()
         }
     }
 
-    if (Sprites[digits].Load(Buf, P) == false) {
+    if (Sprites[loading].Load(Buf, P) == false) {
         return false; // Sprite du chargeur
     }
     AfficheC = true; // Peut afficher le sprite du chargeur
