@@ -97,7 +97,7 @@ long Utils::LoadFile(const char *Path, unsigned char *&Buf)
     unsigned char *Po = Buf;
 
     while (Compt > 1024) {
-        AfficheChargeur();
+        DrawLoading();
         if (SDL_RWread(file, Po, 1, 1024) != 1024) {
             SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Error while reading '%s'", Path);
             SDL_RWclose(file);

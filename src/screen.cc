@@ -39,7 +39,7 @@ void Screen::PrintSprite(e_Sprite NumSpr, int Num, int x, int y)
     B[N].y = y;
     N++;
 
-    Sprites[NumSpr].Affiche(x, y, Num);
+    Sprites[NumSpr].Draw(x, y, Num);
 }
 
 void Screen::PrintCable(int dx, int dy, int fx, int fy)
@@ -67,7 +67,7 @@ void Screen::PrintText(e_Sprite Text, int x, int y)
     B[N].y = y;
     N++;
 
-    Sprites[Text].Affiche(x, y, 0);
+    Sprites[Text].Draw(x, y, 0);
 }
 
 /*** Affiche les options du jeu ***/
@@ -77,7 +77,7 @@ void Screen::PrintOptions(int NV, int NScore)
     int x, y;
 
     Score = NScore;
-    AfficheChiffre(740, 215, Score);
+    DrawNumber(740, 215, Score);
 
     if (NV > 10) {
         NV = 10; // Evite un dépassement de l'affichage
@@ -87,7 +87,7 @@ void Screen::PrintOptions(int NV, int NScore)
         x = x * 44 + 38 + LT * D_Case;
         y = i / 2;
         y = 384 + y * 46;
-        Sprites[logo_vie].Affiche(x, y, 0);
+        Sprites[logo_vie].Draw(x, y, 0);
     }
 }
 
@@ -102,7 +102,7 @@ void Screen::ClearSprite(e_Sprite NumSp)
 /*******************************************/
 void Screen::CleanSpriteAndScreen(e_Sprite NumSp)
 {
-    Sprites[NumSp].Affiche(Sprites[NumSp].Dim[0].L / 2, Sprites[NumSp].Dim[0].H / 2, 0);
+    Sprites[NumSp].Draw(Sprites[NumSp].Dim[0].L / 2, Sprites[NumSp].Dim[0].H / 2, 0);
     N = 0;
     Score = -1;
 }

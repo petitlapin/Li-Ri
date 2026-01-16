@@ -332,7 +332,7 @@ bool Game::DrawLevel(int NivN)
     int i, x, y, m, cx, cy;
 
     // Fabrique le fond du jeu
-    Sprites[fond].Affiche(400, 300, 0, Sprites[fjeu].Image[0]);
+    Sprites[fond].Draw(400, 300, 0, Sprites[fjeu].Image[0]);
 
     // Affiche le circuit
     for (i = 0; i < LT * HT; i++) {
@@ -356,25 +356,25 @@ bool Game::DrawLevel(int NivN)
                 m += 1;
             }
 
-            Sprites[rail].Affiche(x, y, NumRail[m], Sprites[fjeu].Image[0]);
+            Sprites[rail].Draw(x, y, NumRail[m], Sprites[fjeu].Image[0]);
         }
     }
 
     // Affiche les décorations
 #ifndef DCHILDREN
     for (i = 0; i < level.T[NivN].NDeco; i++) {
-        Sprites[deco].Affiche(level.T[NivN].Deco[i].x, level.T[NivN].Deco[i].y, level.T[NivN].Deco[i].NumSpr,
+        Sprites[deco].Draw(level.T[NivN].Deco[i].x, level.T[NivN].Deco[i].y, level.T[NivN].Deco[i].NumSpr,
                               Sprites[fjeu].Image[0]);
     }
 #endif
 
     // Affiche les textes suivant la langue
-    AfficheText(740, 110, T_level, Sprites[fjeu].Image[0]);
-    AfficheText(740, 180, T_score, Sprites[fjeu].Image[0]);
-    AfficheText(740, 260, T_options, Sprites[fjeu].Image[0]);
-    AfficheText(740, 340, T_lives, Sprites[fjeu].Image[0]);
+    DrawText(740, 110, T_level, Sprites[fjeu].Image[0]);
+    DrawText(740, 180, T_score, Sprites[fjeu].Image[0]);
+    DrawText(740, 260, T_options, Sprites[fjeu].Image[0]);
+    DrawText(740, 340, T_lives, Sprites[fjeu].Image[0]);
 
-    AfficheChiffre(740, 140, Pref.Level + 1, Sprites[fjeu].Image[0]);
+    DrawNumber(740, 140, Pref.Level + 1, Sprites[fjeu].Image[0]);
 
     return true;
 }

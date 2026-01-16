@@ -174,18 +174,18 @@ enum e_Sprite {
 
 /*** Fonctions ***/
 /*****************/
-void AfficheChargeur(); // Affiche le chargeur sur la page de départ
-bool LoadLangue(); // Charge les sprites d'une langue
+void DrawLoading(); // Affiche le chargeur sur la page de départ
+bool LoadLanguage(); // Charge les sprites d'une langue
 bool LoadSprites(); // Charge tous les sprites
 
-int LongueurChiffre(int C); // Retourne la longueur en pixels d'un nombre
-int LongueurString(char *Texte); // Retourne la longueur en pixels d'un texte
-bool CharExiste(char C); // Si un caracataire existe
+int NumberLenght(int C); // Retourne la longueur en pixels d'un nombre
+int StringLenght(char *Texte); // Retourne la longueur en pixels d'un texte
+bool CharExist(char C); // Si un caracataire existe
 
-void AfficheChiffre(int x, int y, int Nombre, SDL_Texture *Fond = nullptr); // Affiche un chiffre
-void AfficheString(int x, int y, char *Texte, SDL_Texture *Fond = nullptr); // Affiche une chaine de caractaire
+void DrawNumber(int x, int y, int Nombre, SDL_Texture *Fond = nullptr); // Affiche un chiffre
+void DrawString(int x, int y, char *Texte, SDL_Texture *Fond = nullptr); // Affiche une chaine de caractaire
 
-void AfficheText(int x, int y, e_Sprite Text, SDL_Texture *Fond = nullptr); // Affiche un text dans la langue
+void DrawText(int x, int y, e_Sprite Text, SDL_Texture *Fond = nullptr); // Affiche un text dans la langue
 
 /*** Definition de la classe Sprite ***/
 /**************************************/
@@ -197,9 +197,9 @@ public:
 
     /*** Fonctions ***/
     bool Load(unsigned char *Buf, long &P); // Charge les images
-    void Affiche(int X, int Y, int NumSpr, SDL_Texture *Fond = nullptr) const; // Affiche un sprite
+    void Draw(int X, int Y, int NumSpr, SDL_Texture *Fond = nullptr) const; // Affiche un sprite
     void PrintRope(int dx, int dy, int fx, int fy);
-    bool Nouveau(int Lx, int Ly); // Alloue un nouveau sprite vide sans transparence
+    bool New(int Lx, int Ly); // Alloue un nouveau sprite vide sans transparence
     void Delete(); // Efface la mémoire du sprite
 
     /*** Variables ***/

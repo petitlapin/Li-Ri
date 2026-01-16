@@ -147,7 +147,7 @@ int main(int narg, char *argv[])
     // ask locale if first run
     if (Pref.Language == -1) {
         RetMenu = MainMenu.SDLMain_Language();
-        LoadLangue();
+        LoadLanguage();
     }
 
     // menu switch

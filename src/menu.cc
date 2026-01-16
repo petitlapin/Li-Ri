@@ -77,7 +77,7 @@ void Sleeping()
 
 /*** Ajoute une entrée dans le tableau des boutons ***/
 /*****************************************************/
-void AddBouton(int Num, e_Sprite NumSp, int X, int Y)
+void AddButton(int Num, e_Sprite NumSp, int X, int Y)
 {
     int const NumS = (int)NumSp;
 
@@ -117,19 +117,19 @@ eMenu Menu::SDLMain()
     do {
         SDL_RenderClear(sdlRenderer);
         // Prend l'image du fond et fait l'affichage
-        Sprites[fond_menu].Affiche(400, 300, 0, Sprites[fmenu].Image[0]);
-        Sprites[menu].Affiche(400, 340, 0, Sprites[fmenu].Image[0]);
-        Sprites[title].Affiche(400, 65, 0, Sprites[fmenu].Image[0]);
-        Sprites[copyright].Affiche(400, 587, 0, Sprites[fmenu].Image[0]);
+        Sprites[fond_menu].Draw(400, 300, 0, Sprites[fmenu].Image[0]);
+        Sprites[menu].Draw(400, 340, 0, Sprites[fmenu].Image[0]);
+        Sprites[title].Draw(400, 65, 0, Sprites[fmenu].Image[0]);
+        Sprites[copyright].Draw(400, 587, 0, Sprites[fmenu].Image[0]);
 
-        AfficheText(400, 229, T_play, Sprites[fmenu].Image[0]);
-        AddBouton(0, T_play, 400, 229);
-        AfficheText(400, 306, T_scores, Sprites[fmenu].Image[0]);
-        AddBouton(1, T_scores, 400, 306);
-        AfficheText(400, 384, T_moptions, Sprites[fmenu].Image[0]);
-        AddBouton(2, T_moptions, 400, 384);
-        AfficheText(400, 461, T_quit, Sprites[fmenu].Image[0]);
-        AddBouton(3, T_quit, 400, 461);
+        DrawText(400, 229, T_play, Sprites[fmenu].Image[0]);
+        AddButton(0, T_play, 400, 229);
+        DrawText(400, 306, T_scores, Sprites[fmenu].Image[0]);
+        AddButton(1, T_scores, 400, 306);
+        DrawText(400, 384, T_moptions, Sprites[fmenu].Image[0]);
+        AddButton(2, T_moptions, 400, 384);
+        DrawText(400, 461, T_quit, Sprites[fmenu].Image[0]);
+        AddButton(3, T_quit, 400, 461);
         Menu_Py[4].DepX = -1;
         SDL_Event event;
         while (SDL_PollEvent(&event)) {
@@ -176,7 +176,7 @@ eMenu Menu::SDLMain()
                         break;
                     default:
                         key = event.key.keysym.sym & 0x7F; // Prend le caracataire correspondant à la touche
-                        if (CharExiste(key) == true) { // Si la caractaire existe bien
+                        if (CharExist(key) == true) { // Si la caractaire existe bien
                             for (i = 2; i >= 0; i--) {
                                 MCode[i + 1] = MCode[i]; // décale le code
                             }
@@ -232,9 +232,9 @@ eMenu Menu::SDLMain_Language()
 
     SDL_RenderClear(sdlRenderer);
     // Prend l'image du fond et fait l'affichage
-    Sprites[fond_menu].Affiche(400, 300, 0, Sprites[fmenu].Image[0]);
+    Sprites[fond_menu].Draw(400, 300, 0, Sprites[fmenu].Image[0]);
 
-    // Affiche les langues possibles
+    // Draw les langues possibles
     NCol = 3;
     if (Pref.NLanguages % NCol == 0) {
         NL = Pref.NLanguages / NCol;
@@ -248,8 +248,8 @@ eMenu Menu::SDLMain_Language()
         x = (i / NL) * (800 / 3) + (800 / 6);
         y = (i % NL) * Ecart + Ecart;
 
-        Sprites[T_Langue + i].Affiche(x, y, 0, Sprites[fmenu].Image[0]);
-        AddBouton(i, (e_Sprite)(T_Langue + i), x, y);
+        Sprites[T_Langue + i].Draw(x, y, 0, Sprites[fmenu].Image[0]);
+        AddButton(i, (e_Sprite)(T_Langue + i), x, y);
     }
 
     Menu_Py[Pref.NLanguages].DepX = -1;
@@ -260,13 +260,13 @@ eMenu Menu::SDLMain_Language()
     // Prend les evenements
     do {
         SDL_RenderClear(sdlRenderer);
-        Sprites[fond_menu].Affiche(400, 300, 0, Sprites[fmenu].Image[0]);
+        Sprites[fond_menu].Draw(400, 300, 0, Sprites[fmenu].Image[0]);
         for (i = 0; i < Pref.NLanguages; i++) {
             x = (i / NL) * (800 / 3) + (800 / 6);
             y = (i % NL) * Ecart + Ecart;
 
-            Sprites[T_Langue + i].Affiche(x, y, 0, Sprites[fmenu].Image[0]);
-            AddBouton(i, (e_Sprite)(T_Langue + i), x, y);
+            Sprites[T_Langue + i].Draw(x, y, 0, Sprites[fmenu].Image[0]);
+            AddButton(i, (e_Sprite)(T_Langue + i), x, y);
         }
 
         SDL_Event event;
@@ -322,7 +322,7 @@ eMenu Menu::SDLMain_Language()
                     case SDLK_KP_ENTER:
                         Pref.Language = PyE;
                         if (Pref.Language != OldLangue) {
-                            LoadLangue();
+                            LoadLanguage();
                         }
                         return mMenu;
                     default:
@@ -364,29 +364,29 @@ void Menu::InitMain_Options()
     // PyE=4;
 
     // Prend l'image du fond et fait l'affichage
-    Sprites[fond_menu].Affiche(400, 300, 0, Sprites[fmenu].Image[0]);
-    Sprites[gmenu].Affiche(400, 300, 0, Sprites[fmenu].Image[0]);
-    Sprites[keys].Affiche(610, 455, 0, Sprites[fmenu].Image[0]);
+    Sprites[fond_menu].Draw(400, 300, 0, Sprites[fmenu].Image[0]);
+    Sprites[gmenu].Draw(400, 300, 0, Sprites[fmenu].Image[0]);
+    Sprites[keys].Draw(610, 455, 0, Sprites[fmenu].Image[0]);
 
-    AddBouton(0, sound, 140, 110);
-    AddBouton(1, music, 160, 200);
+    AddButton(0, sound, 140, 110);
+    AddButton(1, music, 160, 200);
 
-    AddBouton(2, fscreen, 190, 300);
+    AddButton(2, fscreen, 190, 300);
     Menu_Py[2].DepX -= 40;
     Menu_Py[2].FinX = 625 + 40 + Sprites[fscreen].Dim[0].L / 2;
-    Sprites[fscreen].Affiche(185, 300, 0, Sprites[fmenu].Image[0]);
-    Sprites[window].Affiche(625, 300, 0, Sprites[fmenu].Image[0]);
+    Sprites[fscreen].Draw(185, 300, 0, Sprites[fmenu].Image[0]);
+    Sprites[window].Draw(625, 300, 0, Sprites[fmenu].Image[0]);
 
-    AddBouton(3, earth, 180, 400);
+    AddButton(3, earth, 180, 400);
 
     // Centre à gauche le text de menu
     CentreM = 120 + Sprites[T_menu].Dim[0].L / 2;
-    AfficheText(CentreM, 490, T_menu, Sprites[fmenu].Image[0]);
-    AddBouton(4, T_menu, CentreM, 490);
+    DrawText(CentreM, 490, T_menu, Sprites[fmenu].Image[0]);
+    AddButton(4, T_menu, CentreM, 490);
 
     // Boutons des sounds
-    Sprites[arrows].Affiche(250, 110, 1, Sprites[fmenu].Image[0]);
-    Sprites[arrows].Affiche(700, 110, 4, Sprites[fmenu].Image[0]);
+    Sprites[arrows].Draw(250, 110, 1, Sprites[fmenu].Image[0]);
+    Sprites[arrows].Draw(700, 110, 4, Sprites[fmenu].Image[0]);
     Menu_Py[5].DepX = 230;
     Menu_Py[5].DepY = 70;
     Menu_Py[5].FinX = 475;
@@ -402,8 +402,8 @@ void Menu::InitMain_Options()
     Menu_Py[6].Valide = true;
 
     // Boutons de musics
-    Sprites[arrows].Affiche(250, 200, 1, Sprites[fmenu].Image[0]);
-    Sprites[arrows].Affiche(700, 200, 4, Sprites[fmenu].Image[0]);
+    Sprites[arrows].Draw(250, 200, 1, Sprites[fmenu].Image[0]);
+    Sprites[arrows].Draw(700, 200, 4, Sprites[fmenu].Image[0]);
     Menu_Py[7].DepX = 230;
     Menu_Py[7].DepY = 155;
     Menu_Py[7].FinX = 475;
@@ -689,16 +689,16 @@ eMenu Menu::SDLMain_Speed()
         Ec.CleanSpriteAndScreen(fmenu);
         SDL_RenderClear(sdlRenderer);
         // Prend l'image du fond et fait l'affichage
-        Sprites[fond_menu].Affiche(400, 300, 0, Sprites[fmenu].Image[0]);
-        Sprites[menu].Affiche(400, 340, 0, Sprites[fmenu].Image[0]);
-        Sprites[title].Affiche(400, 65, 0, Sprites[fmenu].Image[0]);
+        Sprites[fond_menu].Draw(400, 300, 0, Sprites[fmenu].Image[0]);
+        Sprites[menu].Draw(400, 340, 0, Sprites[fmenu].Image[0]);
+        Sprites[title].Draw(400, 65, 0, Sprites[fmenu].Image[0]);
 
-        AfficheText(400, 225, T_easy, Sprites[fmenu].Image[0]);
-        AddBouton(0, T_easy, 400, 225);
-        AfficheText(400, 340, T_normal, Sprites[fmenu].Image[0]);
-        AddBouton(1, T_normal, 400, 340);
-        AfficheText(400, 455, T_hard, Sprites[fmenu].Image[0]);
-        AddBouton(2, T_hard, 400, 455);
+        DrawText(400, 225, T_easy, Sprites[fmenu].Image[0]);
+        AddButton(0, T_easy, 400, 225);
+        DrawText(400, 340, T_normal, Sprites[fmenu].Image[0]);
+        AddButton(1, T_normal, 400, 340);
+        DrawText(400, 455, T_hard, Sprites[fmenu].Image[0]);
+        AddButton(2, T_hard, 400, 455);
         Menu_Py[3].DepX = -1;
 
         SDL_Event event;
@@ -795,19 +795,19 @@ eMenu Menu::SDLMain_Level()
         // Efface le fond
         SDL_RenderClear(sdlRenderer);
         // Prend l'image du fond et fait l'affichage
-        Sprites[fond_menu].Affiche(400, 300, 0, Sprites[fmenu].Image[0]);
-        Sprites[menu].Affiche(400, 340, 0, Sprites[fmenu].Image[0]);
-        Sprites[title].Affiche(400, 65, 0, Sprites[fmenu].Image[0]);
+        Sprites[fond_menu].Draw(400, 300, 0, Sprites[fmenu].Image[0]);
+        Sprites[menu].Draw(400, 340, 0, Sprites[fmenu].Image[0]);
+        Sprites[title].Draw(400, 65, 0, Sprites[fmenu].Image[0]);
 
-        AfficheText(400, 225, T_new_game, Sprites[fmenu].Image[0]);
-        AddBouton(0, T_new_game, 400, 225);
-        AfficheText(400, 320, T_old_level, Sprites[fmenu].Image[0]);
-        AddBouton(1, T_old_level, 400, 320);
-        AfficheText(400, 455, T_menu, Sprites[fmenu].Image[0]);
-        AddBouton(2, T_menu, 400, 455);
+        DrawText(400, 225, T_new_game, Sprites[fmenu].Image[0]);
+        AddButton(0, T_new_game, 400, 225);
+        DrawText(400, 320, T_old_level, Sprites[fmenu].Image[0]);
+        AddButton(1, T_old_level, 400, 320);
+        DrawText(400, 455, T_menu, Sprites[fmenu].Image[0]);
+        AddButton(2, T_menu, 400, 455);
 
-        AddBouton(3, arrows, 330, 380);
-        AddBouton(4, arrows, 470, 380);
+        AddButton(3, arrows, 330, 380);
+        AddButton(4, arrows, 470, 380);
 
         Menu_Py[5].DepX = -1;
 
@@ -900,7 +900,7 @@ eMenu Menu::SDLMain_Level()
         // Gère l'Affichage
         Ec.ClearSprite(fmenu);
 
-        // Affiche les flèches
+        // Draw les flèches
         if (Niv > 0) {
             if (PyE == 3) {
                 Ec.PrintSprite(arrows, 2, 330, 380);
@@ -925,7 +925,7 @@ eMenu Menu::SDLMain_Level()
             Ec.PrintSprite(arrows, 3, 470, 380);
         }
 
-        AfficheChiffre(400, 380, Niv + 1);
+        DrawNumber(400, 380, Niv + 1);
 
         if (PyE != 3 && PyE != 4) {
             Print_Main();
@@ -966,25 +966,25 @@ eMenu Menu::SDLMain_HR()
     Position.h = Sprites[fmenu].Dim[0].H;
     SDL_RenderCopy(sdlRenderer, Sprites[fmenu].Image[0], &Position, &Position);
 
-    Sprites[menu].Affiche(340, 300, 0, Sprites[fmenu].Image[0]);
-    Sprites[fond_hr].Affiche(340, 74, 0, Sprites[fmenu].Image[0]);
-    AfficheText(338, 70, e_Sprite(T_question), Sprites[fmenu].Image[0]);
+    Sprites[menu].Draw(340, 300, 0, Sprites[fmenu].Image[0]);
+    Sprites[fond_hr].Draw(340, 74, 0, Sprites[fmenu].Image[0]);
+    DrawText(338, 70, e_Sprite(T_question), Sprites[fmenu].Image[0]);
 
-    Sprites[locomotive].Affiche(115, 110, rand() % 320, Sprites[fmenu].Image[0]);
-    Sprites[deco].Affiche(100, 160 + (rand() % 130), rand() % 18, Sprites[fmenu].Image[0]);
-    Sprites[deco].Affiche(100, 470 - (rand() % 130), rand() % 18, Sprites[fmenu].Image[0]);
-    Sprites[deco].Affiche(580, 100 + (rand() % 130), rand() % 18, Sprites[fmenu].Image[0]);
-    Sprites[deco].Affiche(580, 470 - (rand() % 130), rand() % 18, Sprites[fmenu].Image[0]);
+    Sprites[locomotive].Draw(115, 110, rand() % 320, Sprites[fmenu].Image[0]);
+    Sprites[deco].Draw(100, 160 + (rand() % 130), rand() % 18, Sprites[fmenu].Image[0]);
+    Sprites[deco].Draw(100, 470 - (rand() % 130), rand() % 18, Sprites[fmenu].Image[0]);
+    Sprites[deco].Draw(580, 100 + (rand() % 130), rand() % 18, Sprites[fmenu].Image[0]);
+    Sprites[deco].Draw(580, 470 - (rand() % 130), rand() % 18, Sprites[fmenu].Image[0]);
 
-    AfficheText(340, 300, e_Sprite(T_art1 + N1), Sprites[fmenu].Image[0]);
+    DrawText(340, 300, e_Sprite(T_art1 + N1), Sprites[fmenu].Image[0]);
 
     if (Ordre) {
-        AddBouton(0, e_Sprite(T_tart1 + N1), 240, 492);
-        AddBouton(1, e_Sprite(T_tart1 + N2), 440, 492);
+        AddButton(0, e_Sprite(T_tart1 + N1), 240, 492);
+        AddButton(1, e_Sprite(T_tart1 + N2), 440, 492);
     }
     else {
-        AddBouton(0, e_Sprite(T_tart1 + N1), 440, 492);
-        AddBouton(1, e_Sprite(T_tart1 + N2), 240, 492);
+        AddButton(0, e_Sprite(T_tart1 + N1), 440, 492);
+        AddButton(1, e_Sprite(T_tart1 + N2), 240, 492);
     }
     Menu_Py[0].DepY -= 20;
     Menu_Py[0].FinY += 20;
@@ -1003,26 +1003,26 @@ eMenu Menu::SDLMain_HR()
 
         SDL_RenderCopy(sdlRenderer, Sprites[fmenu].Image[0], &Position, &Position);
 
-        // Sprites[fond].Affiche(400,300,0,Sprites[fjeu].Image[0]);
-        Sprites[menu].Affiche(340, 300, 0, Sprites[fmenu].Image[0]);
-        Sprites[fond_hr].Affiche(340, 74, 0, Sprites[fmenu].Image[0]);
-        AfficheText(338, 70, e_Sprite(T_question), Sprites[fmenu].Image[0]);
+        // Sprites[fond].Draw(400,300,0,Sprites[fjeu].Image[0]);
+        Sprites[menu].Draw(340, 300, 0, Sprites[fmenu].Image[0]);
+        Sprites[fond_hr].Draw(340, 74, 0, Sprites[fmenu].Image[0]);
+        DrawText(338, 70, e_Sprite(T_question), Sprites[fmenu].Image[0]);
 
-        Sprites[locomotive].Affiche(115, 110, locoPosition, Sprites[fmenu].Image[0]);
-        Sprites[deco].Affiche(100, 160 + posDeco[0].first, posDeco[0].second, Sprites[fmenu].Image[0]);
-        Sprites[deco].Affiche(100, 470 - (posDeco[1].first), posDeco[1].second, Sprites[fmenu].Image[0]);
-        Sprites[deco].Affiche(580, 100 + (posDeco[2].first), posDeco[2].second, Sprites[fmenu].Image[0]);
-        Sprites[deco].Affiche(580, 470 - (posDeco[3].first), posDeco[3].second, Sprites[fmenu].Image[0]);
+        Sprites[locomotive].Draw(115, 110, locoPosition, Sprites[fmenu].Image[0]);
+        Sprites[deco].Draw(100, 160 + posDeco[0].first, posDeco[0].second, Sprites[fmenu].Image[0]);
+        Sprites[deco].Draw(100, 470 - (posDeco[1].first), posDeco[1].second, Sprites[fmenu].Image[0]);
+        Sprites[deco].Draw(580, 100 + (posDeco[2].first), posDeco[2].second, Sprites[fmenu].Image[0]);
+        Sprites[deco].Draw(580, 470 - (posDeco[3].first), posDeco[3].second, Sprites[fmenu].Image[0]);
 
-        AfficheText(340, 300, e_Sprite(T_art1 + N1), Sprites[fmenu].Image[0]);
+        DrawText(340, 300, e_Sprite(T_art1 + N1), Sprites[fmenu].Image[0]);
         /*
         if(Ordre) {
-          AddBouton(0,e_Sprite(T_tart1+N1),240,492);
-          AddBouton(1,e_Sprite(T_tart1+N2),440,492);
+          AddButton(0,e_Sprite(T_tart1+N1),240,492);
+          AddButton(1,e_Sprite(T_tart1+N2),440,492);
         }
         else {
-          AddBouton(0,e_Sprite(T_tart1+N1),440,492);
-          AddBouton(1,e_Sprite(T_tart1+N2),240,492);
+          AddButton(0,e_Sprite(T_tart1+N1),440,492);
+          AddButton(1,e_Sprite(T_tart1+N2),240,492);
         }
         Menu_Py[0].DepY-=20;
         Menu_Py[0].FinY+=20;
@@ -1122,17 +1122,17 @@ eMenu Menu::SDLMain_HR()
 
         if (Ordre) {
             Ec.PrintSprite(fond_hrr, 0, 240, 492);
-            AfficheText(240, 492, e_Sprite(T_tart1 + N1));
+            DrawText(240, 492, e_Sprite(T_tart1 + N1));
         }
         else {
             Ec.PrintSprite(fond_hrr, 0, 440, 492);
-            AfficheText(440, 492, e_Sprite(T_tart1 + N1));
+            DrawText(440, 492, e_Sprite(T_tart1 + N1));
         }
 
         if (Fini == -1) {
             if (Ordre) {
                 Ec.PrintSprite(fond_hrr, 0, 440, 492);
-                AfficheText(440, 492, e_Sprite(T_tart1 + N2));
+                DrawText(440, 492, e_Sprite(T_tart1 + N2));
                 if (PyE == 0) {
                     Print_Main(240);
                 }
@@ -1142,7 +1142,7 @@ eMenu Menu::SDLMain_HR()
             }
             else {
                 Ec.PrintSprite(fond_hrr, 0, 240, 492);
-                AfficheText(240, 492, e_Sprite(T_tart1 + N2));
+                DrawText(240, 492, e_Sprite(T_tart1 + N2));
                 if (PyE == 1) {
                     Print_Main(240);
                 }
@@ -1178,14 +1178,14 @@ void Menu::Print_InGame()
     Position.h = Sprites[fmenu].Dim[0].H;
     SDL_RenderCopy(sdlRenderer, Sprites[fmenu].Image[0], &Position, &Position);
 
-    Sprites[menu].Affiche(340, 300, 0, Sprites[fmenu].Image[0]);
+    Sprites[menu].Draw(340, 300, 0, Sprites[fmenu].Image[0]);
 
-    AfficheText(340, 185, T_continue, Sprites[fmenu].Image[0]);
-    AddBouton(0, T_continue, 340, 185);
-    AfficheText(340, 300, T_moptions, Sprites[fmenu].Image[0]);
-    AddBouton(1, T_moptions, 340, 300);
-    AfficheText(340, 415, T_exit_game, Sprites[fmenu].Image[0]);
-    AddBouton(2, T_exit_game, 340, 415);
+    DrawText(340, 185, T_continue, Sprites[fmenu].Image[0]);
+    AddButton(0, T_continue, 340, 185);
+    DrawText(340, 300, T_moptions, Sprites[fmenu].Image[0]);
+    AddButton(1, T_moptions, 340, 300);
+    DrawText(340, 415, T_exit_game, Sprites[fmenu].Image[0]);
+    AddButton(2, T_exit_game, 340, 415);
     Menu_Py[3].DepX = -1;
 }
 
@@ -1331,28 +1331,28 @@ eMenu Menu::SDLMain_Score(bool EditScore)
         Ec.CleanSpriteAndScreen(fmenu);
         SDL_RenderClear(sdlRenderer);
         // Prend l'image du fond et fait l'affichage
-        Sprites[fond_menu].Affiche(400, 300, 0, Sprites[fmenu].Image[0]);
+        Sprites[fond_menu].Draw(400, 300, 0, Sprites[fmenu].Image[0]);
 
-        // Affiche le titre et les commandes
-        AfficheText(400, 50, T_better_scores, Sprites[fmenu].Image[0]);
-        AfficheText(400, 550, T_press_any_key, Sprites[fmenu].Image[0]);
+        // Draw le titre et les commandes
+        DrawText(400, 50, T_better_scores, Sprites[fmenu].Image[0]);
+        DrawText(400, 550, T_press_any_key, Sprites[fmenu].Image[0]);
 
-        // Affiche les scores
+        // Draw les scores
         for (i = 0; i < 8; i++) {
             sprintf(Provi, "%d", i + 1);
-            AfficheString(70, 120 + i * (360 / 7), Provi, Sprites[fmenu].Image[0]);
+            DrawString(70, 120 + i * (360 / 7), Provi, Sprites[fmenu].Image[0]);
 
             if (EditScore == false || NEdit != i) {
                 if (Pref.Sco[i].Name[0]) {
-                    AfficheString(140, 120 + i * (360 / 7), Pref.Sco[i].Name, Sprites[fmenu].Image[0]);
+                    DrawString(140, 120 + i * (360 / 7), Pref.Sco[i].Name, Sprites[fmenu].Image[0]);
                 }
                 else {
-                    AfficheString(140, 120 + i * (360 / 7), Points, Sprites[fmenu].Image[0]);
+                    DrawString(140, 120 + i * (360 / 7), Points, Sprites[fmenu].Image[0]);
                 }
             }
 
             sprintf(Provi, "%i", Pref.Sco[i].Score);
-            AfficheString(740 - LongueurString(Provi), 120 + i * (360 / 7), Provi, Sprites[fmenu].Image[0]);
+            DrawString(740 - StringLenght(Provi), 120 + i * (360 / 7), Provi, Sprites[fmenu].Image[0]);
         }
 
         // Efface le fond
@@ -1399,7 +1399,7 @@ eMenu Menu::SDLMain_Score(bool EditScore)
                 break;
             case SDL_TEXTINPUT:
                 /* Add new text onto the end of our text */
-                if (LongueurString(Pref.Sco[NEdit].Name) < LSCOREMAX && PosCur < 79 && CharExiste(event.text.text[0])) {
+                if (StringLenght(Pref.Sco[NEdit].Name) < LSCOREMAX && PosCur < 79 && CharExist(event.text.text[0])) {
                     PosCur += strlen(event.text.text);
                     strcat(Pref.Sco[NEdit].Name, event.text.text);
                 }
@@ -1417,12 +1417,12 @@ eMenu Menu::SDLMain_Score(bool EditScore)
         currentTime = SDL_GetTicks();
         Sleeping();
 
-        if (EditScore) { // Gère l'affiche pour l'édition des scores
-            AfficheString(140, 120 + NEdit * (360 / 7), Pref.Sco[NEdit].Name);
+        if (EditScore) { // Gère l'Draw pour l'édition des scores
+            DrawString(140, 120 + NEdit * (360 / 7), Pref.Sco[NEdit].Name);
 
-            i = (currentTime / 50) % 20; // Affiche les curseurs
+            i = (currentTime / 50) % 20; // Draw les curseurs
             Ec.PrintSprite(arrow_left, i, 110, 120 + NEdit * (360 / 7));
-            Ec.PrintSprite(arrow_right, i, 180 + LongueurString(Pref.Sco[NEdit].Name), 120 + NEdit * (360 / 7));
+            Ec.PrintSprite(arrow_right, i, 180 + StringLenght(Pref.Sco[NEdit].Name), 120 + NEdit * (360 / 7));
         }
 
         // Echange les buffets video
@@ -1436,7 +1436,7 @@ eMenu Menu::SDLMain_Score(bool EditScore)
     return mQuit;
 }
 
-/*** Affiche le menu Principale ***/
+/*** Draw le menu Principale ***/
 /**********************************/
 void Menu::Print_Main(int Centre) const
 {

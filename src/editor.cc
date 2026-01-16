@@ -62,7 +62,7 @@ eMenu Editor::SDLMain(int NumNiv)
 
     NumN = NumNiv;
 
-    Affiche(); // Charge le tableau
+    Draw(); // Charge le tableau
     SDL_RenderPresent(sdlRenderer);
 
     currentTime = SDL_GetTicks(); // Prend l'horloge
@@ -82,7 +82,7 @@ eMenu Editor::SDLMain(int NumNiv)
             switch (event.type) {
             case SDL_WINDOWEVENT:
                 if (event.window.event == SDL_WINDOWEVENT_ENTER) {
-                    Affiche();
+                    Draw();
                 }
                 break;
             case SDL_KEYDOWN:
@@ -198,7 +198,7 @@ eMenu Editor::SDLMain(int NumNiv)
         Sleeping();
 
         // Fait l'affichage
-        Affiche();
+        Draw();
         SDL_RenderPresent(sdlRenderer);
 
     } while (true);
@@ -208,7 +208,7 @@ eMenu Editor::SDLMain(int NumNiv)
 
 /*** Charge un tableau ***/
 /*************************/
-void Editor::Affiche() const
+void Editor::Draw() const
 {
     int i, x, y, m, cx, cy;
     unsigned char *T;
@@ -217,7 +217,7 @@ void Editor::Affiche() const
     T = level.T[NumN].T;
 
     // Fabrique le fond du jeu
-    Sprites[fond].Affiche(400, 300, 0);
+    Sprites[fond].Draw(400, 300, 0);
 
     // Affiche le circuit
     for (i = 0; i < LT * HT; i++) {
@@ -241,35 +241,35 @@ void Editor::Affiche() const
                 m += 1;
             }
 
-            Sprites[rail].Affiche(x, y, NumRail[m]);
+            Sprites[rail].Draw(x, y, NumRail[m]);
         }
     }
 
     // Affiche les décorations
     for (i = 0; i < level.T[NumN].NDeco; i++) {
-        Sprites[deco].Affiche(level.T[NumN].Deco[i].x, level.T[NumN].Deco[i].y, level.T[NumN].Deco[i].NumSpr);
+        Sprites[deco].Draw(level.T[NumN].Deco[i].x, level.T[NumN].Deco[i].y, level.T[NumN].Deco[i].NumSpr);
     }
 
     // Affiche numero du niveau
-    AfficheChiffre(740, 130, NumN + 1);
+    DrawNumber(740, 130, NumN + 1);
 
     // Affiche les options
     for (i = 0; i < LT * HT; i++) {
         switch (T[i]) {
         case C_Wagon: // Si un loco
-            Sprites[wagon].Affiche(i % LT * D_Case + D_Case / 2, i / LT * D_Case + D_Case / 2, 25);
+            Sprites[wagon].Draw(i % LT * D_Case + D_Case / 2, i / LT * D_Case + D_Case / 2, 25);
             break;
         case C_Allonge: // Si plus long
-            Sprites[pluslong].Affiche(i % LT * D_Case + D_Case / 2, i / LT * D_Case + D_Case / 2, 25);
+            Sprites[pluslong].Draw(i % LT * D_Case + D_Case / 2, i / LT * D_Case + D_Case / 2, 25);
             break;
         case C_Reduit: // Si plus court
-            Sprites[pluscourt].Affiche(i % LT * D_Case + D_Case / 2, i / LT * D_Case + D_Case / 2, 25);
+            Sprites[pluscourt].Draw(i % LT * D_Case + D_Case / 2, i / LT * D_Case + D_Case / 2, 25);
             break;
         case C_Speed: // Si plus vite
-            Sprites[speed].Affiche(i % LT * D_Case + D_Case / 2, i / LT * D_Case + D_Case / 2, 25);
+            Sprites[speed].Draw(i % LT * D_Case + D_Case / 2, i / LT * D_Case + D_Case / 2, 25);
             break;
         case C_Live: // Si une vie
-            Sprites[life].Affiche(i % LT * D_Case + D_Case / 2, i / LT * D_Case + D_Case / 2, 25);
+            Sprites[life].Draw(i % LT * D_Case + D_Case / 2, i / LT * D_Case + D_Case / 2, 25);
             break;
         }
     }
@@ -277,16 +277,16 @@ void Editor::Affiche() const
     // Affiche le départ de la locomotive
     switch (level.T[NumN].DepDir) {
     case D_Top:
-        Sprites[locomotive].Affiche(level.T[NumN].DepX * D_Case + D_Case / 2, level.T[NumN].DepY * D_Case + D_Case / 2, 0);
+        Sprites[locomotive].Draw(level.T[NumN].DepX * D_Case + D_Case / 2, level.T[NumN].DepY * D_Case + D_Case / 2, 0);
         break;
     case D_Bottom:
-        Sprites[locomotive].Affiche(level.T[NumN].DepX * D_Case + D_Case / 2, level.T[NumN].DepY * D_Case + D_Case / 2, 40);
+        Sprites[locomotive].Draw(level.T[NumN].DepX * D_Case + D_Case / 2, level.T[NumN].DepY * D_Case + D_Case / 2, 40);
         break;
     case D_Left:
-        Sprites[locomotive].Affiche(level.T[NumN].DepX * D_Case + D_Case / 2, level.T[NumN].DepY * D_Case + D_Case / 2, 80);
+        Sprites[locomotive].Draw(level.T[NumN].DepX * D_Case + D_Case / 2, level.T[NumN].DepY * D_Case + D_Case / 2, 80);
         break;
     case D_Right:
-        Sprites[locomotive].Affiche(level.T[NumN].DepX * D_Case + D_Case / 2, level.T[NumN].DepY * D_Case + D_Case / 2, 120);
+        Sprites[locomotive].Draw(level.T[NumN].DepX * D_Case + D_Case / 2, level.T[NumN].DepY * D_Case + D_Case / 2, 120);
         break;
     }
 
@@ -298,22 +298,22 @@ void Editor::Affiche() const
     case pluscourt:
     case speed:
     case life:
-        Sprites[Option].Affiche(740, 200, 0);
+        Sprites[Option].Draw(740, 200, 0);
         break;
     case (e_Sprite)(locomotive + D_Top):
-        Sprites[locomotive].Affiche(740, 200, 0);
+        Sprites[locomotive].Draw(740, 200, 0);
         break;
     case (e_Sprite)(locomotive + D_Bottom):
-        Sprites[locomotive].Affiche(740, 200, 40);
+        Sprites[locomotive].Draw(740, 200, 40);
         break;
     case (e_Sprite)(locomotive + D_Left):
-        Sprites[locomotive].Affiche(740, 200, 80);
+        Sprites[locomotive].Draw(740, 200, 80);
         break;
     case (e_Sprite)(locomotive + D_Right):
-        Sprites[locomotive].Affiche(740, 200, 120);
+        Sprites[locomotive].Draw(740, 200, 120);
         break;
     case deco:
-        Sprites[deco].Affiche(740, 200, NumDeco);
+        Sprites[deco].Draw(740, 200, NumDeco);
         break;
     default:
         break;
@@ -321,10 +321,10 @@ void Editor::Affiche() const
 
     // Affiche le curseur
     if (Option != deco) {
-        Sprites[cursor].Affiche(m_mouse.Px, m_mouse.Py, 0);
+        Sprites[cursor].Draw(m_mouse.Px, m_mouse.Py, 0);
     }
     else {
-        Sprites[deco].Affiche(m_mouse.Px, m_mouse.Py, NumDeco);
+        Sprites[deco].Draw(m_mouse.Px, m_mouse.Py, NumDeco);
     }
 }
 
@@ -412,7 +412,7 @@ void Editor::PrendTouche(int Tou)
         Pref.Level = NumN;
         m_game.SDLMain();
         m_mouse.Init(nullptr);
-        Affiche();
+        Draw();
         break;
     case 'a':
         Option = rail;
