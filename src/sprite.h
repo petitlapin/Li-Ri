@@ -178,8 +178,8 @@ void DrawLoading(); // Affiche le chargeur sur la page de départ
 bool LoadLanguage(); // Charge les sprites d'une langue
 bool LoadSprites(); // Charge tous les sprites
 
-int NumberLenght(int C); // Retourne la longueur en pixels d'un nombre
-int StringLenght(char *Texte); // Retourne la longueur en pixels d'un texte
+int NumberLength(int C); // Retourne la longueur en pixels d'un nombre
+int StringLength(char *Texte); // Retourne la longueur en pixels d'un texte
 bool CharExist(char C); // Si un caracataire existe
 
 void DrawNumber(int x, int y, int Nombre, SDL_Texture *Fond = nullptr); // Affiche un chiffre

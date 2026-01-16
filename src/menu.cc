@@ -1352,7 +1352,7 @@ eMenu Menu::SDLMain_Score(bool EditScore)
             }
 
             sprintf(Provi, "%i", Pref.Sco[i].Score);
-            DrawString(740 - StringLenght(Provi), 120 + i * (360 / 7), Provi, Sprites[fmenu].Image[0]);
+            DrawString(740 - StringLength(Provi), 120 + i * (360 / 7), Provi, Sprites[fmenu].Image[0]);
         }
 
         // Efface le fond
@@ -1399,7 +1399,7 @@ eMenu Menu::SDLMain_Score(bool EditScore)
                 break;
             case SDL_TEXTINPUT:
                 /* Add new text onto the end of our text */
-                if (StringLenght(Pref.Sco[NEdit].Name) < LSCOREMAX && PosCur < 79 && CharExist(event.text.text[0])) {
+                if (StringLength(Pref.Sco[NEdit].Name) < LSCOREMAX && PosCur < 79 && CharExist(event.text.text[0])) {
                     PosCur += strlen(event.text.text);
                     strcat(Pref.Sco[NEdit].Name, event.text.text);
                 }
@@ -1422,7 +1422,7 @@ eMenu Menu::SDLMain_Score(bool EditScore)
 
             i = (currentTime / 50) % 20; // Draw les curseurs
             Ec.PrintSprite(arrow_left, i, 110, 120 + NEdit * (360 / 7));
-            Ec.PrintSprite(arrow_right, i, 180 + StringLenght(Pref.Sco[NEdit].Name), 120 + NEdit * (360 / 7));
+            Ec.PrintSprite(arrow_right, i, 180 + StringLength(Pref.Sco[NEdit].Name), 120 + NEdit * (360 / 7));
         }
 
         // Echange les buffets video

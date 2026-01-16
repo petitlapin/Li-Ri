@@ -213,7 +213,7 @@ bool LoadSprites()
 
 /*** Retourne la longueur d'un nombre ***/
 /****************************************/
-int NumberLenght(int C)
+int NumberLength(int C)
 {
     int l = 0;
 
@@ -230,7 +230,7 @@ int NumberLenght(int C)
 
 /*** Retourne la longueur d'un texte ***/
 /***************************************/
-int StringLenght(char *Texte)
+int StringLength(char *Texte)
 {
     int i = 0;
     int l = 0;
@@ -275,7 +275,7 @@ bool CharExist(char C)
 /*************************/
 void DrawNumber(int x, int y, int Nombre, SDL_Texture *Fond)
 {
-    int const l = NumberLenght(Nombre);
+    int const l = NumberLength(Nombre);
 
     x += l / 2;
     do {
