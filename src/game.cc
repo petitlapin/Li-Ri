@@ -44,8 +44,8 @@ extern SDL_Renderer *sdlRenderer;
 extern Sprite *Sprites;
 extern sNewPreference Pref;
 
-extern int Horloge;
-extern int HorlogeAvant;
+extern int currentTime;
+extern int previousTime;
 
 extern Screen Ec;
 
@@ -71,7 +71,7 @@ Game::Game(Audio &sounds, Gamepad &gamepad) :
 eMenu Game::SDLMain()
 {
     eMenu mRet;
-    int NumN = Pref.Niveau;
+    int NumN = Pref.Level;
 
     Help = true;
     Load(NumN); // Charge le tableau
@@ -79,12 +79,12 @@ eMenu Game::SDLMain()
     Ec.CleanSpriteAndScreen(fjeu);
     Pause = true;
 
-    Horloge = SDL_GetTicks(); // Prend l'horloge
+    currentTime = SDL_GetTicks(); // Prend l'horloge
     DureeJeu = 0;
     Key = 0;
 
     // Met le options de départ du joueur
-    Pref.NVie = N_VIES_DEP;
+    Pref.Lives = N_LIVES_COUNT;
     Pref.Score = 0;
 
     // Prend les evenements
@@ -219,13 +219,13 @@ eMenu Game::SDLMain()
         }
 
         // Gère les Horloges et la pose
-        HorlogeAvant = Horloge;
-        Horloge = SDL_GetTicks();
+        previousTime = currentTime;
+        currentTime = SDL_GetTicks();
         Sleeping();
-        if (Pause == true || Lo.Mort > Horloge) {
-            HorlogeAvant = Horloge;
+        if (Pause == true || Lo.Mort > currentTime) {
+            previousTime = currentTime;
         }
-        DureeJeu += Horloge - HorlogeAvant;
+        DureeJeu += currentTime - previousTime;
 
         // Fait l'affichage
         DrawLevel(NumN);
@@ -238,12 +238,12 @@ eMenu Game::SDLMain()
 
         // Fait avancer la loco
         if (Lo.Mort == -1 && Pause == false) {
-            Lo.Avance(Horloge - HorlogeAvant, DureeJeu, Touche, T);
+            Lo.Avance(currentTime - previousTime, DureeJeu, Touche, T);
         }
 
         // Test la fin d'une partie
-        if (Lo.Mort > -1 && Lo.Mort < Horloge) { // Si est Mort test si doit continuer ou quitter
-            if (Pref.NVie < 0) {
+        if (Lo.Mort > -1 && Lo.Mort < currentTime) { // Si est Mort test si doit continuer ou quitter
+            if (Pref.Lives < 0) {
                 return mScoreEdit; // Si mort fini
             }
             if (Lo.Gagne) {
@@ -254,11 +254,11 @@ eMenu Game::SDLMain()
 #endif
                 NumN++;
                 if (level.N == NumN) {
-                    Pref.Score += Pref.NVie * 100;
+                    Pref.Score += Pref.Lives * 100;
                     return mScoreEdit;
                 }
-                if (Pref.NiveauMax[Pref.Difficulte] < NumN) {
-                    Pref.NiveauMax[Pref.Difficulte] = NumN;
+                if (Pref.LevelMax[Pref.Difficulty] < NumN) {
+                    Pref.LevelMax[Pref.Difficulty] = NumN;
                 }
             }
             m_sounds.NextMusic();
@@ -279,7 +279,7 @@ bool Game::Load(int NivN)
 {
     int i;
 
-    Pref.Niveau = NivN;
+    Pref.Level = NivN;
 
     // Recopie le tableau
     for (i = 0; i < LT * HT; i++) {
@@ -287,7 +287,7 @@ bool Game::Load(int NivN)
     }
 
     // Laisse ou efface la vie suivant le niveau
-    switch (Pref.Difficulte) {
+    switch (Pref.Difficulty) {
     case Easy:
         i = 5;
         break;
@@ -311,15 +311,15 @@ bool Game::Load(int NivN)
     MasqueK = 0;
 
     // Met la vitesse suivant difficulté
-    switch (Pref.Difficulte) {
+    switch (Pref.Difficulty) {
     case Easy:
-        Pref.Vitesse = Pref.VitesseMoy = VITESSE_MIN;
+        Pref.Speed = Pref.SpeedAverage = SPEED_MIN;
         break;
     case Hard:
-        Pref.Vitesse = Pref.VitesseMoy = VITESSE_MAX;
+        Pref.Speed = Pref.SpeedAverage = SPEED_MAX;
         break;
     default:
-        Pref.Vitesse = Pref.VitesseMoy = VITESSE_MOY;
+        Pref.Speed = Pref.SpeedAverage = SPEED_AVERAGE;
     }
 
     return DrawLevel(NivN);
@@ -332,7 +332,7 @@ bool Game::DrawLevel(int NivN)
     int i, x, y, m, cx, cy;
 
     // Fabrique le fond du jeu
-    Sprites[fond].Affiche(400, 300, 0, Sprites[fjeu].Image[0]);
+    Sprites[fond].Draw(400, 300, 0, Sprites[fjeu].Image[0]);
 
     // Affiche le circuit
     for (i = 0; i < LT * HT; i++) {
@@ -356,25 +356,25 @@ bool Game::DrawLevel(int NivN)
                 m += 1;
             }
 
-            Sprites[rail].Affiche(x, y, NumRail[m], Sprites[fjeu].Image[0]);
+            Sprites[rail].Draw(x, y, NumRail[m], Sprites[fjeu].Image[0]);
         }
     }
 
     // Affiche les décorations
 #ifndef DCHILDREN
     for (i = 0; i < level.T[NivN].NDeco; i++) {
-        Sprites[deco].Affiche(level.T[NivN].Deco[i].x, level.T[NivN].Deco[i].y, level.T[NivN].Deco[i].NumSpr,
-                              Sprites[fjeu].Image[0]);
+        Sprites[deco].Draw(level.T[NivN].Deco[i].x, level.T[NivN].Deco[i].y, level.T[NivN].Deco[i].NumSpr,
+                           Sprites[fjeu].Image[0]);
     }
 #endif
 
     // Affiche les textes suivant la langue
-    AfficheText(740, 110, T_level, Sprites[fjeu].Image[0]);
-    AfficheText(740, 180, T_score, Sprites[fjeu].Image[0]);
-    AfficheText(740, 260, T_options, Sprites[fjeu].Image[0]);
-    AfficheText(740, 340, T_lives, Sprites[fjeu].Image[0]);
+    DrawText(740, 110, T_level, Sprites[fjeu].Image[0]);
+    DrawText(740, 180, T_score, Sprites[fjeu].Image[0]);
+    DrawText(740, 260, T_options, Sprites[fjeu].Image[0]);
+    DrawText(740, 340, T_lives, Sprites[fjeu].Image[0]);
 
-    AfficheChiffre(740, 140, Pref.Niveau + 1, Sprites[fjeu].Image[0]);
+    DrawNumber(740, 140, Pref.Level + 1, Sprites[fjeu].Image[0]);
 
     return true;
 }
@@ -552,10 +552,10 @@ void Game::AfficheEcran()
             Ec.PrintSprite(pluscourt, (DureeJeu * 40 / 1000 + i * 7) % 50, i % LT * D_Case + D_Case / 2, i / LT * D_Case + D_Case / 2);
             break;
         case C_Speed: // Si plus vite
-            Ec.PrintSprite(vitesse, (DureeJeu * 40 / 1000 + i * 7) % 50, i % LT * D_Case + D_Case / 2, i / LT * D_Case + D_Case / 2);
+            Ec.PrintSprite(speed, (DureeJeu * 40 / 1000 + i * 7) % 50, i % LT * D_Case + D_Case / 2, i / LT * D_Case + D_Case / 2);
             break;
         case C_Live: // Si une vie
-            Ec.PrintSprite(vie, (DureeJeu * 40 / 1000 + i * 7) % 50, i % LT * D_Case + D_Case / 2, i / LT * D_Case + D_Case / 2);
+            Ec.PrintSprite(life, (DureeJeu * 40 / 1000 + i * 7) % 50, i % LT * D_Case + D_Case / 2, i / LT * D_Case + D_Case / 2);
             break;
         }
     }
@@ -566,14 +566,14 @@ void Game::AfficheEcran()
     }
 
     // Affiche tableau de bord
-    Ec.PrintOptions(Pref.NVie, Pref.Score);
-    if (Pref.EcartWagon < ECARTWAGON_MOY) {
+    Ec.PrintOptions(Pref.Lives, Pref.Score);
+    if (Pref.WagonGap < WAGON_GAP_MIN) {
         Ec.PrintSprite(pluscourt, (DureeJeu * 40 / 1000) % 50, 715, 295);
     }
-    if (Pref.EcartWagon > ECARTWAGON_MOY) {
+    if (Pref.WagonGap > WAGON_GAP_AVERAGE) {
         Ec.PrintSprite(pluslong, (DureeJeu * 40 / 1000) % 50, 715, 295);
     }
-    if (Pref.VitesseMoy > Pref.Vitesse) {
-        Ec.PrintSprite(vitesse, (DureeJeu * 40 / 1000 + 7) % 50, 765, 295);
+    if (Pref.SpeedAverage > Pref.Speed) {
+        Ec.PrintSprite(speed, (DureeJeu * 40 / 1000 + 7) % 50, 765, 295);
     }
 }

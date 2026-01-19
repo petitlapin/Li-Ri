@@ -45,32 +45,32 @@ struct s_Dim
 /***********************/
 enum e_Sprite {
     locomotive = 0,
-    charbon,
-    buches,
-    balles,
-    moteur,
-    citerne,
+    coal_wagon,
+    logs_wagon,
+    cargo_wagon,
+    engine_wagon,
+    cistern_wagon,
     wagon,
     pluslong,
     pluscourt,
-    vitesse,
-    vie,
-    nouveau_wagon,
+    speed,
+    life,
+    new_wagon,
     logo_vie,
     rail,
     dir,
     lettres,
-    chiffres,
-    titre,
+    digits,
+    title,
     copyright,
     deco,
-    curseur,
-    fleche_gauche,
-    fleche_droite,
-    fleches,
-    monde,
+    cursor,
+    arrow_left,
+    arrow_right,
+    arrows,
+    earth,
     music,
-    bruitage,
+    sound,
     fscreen,
     window,
     keys,
@@ -84,7 +84,7 @@ enum e_Sprite {
     fjeu,
     fmenu,
     rope,
-    chargeur,
+    loading,
 
     T_level,
     T_lives,
@@ -174,18 +174,18 @@ enum e_Sprite {
 
 /*** Fonctions ***/
 /*****************/
-void AfficheChargeur(); // Affiche le chargeur sur la page de départ
-bool LoadLangue(); // Charge les sprites d'une langue
+void DrawLoading(); // Affiche le chargeur sur la page de départ
+bool LoadLanguage(); // Charge les sprites d'une langue
 bool LoadSprites(); // Charge tous les sprites
 
-int LongueurChiffre(int C); // Retourne la longueur en pixels d'un nombre
-int LongueurString(char *Texte); // Retourne la longueur en pixels d'un texte
-bool CharExiste(char C); // Si un caracataire existe
+int NumberLength(int C); // Retourne la longueur en pixels d'un nombre
+int StringLength(char *Texte); // Retourne la longueur en pixels d'un texte
+bool CharExist(char C); // Si un caracataire existe
 
-void AfficheChiffre(int x, int y, int Nombre, SDL_Texture *Fond = nullptr); // Affiche un chiffre
-void AfficheString(int x, int y, char *Texte, SDL_Texture *Fond = nullptr); // Affiche une chaine de caractaire
+void DrawNumber(int x, int y, int Nombre, SDL_Texture *Fond = nullptr); // Affiche un chiffre
+void DrawString(int x, int y, char *Texte, SDL_Texture *Fond = nullptr); // Affiche une chaine de caractaire
 
-void AfficheText(int x, int y, e_Sprite Text, SDL_Texture *Fond = nullptr); // Affiche un text dans la langue
+void DrawText(int x, int y, e_Sprite Text, SDL_Texture *Fond = nullptr); // Affiche un text dans la langue
 
 /*** Definition de la classe Sprite ***/
 /**************************************/
@@ -197,9 +197,9 @@ public:
 
     /*** Fonctions ***/
     bool Load(unsigned char *Buf, long &P); // Charge les images
-    void Affiche(int X, int Y, int NumSpr, SDL_Texture *Fond = nullptr) const; // Affiche un sprite
+    void Draw(int X, int Y, int NumSpr, SDL_Texture *Fond = nullptr) const; // Affiche un sprite
     void PrintRope(int dx, int dy, int fx, int fy);
-    bool Nouveau(int Lx, int Ly); // Alloue un nouveau sprite vide sans transparence
+    bool New(int Lx, int Ly); // Alloue un nouveau sprite vide sans transparence
     void Delete(); // Efface la mémoire du sprite
 
     /*** Variables ***/

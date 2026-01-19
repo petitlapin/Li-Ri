@@ -43,26 +43,26 @@ static int TableTexte[256];
 
 char Langue[31][16]; // Mémorise les noms des langues
 int NTextes = 0;
-bool AfficheC = false; // Si peut afficher le chargeur lors du chargement
+bool shouldDrawLoading = false;
 
 #define N_SPRITESFOND 2
 
 /*** Affiche le chargeur lors du chargement ***/
 /**********************************************/
-void AfficheChargeur()
+void DrawLoading()
 {
     static int NumAf = -1; // Numéro su sprite affiché
     int i, Old;
-    int Hor;
+    int Clock;
 
-    if (AfficheC == true) {
-        Hor = SDL_GetTicks();
-        i = (Hor / (1000 / 25)) % Sprites[chargeur].N; // Calcule le numéro su sprite à afficher
+    if (shouldDrawLoading == true) {
+        Clock = SDL_GetTicks();
+        i = (Clock / (1000 / 25)) % Sprites[loading].N; // Calcule le numéro su sprite à afficher
 
         if (i != NumAf) {
             Old = NumAf;
             NumAf = i;
-            Sprites[chargeur].Affiche(400, 300, NumAf);
+            Sprites[loading].Draw(400, 300, NumAf);
             SDL_RenderPresent(sdlRenderer);
             // TODO if(Old!=-1) Sprites[chargeur].Efface(400,300,Old,sdlVideo);
         }
@@ -71,17 +71,17 @@ void AfficheChargeur()
 
 /*** Charge les Sprites d'une langue ***/
 /***************************************/
-bool LoadLangue()
+bool LoadLanguage()
 {
     long L, P;
     int i;
     unsigned char *Buf;
     char PathFile[512];
 
-    strcpy(PathFile, Langue[Pref.Langue]);
+    strcpy(PathFile, Langue[Pref.Language]);
     Utils::GetPath(PathFile);
     if (Utils::FileExists(PathFile) == false) {
-        SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Unable to find '%s'", Langue[Pref.Langue]);
+        SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Unable to find '%s'", Langue[Pref.Language]);
         return false;
     }
     L = Utils::LoadFile(PathFile, Buf);
@@ -140,29 +140,29 @@ bool LoadSprites()
     NSp = (int)(Buf[0]) * 256 + (int)(Buf[1]);
     NSp += N_SPRITESFOND + 2;
     NTextes = (int)(Buf[2]) * 256 + (int)(Buf[3]);
-    Pref.NLangues = (int)(Buf[4]) * 256 + (int)(Buf[5]);
+    Pref.NLanguages = (int)(Buf[4]) * 256 + (int)(Buf[5]);
 
-    NSprites = NSp + NTextes + Pref.NLangues;
+    NSprites = NSp + NTextes + Pref.NLanguages;
     Sprites = new Sprite[NSprites];
 
     // Récupère les nom des langues
     P = 6;
-    for (i = 0; i < Pref.NLangues; i++) {
+    for (i = 0; i < Pref.NLanguages; i++) {
         strcpy(Langue[i], (char *)(Buf + P));
         P += strlen((char *)(Buf + P)) + 1;
     }
 
     // Charge les sprites des langues
-    for (i = 0; i < Pref.NLangues; i++) {
+    for (i = 0; i < Pref.NLanguages; i++) {
         if (Sprites[T_Langue + i].Load(Buf, P) == false) {
             return false;
         }
     }
 
-    if (Sprites[chargeur].Load(Buf, P) == false) {
+    if (Sprites[loading].Load(Buf, P) == false) {
         return false; // Sprite du chargeur
     }
-    AfficheC = true; // Peut afficher le sprite du chargeur
+    shouldDrawLoading = true; // Peut afficher le sprite du chargeur
 
     delete[] Buf;
 
@@ -179,18 +179,18 @@ bool LoadSprites()
     // Lit les sprites
     P = 0;
     for (i = 0; i < NSp; i++) {
-        AfficheChargeur();
+        DrawLoading();
         switch (i) {
         case fjeu:
         case fmenu:
-            if (Sprites[i].Nouveau(800, 600) == false) {
+            if (Sprites[i].New(800, 600) == false) {
                 return false;
             }
             break;
         case rope:
             Sprites[i].N = 0;
             break;
-        case chargeur:
+        case loading:
             break;
         default:
             if (Sprites[i].Load(Buf, P) == false) {
@@ -203,22 +203,22 @@ bool LoadSprites()
 
     // *** Charge la langue ***
     // ************************
-    if (Pref.Langue != -1) {
-        LoadLangue();
+    if (Pref.Language != -1) {
+        LoadLanguage();
     }
 
-    AfficheC = false; // N'affiche plus les sprites du chargeur
+    shouldDrawLoading = false; // N'affiche plus les sprites du chargeur
     return true;
 }
 
 /*** Retourne la longueur d'un nombre ***/
 /****************************************/
-int LongueurChiffre(int C)
+int NumberLength(int C)
 {
     int l = 0;
 
     do {
-        l += Sprites[chiffres].Dim[(C % 10)].L;
+        l += Sprites[digits].Dim[(C % 10)].L;
         C /= 10;
         if (C) {
             l += ECART_ENTRE_CHIFFRE;
@@ -230,7 +230,7 @@ int LongueurChiffre(int C)
 
 /*** Retourne la longueur d'un texte ***/
 /***************************************/
-int LongueurString(char *Texte)
+int StringLength(char *Texte)
 {
     int i = 0;
     int l = 0;
@@ -258,7 +258,7 @@ int LongueurString(char *Texte)
 
 /*** Test si un caracataire existe ***/
 /*************************************/
-bool CharExiste(char C)
+bool CharExist(char C)
 {
     if ((int)(C) < 0) {
         return false;
@@ -273,21 +273,21 @@ bool CharExiste(char C)
 }
 /*** Affiche un nombre ***/
 /*************************/
-void AfficheChiffre(int x, int y, int Nombre, SDL_Texture *Fond)
+void DrawNumber(int x, int y, int Nombre, SDL_Texture *Fond)
 {
-    int const l = LongueurChiffre(Nombre);
+    int const l = NumberLength(Nombre);
 
     x += l / 2;
     do {
-        Sprites[chiffres].Affiche(x - (Sprites[chiffres].Dim[(Nombre % 10)].L) / 2, y, Nombre % 10, Fond);
-        x -= Sprites[chiffres].Dim[(Nombre % 10)].L + ECART_ENTRE_CHIFFRE;
+        Sprites[digits].Draw(x - (Sprites[digits].Dim[(Nombre % 10)].L) / 2, y, Nombre % 10, Fond);
+        x -= Sprites[digits].Dim[(Nombre % 10)].L + ECART_ENTRE_CHIFFRE;
         Nombre /= 10;
     } while (Nombre);
 }
 
 /*** Affiche un Texte ***/
 /************************/
-void AfficheString(int x, int y, char *Texte, SDL_Texture *Fond)
+void DrawString(int x, int y, char *Texte, SDL_Texture *Fond)
 {
     int i = 0;
     int Le;
@@ -298,7 +298,7 @@ void AfficheString(int x, int y, char *Texte, SDL_Texture *Fond)
 
         if (TableTexte[Le] != -1) { // Si un caractaire connue
             Le = TableTexte[Le];
-            Sprites[lettres].Affiche(x + (Sprites[lettres].Dim[Le].L / 2), y, Le, Fond);
+            Sprites[lettres].Draw(x + (Sprites[lettres].Dim[Le].L / 2), y, Le, Fond);
             x += Sprites[lettres].Dim[Le].L + ECART_ENTRE_LETTRE;
         }
         else { // Si un espace
@@ -313,9 +313,9 @@ void AfficheString(int x, int y, char *Texte, SDL_Texture *Fond)
 
 /*** Affiche un text dans la langue ***/
 /**************************************/
-void AfficheText(int x, int y, e_Sprite Text, SDL_Texture *Fond)
+void DrawText(int x, int y, e_Sprite Text, SDL_Texture *Fond)
 {
-    Sprites[Text].Affiche(x, y, 0, Fond);
+    Sprites[Text].Draw(x, y, 0, Fond);
 }
 
 /*** Constructeur ***/
@@ -349,7 +349,7 @@ bool Sprite::Load(unsigned char *Buf, long &P)
     // Lit tous les sprites
     for (i = 0; i < N; i++) {
         // Affiche l'animation de chargement
-        AfficheChargeur();
+        DrawLoading();
 
         // Lit les dimensions
         Dim[i].L = (int)(Buf[P]) * 256 + (int)(Buf[P + 1]);
@@ -401,7 +401,7 @@ bool Sprite::Load(unsigned char *Buf, long &P)
 
 /*** Affiche le sprite ***/
 /*************************/
-void Sprite::Affiche(int X, int Y, int NumSpr, SDL_Texture *Fond) const
+void Sprite::Draw(int X, int Y, int NumSpr, SDL_Texture *Fond) const
 {
     SDL_Rect Position;
     SDL_Rect Di;
@@ -430,7 +430,7 @@ void Sprite::PrintRope(int dx, int dy, int fx, int fy)
 
 /*** Alloue un nouveau sprite vide ***/
 /*************************************/
-bool Sprite::Nouveau(int Lx, int Ly)
+bool Sprite::New(int Lx, int Ly)
 {
     Delete(); // Efface au cas ou
 

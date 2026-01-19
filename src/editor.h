@@ -43,7 +43,7 @@ public:
     /*** Fonctions ***/
     /*****************/
     eMenu SDLMain(int NumNiveau); // Boucle principale
-    void Affiche() const; // Charge un tableau
+    void Draw() const; // Charge un tableau
     void PrendTouche(int Touche); // Prend les touches enfoncées
 
 private:

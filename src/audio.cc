@@ -33,7 +33,7 @@
 /*** Variable globales ***/
 /*************************/
 extern sNewPreference Pref;
-extern int Horloge;
+extern int currentTime;
 
 /*** Constructeur et Destructeur ***/
 /***********************************/
@@ -162,10 +162,10 @@ void Audio::Play(eSon So)
     }
 
     if (So == sClic) {
-        if (Horloge - MemoHorloge <= 120) {
+        if (currentTime - MemorizedTime <= 120) {
             return;
         }
-        MemoHorloge = Horloge;
+        MemorizedTime = currentTime;
     }
 
     Mix_PlayChannel(-1, Son[So], 0);
