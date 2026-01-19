@@ -364,7 +364,7 @@ bool Game::DrawLevel(int NivN)
 #ifndef DCHILDREN
     for (i = 0; i < level.T[NivN].NDeco; i++) {
         Sprites[deco].Draw(level.T[NivN].Deco[i].x, level.T[NivN].Deco[i].y, level.T[NivN].Deco[i].NumSpr,
-                              Sprites[fjeu].Image[0]);
+                           Sprites[fjeu].Image[0]);
     }
 #endif
 

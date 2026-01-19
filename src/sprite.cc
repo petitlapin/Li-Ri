@@ -43,7 +43,7 @@ static int TableTexte[256];
 
 char Langue[31][16]; // Mémorise les noms des langues
 int NTextes = 0;
-bool DrawL = false; // Si peut afficher le chargeur lors du chargement
+bool shouldDrawLoading = false;
 
 #define N_SPRITESFOND 2
 
@@ -55,7 +55,7 @@ void DrawLoading()
     int i, Old;
     int Clock;
 
-    if (DrawL == true) {
+    if (shouldDrawLoading == true) {
         Clock = SDL_GetTicks();
         i = (Clock / (1000 / 25)) % Sprites[loading].N; // Calcule le numéro su sprite à afficher
 
@@ -162,7 +162,7 @@ bool LoadSprites()
     if (Sprites[loading].Load(Buf, P) == false) {
         return false; // Sprite du chargeur
     }
-    DrawL = true; // Peut afficher le sprite du chargeur
+    shouldDrawLoading = true; // Peut afficher le sprite du chargeur
 
     delete[] Buf;
 
@@ -207,7 +207,7 @@ bool LoadSprites()
         LoadLanguage();
     }
 
-    DrawL = false; // N'affiche plus les sprites du chargeur
+    shouldDrawLoading = false; // N'affiche plus les sprites du chargeur
     return true;
 }
 

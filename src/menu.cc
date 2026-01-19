@@ -234,7 +234,7 @@ eMenu Menu::SDLMain_Language()
     // Prend l'image du fond et fait l'affichage
     Sprites[fond_menu].Draw(400, 300, 0, Sprites[fmenu].Image[0]);
 
-    // Draw les langues possibles
+    // Draw available languages
     NCol = 3;
     if (Pref.NLanguages % NCol == 0) {
         NL = Pref.NLanguages / NCol;
@@ -900,7 +900,7 @@ eMenu Menu::SDLMain_Level()
         // Gère l'Affichage
         Ec.ClearSprite(fmenu);
 
-        // Draw les flèches
+        // Draw arrows
         if (Niv > 0) {
             if (PyE == 3) {
                 Ec.PrintSprite(arrows, 2, 330, 380);
@@ -1333,11 +1333,11 @@ eMenu Menu::SDLMain_Score(bool EditScore)
         // Prend l'image du fond et fait l'affichage
         Sprites[fond_menu].Draw(400, 300, 0, Sprites[fmenu].Image[0]);
 
-        // Draw le titre et les commandes
+        // Draw title and commands
         DrawText(400, 50, T_better_scores, Sprites[fmenu].Image[0]);
         DrawText(400, 550, T_press_any_key, Sprites[fmenu].Image[0]);
 
-        // Draw les scores
+        // Draw scores
         for (i = 0; i < 8; i++) {
             sprintf(Provi, "%d", i + 1);
             DrawString(70, 120 + i * (360 / 7), Provi, Sprites[fmenu].Image[0]);
@@ -1417,10 +1417,10 @@ eMenu Menu::SDLMain_Score(bool EditScore)
         currentTime = SDL_GetTicks();
         Sleeping();
 
-        if (EditScore) { // Gère l'Draw pour l'édition des scores
+        if (EditScore) { // Handle the scores edition drawing
             DrawString(140, 120 + NEdit * (360 / 7), Pref.Sco[NEdit].Name);
 
-            i = (currentTime / 50) % 20; // Draw les curseurs
+            i = (currentTime / 50) % 20; // Draw cursors
             Ec.PrintSprite(arrow_left, i, 110, 120 + NEdit * (360 / 7));
             Ec.PrintSprite(arrow_right, i, 180 + StringLength(Pref.Sco[NEdit].Name), 120 + NEdit * (360 / 7));
         }
@@ -1436,8 +1436,8 @@ eMenu Menu::SDLMain_Score(bool EditScore)
     return mQuit;
 }
 
-/*** Draw le menu Principale ***/
-/**********************************/
+/*** Draw main menu ***/
+/**********************/
 void Menu::Print_Main(int Centre) const
 {
     int const NumSp = (currentTime / 50) % 20;
