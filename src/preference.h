@@ -24,7 +24,7 @@
 #ifndef PREFERENCE_DOM_
 #define PREFERENCE_DOM_
 
-#include <SDL2/SDL_audio.h> // for SDL_MIX_MAXVOLUME
+#include <SDL3/SDL_audio.h> // for SDL_MIX_MAXVOLUME
 
 #define SPEED_MAX 180.0
 #define SPEED_AVERAGE 120.0
@@ -112,8 +112,8 @@ struct sNewPreference
     int LevelMax[3] { 0, 0, 0 }; // One per difficulty
     int FullScreen { true };
     int Language { -1 }; // locale index
-    float Volume { (float)SDL_MIX_MAXVOLUME }; // audio volume
-    float VolumeM { (float)SDL_MIX_MAXVOLUME }; // music volume
+    float Volume { 1.0f }; // audio volume
+    float VolumeM { 1.0f }; // music volume
     struct sScore Sco[8]; // store scores
     int HumanRightsQuiz { 1 }; // enable the human rights questions at the end of a level
 };

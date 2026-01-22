@@ -24,7 +24,7 @@
 #ifndef MOUSE_DOM_
 #define MOUSE_DOM_
 
-#include <SDL2/SDL_events.h>
+#include <SDL3/SDL_events.h>
 
 class Audio;
 /*** Structure pour la position dans le menu Py ***/

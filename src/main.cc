@@ -23,15 +23,15 @@
 
 #include <cstdlib>
 #include <cstring>
-#include <SDL2/SDL_error.h> // for SDL_GetError
-#include <SDL2/SDL_hints.h> // for SDL_SetHint, SDL_HINT_RENDER_SCALE_QUALITY
-#include <SDL2/SDL_log.h> // for SDL_LogError, SDL_LOG_CATEGORY_APPLICATION
-#include <SDL2/SDL_mouse.h> // for SDL_ShowCursor
-#include <SDL2/SDL_render.h> // for SDL_CreateRenderer, SDL_DestroyRenderer
-#include <SDL2/SDL_timer.h> // for SDL_GetTicks
-#include <SDL2/SDL_video.h> // for SDL_CreateWindow, SDL_DestroyWindow
-#include <SDL2/SDL.h>
-#include <SDL2/SDL_mixer.h>
+#include <SDL3/SDL_error.h> // for SDL_GetError
+#include <SDL3/SDL_hints.h> // for SDL_SetHint, SDL_HINT_RENDER_SCALE_QUALITY
+#include <SDL3/SDL_log.h> // for SDL_LogError, SDL_LOG_CATEGORY_APPLICATION
+#include <SDL3/SDL_mouse.h> // for SDL_HideCursor
+#include <SDL3/SDL_render.h> // for SDL_CreateRenderer, SDL_DestroyRenderer
+#include <SDL3/SDL_timer.h> // for SDL_GetTicks
+#include <SDL3/SDL_video.h> // for SDL_CreateWindow, SDL_DestroyWindow
+#include <SDL3/SDL.h>
+#include <SDL3_mixer/SDL_mixer.h>
 
 #include "config.h"
 #include "preference.h"
@@ -99,25 +99,26 @@ int main(int narg, char *argv[])
 
     SDL_SetHint(SDL_HINT_JOYSTICK_ALLOW_BACKGROUND_EVENTS, "1");
     // Initiliase SDL
-    if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO | SDL_INIT_GAMECONTROLLER) < 0) {
+    if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO | SDL_INIT_GAMEPAD) < 0) {
         SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Unable to initialize SDL: %s", SDL_GetError());
         exit(-1);
     }
     // Close the program properly when quitting
     atexit(SDL_Quit);
 
+    MIX_Init();
+
     // Set resolution
     int vOption = SDL_WINDOW_RESIZABLE;
     if (Pref.FullScreen) {
-        vOption |= SDL_WINDOW_FULLSCREEN_DESKTOP;
+        vOption |= SDL_WINDOW_FULLSCREEN;
     }
 
-    sdlWindow = SDL_CreateWindow(Titre, 0, 0, 800, 600, vOption);
-    sdlRenderer = SDL_CreateRenderer(sdlWindow, -1, 0);
-    SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "linear");
-    SDL_RenderSetLogicalSize(sdlRenderer, 800, 600);
+    sdlWindow = SDL_CreateWindow(Titre, 800, 600, vOption);
+    sdlRenderer = SDL_CreateRenderer(sdlWindow, NULL);
+    SDL_SetRenderLogicalPresentation(sdlRenderer, 800, 600, SDL_LOGICAL_PRESENTATION_LETTERBOX);
 
-    SDL_ShowCursor(0); // Hide cursor
+    SDL_HideCursor();
 
     Audio audio;
     audio.Init();
@@ -189,8 +190,8 @@ int main(int narg, char *argv[])
     } while (RetMenu != mQuit);
 
     // close program
-    Mix_HaltMusic();
-    Mix_FreeMusic(audio.Music);
+    MIX_StopTrack(audio.Track, 0);
+    MIX_DestroyAudio(audio.Music);
 
     for (i = 0; i < NSprites; i++) {
         Sprites[i].Delete();
@@ -201,7 +202,7 @@ int main(int narg, char *argv[])
     SDL_DestroyRenderer(sdlRenderer);
     SDL_DestroyWindow(sdlWindow);
 
-    Mix_Quit();
+    MIX_Quit();
     SDL_Quit();
     return 0;
 }

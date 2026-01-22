@@ -21,11 +21,11 @@
 //    with this program; if not, write to the Free Software Foundation, Inc.,
 //    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-#include <SDL2/SDL_events.h> // for SDL_PollEvent, SDL_PRESSED, SDL_Event
-#include <SDL2/SDL_keycode.h> // for SDLK_DOWN, SDLK_LEFT, SDLK_RIGHT, SDLK_UP
-#include <SDL2/SDL_render.h> // for SDL_RenderPresent, SDL_RenderClear
-#include <SDL2/SDL_timer.h> // for SDL_GetTicks
-#include <SDL2/SDL_video.h> // for SDL_WINDOWEVENT_ENTER, SDL_WINDOWEVENT...
+#include <SDL3/SDL_events.h> // for SDL_PollEvent, SDL_Event
+#include <SDL3/SDL_keycode.h> // for SDLK_DOWN, SDLK_LEFT, SDLK_RIGHT, SDLK_UP
+#include <SDL3/SDL_render.h> // for SDL_RenderPresent, SDL_RenderClear
+#include <SDL3/SDL_timer.h> // for SDL_GetTicks
+#include <SDL3/SDL_video.h> // for SDL_WINDOWEVENT_ENTER, SDL_WINDOWEVENT...
 #include <cstdlib>
 
 #include "game.h"
@@ -96,15 +96,11 @@ eMenu Game::SDLMain()
             m_gamepad.GetEvent(event); // Handle gamepad
 
             switch (event.type) {
-            case SDL_WINDOWEVENT:
-                if (event.window.event == SDL_WINDOWEVENT_ENTER) {
-                }
-                else if (event.window.event == SDL_WINDOWEVENT_LEAVE) { // Si désactive l'ecran
-                    Pause = true; // Met en Pause
-                }
+            case SDL_EVENT_WINDOW_MOUSE_LEAVE:
+                Pause = true; // Met en Pause
                 break;
-            case SDL_MOUSEBUTTONDOWN:
-                if (event.button.state == SDL_PRESSED) {
+            case SDL_EVENT_MOUSE_BUTTON_DOWN:
+                if (event.button.down) {
                     // Add a Pause event if we click on the top right loco
                     int const Px = event.button.x;
                     int const Py = event.button.y;
@@ -127,9 +123,9 @@ eMenu Game::SDLMain()
                     }
                 }
                 break;
-            case SDL_KEYDOWN:
-                if (event.key.state == SDL_PRESSED) {
-                    if (event.key.keysym.sym == SDLK_ESCAPE || event.key.keysym.sym == SDLK_AC_BACK) {
+            case SDL_EVENT_KEY_DOWN:
+                if (event.key.down) {
+                    if (event.key.key == SDLK_ESCAPE || event.key.key == SDLK_AC_BACK) {
                         mRet = m_menu->SDLMain_InGame();
                         if (mRet == mGame) {
                             DrawLevel(NumN);
@@ -141,7 +137,7 @@ eMenu Game::SDLMain()
                         }
                     }
                     else {
-                        Key = event.key.keysym.sym;
+                        Key = event.key.key;
 
                         if (event.key.repeat == 0) {
                             // The text says: "press any key to start"
@@ -190,8 +186,8 @@ eMenu Game::SDLMain()
                         }
                     }
                     break;
-                case SDL_KEYUP:
-                    switch (event.key.keysym.sym) {
+                case SDL_EVENT_KEY_UP:
+                    switch (event.key.key) {
                     case SDLK_UP:
                         MasqueK &= 14;
                         break;
@@ -211,7 +207,7 @@ eMenu Game::SDLMain()
                         Key = 0;
                     }
                     break;
-                case SDL_QUIT:
+                case SDL_EVENT_QUIT:
                     return mQuit;
                     break;
                 }

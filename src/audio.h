@@ -24,7 +24,7 @@
 #ifndef AUDIO_DOM_
 #define AUDIO_DOM_
 
-#include <SDL2/SDL_mixer.h>
+#include <SDL3_mixer/SDL_mixer.h>
 
 /*** Enumération des sons ***/
 /****************************/
@@ -59,15 +59,17 @@ public:
 
     void PauseMusic(bool Etat) const; // Met ou no la music en pause
 
-    void DoVolume() const; // Valide les volumes audio
-    Mix_Music *Music { nullptr }; // Pointe sur les musics
-
+    void DoVolume(MIX_Track* track) const; // Valide les volumes audio
+    MIX_Audio *Music { nullptr }; // Pointe sur les musics
+    MIX_Track *Track { nullptr }; // Should be private and cleanup better in main.cc
+    MIX_Track *MusicTrack { nullptr };
 private:
     /*** Variables ***/
     int N { 0 }; // Nombre d'échantillon audio
     int NMus { 0 }; // Numéro de la music en cours
     int MemorizedTime { 0 }; // Mémorise l'horloge pour les clics
-    Mix_Chunk **Son { nullptr }; // Pointe sur les sons
+    MIX_Audio **Son { nullptr }; // Pointe sur les sons
+    MIX_Mixer *Mixer { nullptr };
 };
 
 #endif

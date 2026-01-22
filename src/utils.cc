@@ -25,12 +25,12 @@
 #include <cstring>
 #include <string>
 
-#include <SDL2/SDL_filesystem.h> // for SDL_GetPrefPath
-#include <SDL2/SDL_log.h> // for SDL_LogError, SDL_LOG_CATEGORY_APPL...
-#include <SDL2/SDL_rwops.h> // for SDL_RWclose, SDL_RWFromFile, SDL_RW...
-#include <SDL2/SDL_stdinc.h> // for SDL_free
-#include <SDL2/SDL_pixels.h> // for SDL_PIXELFORMAT_ARGB8888
-#include <SDL2/SDL_surface.h> // for SDL_CreateRGBSurface, SDL_FreeSurface
+#include <SDL3/SDL_filesystem.h> // for SDL_GetPrefPath
+#include <SDL3/SDL_log.h> // for SDL_LogError, SDL_LOG_CATEGORY_APPL...
+#include <SDL3/SDL_iostream.h>
+#include <SDL3/SDL_stdinc.h> // for SDL_free
+#include <SDL3/SDL_pixels.h> // for SDL_PIXELFORMAT_ARGB8888
+#include <SDL3/SDL_surface.h> // for SDL_CreateRGBSurface, SDL_DestroySurface
 
 #include "config.h"
 #include "utils.h"
@@ -64,13 +64,13 @@ extern char DefPath[]; // Default path in argument
 /********************************/
 bool Utils::FileExists(const char *Path)
 {
-    SDL_RWops *file = SDL_RWFromFile(Path, "rb");
+    SDL_IOStream *file = SDL_IOFromFile(Path, "rb");
 
     if (file == nullptr) {
         return false;
     }
 
-    SDL_RWclose(file);
+    SDL_CloseIO(file);
     return true;
 }
 
@@ -78,18 +78,18 @@ bool Utils::FileExists(const char *Path)
 /*****************************/
 long Utils::LoadFile(const char *Path, unsigned char *&Buf)
 {
-    SDL_RWops *file = SDL_RWFromFile(Path, "rb");
+    SDL_IOStream *file = SDL_IOFromFile(Path, "rb");
     if (!file) {
         SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Unable to open '%s'", Path);
         return -1;
     }
 
-    long const L = SDL_RWsize(file);
+    long const L = SDL_GetIOSize(file);
 
     Buf = new unsigned char[L + 1];
     if (Buf == nullptr) {
         SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Not enough memory");
-        SDL_RWclose(file);
+        SDL_CloseIO(file);
         return -1;
     }
 
@@ -98,9 +98,9 @@ long Utils::LoadFile(const char *Path, unsigned char *&Buf)
 
     while (Compt > 1024) {
         DrawLoading();
-        if (SDL_RWread(file, Po, 1, 1024) != 1024) {
+        if (SDL_ReadIO(file, Po, 1024) != 1024) {
             SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Error while reading '%s'", Path);
-            SDL_RWclose(file);
+            SDL_CloseIO(file);
             delete[] Buf;
             return -1;
         }
@@ -109,10 +109,10 @@ long Utils::LoadFile(const char *Path, unsigned char *&Buf)
     }
 
     if (Compt) { // Ne fait pas le test à cause d'un bug dans windows
-        SDL_RWread(file, Po, 1, (unsigned int)Compt);
+        SDL_ReadIO(file, Po, (unsigned int)Compt);
     }
 
-    SDL_RWclose(file);
+    SDL_CloseIO(file);
     return L;
 }
 
@@ -364,11 +364,10 @@ void Utils::doScreenshot(SDL_Renderer *renderer)
     static int screenshotNumber = 0;
     char screenshotName[80];
     int w, h;
-    SDL_GetRendererOutputSize(renderer, &w, &h);
-    SDL_Surface *surface = SDL_CreateRGBSurfaceWithFormat(0, w, h, 24,
-                                                          SDL_PIXELFORMAT_RGB24);
-    SDL_RenderReadPixels(renderer, nullptr, SDL_PIXELFORMAT_RGB24, surface->pixels, surface->pitch);
+    SDL_GetCurrentRenderOutputSize(renderer, &w, &h);
+    SDL_Rect rect { 0, 0, w, h };
+    SDL_Surface *surface = SDL_RenderReadPixels(renderer, &rect);
     sprintf(screenshotName, "screenshot%i.bmp", screenshotNumber++);
     SDL_SaveBMP(surface, screenshotName);
-    SDL_FreeSurface(surface);
+    SDL_DestroySurface(surface);
 }

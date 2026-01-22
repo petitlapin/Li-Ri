@@ -21,10 +21,13 @@
 //    with this program; if not, write to the Free Software Foundation, Inc.,
 //    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-#include <SDL2/SDL_audio.h> // for AUDIO_S16
-#include <SDL2/SDL_error.h> // for SDL_GetError
-#include <SDL2/SDL_log.h> // for SDL_LogInfo, SDL_LOG_CATEGORY_APPLICATION
+#include <SDL3/SDL_audio.h> // for AUDIO_S16
+#include <SDL3/SDL_error.h> // for SDL_GetError
+#include <SDL3/SDL_log.h> // for SDL_LogInfo, SDL_LOG_CATEGORY_APPLICATION
 #include <cstring>
+
+#include <map>
+#include <string>
 
 #include "audio.h"
 #include "utils.h"
@@ -40,15 +43,14 @@ extern int currentTime;
 Audio::~Audio()
 {
     if (N) {
-        Mix_HaltChannel(-1);
         for (int i = 0; i < N; i++) {
             if (Son[i]) {
-                Mix_FreeChunk(Son[i]);
+                MIX_DestroyAudio(Son[i]);
             }
         }
         delete[] Son;
     }
-    Mix_CloseAudio();
+    // MIX_DestroyMixer(Mixer); // Need to find why this call crashes
 }
 
 /*** Initialise l'Audio ***/
@@ -56,56 +58,39 @@ Audio::~Audio()
 bool Audio::Init()
 {
     char PathFile[512];
-
-    if (Mix_OpenAudio(22050, AUDIO_S16, 1, 1024)) {
-        SDL_LogInfo(SDL_LOG_CATEGORY_APPLICATION, "Enable to init Sound card: %s", SDL_GetError());
+    Mixer = MIX_CreateMixerDevice(SDL_AUDIO_DEVICE_DEFAULT_PLAYBACK, NULL);
+    if (!Mixer) {
+        SDL_LogInfo(SDL_LOG_CATEGORY_APPLICATION, "Unable to init Sound card: %s", SDL_GetError());
         return false;
     }
+    Track = MIX_CreateTrack(Mixer);
+    MusicTrack = MIX_CreateTrack(Mixer);
 
     /*** Allocation de la mémoire ***/
     N = sFin;
-    Son = new Mix_Chunk *[sFin];
+    Son = new MIX_Audio *[sFin];
 
     /*** Chargement des sons ***/
-    strcpy(PathFile, "Sounds/clic.wav");
-    Utils::GetPath(PathFile);
-    Son[sClic] = Mix_LoadWAV(PathFile);
-
-    strcpy(PathFile, "Sounds/speed.wav");
-    Utils::GetPath(PathFile);
-    Son[sSpeed] = Mix_LoadWAV(PathFile);
-
-    strcpy(PathFile, "Sounds/crash.wav");
-    Utils::GetPath(PathFile);
-    Son[sCrash] = Mix_LoadWAV(PathFile);
-
-    strcpy(PathFile, "Sounds/end.wav");
-    Utils::GetPath(PathFile);
-    Son[sEnd] = Mix_LoadWAV(PathFile);
-
-    strcpy(PathFile, "Sounds/lose.wav");
-    Utils::GetPath(PathFile);
-    Son[sLose] = Mix_LoadWAV(PathFile);
-
-    strcpy(PathFile, "Sounds/etire.wav");
-    Utils::GetPath(PathFile);
-    Son[sEtire] = Mix_LoadWAV(PathFile);
-
-    strcpy(PathFile, "Sounds/wagon.wav");
-    Utils::GetPath(PathFile);
-    Son[sWagon] = Mix_LoadWAV(PathFile);
-
-    strcpy(PathFile, "Sounds/reduit.wav");
-    Utils::GetPath(PathFile);
-    Son[sReduit] = Mix_LoadWAV(PathFile);
-
-    strcpy(PathFile, "Sounds/live.wav");
-    Utils::GetPath(PathFile);
-    Son[sLive] = Mix_LoadWAV(PathFile);
+    std::map<eSon, std::string> sounds {
+        { sClic, "Sounds/clic.wav" },
+        { sSpeed, "Sounds/speed.wav" },
+        { sCrash, "Sounds/crash.wav" },
+        { sEnd, "Sounds/end.wav" },
+        { sLose, "Sounds/lose.wav" },
+        { sEtire, "Sounds/etire.wav" },
+        { sWagon, "Sounds/wagon.wav" },
+        { sReduit, "Sounds/reduit.wav" },
+        { sLive, "Sounds/live.wav" }
+    };
+    for (const auto &sound: sounds) {
+        strcpy(PathFile, sound.second.c_str());
+        Utils::GetPath(PathFile);
+        Son[sound.first] = MIX_LoadAudio(Mixer, PathFile, true);
+    }
 
     strcpy(PathFile, "Sounds/menu.mod");
     Utils::GetPath(PathFile);
-    Music = Mix_LoadMUS(PathFile);
+    Music = MIX_LoadAudio(Mixer, PathFile, true);
 
     return true;
 }
@@ -124,20 +109,20 @@ void Audio::LoadMusic(int Num)
 
     if (Music) {
         PauseMusic(true);
-        Mix_HaltMusic(); // Arrete la music
-        Mix_FreeMusic(Music);
+        MIX_StopTrack(Track, 0);
+        MIX_DestroyAudio(Music);
         Music = nullptr;
     }
 
     if (Num == 0) { // Si music du menu
         strcpy(Provi, "Sounds/menu.mod");
         Utils::GetPath(Provi);
-        Music = Mix_LoadMUS(Provi);
+        Music = MIX_LoadAudio(Mixer, Provi, true);
     }
     else {
         Provi[10] = (char)(Num) + '0';
         Utils::GetPath(Provi);
-        Music = Mix_LoadMUS(Provi);
+        Music = MIX_LoadAudio(Mixer, Provi, true);
     }
     PlayMusic();
 }
@@ -168,16 +153,23 @@ void Audio::Play(eSon So)
         MemorizedTime = currentTime;
     }
 
-    Mix_PlayChannel(-1, Son[So], 0);
+    SDL_PropertiesID options;
+    SDL_SetNumberProperty(options, MIX_PROP_PLAY_LOOPS_NUMBER, -1);
+    MIX_SetTrackAudio(Track, Son[So]);
+    MIX_PlayTrack(Track, options);
 }
 
 /*** Joue la music ***/
 /*********************/
+#include <stdio.h>
 void Audio::PlayMusic() const
 {
     if (Music && N) {
-        Mix_PlayMusic(Music, -1);
-        DoVolume();
+        SDL_PropertiesID options;
+        SDL_SetNumberProperty(options, MIX_PROP_PLAY_LOOPS_NUMBER, -1);
+        MIX_SetTrackAudio(MusicTrack, Music);
+        MIX_PlayTrack(MusicTrack, options);
+        DoVolume(MusicTrack);
     }
 }
 
@@ -188,26 +180,26 @@ void Audio::PauseMusic(bool Et) const
     }
 
     if (Et) {
-        Mix_PauseMusic();
+        MIX_PauseTrack(MusicTrack);
     }
     else {
-        Mix_ResumeMusic();
+        MIX_ResumeTrack(MusicTrack);
     }
 }
 
 /*** Valide les Volumes ***/
 /**************************/
-void Audio::DoVolume() const
+void Audio::DoVolume(MIX_Track *track) const
 {
     if (!N) {
         return;
     }
 
-    Mix_Volume(-1, (int)Pref.Volume);
+    MIX_SetTrackGain(track, Pref.Volume);
     if (NMus) {
-        Mix_VolumeMusic((int)Pref.VolumeM);
+        MIX_SetTrackGain(track, Pref.VolumeM);
     }
     else {
-        Mix_VolumeMusic((int)Pref.VolumeM / 2);
+        MIX_SetTrackGain(track, Pref.VolumeM / 2);
     }
 }

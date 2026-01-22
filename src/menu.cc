@@ -25,16 +25,15 @@
 #include <cstdlib>
 #include <cstring>
 
-#include <SDL2/SDL_audio.h> // for SDL_MIX_MAXVOLUME
-#include <SDL2/SDL_events.h> // for SDL_PollEvent, SDL_Event, SDL_KEYDOWN
-#include <SDL2/SDL_keyboard.h> // for SDL_StopTextInput, SDL_StartTextInput
-#include <SDL2/SDL_keycode.h> // for SDLK_F12, SDLK_RETURN, SDLK_ESCAPE
-#include <SDL2/SDL_mouse.h> // for SDL_ShowCursor
-#include <SDL2/SDL_rect.h> // for SDL_Rect
-#include <SDL2/SDL_render.h> // for SDL_RenderPresent, SDL_RenderClear
-#include <SDL2/SDL_stdinc.h> // for Uint32
-#include <SDL2/SDL_timer.h> // for SDL_GetTicks, SDL_Delay
-#include <SDL2/SDL_video.h> // for SDL_WINDOWEVENT_ENTER, SDL_SetWindowF...
+#include <SDL3/SDL_events.h> // for SDL_PollEvent, SDL_Event, SDL_EVENT_KEY_DOWN
+#include <SDL3/SDL_keyboard.h> // for SDL_StopTextInput, SDL_StartTextInput
+#include <SDL3/SDL_keycode.h> // for SDLK_F12, SDLK_RETURN, SDLK_ESCAPE
+#include <SDL3/SDL_mouse.h> // for SDL_ShowCursor
+#include <SDL3/SDL_rect.h> // for SDL_Rect
+#include <SDL3/SDL_render.h> // for SDL_RenderPresent, SDL_RenderClear
+#include <SDL3/SDL_stdinc.h> // for Uint32
+#include <SDL3/SDL_timer.h> // for SDL_GetTicks, SDL_Delay
+#include <SDL3/SDL_video.h> // for SDL_SetWindowF...
 
 #include <array>
 #include <utility>
@@ -95,10 +94,10 @@ void ChangeVideo()
 {
     Uint32 flag = SDL_WINDOW_RESIZABLE;
     if (Pref.FullScreen) {
-        flag = SDL_WINDOW_FULLSCREEN_DESKTOP;
+        flag = SDL_WINDOW_FULLSCREEN;
     }
     SDL_SetWindowFullscreen(sdlWindow, flag);
-    SDL_ShowCursor(0); // Cache le curseur
+    SDL_ShowCursor();
 }
 
 /*** SDL Main Menu principale ***/
@@ -136,10 +135,10 @@ eMenu Menu::SDLMain()
             m_mouse.GetEvent(event, PyE); // Handle mouse
             m_gamepad.GetEvent(event); // Handle gamepad
             switch (event.type) {
-            case SDL_KEYDOWN:
-                if (event.key.state == SDL_PRESSED) {
+            case SDL_EVENT_KEY_DOWN:
+                if (event.key.down) {
                     m_audio.Play(sClic);
-                    switch (event.key.keysym.sym) {
+                    switch (event.key.key) {
                     case SDLK_ESCAPE:
                     case SDLK_AC_BACK: // Android back button
                         return mQuit;
@@ -175,7 +174,7 @@ eMenu Menu::SDLMain()
                         }
                         break;
                     default:
-                        key = event.key.keysym.sym & 0x7F; // Prend le caracataire correspondant à la touche
+                        key = event.key.key & 0x7F; // Prend le caracataire correspondant à la touche
                         if (CharExist(key) == true) { // Si la caractaire existe bien
                             for (i = 2; i >= 0; i--) {
                                 MCode[i + 1] = MCode[i]; // décale le code
@@ -188,7 +187,7 @@ eMenu Menu::SDLMain()
                     }
                 }
                 break;
-            case SDL_QUIT:
+            case SDL_EVENT_QUIT:
                 return mQuit;
                 break;
             }
@@ -275,15 +274,13 @@ eMenu Menu::SDLMain_Language()
             m_mouse.GetEvent(event, PyE); // Handle mouse
             m_gamepad.GetEvent(event); // Handle gamepad
             switch (event.type) {
-            case SDL_WINDOWEVENT:
-                if (event.window.event == SDL_WINDOWEVENT_ENTER) {
-                    SDL_RenderPresent(sdlRenderer);
-                }
+            case SDL_EVENT_WINDOW_MOUSE_ENTER:
+                SDL_RenderPresent(sdlRenderer);
                 break;
-            case SDL_KEYDOWN:
-                if (event.key.state == SDL_PRESSED) {
+            case SDL_EVENT_KEY_DOWN:
+                if (event.key.down) {
                     m_audio.Play(sClic);
-                    switch (event.key.keysym.sym) {
+                    switch (event.key.key) {
                     case SDLK_ESCAPE:
                     case SDLK_AC_BACK: // Android back button
                         if (Pref.Language == -1) {
@@ -330,7 +327,7 @@ eMenu Menu::SDLMain_Language()
                     }
                 }
                 break;
-            case SDL_QUIT:
+            case SDL_EVENT_QUIT:
                 return mQuit;
                 break;
             }
@@ -440,15 +437,13 @@ eMenu Menu::SDLMain_Options()
             m_gamepad.GetEvent(event); // Handle gamepad
 
             switch (event.type) {
-            case SDL_WINDOWEVENT:
-                if (event.window.event == SDL_WINDOWEVENT_ENTER) {
-                    SDL_RenderPresent(sdlRenderer);
-                }
+            case SDL_EVENT_WINDOW_MOUSE_ENTER:
+                SDL_RenderPresent(sdlRenderer);
                 break;
-            case SDL_KEYDOWN:
-                if (event.key.state == SDL_PRESSED) {
+            case SDL_EVENT_KEY_DOWN:
+                if (event.key.down) {
                     m_audio.Play(sClic);
-                    switch (event.key.keysym.sym) {
+                    switch (event.key.key) {
                     case SDLK_ESCAPE:
                     case SDLK_AC_BACK: // Android back button
                         return mMenu;
@@ -464,21 +459,21 @@ eMenu Menu::SDLMain_Options()
                         case 0:
                         case 5: // Diminue volume sons
                         case 6:
-                            Pref.Volume -= SDL_MIX_MAXVOLUME / 10.0;
+                            Pref.Volume -= 0.1f;
                             if (Pref.Volume < 0) {
                                 Pref.Volume = 0;
                             }
-                            m_audio.DoVolume();
+                            m_audio.DoVolume(m_audio.Track);
                             m_audio.Play(sLive);
                             break;
                         case 1:
                         case 7: // Diminue volume music
                         case 8:
-                            Pref.VolumeM -= SDL_MIX_MAXVOLUME / 10.0;
+                            Pref.VolumeM -= 0.1f;
                             if (Pref.VolumeM < 0) {
                                 Pref.VolumeM = 0;
                             }
-                            m_audio.DoVolume();
+                            m_audio.DoVolume(m_audio.MusicTrack);
                             break;
                         }
                         break;
@@ -494,21 +489,21 @@ eMenu Menu::SDLMain_Options()
                         case 0:
                         case 5:
                         case 6:
-                            Pref.Volume += SDL_MIX_MAXVOLUME / 10.0;
-                            if (Pref.Volume > SDL_MIX_MAXVOLUME) {
-                                Pref.Volume = SDL_MIX_MAXVOLUME;
+                            Pref.Volume += 0.1f;
+                            if (Pref.Volume > 1.f) {
+                                Pref.Volume = 1.f;
                             }
-                            m_audio.DoVolume();
+                            m_audio.DoVolume(m_audio.Track);
                             m_audio.Play(sLive);
                             break;
                         case 1:
                         case 7:
                         case 8:
-                            Pref.VolumeM += SDL_MIX_MAXVOLUME / 10.0;
-                            if (Pref.VolumeM > SDL_MIX_MAXVOLUME) {
-                                Pref.VolumeM = SDL_MIX_MAXVOLUME;
+                            Pref.VolumeM += 0.1f;
+                            if (Pref.VolumeM > 1.f) {
+                                Pref.VolumeM = 1.f;
                             }
-                            m_audio.DoVolume();
+                            m_audio.DoVolume(m_audio.MusicTrack);
                             break;
                         }
                         break;
@@ -546,34 +541,34 @@ eMenu Menu::SDLMain_Options()
                             PyE = 3;
                             break;
                         case 5: // Diminue volume sons
-                            Pref.Volume -= SDL_MIX_MAXVOLUME / 10.0;
+                            Pref.Volume -= 0.1f;
                             if (Pref.Volume < 0) {
                                 Pref.Volume = 0;
                             }
-                            m_audio.DoVolume();
+                            m_audio.DoVolume(m_audio.Track);
                             m_audio.Play(sLive);
                             break;
                         case 6:
-                            Pref.Volume += SDL_MIX_MAXVOLUME / 10.0;
-                            if (Pref.Volume > SDL_MIX_MAXVOLUME) {
-                                Pref.Volume = SDL_MIX_MAXVOLUME;
+                            Pref.Volume += 0.1f;
+                            if (Pref.Volume > 1.0f) {
+                                Pref.Volume = 1.0f;
                             }
-                            m_audio.DoVolume();
+                            m_audio.DoVolume(m_audio.Track);
                             m_audio.Play(sLive);
                             break;
                         case 7: // Diminue volume music
-                            Pref.VolumeM -= SDL_MIX_MAXVOLUME / 10.0;
+                            Pref.VolumeM -= 0.1f;
                             if (Pref.VolumeM < 0) {
                                 Pref.VolumeM = 0;
                             }
-                            m_audio.DoVolume();
+                            m_audio.DoVolume(m_audio.MusicTrack);
                             break;
                         case 8:
-                            Pref.VolumeM += SDL_MIX_MAXVOLUME / 10.0;
-                            if (Pref.VolumeM > SDL_MIX_MAXVOLUME) {
-                                Pref.VolumeM = SDL_MIX_MAXVOLUME;
+                            Pref.VolumeM += 0.1f;
+                            if (Pref.VolumeM > 1.0f) {
+                                Pref.VolumeM = 1.0f;
                             }
-                            m_audio.DoVolume();
+                            m_audio.DoVolume(m_audio.MusicTrack);
                             break;
                         default:
                             return mMenu;
@@ -583,7 +578,7 @@ eMenu Menu::SDLMain_Options()
                     }
                 }
                 break;
-            case SDL_QUIT:
+            case SDL_EVENT_QUIT:
                 return mQuit;
                 break;
             }
@@ -614,7 +609,7 @@ eMenu Menu::SDLMain_Options()
         NumSp = (currentTime / 50) % 50;
         Ec.PrintSprite(earth, NumSp, 180, 400);
 
-        N = (int)(Pref.Volume * 10 + 1) / SDL_MIX_MAXVOLUME;
+        N = (int)(Pref.Volume * 10);
         NumSp = (currentTime / 50) % 40 + 120;
         for (i = 0; i < N; i++) {
             if (i == N - 1) {
@@ -625,7 +620,7 @@ eMenu Menu::SDLMain_Options()
             }
         }
 
-        N = (int)(Pref.VolumeM * 10 + 1) / SDL_MIX_MAXVOLUME;
+        N = (int)(Pref.VolumeM * 10);
         for (i = 0; i < N; i++) {
             if (i == N - 1) {
                 Ec.PrintSprite(locomotive, NumSp, (690 - 300) / 10 * i + 300, 200);
@@ -707,15 +702,13 @@ eMenu Menu::SDLMain_Speed()
             m_gamepad.GetEvent(event); // Handle gamepad
 
             switch (event.type) {
-            case SDL_WINDOWEVENT:
-                if (event.window.event == SDL_WINDOWEVENT_ENTER) {
-                    SDL_RenderPresent(sdlRenderer);
-                }
+            case SDL_EVENT_WINDOW_MOUSE_ENTER:
+                SDL_RenderPresent(sdlRenderer);
                 break;
-            case SDL_KEYDOWN:
-                if (event.key.state == SDL_PRESSED) {
+            case SDL_EVENT_KEY_DOWN:
+                if (event.key.down) {
                     m_audio.Play(sClic);
-                    switch (event.key.keysym.sym) {
+                    switch (event.key.key) {
                     case SDLK_ESCAPE:
                     case SDLK_AC_BACK: // Android back button
                         return mMenu;
@@ -756,7 +749,7 @@ eMenu Menu::SDLMain_Speed()
                     }
                 }
                 break;
-            case SDL_QUIT:
+            case SDL_EVENT_QUIT:
                 return mQuit;
                 break;
             }
@@ -817,15 +810,13 @@ eMenu Menu::SDLMain_Level()
             m_gamepad.GetEvent(event); // Handle gamepad
 
             switch (event.type) {
-            case SDL_WINDOWEVENT:
-                if (event.window.event == SDL_WINDOWEVENT_ENTER) {
-                    SDL_RenderPresent(sdlRenderer);
-                }
+            case SDL_EVENT_WINDOW_MOUSE_ENTER:
+                SDL_RenderPresent(sdlRenderer);
                 break;
-            case SDL_KEYDOWN:
-                if (event.key.state == SDL_PRESSED) {
+            case SDL_EVENT_KEY_DOWN:
+                if (event.key.down) {
                     m_audio.Play(sClic);
-                    switch (event.key.keysym.sym) {
+                    switch (event.key.key) {
                     case SDLK_ESCAPE:
                     case SDLK_AC_BACK: // Android back button
                         return mMenu;
@@ -886,7 +877,7 @@ eMenu Menu::SDLMain_Level()
                     }
                 }
                 break;
-            case SDL_QUIT:
+            case SDL_EVENT_QUIT:
                 return mQuit;
                 break;
             }
@@ -947,7 +938,7 @@ eMenu Menu::SDLMain_HR()
 {
     int Fini = -1;
     int N1, N2, Ordre;
-    SDL_Rect Position;
+    SDL_FRect Position;
 
     // InitialisationsDivers
     m_mouse.Init(Menu_Py); // Initialise la sourie
@@ -964,7 +955,7 @@ eMenu Menu::SDLMain_HR()
     Position.x = Position.y = 0;
     Position.w = Sprites[fmenu].Dim[0].L;
     Position.h = Sprites[fmenu].Dim[0].H;
-    SDL_RenderCopy(sdlRenderer, Sprites[fmenu].Image[0], &Position, &Position);
+    SDL_RenderTexture(sdlRenderer, Sprites[fmenu].Image[0], &Position, &Position);
 
     Sprites[menu].Draw(340, 300, 0, Sprites[fmenu].Image[0]);
     Sprites[fond_hr].Draw(340, 74, 0, Sprites[fmenu].Image[0]);
@@ -1001,7 +992,7 @@ eMenu Menu::SDLMain_HR()
         // Efface le fond
         SDL_RenderClear(sdlRenderer);
 
-        SDL_RenderCopy(sdlRenderer, Sprites[fmenu].Image[0], &Position, &Position);
+        SDL_RenderTexture(sdlRenderer, Sprites[fmenu].Image[0], &Position, &Position);
 
         // Sprites[fond].Draw(400,300,0,Sprites[fjeu].Image[0]);
         Sprites[menu].Draw(340, 300, 0, Sprites[fmenu].Image[0]);
@@ -1037,14 +1028,10 @@ eMenu Menu::SDLMain_HR()
             m_gamepad.GetEvent(event); // Handle gamepad
 
             switch (event.type) {
-            case SDL_WINDOWEVENT:
-                if (event.window.event == SDL_WINDOWEVENT_ENTER) {
-                }
-                break;
-            case SDL_KEYDOWN:
-                if (Fini == -1 && event.key.state == SDL_PRESSED) {
+            case SDL_EVENT_KEY_DOWN:
+                if (Fini == -1 && event.key.down) {
                     m_audio.Play(sClic);
-                    switch (event.key.keysym.sym) {
+                    switch (event.key.key) {
                     case SDLK_ESCAPE:
                     case SDLK_AC_BACK: // Android back button
                         return mGame;
@@ -1101,7 +1088,7 @@ eMenu Menu::SDLMain_HR()
                     }
                 }
                 break;
-            case SDL_QUIT:
+            case SDL_EVENT_QUIT:
                 return mQuit;
                 break;
             }
@@ -1166,17 +1153,17 @@ eMenu Menu::SDLMain_HR()
 /*******************************/
 void Menu::Print_InGame()
 {
-    SDL_Rect Position;
+    SDL_FRect Position;
 
     // InitialisationsDivers
     m_mouse.Init(Menu_Py); // Initialise la sourie
     // PyE=0;
 
     // Prend l'image du fond et fait l'affichage
-    Position.x = Position.y = 0;
+    Position.x = Position.y = 0.0f;
     Position.w = Sprites[fmenu].Dim[0].L;
     Position.h = Sprites[fmenu].Dim[0].H;
-    SDL_RenderCopy(sdlRenderer, Sprites[fmenu].Image[0], &Position, &Position);
+    SDL_RenderTexture(sdlRenderer, Sprites[fmenu].Image[0], &Position, &Position);
 
     Sprites[menu].Draw(340, 300, 0, Sprites[fmenu].Image[0]);
 
@@ -1204,16 +1191,10 @@ eMenu Menu::SDLMain_InGame()
             m_gamepad.GetEvent(event); // Handle gamepad
 
             switch (event.type) {
-            case SDL_WINDOWEVENT:
-                if (event.window.event == SDL_WINDOWEVENT_ENTER) {
-                    // SDL_RenderPresent(sdlRenderer);
-                    // Ec.Cls(fmenu);
-                }
-                break;
-            case SDL_KEYDOWN:
-                if (event.key.state == SDL_PRESSED) {
+            case SDL_EVENT_KEY_DOWN:
+                if (event.key.down) {
                     m_audio.Play(sClic);
-                    switch (event.key.keysym.sym) {
+                    switch (event.key.key) {
                     case SDLK_ESCAPE:
                     case SDLK_AC_BACK: // Android back button
                         return mGame;
@@ -1253,7 +1234,7 @@ eMenu Menu::SDLMain_InGame()
                     }
                 }
                 break;
-            case SDL_QUIT:
+            case SDL_EVENT_QUIT:
                 return mQuit;
                 break;
             }
@@ -1322,7 +1303,7 @@ eMenu Menu::SDLMain_Score(bool EditScore)
     Menu_Py[1].DepX = -1;
 
     if (EditScore) {
-        SDL_StartTextInput();
+        SDL_StartTextInput(sdlWindow);
     }
 
     // Prend les evenements
@@ -1362,18 +1343,16 @@ eMenu Menu::SDLMain_Score(bool EditScore)
             m_gamepad.GetEvent(event); // Handle gamepad
 
             switch (event.type) {
-            case SDL_WINDOWEVENT:
-                if (event.window.event == SDL_WINDOWEVENT_ENTER) {
-                    SDL_RenderPresent(sdlRenderer);
-                }
+            case SDL_EVENT_WINDOW_MOUSE_ENTER:
+                SDL_RenderPresent(sdlRenderer);
                 break;
-            case SDL_KEYDOWN: // Prend un touche au clavier
-                if (event.key.state == SDL_PRESSED) {
+            case SDL_EVENT_KEY_DOWN: // Prend un touche au clavier
+                if (event.key.down) {
                     m_audio.Play(sClic);
-                    if (EditScore == false && event.key.keysym.sym != SDLK_F12) {
-                        event.key.keysym.sym = SDLK_RETURN;
+                    if (EditScore == false && event.key.key != SDLK_F12) {
+                        event.key.key = SDLK_RETURN;
                     }
-                    switch (event.key.keysym.sym) {
+                    switch (event.key.key) {
                     case SDLK_F12: // Save screenshot
                         if (event.key.repeat == 0) {
                             Utils::doScreenshot(sdlRenderer);
@@ -1383,7 +1362,7 @@ eMenu Menu::SDLMain_Score(bool EditScore)
                     case SDLK_RETURN:
                     case SDLK_KP_ENTER:
                         if (EditScore) {
-                            SDL_StopTextInput();
+                            SDL_StopTextInput(sdlWindow);
                         }
                         return mMenu;
                     case SDLK_BACKSPACE: // Fait un retour de chariot
@@ -1397,16 +1376,16 @@ eMenu Menu::SDLMain_Score(bool EditScore)
                     }
                 }
                 break;
-            case SDL_TEXTINPUT:
+            case SDL_EVENT_TEXT_INPUT:
                 /* Add new text onto the end of our text */
                 if (StringLength(Pref.Sco[NEdit].Name) < LSCOREMAX && PosCur < 79 && CharExist(event.text.text[0])) {
                     PosCur += strlen(event.text.text);
                     strcat(Pref.Sco[NEdit].Name, event.text.text);
                 }
                 break;
-            case SDL_QUIT:
+            case SDL_EVENT_QUIT:
                 if (EditScore) {
-                    SDL_StopTextInput();
+                    SDL_StopTextInput(sdlWindow);
                 }
                 return mQuit;
             }
@@ -1431,7 +1410,7 @@ eMenu Menu::SDLMain_Score(bool EditScore)
     } while (true);
 
     if (EditScore) {
-        SDL_StopTextInput();
+        SDL_StopTextInput(sdlWindow);
     }
     return mQuit;
 }

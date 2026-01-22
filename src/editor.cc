@@ -21,12 +21,12 @@
 //    with this program; if not, write to the Free Software Foundation, Inc.,
 //    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-#include <SDL2/SDL_events.h> // for SDL_PollEvent, SDL_PRESSED, SDL_Event
-#include <SDL2/SDL_keycode.h> // for SDLK_DELETE, SDLK_DOWN, SDLK_ESCAPE
-#include <SDL2/SDL_log.h> // for SDL_LogError, SDL_LOG_CATEGORY_APPLICA...
-#include <SDL2/SDL_render.h> // for SDL_RenderPresent, SDL_Renderer
-#include <SDL2/SDL_timer.h> // for SDL_GetTicks
-#include <SDL2/SDL_video.h> // for SDL_WINDOWEVENT_ENTER
+#include <SDL3/SDL_events.h> // for SDL_PollEvent, SDL_Event
+#include <SDL3/SDL_keycode.h> // for SDLK_DELETE, SDLK_DOWN, SDLK_ESCAPE
+#include <SDL3/SDL_log.h> // for SDL_LogError, SDL_LOG_CATEGORY_APPLICA...
+#include <SDL3/SDL_render.h> // for SDL_RenderPresent, SDL_Renderer
+#include <SDL3/SDL_timer.h> // for SDL_GetTicks
+#include <SDL3/SDL_video.h> // for SDL_WINDOWEVENT_ENTER
 #include <cstdlib>
 
 #include "editor.h"
@@ -80,33 +80,31 @@ eMenu Editor::SDLMain(int NumNiv)
             m_gamepad.GetEvent(event); // Handle gamepad
 
             switch (event.type) {
-            case SDL_WINDOWEVENT:
-                if (event.window.event == SDL_WINDOWEVENT_ENTER) {
-                    Draw();
-                }
+            case SDL_EVENT_WINDOW_MOUSE_ENTER:
+                Draw();
                 break;
-            case SDL_KEYDOWN:
-                if (event.key.state == SDL_PRESSED) {
-                    if (event.key.keysym.sym == SDLK_ESCAPE) {
+            case SDL_EVENT_KEY_DOWN:
+                if (event.key.down) {
+                    if (event.key.key == SDLK_ESCAPE) {
                         return mMenu;
                     }
-                    PrendTouche(event.key.keysym.sym);
+                    PrendTouche(event.key.key);
                 }
                 break;
-            case SDL_MOUSEBUTTONDOWN:
-                if (event.button.state == SDL_PRESSED) {
+            case SDL_EVENT_MOUSE_BUTTON_DOWN:
+                if (event.button.down) {
                     Boutton = true;
                     TypeB = -1;
                 }
                 break;
-            case SDL_MOUSEBUTTONUP:
+            case SDL_EVENT_MOUSE_BUTTON_UP:
                 Boutton = false;
                 if (TypeB != -1 && Option == deco && cx >= LT) { // Si doit effacer une décoration
                     level.T[NumN].NDeco--;
                 }
                 TypeB = -1;
                 break;
-            case SDL_QUIT:
+            case SDL_EVENT_QUIT:
                 return mQuit;
                 break;
             }

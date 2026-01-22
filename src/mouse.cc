@@ -21,9 +21,9 @@
 //    with this program; if not, write to the Free Software Foundation, Inc.,
 //    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-#include <SDL2/SDL_keycode.h> // for SDLK_RETURN, SDL_Keycode
-#include <SDL2/SDL_mouse.h> // for SDL_WarpMouseInWindow
-#include <SDL2/SDL_video.h> // for SDL_Window
+#include <SDL3/SDL_keycode.h> // for SDLK_RETURN, SDL_Keycode
+#include <SDL3/SDL_mouse.h> // for SDL_WarpMouseInWindow
+#include <SDL3/SDL_video.h> // for SDL_Window
 #include "audio.h"
 #include "mouse.h"
 #include "screen.h"
@@ -61,7 +61,7 @@ void Mouse::GetEvent(SDL_Event &event, int &pPy)
     int i;
 
     switch (event.type) {
-    case SDL_MOUSEMOTION: // Si mouvement de la sourie
+    case SDL_EVENT_MOUSE_MOTION: // Si mouvement de la sourie
         Px = event.motion.x;
         Py = event.motion.y;
         // regarde si doit bouger la position de Py
@@ -78,8 +78,8 @@ void Mouse::GetEvent(SDL_Event &event, int &pPy)
             };
         }
         break;
-    case SDL_MOUSEBUTTONDOWN:
-        if (event.button.state == SDL_PRESSED) {
+    case SDL_EVENT_MOUSE_BUTTON_DOWN:
+        if (event.button.down) {
             Px = event.button.x;
             Py = event.button.y;
 
@@ -89,9 +89,9 @@ void Mouse::GetEvent(SDL_Event &event, int &pPy)
                 while (tPy[i].DepX != -1) { // Fait toutes les coordonnées
                     if (Px >= tPy[i].DepX && Px <= tPy[i].FinX && Py >= tPy[i].DepY && Py <= tPy[i].FinY) {
                         if (tPy[i].Valide == true) {
-                            event.type = SDL_KEYDOWN;
-                            event.key.state = SDL_PRESSED;
-                            event.key.keysym.sym = SDLK_RETURN;
+                            event.type = SDL_EVENT_KEY_DOWN;
+                            event.key.down = true;
+                            event.key.key = SDLK_RETURN;
                         }
                     }
                     i++;
@@ -104,9 +104,9 @@ void Mouse::GetEvent(SDL_Event &event, int &pPy)
                 while (Bo[i].DepX != -1) { // Fait toutes les coordonnées
                     if (Px >= Bo[i].DepX && Px <= Bo[i].FinX && Py >= Bo[i].DepY && Py <= Bo[i].FinY) {
                         if (Bo[i].Adr == nullptr) { // Si doit fair une touche
-                            event.type = SDL_KEYDOWN;
-                            event.key.state = SDL_PRESSED;
-                            event.key.keysym.sym = (SDL_Keycode)Bo[i].Valeur;
+                            event.type = SDL_EVENT_KEY_DOWN;
+                            event.key.down = true;
+                            event.key.key = (SDL_Keycode)Bo[i].Valeur;
                         }
                         else { // Si doit changer une variable
                             *(Bo[i].Adr) = Bo[i].Valeur;
