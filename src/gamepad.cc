@@ -21,7 +21,7 @@
 //    with this program; if not, write to the Free Software Foundation, Inc.,
 //    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-#include <SDL2/SDL_log.h> // for SDL_LogInfo, SDL_LOG_CATEGORY_APPLICATION
+#include <SDL3/SDL_log.h> // for SDL_LogInfo, SDL_LOG_CATEGORY_APPLICATION
 
 #include "gamepad.h"
 #include "utils.h"
@@ -32,32 +32,34 @@ void Gamepad::Initialize()
     // Controller
     strcpy(PathFile, "gamecontrollerdb.txt");
     Utils::GetPath(PathFile);
-    SDL_GameControllerAddMappingsFromFile(PathFile);
+    SDL_AddGamepadMappingsFromFile(PathFile);
     // Check if there is already a controller connected
     m_controller = findController();
 }
 
-SDL_GameController *Gamepad::findController()
+SDL_Gamepad *Gamepad::findController()
 {
-    for (int i = 0; i < SDL_NumJoysticks(); i++) {
-        if (SDL_IsGameController(i)) {
-            return SDL_GameControllerOpen(i);
+    int joystickCount = 0;
+    SDL_GetJoysticks(&joystickCount);
+    for (int i = 0; i < joystickCount; i++) {
+        if (SDL_IsGamepad(i)) {
+            return SDL_OpenGamepad(i);
         }
     }
 
     return nullptr;
 }
 
-SDL_JoystickID Gamepad::getControllerInstanceID(SDL_GameController *controller)
+SDL_JoystickID Gamepad::getControllerInstanceID(SDL_Gamepad *controller)
 {
-    return SDL_JoystickInstanceID(SDL_GameControllerGetJoystick(controller));
+    return SDL_GetJoystickID(SDL_GetGamepadJoystick(controller));
 }
 
 void Gamepad::OverrideEvent(SDL_Event &event, int key)
 {
-    event.type = SDL_KEYDOWN;
-    event.key.state = SDL_PRESSED;
-    event.key.keysym.sym = key;
+    event.type = SDL_EVENT_KEY_DOWN;
+    event.key.down = true;
+    event.key.key = key;
     event.key.repeat = 0;
 }
 
@@ -66,66 +68,66 @@ void Gamepad::GetEvent(SDL_Event &event)
     constexpr int DEADZONE = 9000;
 
     switch (event.type) {
-    case SDL_CONTROLLERDEVICEADDED:
+    case SDL_EVENT_GAMEPAD_ADDED:
         if (!m_controller) {
-            m_controller = SDL_GameControllerOpen(event.cdevice.which);
+            m_controller = SDL_OpenGamepad(event.cdevice.which);
         }
         break;
-    case SDL_CONTROLLERDEVICEREMOVED:
+    case SDL_EVENT_GAMEPAD_REMOVED:
         if (m_controller && event.cdevice.which == getControllerInstanceID(m_controller)) {
-            SDL_GameControllerClose(m_controller);
+            SDL_CloseGamepad(m_controller);
             m_controller = findController();
         }
         break;
-    case SDL_CONTROLLERBUTTONDOWN:
+    case SDL_EVENT_GAMEPAD_BUTTON_DOWN:
         if (m_controller && event.cdevice.which == getControllerInstanceID(m_controller)) {
-            switch (event.cbutton.button) {
-            case SDL_GameControllerButton::SDL_CONTROLLER_BUTTON_X:
-            case SDL_GameControllerButton::SDL_CONTROLLER_BUTTON_A:
+            switch (event.gbutton.button) {
+            case SDL_GamepadButton::SDL_GAMEPAD_BUTTON_WEST:
+            case SDL_GamepadButton::SDL_GAMEPAD_BUTTON_SOUTH:
                 OverrideEvent(event, SDLK_RETURN);
                 break;
-            case SDL_GameControllerButton::SDL_CONTROLLER_BUTTON_Y:
-            case SDL_GameControllerButton::SDL_CONTROLLER_BUTTON_B:
+            case SDL_GamepadButton::SDL_GAMEPAD_BUTTON_NORTH:
+            case SDL_GamepadButton::SDL_GAMEPAD_BUTTON_EAST:
                 OverrideEvent(event, SDLK_ESCAPE);
                 break;
-            case SDL_GameControllerButton::SDL_CONTROLLER_BUTTON_DPAD_RIGHT:
+            case SDL_GamepadButton::SDL_GAMEPAD_BUTTON_DPAD_RIGHT:
                 OverrideEvent(event, SDLK_RIGHT);
                 break;
-            case SDL_GameControllerButton::SDL_CONTROLLER_BUTTON_DPAD_LEFT:
+            case SDL_GamepadButton::SDL_GAMEPAD_BUTTON_DPAD_LEFT:
                 OverrideEvent(event, SDLK_LEFT);
                 break;
-            case SDL_GameControllerButton::SDL_CONTROLLER_BUTTON_DPAD_UP:
+            case SDL_GamepadButton::SDL_GAMEPAD_BUTTON_DPAD_UP:
                 OverrideEvent(event, SDLK_UP);
                 break;
-            case SDL_GameControllerButton::SDL_CONTROLLER_BUTTON_DPAD_DOWN:
+            case SDL_GamepadButton::SDL_GAMEPAD_BUTTON_DPAD_DOWN:
                 OverrideEvent(event, SDLK_DOWN);
                 break;
-            case SDL_GameControllerButton::SDL_CONTROLLER_BUTTON_START:
-                OverrideEvent(event, SDLK_p);
+            case SDL_GamepadButton::SDL_GAMEPAD_BUTTON_START:
+                OverrideEvent(event, SDLK_P);
                 break;
             }
         }
         break;
-    case SDL_CONTROLLERAXISMOTION:
-        if (m_controller && event.caxis.axis == SDL_CONTROLLER_AXIS_LEFTX) {
+    case SDL_EVENT_GAMEPAD_AXIS_MOTION:
+        if (m_controller && event.gaxis.axis == SDL_GAMEPAD_AXIS_LEFTX) {
             // The deadzone ensures we don't trigger the event if the joystick is not press far enough
             // The m_lastValuesPerDirection ensures we don't have multiple repeats of the same event.
-            if (event.caxis.value > DEADZONE && m_lastValuesPerDirection[SDL_CONTROLLER_AXIS_LEFTX] < DEADZONE) {
+            if (event.gaxis.value > DEADZONE && m_lastValuesPerDirection[SDL_GAMEPAD_AXIS_LEFTX] < DEADZONE) {
                 OverrideEvent(event, SDLK_RIGHT);
             }
-            else if (event.caxis.value < -DEADZONE && m_lastValuesPerDirection[SDL_CONTROLLER_AXIS_LEFTX] > -DEADZONE) {
+            else if (event.gaxis.value < -DEADZONE && m_lastValuesPerDirection[SDL_GAMEPAD_AXIS_LEFTX] > -DEADZONE) {
                 OverrideEvent(event, SDLK_LEFT);
             }
-            m_lastValuesPerDirection[SDL_CONTROLLER_AXIS_LEFTX] = event.caxis.value;
+            m_lastValuesPerDirection[SDL_GAMEPAD_AXIS_LEFTX] = event.gaxis.value;
         }
-        else if (m_controller && event.caxis.axis == SDL_CONTROLLER_AXIS_LEFTY) {
-            if (event.caxis.value > DEADZONE && m_lastValuesPerDirection[SDL_CONTROLLER_AXIS_LEFTY] < DEADZONE) {
+        else if (m_controller && event.gaxis.axis == SDL_GAMEPAD_AXIS_LEFTY) {
+            if (event.gaxis.value > DEADZONE && m_lastValuesPerDirection[SDL_GAMEPAD_AXIS_LEFTY] < DEADZONE) {
                 OverrideEvent(event, SDLK_DOWN);
             }
-            else if (event.caxis.value < -DEADZONE && m_lastValuesPerDirection[SDL_CONTROLLER_AXIS_LEFTY] > -DEADZONE) {
+            else if (event.gaxis.value < -DEADZONE && m_lastValuesPerDirection[SDL_GAMEPAD_AXIS_LEFTY] > -DEADZONE) {
                 OverrideEvent(event, SDLK_UP);
             }
-            m_lastValuesPerDirection[SDL_CONTROLLER_AXIS_LEFTY] = event.caxis.value;
+            m_lastValuesPerDirection[SDL_GAMEPAD_AXIS_LEFTY] = event.gaxis.value;
         }
         break;
     }

@@ -21,9 +21,9 @@
 //    with this program; if not, write to the Free Software Foundation, Inc.,
 //    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-#include <SDL2/SDL_keycode.h> // for SDLK_RETURN, SDL_Keycode
-#include <SDL2/SDL_mouse.h> // for SDL_WarpMouseInWindow
-#include <SDL2/SDL_video.h> // for SDL_Window
+#include <SDL3/SDL_keycode.h> // for SDLK_RETURN, SDL_Keycode
+#include <SDL3/SDL_mouse.h> // for SDL_WarpMouseInWindow
+#include <SDL3/SDL_video.h> // for SDL_Window
 #include "audio.h"
 #include "mouse.h"
 #include "screen.h"
@@ -58,7 +58,7 @@ void Mouse::GetEvent(SDL_Event &event, int &pPy)
     int i;
 
     switch (event.type) {
-    case SDL_MOUSEMOTION: // If mouse moves
+    case SDL_EVENT_MOUSE_MOTION: // If mouse moves
         Px = event.motion.x;
         Py = event.motion.y;
         // Check if py's position must move
@@ -75,20 +75,20 @@ void Mouse::GetEvent(SDL_Event &event, int &pPy)
             };
         }
         break;
-    case SDL_MOUSEBUTTONDOWN:
-        if (event.button.state == SDL_PRESSED) {
+    case SDL_EVENT_MOUSE_BUTTON_DOWN:
+        if (event.button.down) {
             Px = event.button.x;
             Py = event.button.y;
 
             // Trigger Enter key if clicking on a valid region
             if (tPy) { // If table exists
                 i = 0;
-                while (tPy[i].StartX != -1) { // iterate through defined regions
+                while (tPy[i].DepX != -1) { // iterate through defined regions
                     if (Px >= tPy[i].StartX && Px <= tPy[i].EndX && Py >= tPy[i].StartY && Py <= tPy[i].EndY) {
                         if (tPy[i].Valid == true) {
-                            event.type = SDL_KEYDOWN;
-                            event.key.state = SDL_PRESSED;
-                            event.key.keysym.sym = SDLK_RETURN;
+                            event.type = SDL_EVENT_KEY_DOWN;
+                            event.key.down = true;
+                            event.key.key = SDLK_RETURN;
                         }
                     }
                     i++;
@@ -101,9 +101,9 @@ void Mouse::GetEvent(SDL_Event &event, int &pPy)
                 while (Bo[i].StartX != -1) { // Iterate through defined regions
                     if (Px >= Bo[i].StartX && Px <= Bo[i].EndX && Py >= Bo[i].StartY && Py <= Bo[i].EndY) {
                         if (Bo[i].Adr == nullptr) { // If a key press should be triggered
-                            event.type = SDL_KEYDOWN;
-                            event.key.state = SDL_PRESSED;
-                            event.key.keysym.sym = (SDL_Keycode)Bo[i].Value;
+                            event.type = SDL_EVENT_KEY_DOWN;
+                            event.key.down = true;
+                            event.key.key = (SDL_Keycode)Bo[i].Value;
                         }
                         else { // If a variable should be changed
                             *(Bo[i].Adr) = Bo[i].Value;

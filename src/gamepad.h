@@ -24,8 +24,8 @@
 #ifndef GAMEPAD_DOM_
 #define GAMEPAD_DOM_
 
-#include <SDL2/SDL_events.h>
-#include <SDL2/SDL_gamecontroller.h>
+#include <SDL3/SDL_events.h>
+#include <SDL3/SDL_gamepad.h>
 
 #include <unordered_map>
 
@@ -39,9 +39,9 @@ public:
 
 private:
     std::unordered_map<int, int> m_lastValuesPerDirection;
-    SDL_GameController *findController();
-    SDL_JoystickID getControllerInstanceID(SDL_GameController *controller);
-    SDL_GameController *m_controller = nullptr;
+    SDL_Gamepad *findController();
+    SDL_JoystickID getControllerInstanceID(SDL_Gamepad *controller);
+    SDL_Gamepad *m_controller = nullptr;
     void OverrideEvent(SDL_Event &event, int key);
 };
 

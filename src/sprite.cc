@@ -21,10 +21,10 @@
 //    with this program; if not, write to the Free Software Foundation, Inc.,
 //    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-#include <SDL2/SDL_log.h>
-#include <SDL2/SDL_rect.h>
-#include <SDL2/SDL_surface.h>
-#include <SDL2/SDL_timer.h>
+#include <SDL3/SDL_log.h>
+#include <SDL3/SDL_rect.h>
+#include <SDL3/SDL_surface.h>
+#include <SDL3/SDL_timer.h>
 #include <cstring>
 #include "sprite.h"
 #include "preference.h"
@@ -360,8 +360,8 @@ bool Sprite::Load(unsigned char *Buf, long &P)
         P += 2;
 
         // Build surface
-        SDL_Surface *surface = SDL_CreateRGBSurface(0, Dim[i].L, Dim[i].H, Dim[i].bpp * 8,
-                                                    0xff, 0xff00, 0xff0000, 0xff000000 * (Dim[i].bpp - 3));
+        SDL_Surface *surface = SDL_CreateSurface(Dim[i].L, Dim[i].H,
+                                                 SDL_GetPixelFormatForMasks(Dim[i].bpp * 8, 0xff, 0xff00, 0xff0000, 0xff000000 * (Dim[i].bpp - 3)));
         if (surface == nullptr) {
             SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Unable to create the SDL Surface");
             return false;
@@ -389,7 +389,7 @@ bool Sprite::Load(unsigned char *Buf, long &P)
 
         SDL_UnlockSurface(surface);
         Image[i] = SDL_CreateTextureFromSurface(sdlRenderer, surface);
-        SDL_FreeSurface(surface);
+        SDL_DestroySurface(surface);
     }
 
     return true;
@@ -399,8 +399,8 @@ bool Sprite::Load(unsigned char *Buf, long &P)
 /*************************/
 void Sprite::Draw(int X, int Y, int NumSpr, SDL_Texture *Background) const
 {
-    SDL_Rect Position;
-    SDL_Rect Di;
+    SDL_FRect Position;
+    SDL_FRect Di;
 
     Position.x = X - Dim[NumSpr].cx;
     Position.y = Y - Dim[NumSpr].cy;
@@ -412,7 +412,7 @@ void Sprite::Draw(int X, int Y, int NumSpr, SDL_Texture *Background) const
     Position.h = Di.h;
     // TODO if(Fond==NULL) Fond=sdlRenderer;
 
-    SDL_RenderCopy(sdlRenderer, Image[NumSpr], nullptr, &Position);
+    SDL_RenderTexture(sdlRenderer, Image[NumSpr], nullptr, &Position);
 }
 
 /*** Print the white rope between two wagons ***/
@@ -420,7 +420,7 @@ void Sprite::Draw(int X, int Y, int NumSpr, SDL_Texture *Background) const
 void Sprite::PrintRope(int dx, int dy, int fx, int fy)
 {
     SDL_SetRenderDrawColor(sdlRenderer, 255, 255, 255, 0);
-    SDL_RenderDrawLine(sdlRenderer, dx, dy, fx, fy);
+    SDL_RenderLine(sdlRenderer, dx, dy, fx, fy);
     SDL_SetRenderDrawColor(sdlRenderer, 0, 0, 0, 0);
 }
 
@@ -441,14 +441,15 @@ bool Sprite::New(int Lx, int Ly)
     Dim[0].bpp = 3; // No transparency
 
     // Builds surface
-    SDL_Surface *surface = SDL_CreateRGBSurface(0, Dim[0].L, Dim[0].H, Dim[0].bpp * 8,
-                                                0xff, 0xff00, 0xff0000, 0xff000000 * (Dim[0].bpp - 3));
+    SDL_Surface *surface = SDL_CreateSurface(Dim[0].L, Dim[0].H,
+                                             SDL_GetPixelFormatForMasks(Dim[0].bpp * 8,
+                                                                        0xff, 0xff00, 0xff0000, 0xff000000 * (Dim[0].bpp - 3)));
     if (surface == nullptr) {
         SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Unable to create the SDL Surface");
         return false;
     }
     Image[0] = SDL_CreateTextureFromSurface(sdlRenderer, surface);
-    SDL_FreeSurface(surface);
+    SDL_DestroySurface(surface);
     return true;
 }
 

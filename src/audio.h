@@ -24,7 +24,7 @@
 #ifndef AUDIO_DOM_
 #define AUDIO_DOM_
 
-#include <SDL2/SDL_mixer.h>
+#include <SDL3_mixer/SDL_mixer.h>
 
 /*** Sound effects enum ***/
 /**************************/
@@ -56,14 +56,17 @@ public:
 
     void PauseMusic(bool IsMusicPlaying) const; // Pauses/Resumes music
 
-    void DoVolume() const; // Handles sound volumes
-    Mix_Music *Music { nullptr }; // Pointer to music tracks
+    void DoVolume(MIX_Track* track) const; // Handles sound volumes
+    Mix_Audio *Music { nullptr }; // Pointer to music tracks
+    MIX_Track *Track { nullptr }; // Should be private and cleanup better in main.cc
+    MIX_Track *MusicTrack { nullptr };
 
 private:
     int N { 0 }; // Number/Amount of sound effects
     int NMus { 0 }; // Number of the current music
     int MemorizedTime { 0 }; // Memorizes time for clicks
     Mix_Chunk **Sound { nullptr }; // Pointer to sound effects
+    MIX_Mixer *Mixer { nullptr };
 };
 
 #endif

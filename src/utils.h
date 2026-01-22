@@ -24,7 +24,7 @@
 #ifndef UTILS_DOM_
 #define UTILS_DOM_
 
-#include <SDL2/SDL_render.h>
+#include <SDL3/SDL_render.h>
 
 class Utils
 {
