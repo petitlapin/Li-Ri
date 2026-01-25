@@ -3,7 +3,7 @@
 Li-Ri is a fork of Ri-li (http://www.ri-li.org).
 
 Li-Ri is an arcade game licensed under the G.P.L. (General Public License).
-You drive a toy wooden train on many levels and you must collect all the wagons on map for win. This game is free, and you can download it on 'Windows', 'Linux', 'MacOS', 'Android'.
+You drive a toy wooden train on many levels and you must collect all the wagons on map for win. This game is free, and is available on the following platforms: 'Windows', 'Linux', 'MacOS', 'Android'.
 
 ## Features
 - 19 languages: Arabic, Breton, Chinese, English, Esperanto, French,
