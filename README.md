@@ -1,8 +1,8 @@
-# Li-Ri is a G.P.L. arcade game about toy wooden train
+# Li-Ri is a GPL arcade game about toy wooden train
 ## Description
 Li-Ri is a fork of Ri-li (http://www.ri-li.org).
 
-Li-Ri is an arcade game licensed under the G.P.L. (General Public License).
+Li-Ri is an arcade game licensed under the GPL (General Public License).
 You drive a toy wooden train on many levels and you must collect all the wagons on map for win. This game is free, and is available on the following platforms: 'Windows', 'Linux', 'MacOS', 'Android'.
 
 ## Features
@@ -12,8 +12,6 @@ You drive a toy wooden train on many levels and you must collect all the wagons 
 - Colorful animated wood engine.
 - 50 levels in this first version
 - 3 beautiful musics and many sound effects.
-- Android support
-- CMake support
 
 ## Screenshots
 ![Main menu](fastlane/metadata/android/en-US/images/sevenInchScreenshots/01.png)
@@ -23,25 +21,16 @@ Main menu
 Gameplay
 
 ## Building
-To build this game you have to clone repository using `git clone https://github.com/petitlapin/Li-Ri.git`, install SDL 2, and execute:
-```
-cd Li-Ri
-mkdir build
-cd build
-cmake ..
-make
-```
-
-Done :)
+Information on how to compile Li-Ri is available in the INSTALL file
 
 -------------
 
 Copyright (c) 2023
-Johnny Jazeix <jazeix@gmail.com>: port to SDL2 + android + cmake
+Johnny Jazeix: port to SDL2 + android + cmake
 
 Copyright (c) 2006
 Dominique Roux-Serret: roux-serret@ifrance.com : design & programming & graphics & website.
-Maf464 : site= http://maf464.free.fr : musics
+Maf464 : musics
 
 [<img src="https://fdroid.gitlab.io/artwork/badge/get-it-on.png"
      alt="Get it on F-Droid"
