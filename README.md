@@ -12,10 +12,8 @@ You drive a toy wood engine on many levels and you must collect all the wagons o
 - Colorful animated wood engine.
 - 50 levels in this first version
 - 3 beautiful musics and many sound effects.
-
-And also this version updates the version to the SDL2, 
-adds cmake build system 
-and updates the code to build and run on Android too.
+- Android support
+- CMake support
 
 ## Screenshots
 ![Main menu](fastlane/metadata/android/en-US/images/sevenInchScreenshots/01.png)
