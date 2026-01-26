@@ -22,3 +22,7 @@ This version updates the version to the SDL2 and updates the code to build and r
 [<img src="https://fdroid.gitlab.io/artwork/badge/get-it-on.png"
      alt="Get it on F-Droid"
      height="80">](https://f-droid.org/packages/org.liri.liri/)
+
+
+Create the pot file:
+xgettext --copyright-holder="This file is copyright:" --package-name=Li-ri --msgid-bugs-address=https://bugs.kde.org --from-code=UTF-8 -C src/*.cc src/*.h -o liri.pot

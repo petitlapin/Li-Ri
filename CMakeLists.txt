@@ -25,9 +25,13 @@ option(USE_CONAN
 if(USE_CONAN)
   find_package(SDL2 REQUIRED CONFIG)
   find_package(SDL2_mixer REQUIRED CONFIG)
+  find_package(Intl REQUIRED CONFIG) # i18n library
+  find_package(Gettext REQUIRED CONFIG) # Extract translations
 else()
   find_package(PkgConfig REQUIRED)
   pkg_check_modules(SDL2 REQUIRED sdl2 SDL2_mixer)
+  find_package(Intl REQUIRED)
+  find_package(Gettext REQUIRED)
 endif()
 
 set(CMAKE_CXX_STANDARD 11)
@@ -80,10 +84,11 @@ if(LINUX)
 endif()
 
 if(USE_CONAN)
-  target_link_libraries(${LIRI_EXECUTABLE_NAME} PRIVATE SDL2::SDL2 SDL2_mixer::SDL2_mixer)
+  target_link_libraries(${LIRI_EXECUTABLE_NAME} PRIVATE SDL2::SDL2 SDL2_mixer::SDL2_mixer Intl::Intl)
 else()
   target_include_directories(${LIRI_EXECUTABLE_NAME} PUBLIC ${SDL2_INCLUDE_DIRS})
   target_link_libraries(${LIRI_EXECUTABLE_NAME} PRIVATE ${SDL2_LINK_LIBRARIES})
+  target_link_libraries(${LIRI_EXECUTABLE_NAME} PRIVATE Intl::Intl)
 endif()
 
 target_link_libraries(${LIRI_EXECUTABLE_NAME} PRIVATE SimpleIni::SimpleIni)

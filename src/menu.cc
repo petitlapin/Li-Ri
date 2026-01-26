@@ -36,6 +36,8 @@
 #include <SDL2/SDL_timer.h> // for SDL_GetTicks, SDL_Delay
 #include <SDL2/SDL_video.h> // for SDL_WINDOWEVENT_ENTER, SDL_SetWindowF...
 
+#include <libintl.h>
+
 #include <array>
 #include <utility>
 #include "preference.h"
@@ -126,6 +128,7 @@ eMenu Menu::SDLMain()
         AddButton(0, T_play, 400, 229);
         DrawText(400, 306, T_scores, Sprites[fmenu].Image[0]);
         AddButton(1, T_scores, 400, 306);
+        gettext("Scores");
         DrawText(400, 384, T_moptions, Sprites[fmenu].Image[0]);
         AddButton(2, T_moptions, 400, 384);
         DrawText(400, 461, T_quit, Sprites[fmenu].Image[0]);
