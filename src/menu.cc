@@ -87,14 +87,11 @@ void AddButton(int Num, e_Sprite NumSp, int X, int Y)
 
 /*** Change Windowed/Fullscreen ***/
 /**********************************/
-void ChangeVideo()
+void Menu::ChangeVideo()
 {
     Uint32 flag = SDL_WINDOW_RESIZABLE;
-    if (Pref.FullScreen) {
-        flag = SDL_WINDOW_FULLSCREEN;
-    }
-    SDL_SetWindowFullscreen(sdlWindow, flag);
-    SDL_ShowCursor(); // Hide cursor
+    SDL_SetWindowFullscreen(sdlWindow, Pref.FullScreen);
+    SDL_HideCursor();
 }
 
 eMenu Menu::SDLMain()

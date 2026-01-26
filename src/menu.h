@@ -58,6 +58,8 @@ public:
     void Center_Arrows() const; // Center arrows on the button
 
 private:
+    void ChangeVideo();
+
     int PyE { 0 }; // Position of the cursor in the menu
     int Level { 0 };
     int CenterM { 0 }; // Variable for the settings menu

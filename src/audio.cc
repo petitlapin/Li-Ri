@@ -194,12 +194,16 @@ void Audio::DoVolume(MIX_Track *track) const
     if (!N) {
         return;
     }
+    if(track == Track) {
+        MIX_SetTrackGain(track, Pref.Volume);
+    }
 
-    MIX_SetTrackGain(track, Pref.Volume);
+    if(track == MusicTrack) {
     if (NMus) {
         MIX_SetTrackGain(track, Pref.VolumeM);
     }
     else {
         MIX_SetTrackGain(track, Pref.VolumeM / 2);
+    }
     }
 }
