@@ -30,7 +30,7 @@ Johnny Jazeix: port to SDL2 + android + cmake
 
 Copyright (c) 2006
 Dominique Roux-Serret: design & programming & graphics & website.
-Maf464 : musics
+Maf464: musics
 
 [<img src="https://fdroid.gitlab.io/artwork/badge/get-it-on.png"
      alt="Get it on F-Droid"
