@@ -29,7 +29,7 @@ Copyright (c) 2023
 Johnny Jazeix: port to SDL2 + android + cmake
 
 Copyright (c) 2006
-Dominique Roux-Serret: roux-serret@ifrance.com : design & programming & graphics & website.
+Dominique Roux-Serret: design & programming & graphics & website.
 Maf464 : musics
 
 [<img src="https://fdroid.gitlab.io/artwork/badge/get-it-on.png"
