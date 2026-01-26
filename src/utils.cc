@@ -269,10 +269,20 @@ bool Utils::LoadPref()
         pv = ini.GetValue("main", "audioVolume");
         if (pv) {
             Pref.Volume = std::stof(pv);
+            if(Pref.Volume > 1) {
+                // If Li-ri version sdl2, the volume was between 0 and 128
+                // we expect between 0 and 1 in sdl3
+                Pref.Volume /= 128.f;
+            }
         }
         pv = ini.GetValue("main", "musicVolume");
         if (pv) {
             Pref.VolumeM = std::stof(pv);
+            if(Pref.VolumeM > 1) {
+                // If Li-ri version sdl2, the volume was between 0 and 128
+                // we expect between 0 and 1 in sdl3
+                Pref.VolumeM /= 128.f;
+            }
         }
         pv = ini.GetValue("main", "humanRightsQuiz");
         if (pv) {

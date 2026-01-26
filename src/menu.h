@@ -63,6 +63,8 @@ public:
     void Affiche_Main_Centre() const; // Centre les flèches sur le bouton
 
 private:
+
+    void ChangeVideo();
     /*** Variables ***/
     /*****************/
     int PyE { 0 }; // Position du curseur dans le menu

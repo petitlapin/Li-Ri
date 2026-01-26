@@ -90,14 +90,11 @@ void AddButton(int Num, e_Sprite NumSp, int X, int Y)
 
 /*** Change le vidéo ***/
 /***********************/
-void ChangeVideo()
+void Menu::ChangeVideo()
 {
     Uint32 flag = SDL_WINDOW_RESIZABLE;
-    if (Pref.FullScreen) {
-        flag = SDL_WINDOW_FULLSCREEN;
-    }
-    SDL_SetWindowFullscreen(sdlWindow, flag);
-    SDL_ShowCursor();
+    SDL_SetWindowFullscreen(sdlWindow, Pref.FullScreen);
+    SDL_HideCursor();
 }
 
 /*** SDL Main Menu principale ***/
