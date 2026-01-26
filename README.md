@@ -21,7 +21,7 @@ Main menu
 Gameplay
 
 ## Building
-Information on how to compile Li-Ri is available in the INSTALL file
+Information on how to compile Li-Ri is available in the INSTALL file.
 
 -------------
 
