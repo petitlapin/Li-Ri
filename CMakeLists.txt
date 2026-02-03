@@ -46,30 +46,10 @@ else()
   FetchContent_MakeAvailable(simpleini)
 endif()
 
+file(GLOB SOURCES "src/*.cc")
+
 add_executable(${LIRI_EXECUTABLE_NAME} WIN32
-  src/audio.cc
-  src/audio.h
-  src/screen.cc
-  src/screen.h
-  src/editor.cc
-  src/editor.h
-  src/game.cc
-  src/game.h
-  src/gamepad.cc
-  src/gamepad.h
-  src/loco.cc
-  src/loco.h
-  src/main.cc
-  src/menu.cc
-  src/menu.h
-  src/mouse.cc
-  src/mouse.h
-  src/sprite.cc
-  src/sprite.h
-  src/level.cc
-  src/level.h
-  src/utils.cc
-  src/utils.h
+  ${SOURCES}
   )
 
 configure_file(src/config.h.in "${CMAKE_CURRENT_BINARY_DIR}/config.h" @ONLY)
