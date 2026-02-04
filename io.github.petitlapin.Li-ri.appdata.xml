@@ -21,6 +21,7 @@
   <url type="bugtracker">https://github.com/petitlapin/Li-Ri/issues</url>
   <url type="help">https://github.com/petitlapin/Li-Ri</url>
   <url type="translate">https://github.com/petitlapin/Li-Ri</url>
+  <url type="vcs-browser">https://github.com/petitlapin/Li-Ri</url>
   <provides>
     <binary>Li-ri</binary>
   </provides>
