@@ -40,7 +40,8 @@ void Gamepad::Initialize()
 SDL_Gamepad *Gamepad::findController()
 {
     int joystickCount = 0;
-    SDL_GetJoysticks(&joystickCount);
+    SDL_JoystickID *joysticks = SDL_GetJoysticks(&joystickCount);
+    SDL_free(joysticks);
     for (int i = 0; i < joystickCount; i++) {
         if (SDL_IsGamepad(i)) {
             return SDL_OpenGamepad(i);

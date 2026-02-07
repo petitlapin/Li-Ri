@@ -190,14 +190,13 @@ int main(int narg, char *argv[])
     } while (RetMenu != mQuit);
 
     // close program
-    MIX_StopTrack(audio.Track, 0);
-    MIX_DestroyAudio(audio.Music);
 
     for (i = 0; i < NSprites; i++) {
         Sprites[i].Delete();
     }
     delete[] Sprites;
 
+    audio.Stop();
     Utils::SavePref();
     SDL_DestroyRenderer(sdlRenderer);
     SDL_DestroyWindow(sdlWindow);

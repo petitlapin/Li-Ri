@@ -45,9 +45,10 @@ class Audio
 {
 public:
     Audio() = default;
-    ~Audio();
+    ~Audio() = default;
 
     bool Init(); // Initializes and loads audio files
+    void Stop();
     void LoadMusic(int Num); // Loads a music track, 0 = menu music 1,2,3,4=game music tracks
     void NextMusic(); // Switch to next game track
 
@@ -67,6 +68,8 @@ private:
     int MemorizedTime { 0 }; // Memorizes time for clicks
     Mix_Chunk **Sound { nullptr }; // Pointer to sound effects
     MIX_Mixer *Mixer { nullptr };
+    SDL_PropertiesID soundOptions;
+    SDL_PropertiesID musicOptions;
 };
 
 #endif
