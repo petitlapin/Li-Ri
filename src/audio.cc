@@ -40,8 +40,9 @@ extern int currentTime;
 
 /*** Constructeur et Destructeur ***/
 /***********************************/
-Audio::~Audio()
+void Audio::Stop()
 {
+    MIX_StopTrack(Track, 0);
     if (N) {
         for (int i = 0; i < N; i++) {
             if (Son[i]) {
@@ -50,7 +51,12 @@ Audio::~Audio()
         }
         delete[] Son;
     }
-    // MIX_DestroyMixer(Mixer); // Need to find why this call crashes
+    SDL_DestroyProperties(musicOptions);
+    SDL_DestroyProperties(soundOptions);
+    MIX_DestroyAudio(Music);
+    MIX_DestroyTrack(Track);
+    MIX_DestroyTrack(MusicTrack);
+    MIX_DestroyMixer(Mixer);
 }
 
 /*** Initialise l'Audio ***/
@@ -91,6 +97,11 @@ bool Audio::Init()
     strcpy(PathFile, "Sounds/menu.mod");
     Utils::GetPath(PathFile);
     Music = MIX_LoadAudio(Mixer, PathFile, true);
+
+    musicOptions = SDL_CreateProperties();
+    SDL_SetNumberProperty(musicOptions, MIX_PROP_PLAY_LOOPS_NUMBER, -1);
+    soundOptions = SDL_CreateProperties();
+    SDL_SetNumberProperty(soundOptions, MIX_PROP_PLAY_LOOPS_NUMBER, -1);
 
     return true;
 }
@@ -153,22 +164,17 @@ void Audio::Play(eSon So)
         MemorizedTime = currentTime;
     }
 
-    SDL_PropertiesID options;
-    SDL_SetNumberProperty(options, MIX_PROP_PLAY_LOOPS_NUMBER, -1);
     MIX_SetTrackAudio(Track, Son[So]);
-    MIX_PlayTrack(Track, options);
+    MIX_PlayTrack(Track, soundOptions);
 }
 
 /*** Joue la music ***/
 /*********************/
-#include <stdio.h>
 void Audio::PlayMusic() const
 {
     if (Music && N) {
-        SDL_PropertiesID options;
-        SDL_SetNumberProperty(options, MIX_PROP_PLAY_LOOPS_NUMBER, -1);
         MIX_SetTrackAudio(MusicTrack, Music);
-        MIX_PlayTrack(MusicTrack, options);
+        MIX_PlayTrack(MusicTrack, musicOptions);
         DoVolume(MusicTrack);
     }
 }
@@ -194,16 +200,16 @@ void Audio::DoVolume(MIX_Track *track) const
     if (!N) {
         return;
     }
-    if(track == Track) {
+    if (track == Track) {
         MIX_SetTrackGain(track, Pref.Volume);
     }
 
-    if(track == MusicTrack) {
-    if (NMus) {
-        MIX_SetTrackGain(track, Pref.VolumeM);
-    }
-    else {
-        MIX_SetTrackGain(track, Pref.VolumeM / 2);
-    }
+    if (track == MusicTrack) {
+        if (NMus) {
+            MIX_SetTrackGain(track, Pref.VolumeM);
+        }
+        else {
+            MIX_SetTrackGain(track, Pref.VolumeM / 2);
+        }
     }
 }

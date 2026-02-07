@@ -47,10 +47,11 @@ class Audio
 {
 public:
     Audio() = default;
-    ~Audio();
+    ~Audio() = default;
 
     /*** Fonctions ***/
     bool Init(); // Initialise et charge les fichiers audio
+    void Stop();
     void LoadMusic(int Num); // Charge une music, 0 = music du menu 1,2,3,4=Jeu
     void NextMusic(); // Passe à la music suivante
 
@@ -59,10 +60,11 @@ public:
 
     void PauseMusic(bool Etat) const; // Met ou no la music en pause
 
-    void DoVolume(MIX_Track* track) const; // Valide les volumes audio
+    void DoVolume(MIX_Track *track) const; // Valide les volumes audio
     MIX_Audio *Music { nullptr }; // Pointe sur les musics
     MIX_Track *Track { nullptr }; // Should be private and cleanup better in main.cc
     MIX_Track *MusicTrack { nullptr };
+
 private:
     /*** Variables ***/
     int N { 0 }; // Nombre d'échantillon audio
@@ -70,6 +72,8 @@ private:
     int MemorizedTime { 0 }; // Mémorise l'horloge pour les clics
     MIX_Audio **Son { nullptr }; // Pointe sur les sons
     MIX_Mixer *Mixer { nullptr };
+    SDL_PropertiesID soundOptions;
+    SDL_PropertiesID musicOptions;
 };
 
 #endif
