@@ -27,37 +27,21 @@
 #include "sprite.h"
 #include "preference.h"
 
-/*** Définitions générales ***/
-/*****************************/
-struct s_Screen
-{
-    e_Sprite NumSpr;
-    int Num;
-    int x, y;
-    int fx, fy;
-};
-
-/*** Definitions de la class Ecran ***/
-/*************************************/
 class Screen
 {
 public:
     Screen() = default;
     ~Screen() = default;
 
-    /*** Fonctions ***/
     void PrintSprite(e_Sprite NumSpr, int Num, int x, int y); // Affiche un sprite
     void PrintCable(int dx, int dy, int fx, int fy); // Affiche un cable
     void PrintText(e_Sprite Text, int x, int y); // Affiche un text à l'ecran
     void PrintOptions(int NVies, int NScore); // Affiche les options sur le coté
-    void ClearSprite(e_Sprite NumSpriteFondEcran); // Efface tous ce qui a été affiché
     void CleanSpriteAndScreen(e_Sprite NumSpriteFondEcran); // Efface l'ecran avec l'image de fond
 
 private:
     /*** Variables ***/
-    int N { 0 }; // Nombre de sprites mémorisés aprés l'affichage
     int Score { -1 }; // Mémorise le score affiché
-    s_Screen B[LT * HT * 2]; // N° des sprites à effacer plus tard
 };
 
 #endif
