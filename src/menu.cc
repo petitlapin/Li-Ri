@@ -115,6 +115,7 @@ eMenu Menu::SDLMain()
 
     // Prend les evenements
     do {
+        Ec.CleanSpriteAndScreen(fmenu);
         SDL_RenderClear(sdlRenderer);
         // Prend l'image du fond et fait l'affichage
         Sprites[fond_menu].Draw(400, 300, 0, Sprites[fmenu].Image[0]);
@@ -200,7 +201,6 @@ eMenu Menu::SDLMain()
         Sleeping();
 
         // Gère l'Affichage
-        Ec.ClearSprite(fmenu);
         Print_Main();
         m_mouse.Print();
 
@@ -342,7 +342,6 @@ eMenu Menu::SDLMain_Language()
         Sleeping();
 
         // Gère l'Affichage
-        Ec.ClearSprite(fmenu); // Something is done in the Efface that prevents a crash (or maybe more computation)!
         Affiche_Main_Centre();
 
         m_mouse.Print();
@@ -431,7 +430,7 @@ eMenu Menu::SDLMain_Options()
     PyE = 4;
     // Prend les evenements
     do {
-        Ec.CleanSpriteAndScreen(fmenu); // To not crash...
+        Ec.CleanSpriteAndScreen(fmenu);
         SDL_RenderClear(sdlRenderer);
         InitMain_Options(); // Prépare le menu
         SDL_Event event;
@@ -768,7 +767,6 @@ eMenu Menu::SDLMain_Speed()
         Sleeping();
 
         // Gère l'Affichage
-        Ec.ClearSprite(fmenu);
         Print_Main();
         m_mouse.Print();
 
@@ -793,6 +791,7 @@ eMenu Menu::SDLMain_Level()
     // Prend les evenements
     do {
         // Efface le fond
+        Ec.CleanSpriteAndScreen(fmenu);
         SDL_RenderClear(sdlRenderer);
         // Prend l'image du fond et fait l'affichage
         Sprites[fond_menu].Draw(400, 300, 0, Sprites[fmenu].Image[0]);
@@ -896,9 +895,6 @@ eMenu Menu::SDLMain_Level()
         previousTime = currentTime;
         currentTime = SDL_GetTicks();
         Sleeping();
-
-        // Gère l'Affichage
-        Ec.ClearSprite(fmenu);
 
         // Draw arrows
         if (Niv > 0) {
@@ -1117,9 +1113,6 @@ eMenu Menu::SDLMain_HR()
         currentTime = SDL_GetTicks();
         Sleeping();
 
-        // Gère l'Affichage
-        Ec.ClearSprite(fmenu);
-
         if (Ordre) {
             Ec.PrintSprite(fond_hrr, 0, 240, 492);
             DrawText(240, 492, e_Sprite(T_tart1 + N1));
@@ -1197,6 +1190,7 @@ eMenu Menu::SDLMain_InGame()
 
     // Prend les evenements
     do {
+        Ec.CleanSpriteAndScreen(fmenu);
         SDL_RenderClear(sdlRenderer);
         SDL_Event event;
         while (SDL_PollEvent(&event)) {
@@ -1265,7 +1259,6 @@ eMenu Menu::SDLMain_InGame()
         Sleeping();
 
         // Gère l'Affichage
-        Ec.ClearSprite(fmenu);
         Print_InGame();
         Print_Main(340);
         m_mouse.Print();

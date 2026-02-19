@@ -514,9 +514,6 @@ void Game::AfficheEcran()
     int i;
     int ndir = 0;
 
-    // Prépare pour nouvelle Affichage
-    Ec.ClearSprite(fjeu);
-
     // Fait nouvelle Affichage
     Lo.Display(Ec); // Affiche la loco
 

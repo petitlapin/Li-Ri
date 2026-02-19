@@ -33,12 +33,6 @@ extern Sprite *Sprites;
 /*************************/
 void Screen::PrintSprite(e_Sprite NumSpr, int Num, int x, int y)
 {
-    B[N].NumSpr = NumSpr;
-    B[N].Num = Num;
-    B[N].x = x;
-    B[N].y = y;
-    N++;
-
     Sprites[NumSpr].Draw(x, y, Num);
 }
 
@@ -46,27 +40,12 @@ void Screen::PrintCable(int dx, int dy, int fx, int fy)
 {
     // Show the rope between the wagons
     Sprites[rope].PrintRope(dx, dy, fx, fy);
-
-    // Save cable position to delete it later
-    B[N].NumSpr = rope;
-    B[N].Num = 0;
-    B[N].x = dx;
-    B[N].y = dy;
-    B[N].fx = fx;
-    B[N].fy = fy;
-    N++;
 }
 
 /*** Affiche un text ***/
 /***********************/
 void Screen::PrintText(e_Sprite Text, int x, int y)
 {
-    B[N].NumSpr = Text;
-    B[N].Num = 0;
-    B[N].x = x;
-    B[N].y = y;
-    N++;
-
     Sprites[Text].Draw(x, y, 0);
 }
 
@@ -91,18 +70,10 @@ void Screen::PrintOptions(int NV, int NScore)
     }
 }
 
-/*** Efface les sprites ***/
-/**************************/
-void Screen::ClearSprite(e_Sprite NumSp)
-{
-    N = 0;
-}
-
 /*** Efface l'ecran avec l'image de fond ***/
 /*******************************************/
 void Screen::CleanSpriteAndScreen(e_Sprite NumSp)
 {
     Sprites[NumSp].Draw(Sprites[NumSp].Dim[0].L / 2, Sprites[NumSp].Dim[0].H / 2, 0);
-    N = 0;
     Score = -1;
 }
