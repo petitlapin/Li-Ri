@@ -38,7 +38,7 @@ extern SDL_Renderer *sdlRenderer;
 Screen::Screen()
 {
     char fontPath[512];
-    strcpy(fontPath, "Andika-R.ttf");
+    strcpy(fontPath, "comic.ttf");
     Utils::GetPath(fontPath);
 
     m_font = TTF_OpenFont(fontPath, 28);
