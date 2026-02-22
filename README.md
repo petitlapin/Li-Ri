@@ -29,7 +29,7 @@ RAM - 40 MB; <br>
 Graphics card - With OpenGL support; <br>
 minimal OS:
 - Windows XP
-- Androind 4.1
+- Android 4.1
 - Linux 2.6
 
 -------------
