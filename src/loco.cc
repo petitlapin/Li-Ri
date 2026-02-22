@@ -115,7 +115,7 @@ void Loco::Init(int Pos, int Direction)
 
 /*** Affiche la locomotive ***/
 /*****************************/
-void Loco::Display(Screen &Ec)
+void Loco::Display(Screen *Ec)
 {
     float ltrain = 0;
     float p1, p2, a, ar, vx, vy;
@@ -190,7 +190,7 @@ void Loco::Display(Screen &Ec)
             cdy = y1 - (int)(cos(ar) * lv);
 
             // Affiche le cable
-            Ec.PrintCable(cdx, cdy, cfx, cfy);
+            Ec->PrintCable(cdx, cdy, cfx, cfy);
         }
         // Calcule le crocher de fin pour le prochaine wagon
         cfx = x1 - (int)(sin(ar + M_PI) * lv);
@@ -218,13 +218,13 @@ void Loco::Display(Screen &Ec)
             ns += 160;
         }
 
-        Ec.PrintSprite(Wagon[i], ns, x1, y1);
+        Ec->PrintSprite(Wagon[i], ns, x1, y1);
 
         // Si pas fini la sequence d'affiche de départ du wagon
         if (PosWagon[i].SprStart < N_SPR_START) {
             PosWagon[i].SprStart += MemoDuree * N_SPR_START / 750.0;
             if (PosWagon[i].SprStart < N_SPR_START) {
-                Ec.PrintSprite(new_wagon, (int)(PosWagon[i].SprStart), x1, y1);
+                Ec->PrintSprite(new_wagon, (int)(PosWagon[i].SprStart), x1, y1);
             }
         }
 

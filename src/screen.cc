@@ -21,6 +21,10 @@
 //    with this program; if not, write to the Free Software Foundation, Inc.,
 //    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
+#include <SDL2/SDL_log.h>
+#include <SDL2/SDL_rect.h>
+#include <SDL2/SDL_surface.h>
+#include <SDL2/SDL_timer.h>
 #include "preference.h"
 #include "sprite.h"
 #include "screen.h"
@@ -31,7 +35,7 @@
 extern Sprite *Sprites;
 extern SDL_Renderer *sdlRenderer;
 
-void Screen::Init()
+Screen::Screen()
 {
     char fontPath[512];
     strcpy(fontPath, "Andika-R.ttf");
@@ -40,7 +44,7 @@ void Screen::Init()
     m_font = TTF_OpenFont(fontPath, 28);
 }
 
-void Screen::Delete()
+Screen::~Screen()
 {
     for (auto &texture: cachedString) {
         SDL_DestroyTexture(texture.second);
@@ -63,32 +67,23 @@ void Screen::PrintCable(int dx, int dy, int fx, int fy)
 
 void Screen::PrintText(const std::string &Text, int x, int y)
 {
-    SDL_Texture *texture = nullptr;
-    if (cachedString.count(Text) > 0) {
-        texture = cachedString[Text];
-    }
-    else {
-        SDL_Color fgColor = { 255, 255, 255, 255 };
-        SDL_Surface *surf = TTF_RenderUTF8_Blended(m_font, Text.c_str(), fgColor);
-        texture = SDL_CreateTextureFromSurface(sdlRenderer, surf);
-        SDL_FreeSurface(surf);
-        cachedString.insert({ Text, texture });
-    }
+    SDL_Color fColor;
+    fColor.r = 255;
+    fColor.g = 255;
+    fColor.b = 255;
 
-    SDL_Rect Position;
+    SDL_Surface* fontSurface = TTF_RenderText_Solid(m_font, Text.c_str(), fColor); // Rendering text
+    SDL_Texture* Texture = SDL_CreateTextureFromSurface(sdlRenderer, fontSurface); // Creating texture
 
-    SDL_QueryTexture(texture, NULL, NULL, &Position.w, &Position.h);
-    Position.x = x - Position.w;
-    Position.y = y - Position.h;
+    // Setting position and size
+    SDL_Rect dst;
+    dst.x = x;
+    dst.y = y;
+    dst.w = fontSurface->w;
+    dst.h = fontSurface->h;
 
-    SDL_RenderCopy(sdlRenderer, texture, nullptr, &Position);
-}
-
-/*** Affiche un text ***/
-/***********************/
-void Screen::PrintText(e_Sprite Text, int x, int y)
-{
-    Sprites[Text].Draw(x, y, 0);
+    // Rendering text
+    SDL_RenderCopy(sdlRenderer, Texture, nullptr, &dst);
 }
 
 /*** Affiche les options du jeu ***/

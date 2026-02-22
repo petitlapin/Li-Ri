@@ -56,7 +56,7 @@ public:
 
     /*** Fonctions ***/
     void Init(int Pos, int Direction); // Initialise la loco sur le tableau
-    void Display(Screen &Ec); // Fait l'affichage de la loco.
+    void Display(Screen *Ec); // Fait l'affichage de la loco.
     void TestCase(float Dist, long DureeJeu, int *Tableau); // Test les options sur la case si passe au centre
     void Avance(int Dureems, long DureeJeu, int *Touche, int *Tableau); // Fait avancer la locomotive
     void DoFleche(int *Tableau, int *Touche); // Recherche la position de la futur intersection

@@ -47,7 +47,7 @@ extern sNewPreference Pref;
 extern int currentTime;
 extern int previousTime;
 
-extern Screen Ec;
+extern Screen *Ec;
 
 extern Level level;
 
@@ -76,7 +76,7 @@ eMenu Game::SDLMain()
     Help = true;
     Load(NumN); // Charge le tableau
     SDL_RenderPresent(sdlRenderer);
-    Ec.CleanSpriteAndScreen(fjeu);
+    Ec->CleanSpriteAndScreen(fjeu);
     Pause = true;
 
     currentTime = SDL_GetTicks(); // Prend l'horloge
@@ -533,44 +533,44 @@ void Game::AfficheEcran()
             break;
         }
 
-        Ec.PrintSprite(dir, ndir, (Lo.PInter % LT) * D_Case + D_Case / 2, (Lo.PInter / LT) * D_Case + D_Case / 2);
+        Ec->PrintSprite(dir, ndir, (Lo.PInter % LT) * D_Case + D_Case / 2, (Lo.PInter / LT) * D_Case + D_Case / 2);
     }
 
     // Affiche les options
     for (i = 0; i < LT * HT; i++) {
         switch (T[i]) {
         case C_Wagon: // Si un loco
-            Ec.PrintSprite(wagon, (DureeJeu * 40 / 1000 + i * 7) % 50, i % LT * D_Case + D_Case / 2, i / LT * D_Case + D_Case / 2);
+            Ec->PrintSprite(wagon, (DureeJeu * 40 / 1000 + i * 7) % 50, i % LT * D_Case + D_Case / 2, i / LT * D_Case + D_Case / 2);
             break;
         case C_Allonge: // Si plus long
-            Ec.PrintSprite(pluslong, (DureeJeu * 40 / 1000 + i * 7) % 50, i % LT * D_Case + D_Case / 2, i / LT * D_Case + D_Case / 2);
+            Ec->PrintSprite(pluslong, (DureeJeu * 40 / 1000 + i * 7) % 50, i % LT * D_Case + D_Case / 2, i / LT * D_Case + D_Case / 2);
             break;
         case C_Reduit: // Si plus court
-            Ec.PrintSprite(pluscourt, (DureeJeu * 40 / 1000 + i * 7) % 50, i % LT * D_Case + D_Case / 2, i / LT * D_Case + D_Case / 2);
+            Ec->PrintSprite(pluscourt, (DureeJeu * 40 / 1000 + i * 7) % 50, i % LT * D_Case + D_Case / 2, i / LT * D_Case + D_Case / 2);
             break;
         case C_Speed: // Si plus vite
-            Ec.PrintSprite(speed, (DureeJeu * 40 / 1000 + i * 7) % 50, i % LT * D_Case + D_Case / 2, i / LT * D_Case + D_Case / 2);
+            Ec->PrintSprite(speed, (DureeJeu * 40 / 1000 + i * 7) % 50, i % LT * D_Case + D_Case / 2, i / LT * D_Case + D_Case / 2);
             break;
         case C_Live: // Si une vie
-            Ec.PrintSprite(life, (DureeJeu * 40 / 1000 + i * 7) % 50, i % LT * D_Case + D_Case / 2, i / LT * D_Case + D_Case / 2);
+            Ec->PrintSprite(life, (DureeJeu * 40 / 1000 + i * 7) % 50, i % LT * D_Case + D_Case / 2, i / LT * D_Case + D_Case / 2);
             break;
         }
     }
 
     // Si en pose demande une touche
     if (Pause) {
-        Ec.PrintText(T_press_any_key, LT * D_Case / 2, 300);
+        Ec->PrintText("Press any key", LT * D_Case / 2, 300);
     }
 
     // Affiche tableau de bord
-    Ec.PrintOptions(Pref.Lives, Pref.Score);
+    Ec->PrintOptions(Pref.Lives, Pref.Score);
     if (Pref.WagonGap < WAGON_GAP_MIN) {
-        Ec.PrintSprite(pluscourt, (DureeJeu * 40 / 1000) % 50, 715, 295);
+        Ec->PrintSprite(pluscourt, (DureeJeu * 40 / 1000) % 50, 715, 295);
     }
     if (Pref.WagonGap > WAGON_GAP_AVERAGE) {
-        Ec.PrintSprite(pluslong, (DureeJeu * 40 / 1000) % 50, 715, 295);
+        Ec->PrintSprite(pluslong, (DureeJeu * 40 / 1000) % 50, 715, 295);
     }
     if (Pref.SpeedAverage > Pref.Speed) {
-        Ec.PrintSprite(speed, (DureeJeu * 40 / 1000 + 7) % 50, 765, 295);
+        Ec->PrintSprite(speed, (DureeJeu * 40 / 1000 + 7) % 50, 765, 295);
     }
 }

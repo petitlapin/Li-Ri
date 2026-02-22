@@ -56,7 +56,7 @@ extern int previousTime;
 extern SDL_Window *sdlWindow;
 extern SDL_Renderer *sdlRenderer;
 extern Sprite *Sprites;
-extern Screen Ec;
+extern Screen *Ec;
 extern sNewPreference Pref;
 
 static char Points[] = ". . . . . . . . . . . . . .";
@@ -115,14 +115,14 @@ eMenu Menu::SDLMain()
 
     // Prend les evenements
     do {
-        Ec.CleanSpriteAndScreen(fmenu);
+        Ec->CleanSpriteAndScreen(fmenu);
         SDL_RenderClear(sdlRenderer);
         // Prend l'image du fond et fait l'affichage
         Sprites[fond_menu].Draw(400, 300, 0, Sprites[fmenu].Image[0]);
         Sprites[menu].Draw(400, 340, 0, Sprites[fmenu].Image[0]);
         Sprites[title].Draw(400, 65, 0, Sprites[fmenu].Image[0]);
         Sprites[copyright].Draw(400, 587, 0, Sprites[fmenu].Image[0]);
-        Ec.PrintText("Copyright é", 400, 587);
+        Ec->PrintText("Copyright é", 400, 587);
 
         DrawText(400, 229, T_play, Sprites[fmenu].Image[0]);
         AddButton(0, T_play, 400, 229);
@@ -431,7 +431,7 @@ eMenu Menu::SDLMain_Options()
     PyE = 4;
     // Prend les evenements
     do {
-        Ec.CleanSpriteAndScreen(fmenu);
+        Ec->CleanSpriteAndScreen(fmenu);
         SDL_RenderClear(sdlRenderer);
         InitMain_Options(); // Prépare le menu
         SDL_Event event;
@@ -596,42 +596,42 @@ eMenu Menu::SDLMain_Options()
         Sleeping();
 
         // Gère l'Affichage
-        // Ec.Efface(fmenu);
+        // Ec->Efface(fmenu);
 
         if (Pref.FullScreen) {
-            Ec.PrintSprite(arrows, 1, 350, 300);
-            Ec.PrintSprite(arrows, 3, 450, 300);
+            Ec->PrintSprite(arrows, 1, 350, 300);
+            Ec->PrintSprite(arrows, 3, 450, 300);
         }
         else {
-            Ec.PrintSprite(arrows, 0, 350, 300);
-            Ec.PrintSprite(arrows, 4, 450, 300);
+            Ec->PrintSprite(arrows, 0, 350, 300);
+            Ec->PrintSprite(arrows, 4, 450, 300);
         }
 
         NumSp = (currentTime / 30) % 25;
-        Ec.PrintSprite(sound, NumSp, 150, 110);
+        Ec->PrintSprite(sound, NumSp, 150, 110);
         NumSp = (currentTime / 30) % 25;
-        Ec.PrintSprite(music, NumSp, 150, 200);
+        Ec->PrintSprite(music, NumSp, 150, 200);
         NumSp = (currentTime / 50) % 50;
-        Ec.PrintSprite(earth, NumSp, 180, 400);
+        Ec->PrintSprite(earth, NumSp, 180, 400);
 
         N = (int)(Pref.Volume * 10 + 1) / SDL_MIX_MAXVOLUME;
         NumSp = (currentTime / 50) % 40 + 120;
         for (i = 0; i < N; i++) {
             if (i == N - 1) {
-                Ec.PrintSprite(locomotive, NumSp, (690 - 300) / 10 * i + 300, 110);
+                Ec->PrintSprite(locomotive, NumSp, (690 - 300) / 10 * i + 300, 110);
             }
             else {
-                Ec.PrintSprite(logs_wagon, NumSp, (690 - 300) / 10 * i + 300, 110);
+                Ec->PrintSprite(logs_wagon, NumSp, (690 - 300) / 10 * i + 300, 110);
             }
         }
 
         N = (int)(Pref.VolumeM * 10 + 1) / SDL_MIX_MAXVOLUME;
         for (i = 0; i < N; i++) {
             if (i == N - 1) {
-                Ec.PrintSprite(locomotive, NumSp, (690 - 300) / 10 * i + 300, 200);
+                Ec->PrintSprite(locomotive, NumSp, (690 - 300) / 10 * i + 300, 200);
             }
             else {
-                Ec.PrintSprite(logs_wagon, NumSp, (690 - 300) / 10 * i + 300, 200);
+                Ec->PrintSprite(logs_wagon, NumSp, (690 - 300) / 10 * i + 300, 200);
             }
         }
 
@@ -686,7 +686,7 @@ eMenu Menu::SDLMain_Speed()
 
     // Prend les evenements
     do {
-        Ec.CleanSpriteAndScreen(fmenu);
+        Ec->CleanSpriteAndScreen(fmenu);
         SDL_RenderClear(sdlRenderer);
         // Prend l'image du fond et fait l'affichage
         Sprites[fond_menu].Draw(400, 300, 0, Sprites[fmenu].Image[0]);
@@ -792,7 +792,7 @@ eMenu Menu::SDLMain_Level()
     // Prend les evenements
     do {
         // Efface le fond
-        Ec.CleanSpriteAndScreen(fmenu);
+        Ec->CleanSpriteAndScreen(fmenu);
         SDL_RenderClear(sdlRenderer);
         // Prend l'image du fond et fait l'affichage
         Sprites[fond_menu].Draw(400, 300, 0, Sprites[fmenu].Image[0]);
@@ -900,26 +900,26 @@ eMenu Menu::SDLMain_Level()
         // Draw arrows
         if (Niv > 0) {
             if (PyE == 3) {
-                Ec.PrintSprite(arrows, 2, 330, 380);
+                Ec->PrintSprite(arrows, 2, 330, 380);
             }
             else {
-                Ec.PrintSprite(arrows, 1, 330, 380);
+                Ec->PrintSprite(arrows, 1, 330, 380);
             }
         }
         else {
-            Ec.PrintSprite(arrows, 0, 330, 380);
+            Ec->PrintSprite(arrows, 0, 330, 380);
         }
 
         if (Niv < Pref.LevelMax[Pref.Difficulty]) {
             if (PyE == 4) {
-                Ec.PrintSprite(arrows, 5, 470, 380);
+                Ec->PrintSprite(arrows, 5, 470, 380);
             }
             else {
-                Ec.PrintSprite(arrows, 4, 470, 380);
+                Ec->PrintSprite(arrows, 4, 470, 380);
             }
         }
         else {
-            Ec.PrintSprite(arrows, 3, 470, 380);
+            Ec->PrintSprite(arrows, 3, 470, 380);
         }
 
         DrawNumber(400, 380, Niv + 1);
@@ -1115,17 +1115,17 @@ eMenu Menu::SDLMain_HR()
         Sleeping();
 
         if (Ordre) {
-            Ec.PrintSprite(fond_hrr, 0, 240, 492);
+            Ec->PrintSprite(fond_hrr, 0, 240, 492);
             DrawText(240, 492, e_Sprite(T_tart1 + N1));
         }
         else {
-            Ec.PrintSprite(fond_hrr, 0, 440, 492);
+            Ec->PrintSprite(fond_hrr, 0, 440, 492);
             DrawText(440, 492, e_Sprite(T_tart1 + N1));
         }
 
         if (Fini == -1) {
             if (Ordre) {
-                Ec.PrintSprite(fond_hrr, 0, 440, 492);
+                Ec->PrintSprite(fond_hrr, 0, 440, 492);
                 DrawText(440, 492, e_Sprite(T_tart1 + N2));
                 if (PyE == 0) {
                     Print_Main(240);
@@ -1135,7 +1135,7 @@ eMenu Menu::SDLMain_HR()
                 }
             }
             else {
-                Ec.PrintSprite(fond_hrr, 0, 240, 492);
+                Ec->PrintSprite(fond_hrr, 0, 240, 492);
                 DrawText(240, 492, e_Sprite(T_tart1 + N2));
                 if (PyE == 1) {
                     Print_Main(240);
@@ -1191,7 +1191,7 @@ eMenu Menu::SDLMain_InGame()
 
     // Prend les evenements
     do {
-        Ec.CleanSpriteAndScreen(fmenu);
+        Ec->CleanSpriteAndScreen(fmenu);
         SDL_RenderClear(sdlRenderer);
         SDL_Event event;
         while (SDL_PollEvent(&event)) {
@@ -1202,7 +1202,7 @@ eMenu Menu::SDLMain_InGame()
             case SDL_WINDOWEVENT:
                 if (event.window.event == SDL_WINDOWEVENT_ENTER) {
                     // SDL_RenderPresent(sdlRenderer);
-                    // Ec.Cls(fmenu);
+                    // Ec->Cls(fmenu);
                 }
                 break;
             case SDL_KEYDOWN:
@@ -1322,7 +1322,7 @@ eMenu Menu::SDLMain_Score(bool EditScore)
     // Prend les evenements
     do {
         // Efface le fond
-        Ec.CleanSpriteAndScreen(fmenu);
+        Ec->CleanSpriteAndScreen(fmenu);
         SDL_RenderClear(sdlRenderer);
         // Prend l'image du fond et fait l'affichage
         Sprites[fond_menu].Draw(400, 300, 0, Sprites[fmenu].Image[0]);
@@ -1415,8 +1415,8 @@ eMenu Menu::SDLMain_Score(bool EditScore)
             DrawString(140, 120 + NEdit * (360 / 7), Pref.Sco[NEdit].Name);
 
             i = (currentTime / 50) % 20; // Draw cursors
-            Ec.PrintSprite(arrow_left, i, 110, 120 + NEdit * (360 / 7));
-            Ec.PrintSprite(arrow_right, i, 180 + StringLength(Pref.Sco[NEdit].Name), 120 + NEdit * (360 / 7));
+            Ec->PrintSprite(arrow_left, i, 110, 120 + NEdit * (360 / 7));
+            Ec->PrintSprite(arrow_right, i, 180 + StringLength(Pref.Sco[NEdit].Name), 120 + NEdit * (360 / 7));
         }
 
         // Echange les buffets video
@@ -1439,8 +1439,8 @@ void Menu::Print_Main(int Centre) const
     int const x2 = (Centre - x1) + Centre;
     int const y = (Menu_Py[PyE].FinY + Menu_Py[PyE].DepY) / 2;
 
-    Ec.PrintSprite(arrow_left, NumSp, x1, y);
-    Ec.PrintSprite(arrow_right, NumSp, x2, y);
+    Ec->PrintSprite(arrow_left, NumSp, x1, y);
+    Ec->PrintSprite(arrow_right, NumSp, x2, y);
 }
 
 /*** Centre les flèches sur le boutton ***/
@@ -1452,6 +1452,6 @@ void Menu::Affiche_Main_Centre() const
     int const x2 = Menu_Py[PyE].FinX + 5;
     int const y = (Menu_Py[PyE].FinY + Menu_Py[PyE].DepY) / 2;
 
-    Ec.PrintSprite(arrow_left, NumSp, x1, y);
-    Ec.PrintSprite(arrow_right, NumSp, x2, y);
+    Ec->PrintSprite(arrow_left, NumSp, x1, y);
+    Ec->PrintSprite(arrow_right, NumSp, x2, y);
 }
