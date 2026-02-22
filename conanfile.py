@@ -3,7 +3,8 @@ from conan.tools.cmake import CMake, cmake_layout, CMakeDeps, CMakeToolchain
 
 class LiRi(ConanFile):
     settings = "os", "compiler", "build_type", "arch"
-    requires = "sdl/[~2.28.5]", "sdl_mixer/[~2.8.0]", "openssl/1.1.1w"
+    requires = "sdl/2.32.10", "sdl_mixer/2.8.1", "openssl/1.1.1w"
+    tool_requires = "cmake/4.2.1"
 
     def layout(self):
         cmake_layout(self)

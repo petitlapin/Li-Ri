@@ -13,7 +13,7 @@ jobs:
             - name: Install Conan
               uses: turtlebrowser/get-conan@main
               with:
-                version: 2.8.1
+                version: 2.25.2
             - name: Configure conan
               run: conan profile detect
             - name: Install deps
@@ -39,7 +39,7 @@ jobs:
             - name: Get Conan
               uses: turtlebrowser/get-conan@main
               with:
-                version: 2.8.1
+                version: 2.25.2
             - name: Configure conan
               run: conan profile detect
             - name: Install deps
@@ -63,7 +63,7 @@ jobs:
             - name: Install Conan
               uses: turtlebrowser/get-conan@main
               with:
-                version: 2.8.1
+                version: 2.25.2
 
             - name: Configure conan
               run: conan profile detect
