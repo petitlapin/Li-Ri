@@ -32,6 +32,7 @@
 #include <SDL2/SDL_video.h> // for SDL_CreateWindow, SDL_DestroyWindow
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_mixer.h>
+#include <SDL2/SDL_ttf.h>
 
 #include "config.h"
 #include "preference.h"
@@ -106,6 +107,8 @@ int main(int narg, char *argv[])
     // Close the program properly when quitting
     atexit(SDL_Quit);
 
+    TTF_Init();
+
     // Set resolution
     int vOption = SDL_WINDOW_RESIZABLE;
     if (Pref.FullScreen) {
@@ -118,6 +121,8 @@ int main(int narg, char *argv[])
     SDL_RenderSetLogicalSize(sdlRenderer, 800, 600);
 
     SDL_ShowCursor(0); // Hide cursor
+
+    Ec.Init();
 
     Audio audio;
     audio.Init();
@@ -197,10 +202,13 @@ int main(int narg, char *argv[])
     }
     delete[] Sprites;
 
+    Ec.Delete();
+
     Utils::SavePref();
     SDL_DestroyRenderer(sdlRenderer);
     SDL_DestroyWindow(sdlWindow);
 
+    TTF_Quit();
     Mix_Quit();
     SDL_Quit();
     return 0;

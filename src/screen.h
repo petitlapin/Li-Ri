@@ -27,21 +27,32 @@
 #include "sprite.h"
 #include "preference.h"
 
+#include <SDL2/SDL_ttf.h>
+
+#include <string>
+#include <unordered_map>
+
 class Screen
 {
 public:
     Screen() = default;
     ~Screen() = default;
 
+    void Init();
+    void Delete();
+
     void PrintSprite(e_Sprite NumSpr, int Num, int x, int y); // Affiche un sprite
     void PrintCable(int dx, int dy, int fx, int fy); // Affiche un cable
+    void PrintText(const std::string &Text, int x, int y);
     void PrintText(e_Sprite Text, int x, int y); // Affiche un text à l'ecran
     void PrintOptions(int NVies, int NScore); // Affiche les options sur le coté
     void CleanSpriteAndScreen(e_Sprite NumSpriteFondEcran); // Efface l'ecran avec l'image de fond
 
 private:
-    /*** Variables ***/
+    TTF_Font *m_font;
     int Score { -1 }; // Mémorise le score affiché
+
+    std::unordered_map<std::string, SDL_Texture *> cachedString;
 };
 
 #endif

@@ -24,10 +24,29 @@
 #include "preference.h"
 #include "sprite.h"
 #include "screen.h"
+#include "utils.h"
 
 /*** Variables globales ***/
 /**************************/
 extern Sprite *Sprites;
+extern SDL_Renderer *sdlRenderer;
+
+void Screen::Init()
+{
+    char fontPath[512];
+    strcpy(fontPath, "Andika-R.ttf");
+    Utils::GetPath(fontPath);
+
+    m_font = TTF_OpenFont(fontPath, 28);
+}
+
+void Screen::Delete()
+{
+    for (auto &texture: cachedString) {
+        SDL_DestroyTexture(texture.second);
+    }
+    TTF_CloseFont(m_font);
+}
 
 /*** Affiche un Sprite ***/
 /*************************/
@@ -40,6 +59,29 @@ void Screen::PrintCable(int dx, int dy, int fx, int fy)
 {
     // Show the rope between the wagons
     Sprites[rope].PrintRope(dx, dy, fx, fy);
+}
+
+void Screen::PrintText(const std::string &Text, int x, int y)
+{
+    SDL_Texture *texture = nullptr;
+    if (cachedString.count(Text) > 0) {
+        texture = cachedString[Text];
+    }
+    else {
+        SDL_Color fgColor = { 255, 255, 255, 255 };
+        SDL_Surface *surf = TTF_RenderText_Blended(m_font, Text.c_str(), fgColor);
+        texture = SDL_CreateTextureFromSurface(sdlRenderer, surf);
+        SDL_FreeSurface(surf);
+        cachedString.insert({ Text, texture });
+    }
+
+    SDL_Rect Position;
+
+    SDL_QueryTexture(texture, NULL, NULL, &Position.w, &Position.h);
+    Position.x = x - Position.w;
+    Position.y = y - Position.h;
+
+    SDL_RenderCopy(sdlRenderer, texture, nullptr, &Position);
 }
 
 /*** Affiche un text ***/

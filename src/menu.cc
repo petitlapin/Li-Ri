@@ -122,6 +122,7 @@ eMenu Menu::SDLMain()
         Sprites[menu].Draw(400, 340, 0, Sprites[fmenu].Image[0]);
         Sprites[title].Draw(400, 65, 0, Sprites[fmenu].Image[0]);
         Sprites[copyright].Draw(400, 587, 0, Sprites[fmenu].Image[0]);
+        Ec.PrintText("Copyright é", 400, 587);
 
         DrawText(400, 229, T_play, Sprites[fmenu].Image[0]);
         AddButton(0, T_play, 400, 229);
