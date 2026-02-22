@@ -24,9 +24,9 @@ Gameplay
 Information on how to compile Li-Ri is available in the INSTALL file.
 
 # System requirements
-CPU - 59.7 MHz;
-RAM - 40 MB;
-Graphics card - With OpenGL support.
+CPU - 59.7 MHz; <br>
+RAM - 40 MB; <br>
+Graphics card - With OpenGL support; <br>
 minimal OS:
 - Windows XP
 - Androind 4.1
