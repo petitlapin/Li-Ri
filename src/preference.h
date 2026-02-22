@@ -25,6 +25,7 @@
 #define PREFERENCE_DOM_
 
 #include <SDL2/SDL_audio.h> // for SDL_MIX_MAXVOLUME
+#include <string>
 
 #define SPEED_MAX 180.0
 #define SPEED_AVERAGE 120.0
@@ -77,7 +78,7 @@ enum e_Difficulty {
 struct sScore
 {
     int Score;
-    char Name[80];
+    std::string Name;
 };
 
 /*** Preferences structures ***/

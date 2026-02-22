@@ -32,7 +32,7 @@
 /*** Variables Globales ***/
 /**************************/
 extern int currentTime;
-extern Screen Ec;
+extern Screen *Ec;
 extern SDL_Window *sdlWindow;
 
 /*** Initialise la sourie ***/
@@ -143,6 +143,6 @@ void Mouse::Print() const
 
 #ifndef ANDROID
     // Affiche le curseur
-    Ec.PrintSprite(cursor, NumSp, X, Y);
+    Ec->PrintSprite(cursor, NumSp, X, Y);
 #endif
 }

@@ -56,7 +56,7 @@ char Titre[] = "Li-ri V" VERSION;
 
 Sprite *Sprites = nullptr; // Sprites pointer
 int NSprites = 0; // Number of sprites in memory
-Screen Ec; // 2 Video buffer pointer
+Screen *Ec; // 2 Video buffer pointer
 sNewPreference Pref; // Preference table.
 Level level;
 
@@ -109,6 +109,8 @@ int main(int narg, char *argv[])
 
     TTF_Init();
 
+    Ec = new Screen();
+    
     // Set resolution
     int vOption = SDL_WINDOW_RESIZABLE;
     if (Pref.FullScreen) {
@@ -121,8 +123,6 @@ int main(int narg, char *argv[])
     SDL_RenderSetLogicalSize(sdlRenderer, 800, 600);
 
     SDL_ShowCursor(0); // Hide cursor
-
-    Ec.Init();
 
     Audio audio;
     audio.Init();
@@ -201,8 +201,6 @@ int main(int narg, char *argv[])
         Sprites[i].Delete();
     }
     delete[] Sprites;
-
-    Ec.Delete();
 
     Utils::SavePref();
     SDL_DestroyRenderer(sdlRenderer);

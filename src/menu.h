@@ -73,6 +73,10 @@ private:
     Audio &m_audio;
     Mouse &m_mouse;
     Gamepad &m_gamepad;
+
+	char Points[28] = ". . . . . . . . . . . . . .";
+	int Year = 2026;
+
 };
 
 #endif

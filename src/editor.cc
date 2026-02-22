@@ -28,6 +28,7 @@
 #include <SDL2/SDL_timer.h> // for SDL_GetTicks
 #include <SDL2/SDL_video.h> // for SDL_WINDOWEVENT_ENTER
 #include <cstdlib>
+#include <string>
 
 #include "editor.h"
 #include "menu.h"
@@ -35,12 +36,14 @@
 #include "level.h"
 #include "gamepad.h"
 #include "mouse.h"
+#include "screen.h"
 
 /*** Variables globales ***/
 /**************************/
 extern SDL_Renderer *sdlRenderer;
 
 extern Sprite *Sprites;
+extern Screen *Ec;
 extern sNewPreference Pref;
 
 extern int currentTime;
@@ -251,7 +254,7 @@ void Editor::Draw() const
     }
 
     // Affiche numero du niveau
-    DrawNumber(740, 130, NumN + 1);
+    Ec->PrintText(std::to_string(NumN + 1), 740, 130);
 
     // Affiche les options
     for (i = 0; i < LT * HT; i++) {

@@ -22,8 +22,8 @@
 //    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 #include "preference.h"
-#include "sprite.h"
 #include "screen.h"
+#include "sprite.h"
 #include "utils.h"
 
 /*** Variables globales ***/
@@ -31,20 +31,25 @@
 extern Sprite *Sprites;
 extern SDL_Renderer *sdlRenderer;
 
-void Screen::Init()
+Screen::Screen()
 {
+    // Loading font
     char fontPath[512];
-    strcpy(fontPath, "Andika-R.ttf");
+    strcpy(fontPath, "comic.ttf");
     Utils::GetPath(fontPath);
-
     m_font = TTF_OpenFont(fontPath, 28);
+
+    // Selecting font color
+    fColor.r = 255;
+    fColor.g = 255;
+    fColor.b = 255;
+    fColor.a = 255;
 }
 
-void Screen::Delete()
+Screen::~Screen()
 {
-    for (auto &texture: cachedString) {
-        SDL_DestroyTexture(texture.second);
-    }
+    // Destroying font
+    SDL_DestroyTexture(fontTexture);
     TTF_CloseFont(m_font);
 }
 
@@ -61,34 +66,37 @@ void Screen::PrintCable(int dx, int dy, int fx, int fy)
     Sprites[rope].PrintRope(dx, dy, fx, fy);
 }
 
-void Screen::PrintText(const std::string &Text, int x, int y)
-{
-    SDL_Texture *texture = nullptr;
-    if (cachedString.count(Text) > 0) {
-        texture = cachedString[Text];
-    }
-    else {
-        SDL_Color fgColor = { 255, 255, 255, 255 };
-        SDL_Surface *surf = TTF_RenderUTF8_Blended(m_font, Text.c_str(), fgColor);
-        texture = SDL_CreateTextureFromSurface(sdlRenderer, surf);
-        SDL_FreeSurface(surf);
-        cachedString.insert({ Text, texture });
-    }
-
-    SDL_Rect Position;
-
-    SDL_QueryTexture(texture, NULL, NULL, &Position.w, &Position.h);
-    Position.x = x - Position.w;
-    Position.y = y - Position.h;
-
-    SDL_RenderCopy(sdlRenderer, texture, nullptr, &Position);
+void Screen::ChangeFontSize(int size){
+	TTF_SetFontSize(m_font, size);
 }
 
-/*** Affiche un text ***/
-/***********************/
-void Screen::PrintText(e_Sprite Text, int x, int y)
+void Screen::ChangeFontColor(float r, float g, float b){
+    fColor.r = r;
+    fColor.g = g;
+    fColor.b = b;
+    fColor.a = 255;
+}
+
+void Screen::PrintText(const std::string &Text, int x, int y)
 {
-    Sprites[Text].Draw(x, y, 0);
+    fontSurface = TTF_RenderUTF8_Blended(m_font, Text.c_str(), fColor); // Rendering text
+    fontTexture = SDL_CreateTextureFromSurface(sdlRenderer, fontSurface); // Creating texture
+
+    // Setting position and size
+    SDL_Rect dst;
+    dst.x = x;
+    dst.y = y;
+    dst.w = fontSurface->w;
+    dst.h = fontSurface->h;
+
+    // Rendering text
+    SDL_RenderCopy(sdlRenderer, fontTexture, nullptr, &dst);
+}
+
+int Screen::TextLength(std::string Text){
+	int w,h;
+	TTF_SizeUTF8(m_font, Text.c_str(), &w, &h);
+	return w;
 }
 
 /*** Affiche les options du jeu ***/
@@ -98,7 +106,9 @@ void Screen::PrintOptions(int NV, int NScore)
     int x, y;
 
     Score = NScore;
-    DrawNumber(740, 215, Score);
+    ChangeFontSize(24);
+    PrintText(std::to_string(Score), 740 - TextLength(std::to_string(Score))/2, 215);
+    ChangeFontSize(22);
 
     if (NV > 10) {
         NV = 10; // Evite un dépassement de l'affichage
