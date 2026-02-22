@@ -24,6 +24,7 @@
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>
+#include <string>
 
 #include <SDL2/SDL_audio.h> // for SDL_MIX_MAXVOLUME
 #include <SDL2/SDL_events.h> // for SDL_PollEvent, SDL_Event, SDL_KEYDOWN
@@ -61,6 +62,7 @@ extern sNewPreference Pref;
 
 static char Points[] = ". . . . . . . . . . . . . .";
 static struct mPy Menu_Py[20];
+int Year = 2026;
 
 /*** Fait une attente pour 50fps ***/
 /***********************************/
@@ -73,6 +75,21 @@ void Sleeping()
         SDL_Delay(delay);
         currentTime = SDL_GetTicks();
     }
+}
+
+/*** Draw button with string text ***/
+/************************************/
+void AddTextButton(int Num, const char *Text, int X, int Y)
+{
+    Ec->ChangeFontSize(45);
+    Ec->PrintText(std::string(Text), X-StringLength(Text)/2, Y-22);
+
+    Menu_Py[Num].DepX = X - StringLength(Text) / 2;
+    Menu_Py[Num].DepY = Y - 22;
+    Menu_Py[Num].FinX = X + StringLength(Text) / 2;
+    Menu_Py[Num].FinY = Y + 22;
+    Menu_Py[Num].Py = Num;
+    Menu_Py[Num].Valide = true;
 }
 
 /*** Ajoute une entrée dans le tableau des boutons ***/
@@ -121,17 +138,15 @@ eMenu Menu::SDLMain()
         Sprites[fond_menu].Draw(400, 300, 0, Sprites[fmenu].Image[0]);
         Sprites[menu].Draw(400, 340, 0, Sprites[fmenu].Image[0]);
         Sprites[title].Draw(400, 65, 0, Sprites[fmenu].Image[0]);
-        Sprites[copyright].Draw(400, 587, 0, Sprites[fmenu].Image[0]);
-        Ec->PrintText("Copyright é", 400, 587);
+        Ec->ChangeFontSize(14);
+        // Automatic year change
+        Ec->PrintText("G.P.L. Game - Copyright 2023-" + std::to_string(Year) + " By Johnny Jazeix (fork of Ri-Li originally written by D. Roux-Serret), Music by MAF", 0, 575);
+        Ec->ChangeFontSize(22);
 
-        DrawText(400, 229, T_play, Sprites[fmenu].Image[0]);
-        AddButton(0, T_play, 400, 229);
-        DrawText(400, 306, T_scores, Sprites[fmenu].Image[0]);
-        AddButton(1, T_scores, 400, 306);
-        DrawText(400, 384, T_moptions, Sprites[fmenu].Image[0]);
-        AddButton(2, T_moptions, 400, 384);
-        DrawText(400, 461, T_quit, Sprites[fmenu].Image[0]);
-        AddButton(3, T_quit, 400, 461);
+        AddTextButton(0, "Play", 400, 229);
+        AddTextButton(1, "Scores", 400, 306);
+        AddTextButton(2, "Options", 400, 384);
+        AddTextButton(3, "Quit", 400, 461);
         Menu_Py[4].DepX = -1;
         SDL_Event event;
         while (SDL_PollEvent(&event)) {
@@ -381,8 +396,7 @@ void Menu::InitMain_Options()
 
     // Centre à gauche le text de menu
     CentreM = 120 + Sprites[T_menu].Dim[0].L / 2;
-    DrawText(CentreM, 490, T_menu, Sprites[fmenu].Image[0]);
-    AddButton(4, T_menu, CentreM, 490);
+    AddTextButton(4, "Menu", CentreM, 490);
 
     // Boutons des sounds
     Sprites[arrows].Draw(250, 110, 1, Sprites[fmenu].Image[0]);
@@ -693,12 +707,9 @@ eMenu Menu::SDLMain_Speed()
         Sprites[menu].Draw(400, 340, 0, Sprites[fmenu].Image[0]);
         Sprites[title].Draw(400, 65, 0, Sprites[fmenu].Image[0]);
 
-        DrawText(400, 225, T_easy, Sprites[fmenu].Image[0]);
-        AddButton(0, T_easy, 400, 225);
-        DrawText(400, 340, T_normal, Sprites[fmenu].Image[0]);
-        AddButton(1, T_normal, 400, 340);
-        DrawText(400, 455, T_hard, Sprites[fmenu].Image[0]);
-        AddButton(2, T_hard, 400, 455);
+        AddTextButton(0, "Easy", 400, 225);
+        AddTextButton(1, "Normal", 400, 340);
+        AddTextButton(2, "Hard", 400, 455);
         Menu_Py[3].DepX = -1;
 
         SDL_Event event;
@@ -799,12 +810,9 @@ eMenu Menu::SDLMain_Level()
         Sprites[menu].Draw(400, 340, 0, Sprites[fmenu].Image[0]);
         Sprites[title].Draw(400, 65, 0, Sprites[fmenu].Image[0]);
 
-        DrawText(400, 225, T_new_game, Sprites[fmenu].Image[0]);
-        AddButton(0, T_new_game, 400, 225);
-        DrawText(400, 320, T_old_level, Sprites[fmenu].Image[0]);
-        AddButton(1, T_old_level, 400, 320);
-        DrawText(400, 455, T_menu, Sprites[fmenu].Image[0]);
-        AddButton(2, T_menu, 400, 455);
+        AddTextButton(0, "New game", 400, 225);
+        AddTextButton(1, "Old level", 400, 320);
+        AddTextButton(2, "Menu", 400, 455);
 
         AddButton(3, arrows, 330, 380);
         AddButton(4, arrows, 470, 380);
@@ -976,12 +984,12 @@ eMenu Menu::SDLMain_HR()
     DrawText(340, 300, e_Sprite(T_art1 + N1), Sprites[fmenu].Image[0]);
 
     if (Ordre) {
-        AddButton(0, e_Sprite(T_tart1 + N1), 240, 492);
-        AddButton(1, e_Sprite(T_tart1 + N2), 440, 492);
+        AddTextButton(0, std::string("Article " + std::to_string(N1)).c_str(), 240, 492);
+        AddTextButton(1, std::string("Article " + std::to_string(N2)).c_str(), 440, 492);
     }
     else {
-        AddButton(0, e_Sprite(T_tart1 + N1), 440, 492);
-        AddButton(1, e_Sprite(T_tart1 + N2), 240, 492);
+        AddTextButton(0, std::string("Article " + std::to_string(N1)).c_str(), 440, 492);
+        AddTextButton(1, std::string("Article " + std::to_string(N2)).c_str(), 240, 492);
     }
     Menu_Py[0].DepY -= 20;
     Menu_Py[0].FinY += 20;
@@ -1174,12 +1182,9 @@ void Menu::Print_InGame()
 
     Sprites[menu].Draw(340, 300, 0, Sprites[fmenu].Image[0]);
 
-    DrawText(340, 185, T_continue, Sprites[fmenu].Image[0]);
-    AddButton(0, T_continue, 340, 185);
-    DrawText(340, 300, T_moptions, Sprites[fmenu].Image[0]);
-    AddButton(1, T_moptions, 340, 300);
-    DrawText(340, 415, T_exit_game, Sprites[fmenu].Image[0]);
-    AddButton(2, T_exit_game, 340, 415);
+    AddTextButton(0, "Continue", 340, 185);
+    AddTextButton(1, "Options", 340, 300);
+    AddTextButton(2, "Exit game", 340, 415);
     Menu_Py[3].DepX = -1;
 }
 
@@ -1334,19 +1339,19 @@ eMenu Menu::SDLMain_Score(bool EditScore)
         // Draw scores
         for (i = 0; i < 8; i++) {
             sprintf(Provi, "%d", i + 1);
-            DrawString(70, 120 + i * (360 / 7), Provi, Sprites[fmenu].Image[0]);
+            Ec->PrintText(Provi, 70, 120 + i * (360 / 7));
 
             if (EditScore == false || NEdit != i) {
                 if (Pref.Sco[i].Name[0]) {
-                    DrawString(140, 120 + i * (360 / 7), Pref.Sco[i].Name, Sprites[fmenu].Image[0]);
+                    Ec->PrintText(Pref.Sco[i].Name, 140, 120 + i * (360 / 7));
                 }
                 else {
-                    DrawString(140, 120 + i * (360 / 7), Points, Sprites[fmenu].Image[0]);
+                    Ec->PrintText(Points, 140, 120 + i * (360 / 7));
                 }
             }
 
             sprintf(Provi, "%i", Pref.Sco[i].Score);
-            DrawString(740 - StringLength(Provi), 120 + i * (360 / 7), Provi, Sprites[fmenu].Image[0]);
+            Ec->PrintText(Provi, 740 - StringLength(Provi), 120 + i * (360 / 7));
         }
 
         // Efface le fond

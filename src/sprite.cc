@@ -230,7 +230,7 @@ int NumberLength(int C)
 
 /*** Retourne la longueur d'un texte ***/
 /***************************************/
-int StringLength(char *Texte)
+int StringLength(const char *Texte)
 {
     int i = 0;
     int l = 0;

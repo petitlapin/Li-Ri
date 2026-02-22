@@ -38,6 +38,7 @@ public:
 
     void PrintSprite(e_Sprite NumSpr, int Num, int x, int y); // Affiche un sprite
     void PrintCable(int dx, int dy, int fx, int fy); // Affiche un cable
+    void ChangeFontSize(int size); // Change font size
     void PrintText(const std::string &Text, int x, int y); // Affiche un text à l'ecran
     void PrintOptions(int NVies, int NScore); // Affiche les options sur le coté
     void CleanSpriteAndScreen(e_Sprite NumSpriteFondEcran); // Efface l'ecran avec l'image de fond

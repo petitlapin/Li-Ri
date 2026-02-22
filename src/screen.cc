@@ -65,6 +65,10 @@ void Screen::PrintCable(int dx, int dy, int fx, int fy)
     Sprites[rope].PrintRope(dx, dy, fx, fy);
 }
 
+void Screen::ChangeFontSize(int size){
+	TTF_SetFontSize(m_font, size);
+}
+
 void Screen::PrintText(const std::string &Text, int x, int y)
 {
     SDL_Color fColor;
