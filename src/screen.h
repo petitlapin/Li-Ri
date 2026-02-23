@@ -47,7 +47,8 @@ private:
     /*** Variables ***/
     int Score { -1 }; // Mémorise le score affiché
     TTF_Font* m_font;
-    std::unordered_map<std::string, SDL_Texture*> cachedString;
+    SDL_Surface* fontSurface;
+    SDL_Texture* fontTexture;
 };
 
 #endif

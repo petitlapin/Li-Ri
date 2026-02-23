@@ -46,9 +46,7 @@ Screen::Screen()
 
 Screen::~Screen()
 {
-    for (auto &texture: cachedString) {
-        SDL_DestroyTexture(texture.second);
-    }
+    SDL_DestroyTexture(fontTexture);
     TTF_CloseFont(m_font);
 }
 
@@ -76,8 +74,8 @@ void Screen::PrintText(const std::string &Text, int x, int y)
     fColor.g = 255;
     fColor.b = 255;
 
-    SDL_Surface* fontSurface = TTF_RenderText_Solid(m_font, Text.c_str(), fColor); // Rendering text
-    SDL_Texture* Texture = SDL_CreateTextureFromSurface(sdlRenderer, fontSurface); // Creating texture
+    fontSurface = TTF_RenderUTF8_Solid(m_font, Text.c_str(), fColor); // Rendering text
+    fontTexture = SDL_CreateTextureFromSurface(sdlRenderer, fontSurface); // Creating texture
 
     // Setting position and size
     SDL_Rect dst;
@@ -87,7 +85,7 @@ void Screen::PrintText(const std::string &Text, int x, int y)
     dst.h = fontSurface->h;
 
     // Rendering text
-    SDL_RenderCopy(sdlRenderer, Texture, nullptr, &dst);
+    SDL_RenderCopy(sdlRenderer, fontTexture, nullptr, &dst);
 }
 
 /*** Affiche les options du jeu ***/
