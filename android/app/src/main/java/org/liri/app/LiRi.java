@@ -39,6 +39,7 @@ public class LiRi extends SDLActivity {
         return new String[] {
                 "SDL2",
                 "SDL2_mixer",
+                "SDL2_ttf",
                 "main"
         };
     }

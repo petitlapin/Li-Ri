@@ -8,6 +8,7 @@ SDL_PATH := ../SDL2
 
 LOCAL_C_INCLUDES := $(LOCAL_PATH)/$(SDL_PATH)/ \
 		    $(LOCAL_PATH)/../SDL2_mixer \
+		    $(LOCAL_PATH)/../SDL2_ttf \
 		    $(LOCAL_PATH)/../simpleini \
 
 # Add your application source files here...
@@ -25,7 +26,7 @@ LOCAL_SRC_FILES := $(SDL_PATH)/src/main/android/SDL_android_main.c \
 	../../../../../../src/sprite.cc \
 	../../../../../../src/utils.cc \
 
-LOCAL_SHARED_LIBRARIES := SDL2 SDL2_mixer
+LOCAL_SHARED_LIBRARIES := SDL2 SDL2_mixer SDL2_ttf
 
 LOCAL_LDLIBS := -lGLESv1_CM -lGLESv2 -llog
 

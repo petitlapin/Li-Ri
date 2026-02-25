@@ -1,7 +1,7 @@
 Installation Instructions
 *************************
 
-Li-Ri depends on SDL2 and SDL2_mixer (and their dependencies).
+Li-Ri depends on SDL2, SDL2_mixer and SDL2_ttf (and their dependencies).
 
 Compilation via conan:
 =======================
@@ -13,7 +13,7 @@ At last, run cmake to build the executable: `cmake --build build --config Releas
 
 Compilation via package manager:
 ================================
-Use your favorite tools to install the development packages of SDL2 and SDL2_mixer (preferably latest versions).
+Use your favorite tools to install the development packages of SDL2, SDL2_mixer and SDL2_ttf (preferably latest versions).
 
 Then run cmake to generate the build files: `cmake -DCMAKE_BUILD_TYPE=Release -S . -B build`.
 
