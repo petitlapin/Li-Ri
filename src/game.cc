@@ -369,12 +369,12 @@ bool Game::DrawLevel(int NivN)
 #endif
 
     // Affiche les textes suivant la langue
-    DrawText(740, 110, T_level, Sprites[fjeu].Image[0]);
-    DrawText(740, 180, T_score, Sprites[fjeu].Image[0]);
-    DrawText(740, 260, T_options, Sprites[fjeu].Image[0]);
-    DrawText(740, 340, T_lives, Sprites[fjeu].Image[0]);
+    Ec->PrintText("Level", 740-Ec->TextLength("Level"), 110);
+    Ec->PrintText("Score", 740-Ec->TextLength("Score"), 180);
+    Ec->PrintText("Conf.", 740-Ec->TextLength("Conf."), 260);
+    Ec->PrintText("Lives", 740-Ec->TextLength("Lives"), 340);
 
-    DrawNumber(740, 140, Pref.Level + 1, Sprites[fjeu].Image[0]);
+    Ec->PrintText(std::to_string(Pref.Level + 1), 740 - Ec->TextLength(std::to_string(Pref.Level + 1))/2, 140);
 
     return true;
 }

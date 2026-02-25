@@ -178,13 +178,6 @@ void DrawLoading(); // Affiche le chargeur sur la page de départ
 bool LoadLanguage(); // Charge les sprites d'une langue
 bool LoadSprites(); // Charge tous les sprites
 
-int NumberLength(int C); // Retourne la longueur en pixels d'un nombre
-int StringLength(const char *Texte); // Retourne la longueur en pixels d'un texte
-bool CharExist(char C); // Si un caracataire existe
-
-void DrawNumber(int x, int y, int Nombre, SDL_Texture *Fond = nullptr); // Affiche un chiffre
-void DrawString(int x, int y, char *Texte, SDL_Texture *Fond = nullptr); // Affiche une chaine de caractaire
-
 void DrawText(int x, int y, e_Sprite Text, SDL_Texture *Fond = nullptr); // Affiche un text dans la langue
 
 /*** Definition de la classe Sprite ***/

@@ -21,13 +21,9 @@
 //    with this program; if not, write to the Free Software Foundation, Inc.,
 //    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-#include <SDL2/SDL_log.h>
-#include <SDL2/SDL_rect.h>
-#include <SDL2/SDL_surface.h>
-#include <SDL2/SDL_timer.h>
 #include "preference.h"
-#include "sprite.h"
 #include "screen.h"
+#include "sprite.h"
 #include "utils.h"
 
 /*** Variables globales ***/
@@ -88,6 +84,12 @@ void Screen::PrintText(const std::string &Text, int x, int y)
     SDL_RenderCopy(sdlRenderer, fontTexture, nullptr, &dst);
 }
 
+int Screen::TextLength(std::string Text){
+	int w,h;
+	TTF_SizeUTF8(m_font, Text.c_str(), &w, &h);
+	return w;
+}
+
 /*** Affiche les options du jeu ***/
 /**********************************/
 void Screen::PrintOptions(int NV, int NScore)
@@ -95,7 +97,9 @@ void Screen::PrintOptions(int NV, int NScore)
     int x, y;
 
     Score = NScore;
-    DrawNumber(740, 215, Score);
+    ChangeFontSize(24);
+    PrintText(std::to_string(Score), 740 - TextLength(std::to_string(Score))/2, 215);
+    ChangeFontSize(22);
 
     if (NV > 10) {
         NV = 10; // Evite un dépassement de l'affichage

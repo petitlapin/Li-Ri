@@ -25,10 +25,13 @@
 #define SCREEN_DOM_
 
 #include <SDL2/SDL_ttf.h>
-#include "sprite.h"
+#include <SDL2/SDL_log.h>
+#include <SDL2/SDL_rect.h>
+#include <SDL2/SDL_surface.h>
+#include <SDL2/SDL_timer.h>
 #include "preference.h"
 #include "string"
-#include "unordered_map"
+#include "sprite.h"
 
 class Screen
 {
@@ -40,6 +43,7 @@ public:
     void PrintCable(int dx, int dy, int fx, int fy); // Affiche un cable
     void ChangeFontSize(int size); // Change font size
     void PrintText(const std::string &Text, int x, int y); // Affiche un text à l'ecran
+    int TextLength(std::string Text);
     void PrintOptions(int NVies, int NScore); // Affiche les options sur le coté
     void CleanSpriteAndScreen(e_Sprite NumSpriteFondEcran); // Efface l'ecran avec l'image de fond
 

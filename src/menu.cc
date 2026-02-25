@@ -82,11 +82,15 @@ void Sleeping()
 void AddTextButton(int Num, const char *Text, int X, int Y)
 {
     Ec->ChangeFontSize(45);
-    Ec->PrintText(std::string(Text), X-StringLength(Text)/2, Y-22);
 
-    Menu_Py[Num].DepX = X - StringLength(Text) / 2;
+    std::string str(Text);
+    int textWidth = Ec->TextLength(str);
+
+    Ec->PrintText(str, X - textWidth / 2, Y - 22);
+
+    Menu_Py[Num].DepX = X - textWidth / 2;
     Menu_Py[Num].DepY = Y - 22;
-    Menu_Py[Num].FinX = X + StringLength(Text) / 2;
+    Menu_Py[Num].FinX = X + textWidth / 2;
     Menu_Py[Num].FinY = Y + 22;
     Menu_Py[Num].Py = Num;
     Menu_Py[Num].Valide = true;
@@ -193,14 +197,12 @@ eMenu Menu::SDLMain()
                         break;
                     default:
                         key = event.key.keysym.sym & 0x7F; // Prend le caracataire correspondant à la touche
-                        if (CharExist(key) == true) { // Si la caractaire existe bien
-                            for (i = 2; i >= 0; i--) {
-                                MCode[i + 1] = MCode[i]; // décale le code
-                            }
-                            MCode[0] = key;
-                            if (strcmp(MCode, "tide") == 0 || strcmp(MCode, "TIDE") == 0) {
-                                return mEdit; // Si editeur de niveau
-                            }
+                        for (i = 2; i >= 0; i--) {
+                            MCode[i + 1] = MCode[i]; // décale le code
+                        }
+                        MCode[0] = key;
+                        if (strcmp(MCode, "tide") == 0 || strcmp(MCode, "TIDE") == 0) {
+                            return mEdit; // Si editeur de niveau
                         }
                     }
                 }
@@ -930,7 +932,7 @@ eMenu Menu::SDLMain_Level()
             Ec->PrintSprite(arrows, 3, 470, 380);
         }
 
-        DrawNumber(400, 380, Niv + 1);
+        Ec->PrintText(std::to_string(Niv + 1), 400, 380);
 
         if (PyE != 3 && PyE != 4) {
             Print_Main();
@@ -1351,7 +1353,7 @@ eMenu Menu::SDLMain_Score(bool EditScore)
             }
 
             sprintf(Provi, "%i", Pref.Sco[i].Score);
-            Ec->PrintText(Provi, 740 - StringLength(Provi), 120 + i * (360 / 7));
+            Ec->PrintText(Provi, 740 - Ec->TextLength(std::string(Provi)), 120 + i * (360 / 7));
         }
 
         // Efface le fond
@@ -1398,7 +1400,7 @@ eMenu Menu::SDLMain_Score(bool EditScore)
                 break;
             case SDL_TEXTINPUT:
                 /* Add new text onto the end of our text */
-                if (StringLength(Pref.Sco[NEdit].Name) < LSCOREMAX && PosCur < 79 && CharExist(event.text.text[0])) {
+                if (Ec->TextLength(Pref.Sco[NEdit].Name) < LSCOREMAX && PosCur < 79) {
                     PosCur += strlen(event.text.text);
                     strcat(Pref.Sco[NEdit].Name, event.text.text);
                 }
@@ -1417,11 +1419,11 @@ eMenu Menu::SDLMain_Score(bool EditScore)
         Sleeping();
 
         if (EditScore) { // Handle the scores edition drawing
-            DrawString(140, 120 + NEdit * (360 / 7), Pref.Sco[NEdit].Name);
+            Ec->PrintText(Pref.Sco[NEdit].Name, 140, 120 + NEdit * (360 / 7));
 
             i = (currentTime / 50) % 20; // Draw cursors
             Ec->PrintSprite(arrow_left, i, 110, 120 + NEdit * (360 / 7));
-            Ec->PrintSprite(arrow_right, i, 180 + StringLength(Pref.Sco[NEdit].Name), 120 + NEdit * (360 / 7));
+            Ec->PrintSprite(arrow_right, i, 180 + Ec->TextLength(Pref.Sco[NEdit].Name), 120 + NEdit * (360 / 7));
         }
 
         // Echange les buffets video
