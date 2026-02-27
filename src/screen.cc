@@ -69,6 +69,7 @@ void Screen::PrintText(const std::string &Text, int x, int y)
     fColor.r = 255;
     fColor.g = 255;
     fColor.b = 255;
+    fColor.a = 255;
 
     fontSurface = TTF_RenderUTF8_Solid(m_font, Text.c_str(), fColor); // Rendering text
     fontTexture = SDL_CreateTextureFromSurface(sdlRenderer, fontSurface); // Creating texture

@@ -79,14 +79,13 @@ void Sleeping()
 
 /*** Draw button with string text ***/
 /************************************/
-void AddTextButton(int Num, const char *Text, int X, int Y)
+void AddTextButton(int Num, std::string Text, int X, int Y)
 {
     Ec->ChangeFontSize(45);
 
-    std::string str(Text);
-    int textWidth = Ec->TextLength(str);
+    int textWidth = Ec->TextLength(Text);
 
-    Ec->PrintText(str, X - textWidth / 2, Y - 22);
+    Ec->PrintText(Text, X - textWidth / 2, Y - 22);
 
     Menu_Py[Num].DepX = X - textWidth / 2;
     Menu_Py[Num].DepY = Y - 22;
@@ -983,15 +982,13 @@ eMenu Menu::SDLMain_HR()
     Sprites[deco].Draw(580, 100 + (rand() % 130), rand() % 18, Sprites[fmenu].Image[0]);
     Sprites[deco].Draw(580, 470 - (rand() % 130), rand() % 18, Sprites[fmenu].Image[0]);
 
-    DrawText(340, 300, e_Sprite(T_art1 + N1), Sprites[fmenu].Image[0]);
-
     if (Ordre) {
-        AddTextButton(0, std::string("Article " + std::to_string(N1)).c_str(), 240, 492);
-        AddTextButton(1, std::string("Article " + std::to_string(N2)).c_str(), 440, 492);
+        AddTextButton(0, "Article " + std::to_string(N1), 240, 492);
+        AddTextButton(1, "Article " + std::to_string(N2), 440, 492);
     }
     else {
-        AddTextButton(0, std::string("Article " + std::to_string(N1)).c_str(), 440, 492);
-        AddTextButton(1, std::string("Article " + std::to_string(N2)).c_str(), 240, 492);
+        AddTextButton(0, "Article " + std::to_string(N1), 440, 492);
+        AddTextButton(1, "Article " + std::to_string(N2), 240, 492);
     }
     Menu_Py[0].DepY -= 20;
     Menu_Py[0].FinY += 20;
@@ -1126,17 +1123,17 @@ eMenu Menu::SDLMain_HR()
 
         if (Ordre) {
             Ec->PrintSprite(fond_hrr, 0, 240, 492);
-            DrawText(240, 492, e_Sprite(T_tart1 + N1));
+            Ec->PrintText(std::to_string(N1), 240, 492);
         }
         else {
             Ec->PrintSprite(fond_hrr, 0, 440, 492);
-            DrawText(440, 492, e_Sprite(T_tart1 + N1));
+            Ec->PrintText(std::to_string(N1), 440, 492);
         }
 
         if (Fini == -1) {
             if (Ordre) {
                 Ec->PrintSprite(fond_hrr, 0, 440, 492);
-                DrawText(440, 492, e_Sprite(T_tart1 + N2));
+                Ec->PrintText(std::to_string(N2), 240, 492);
                 if (PyE == 0) {
                     Print_Main(240);
                 }
@@ -1146,7 +1143,7 @@ eMenu Menu::SDLMain_HR()
             }
             else {
                 Ec->PrintSprite(fond_hrr, 0, 240, 492);
-                DrawText(240, 492, e_Sprite(T_tart1 + N2));
+                Ec->PrintText(std::to_string(N2), 440, 492);
                 if (PyE == 1) {
                     Print_Main(240);
                 }
@@ -1286,14 +1283,14 @@ eMenu Menu::SDLMain_Score(bool EditScore)
     int i;
     int NEdit = -1;
     char Provi[256];
-    int PosCur = 0;
     char key;
 
     // Cherche le numéro du score à remplacer si edition des scores
     if (EditScore) {
-        for (i = 7; i >= 0; i--) {
+        for (i = 0; i < 8; i++) {
             if (Pref.Sco[i].Score < Pref.Score) {
                 NEdit = i;
+                break;
             }
         }
         if (NEdit == -1) {
@@ -1303,13 +1300,13 @@ eMenu Menu::SDLMain_Score(bool EditScore)
         if (NEdit < 7) { // Si doit fair un décalage
             for (i = 7; i > NEdit; i--) {
                 Pref.Sco[i].Score = Pref.Sco[i - 1].Score;
-                strcpy(Pref.Sco[i].Name, Pref.Sco[i - 1].Name);
+                Pref.Sco[i].Name = Pref.Sco[i - 1].Name;
             }
         }
 
         // Efface le nouveau nom et met le score
         Pref.Sco[NEdit].Score = Pref.Score;
-        Pref.Sco[NEdit].Name[0] = 0;
+        Pref.Sco[NEdit].Name.clear();
     }
 
     // Met la sourie sur tous l'ecran
@@ -1344,7 +1341,7 @@ eMenu Menu::SDLMain_Score(bool EditScore)
             Ec->PrintText(Provi, 70, 120 + i * (360 / 7));
 
             if (EditScore == false || NEdit != i) {
-                if (Pref.Sco[i].Name[0]) {
+                if (!Pref.Sco[i].Name.empty()) {
                     Ec->PrintText(Pref.Sco[i].Name, 140, 120 + i * (360 / 7));
                 }
                 else {
@@ -1370,10 +1367,10 @@ eMenu Menu::SDLMain_Score(bool EditScore)
                 break;
             case SDL_KEYDOWN: // Prend un touche au clavier
                 if (event.key.state == SDL_PRESSED) {
-                    m_audio.Play(sClic);
-                    if (EditScore == false && event.key.keysym.sym != SDLK_F12) {
-                        event.key.keysym.sym = SDLK_RETURN;
+                    if (NEdit >= 0 && event.key.keysym.sym == SDLK_BACKSPACE && !Pref.Sco[NEdit].Name.empty()) {
+                        Pref.Sco[NEdit].Name.pop_back();
                     }
+                    m_audio.Play(sClic);
                     switch (event.key.keysym.sym) {
                     case SDLK_F12: // Save screenshot
                         if (event.key.repeat == 0) {
@@ -1387,22 +1384,12 @@ eMenu Menu::SDLMain_Score(bool EditScore)
                             SDL_StopTextInput();
                         }
                         return mMenu;
-                    case SDLK_BACKSPACE: // Fait un retour de chariot
-                        if (PosCur) {
-                            PosCur--;
-                            Pref.Sco[NEdit].Name[PosCur] = 0;
-                        }
-                        break;
-                    default:
-                        break;
                     }
                 }
                 break;
             case SDL_TEXTINPUT:
-                /* Add new text onto the end of our text */
-                if (Ec->TextLength(Pref.Sco[NEdit].Name) < LSCOREMAX && PosCur < 79) {
-                    PosCur += strlen(event.text.text);
-                    strcat(Pref.Sco[NEdit].Name, event.text.text);
+                if (NEdit >= 0) {
+                    Pref.Sco[NEdit].Name += event.text.text;
                 }
                 break;
             case SDL_QUIT:
@@ -1418,12 +1405,16 @@ eMenu Menu::SDLMain_Score(bool EditScore)
         currentTime = SDL_GetTicks();
         Sleeping();
 
-        if (EditScore) { // Handle the scores edition drawing
-            Ec->PrintText(Pref.Sco[NEdit].Name, 140, 120 + NEdit * (360 / 7));
+        if (EditScore && NEdit >= 0 && NEdit < 8) {  // Handle the scores edition drawing
+            if (!Pref.Sco[NEdit].Name.empty()) {
+                Ec->PrintText(Pref.Sco[NEdit].Name, 140, 120 + NEdit * (360 / 7));
+            }
 
             i = (currentTime / 50) % 20; // Draw cursors
             Ec->PrintSprite(arrow_left, i, 110, 120 + NEdit * (360 / 7));
-            Ec->PrintSprite(arrow_right, i, 180 + Ec->TextLength(Pref.Sco[NEdit].Name), 120 + NEdit * (360 / 7));
+
+            int textLen = Pref.Sco[NEdit].Name.empty() ? 0 : Ec->TextLength(Pref.Sco[NEdit].Name);
+            Ec->PrintSprite(arrow_right, i, 180 + textLen, 120 + NEdit * (360 / 7));
         }
 
         // Echange les buffets video
