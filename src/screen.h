@@ -42,6 +42,7 @@ public:
     void PrintSprite(e_Sprite NumSpr, int Num, int x, int y); // Affiche un sprite
     void PrintCable(int dx, int dy, int fx, int fy); // Affiche un cable
     void ChangeFontSize(int size); // Change font size
+    void ChangeFontColor(float r, float g, float b);
     void PrintText(const std::string &Text, int x, int y); // Affiche un text à l'ecran
     int TextLength(std::string Text);
     void PrintOptions(int NVies, int NScore); // Affiche les options sur le coté
@@ -51,6 +52,7 @@ private:
     /*** Variables ***/
     int Score { -1 }; // Mémorise le score affiché
     TTF_Font* m_font;
+    SDL_Color fColor;
     SDL_Surface* fontSurface;
     SDL_Texture* fontTexture;
 };

@@ -62,7 +62,6 @@ extern sNewPreference Pref;
 
 static char Points[] = ". . . . . . . . . . . . . .";
 static struct mPy Menu_Py[20];
-int Year = 2026;
 
 /*** Fait une attente pour 50fps ***/
 /***********************************/
@@ -1332,8 +1331,14 @@ eMenu Menu::SDLMain_Score(bool EditScore)
         Sprites[fond_menu].Draw(400, 300, 0, Sprites[fmenu].Image[0]);
 
         // Draw title and commands
-        DrawText(400, 50, T_better_scores, Sprites[fmenu].Image[0]);
-        DrawText(400, 550, T_press_any_key, Sprites[fmenu].Image[0]);
+        Ec->ChangeFontColor(255, 255, 0);
+        Ec->PrintText("Best players", 400-Ec->TextLength("Best players")/2, 50);
+        #ifndef ANDROID
+        Ec->PrintText("Press ENTER to continue", 400-Ec->TextLength("Press ENTER to continue")/2, 550);
+        #else
+        Ec->PrintText("Tap to continue", 400-Ec->TextLength("Tap to continue")/2, 550);
+        #endif
+        Ec->ChangeFontColor(255, 255, 255);
 
         // Draw scores
         for (i = 0; i < 8; i++) {

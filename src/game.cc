@@ -369,10 +369,12 @@ bool Game::DrawLevel(int NivN)
 #endif
 
     // Affiche les textes suivant la langue
-    Ec->PrintText("Level", 740-Ec->TextLength("Level"), 110);
-    Ec->PrintText("Score", 740-Ec->TextLength("Score"), 180);
-    Ec->PrintText("Conf.", 740-Ec->TextLength("Conf."), 260);
-    Ec->PrintText("Lives", 740-Ec->TextLength("Lives"), 340);
+    Ec->ChangeFontColor(255, 255, 0);
+    Ec->PrintText("Level", 740-Ec->TextLength("Level")/2, 110);
+    Ec->PrintText("Score", 740-Ec->TextLength("Score")/2, 180);
+    Ec->PrintText("Conf.", 740-Ec->TextLength("Conf.")/2, 260);
+    Ec->PrintText("Lives", 740-Ec->TextLength("Lives")/2, 340);
+    Ec->ChangeFontColor(255, 255, 255);
 
     Ec->PrintText(std::to_string(Pref.Level + 1), 740 - Ec->TextLength(std::to_string(Pref.Level + 1))/2, 140);
 

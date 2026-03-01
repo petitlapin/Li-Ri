@@ -33,15 +33,22 @@ extern SDL_Renderer *sdlRenderer;
 
 Screen::Screen()
 {
+    // Loading font
     char fontPath[512];
     strcpy(fontPath, "comic.ttf");
     Utils::GetPath(fontPath);
-
     m_font = TTF_OpenFont(fontPath, 28);
+
+    // Selecting font color
+    fColor.r = 255;
+    fColor.g = 255;
+    fColor.b = 255;
+    fColor.a = 255;
 }
 
 Screen::~Screen()
 {
+    // Destroying font
     SDL_DestroyTexture(fontTexture);
     TTF_CloseFont(m_font);
 }
@@ -63,15 +70,16 @@ void Screen::ChangeFontSize(int size){
 	TTF_SetFontSize(m_font, size);
 }
 
+void Screen::ChangeFontColor(float r, float g, float b){
+    fColor.r = r;
+    fColor.g = g;
+    fColor.b = b;
+    fColor.a = 255;
+}
+
 void Screen::PrintText(const std::string &Text, int x, int y)
 {
-    SDL_Color fColor;
-    fColor.r = 255;
-    fColor.g = 255;
-    fColor.b = 255;
-    fColor.a = 255;
-
-    fontSurface = TTF_RenderUTF8_Solid(m_font, Text.c_str(), fColor); // Rendering text
+    fontSurface = TTF_RenderUTF8_Blended(m_font, Text.c_str(), fColor); // Rendering text
     fontTexture = SDL_CreateTextureFromSurface(sdlRenderer, fontSurface); // Creating texture
 
     // Setting position and size
