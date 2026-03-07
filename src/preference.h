@@ -99,6 +99,11 @@ struct sOldPreference
     struct sScore Sco[8]; // Store scores
 };
 
+enum eAudioTheme {
+    mMaf = 0, // original Ri-Li soundtrack
+    mZabiden = 1 // updated soundtrack
+};
+
 struct sNewPreference
 {
     e_Difficulty Difficulty { Normal }; // current game difficulty
@@ -115,6 +120,7 @@ struct sNewPreference
     float Volume { (float)SDL_MIX_MAXVOLUME }; // audio volume
     float VolumeM { (float)SDL_MIX_MAXVOLUME }; // music volume
     struct sScore Sco[8]; // store scores
+    eAudioTheme AudioTheme { mZabiden }; // which audio theme to use
     int HumanRightsQuiz { 1 }; // enable the human rights questions at the end of a level
 };
 
