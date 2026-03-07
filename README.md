@@ -10,8 +10,8 @@ You drive a toy wooden train on many levels and you must collect all the wagons 
   German, Italian, Japanese, Korean, Portuguese, Russian, Slovak,
   Spanish, Swedish, Polish, Turkish, Hungarian, Dutch.
 - Colorful animated wood engine.
-- 50 levels in this first version
-- 3 beautiful musics and many sound effects.
+- 50 levels in this first version.
+- 2 themes with 3 beautiful pieces of music and many sound effects.
 
 ## Screenshots
 ![Main menu](fastlane/metadata/android/en-US/images/sevenInchScreenshots/01.png)
@@ -21,7 +21,7 @@ Main menu
 Gameplay
 
 ## Building
-Information on how to compile Li-Ri is available in the INSTALL file.
+Information on how to compile Li-Ri is available in the INSTALL.md file.
 
 ## Thanks
 * Christian H. and Adrian F. for the German correction.
@@ -43,14 +43,16 @@ Information on how to compile Li-Ri is available in the INSTALL file.
 
 -------------
 
-Copyright (c) 2023
+Copyright (c) 2023-2026
 Johnny Jazeix: port to SDL2 + android + cmake
+
+Copyright (c) 2026
+Polishyk Mykyta "zabidentwfan@ukr.net": musics ("menu\_zabiden.ogg", "ingame1\_zabiden.ogg", "ingame2\_zabiden.ogg")
 
 Copyright (c) 2006
 Dominique Roux-Serret: design & programming & graphics & website.
-Maf464: musics
 
-Copyright (c) 2006 (for "menu.mod", "ingame1.xm", "ingame2.xm") MAF464 (email charcosset.b@free.fr; website http://maf464.free.fr). This music licensed under GPL license. See COPYING for details
+Copyright (c) 2006 Maf464 (email charcosset.b@free.fr; website http://maf464.free.fr): ("menu\_maf.ogg", "ingame1\_maf.ogg", "ingame2\_maf.ogg")
 
 [<img src="https://fdroid.gitlab.io/artwork/badge/get-it-on.png"
      alt="Get it on F-Droid"

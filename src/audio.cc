@@ -25,6 +25,7 @@
 #include <SDL2/SDL_error.h> // for SDL_GetError
 #include <SDL2/SDL_log.h> // for SDL_LogInfo, SDL_LOG_CATEGORY_APPLICATION
 #include <cstring>
+#include <cstdio>
 
 #include "audio.h"
 #include "utils.h"
@@ -51,7 +52,7 @@ bool Audio::Init()
 {
     char PathFile[512];
 
-    if (Mix_OpenAudio(22050, AUDIO_S16, 1, 1024)) {
+    if (Mix_OpenAudio(44100, AUDIO_S16, 1, 1024)) {
         SDL_LogInfo(SDL_LOG_CATEGORY_APPLICATION, "Enable to init Sound card: %s", SDL_GetError());
         return false;
     }
@@ -97,10 +98,6 @@ bool Audio::Init()
     Utils::GetPath(PathFile);
     Sound[sLive] = Mix_LoadWAV(PathFile);
 
-    strcpy(PathFile, "Sounds/menu.mod");
-    Utils::GetPath(PathFile);
-    Music = Mix_LoadMUS(PathFile);
-
     return true;
 }
 
@@ -108,7 +105,7 @@ bool Audio::Init()
 /*********************************************************************/
 void Audio::LoadMusic(int Num)
 {
-    char Provi[512] = "Sounds/ingame1.xm";
+    char Provi[512];
 
     if (!N) {
         return;
@@ -118,18 +115,32 @@ void Audio::LoadMusic(int Num)
 
     if (Music) {
         PauseMusic(true);
-        Mix_HaltMusic(); // Stops the music
+        Mix_HaltMusic();
         Mix_FreeMusic(Music);
         Music = nullptr;
     }
 
-    if (Num == 0) { // if menu music
-        strcpy(Provi, "Sounds/menu.mod");
+    if (Num == 0) { // menu music
+        switch (Pref.AudioTheme) {
+        case mMaf:
+            strcpy(Provi, "Sounds/menu_maf.mod");
+            break;
+        case mZabiden:
+            strcpy(Provi, "Sounds/menu_zabiden.ogg");
+            break;
+        }
         Utils::GetPath(Provi);
         Music = Mix_LoadMUS(Provi);
     }
-    else {
-        Provi[13] = (char)(Num) + '0';
+    else { // in game music
+        switch (Pref.AudioTheme) {
+        case mMaf:
+            sprintf(Provi, "Sounds/ingame%d_maf.xm", Num);
+            break;
+        case mZabiden:
+            sprintf(Provi, "Sounds/ingame%d_zabiden.ogg", Num);
+            break;
+        }
         Utils::GetPath(Provi);
         Music = Mix_LoadMUS(Provi);
     }

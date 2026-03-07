@@ -285,7 +285,7 @@ void DrawNumber(int x, int y, int Number, SDL_Texture *Background)
 
 /*** Display a string ***/
 /************************/
-void DrawString(int x, int y, char *Text, SDL_Texture *background)
+void DrawString(int x, int y, const char *Text, SDL_Texture *background)
 {
     int i = 0;
     int Le;
