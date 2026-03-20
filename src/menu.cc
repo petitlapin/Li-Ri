@@ -128,7 +128,8 @@ eMenu Menu::SDLMain()
         AddButton(0, T_play, 400, 229);
         DrawText(400, 306, T_scores, Sprites[fmenu].Image[0]);
         AddButton(1, T_scores, 400, 306);
-        gettext("Scores");
+        //printf("translated 'Scores': %s\n", gettext("Scores"));
+        
         DrawText(400, 384, T_moptions, Sprites[fmenu].Image[0]);
         AddButton(2, T_moptions, 400, 384);
         DrawText(400, 461, T_quit, Sprites[fmenu].Image[0]);
@@ -1344,7 +1345,8 @@ eMenu Menu::SDLMain_Score(bool EditScore)
         for (i = 0; i < 8; i++) {
             sprintf(Provi, "%d", i + 1);
             DrawString(70, 120 + i * (360 / 7), Provi, Sprites[fmenu].Image[0]);
-
+            sprintf(Provi, gettext("Score: %d"), i + 1);
+            printf("translated 'Score %%d': %s\n", Provi);
             if (EditScore == false || NEdit != i) {
                 if (Pref.Sco[i].Name[0]) {
                     DrawString(140, 120 + i * (360 / 7), Pref.Sco[i].Name, Sprites[fmenu].Image[0]);

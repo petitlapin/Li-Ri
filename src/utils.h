@@ -24,6 +24,7 @@
 #ifndef UTILS_DOM_
 #define UTILS_DOM_
 
+#include <string>
 #include <SDL2/SDL_render.h>
 
 class Utils
@@ -39,6 +40,8 @@ public:
     static void SavePref();
 
     static void doScreenshot(SDL_Renderer *renderer);
+
+    static std::string getLanguage(int index);
 };
 
 #endif

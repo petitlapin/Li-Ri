@@ -25,4 +25,18 @@ This version updates the version to the SDL2 and updates the code to build and r
 
 
 Create the pot file:
-xgettext --copyright-holder="This file is copyright:" --package-name=Li-ri --msgid-bugs-address=https://bugs.kde.org --from-code=UTF-8 -C src/*.cc src/*.h -o liri.pot
+xgettext --copyright-holder="This file is copyright:" --package-name=Li-ri --msgid-bugs-address=https://bugs.kde.org --from-code=UTF-8 -C src/*.cc src/*.h -o po/Li-Ri.pot
+
+Update the pot file:
+xgettext -j --copyright-holder="This file is copyright:" --package-name=Li-ri --msgid-bugs-address=https://bugs.kde.org --from-code=UTF-8 -C src/*.cc src/*.h -o po/Li-Ri.pot
+
+Create po:
+locale=fr
+mkdir -p po/$locale/LC_MESSAGES/
+msginit --input="po/Li-Ri.pot" --output-file="po/$locale/Li-Ri.po" --locale="$locale"
+
+Merge existing po (after update of pot):
+msgmerge "po/$locale/Li-Ri.po" "po/Li-Ri.pot" --output-file="po/$locale/Li-Ri.po"
+
+Compile po:
+msgfmt "po/$locale/Li-Ri.po" --output-file="po/$locale/LC_MESSAGES/Li-Ri.mo"

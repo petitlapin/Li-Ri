@@ -23,6 +23,9 @@
 
 #include <cstdlib>
 #include <cstring>
+#include <libintl.h>
+#include <locale.h>
+
 #include <SDL2/SDL_error.h> // for SDL_GetError
 #include <SDL2/SDL_hints.h> // for SDL_SetHint, SDL_HINT_RENDER_SCALE_QUALITY
 #include <SDL2/SDL_log.h> // for SDL_LogError, SDL_LOG_CATEGORY_APPLICATION
@@ -96,6 +99,15 @@ int main(int narg, char *argv[])
         strcpy(DefPath, argv[1]);
     }
 #endif
+
+    /* Setting the i18n environment */
+    std::string pref_locale = Utils::getLanguage(Pref.Language);
+    setlocale(LC_MESSAGES, pref_locale.c_str());
+    textdomain ("Li-Ri");
+    bindtextdomain("Li-Ri", "/home/jazeix/Desktop/travail/Li-ri/po/");
+    bind_textdomain_codeset("Li-Ri", "UTF-8");
+
+    printf("translated 'Scores': %s\n", gettext("Scores"));
 
     SDL_SetHint(SDL_HINT_JOYSTICK_ALLOW_BACKGROUND_EVENTS, "1");
     // Initiliase SDL

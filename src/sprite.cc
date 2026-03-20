@@ -26,6 +26,7 @@
 #include <SDL2/SDL_surface.h>
 #include <SDL2/SDL_timer.h>
 #include <cstring>
+#include <locale>
 #include "sprite.h"
 #include "preference.h"
 #include "utils.h"
@@ -97,7 +98,9 @@ bool LoadLanguage()
         }
     }
     delete[] Buf; // Libère la mémoire du fichier des sprites
-
+    std::string locale = Utils::getLanguage(Pref.Language);
+    setlocale(LC_MESSAGES, locale.c_str());
+    printf("Set locale to %s\n", locale.c_str());
     return true;
 }
 

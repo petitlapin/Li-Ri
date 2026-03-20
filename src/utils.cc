@@ -24,6 +24,7 @@
 #include <cstdio>
 #include <cstring>
 #include <string>
+#include <array>
 
 #include <SDL2/SDL_filesystem.h> // for SDL_GetPrefPath
 #include <SDL2/SDL_log.h> // for SDL_LogError, SDL_LOG_CATEGORY_APPL...
@@ -371,4 +372,14 @@ void Utils::doScreenshot(SDL_Renderer *renderer)
     sprintf(screenshotName, "screenshot%i.bmp", screenshotNumber++);
     SDL_SaveBMP(surface, screenshotName);
     SDL_FreeSurface(surface);
+}
+
+std::string Utils::getLanguage(int index)
+{
+    // list from https://lh.2xlibre.net/locales/
+    static std::array<std::string, 19> languages = { "de_DE", "en_US", "es_ES", "fr_FR", "ar_AR", "zh_CN",
+                                                     "ja_JP", "ru_RU", "sl_SI", "it_IT", "br_FR", "pt_PT",
+                                                     "sr_RS", "eo", "hu_HU", "tr_TR", "pl_PL", "nl_NL",
+                                                     "ko_KR" };
+    return languages[index] + ".UTF-8";
 }
