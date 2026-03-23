@@ -108,7 +108,7 @@ long Utils::LoadFile(const char *Path, unsigned char *&Buf)
         Po += 1024;
     }
 
-    if (Compt) { // Ne fait pas le test à cause d'un bug dans windows
+    if (Compt) { // "Does not do the check due to a bug in Windows"
         SDL_RWread(file, Po, 1, (unsigned int)Compt);
     }
 
@@ -153,7 +153,7 @@ bool Utils::SaveFile(const char *Path, char *Buf, long L)
 /*** Add the path to the filename depending on the OS (sprites, levels) ***/
 /**************************************************************************/
 #if (defined(__unix__) || defined(ANDROID)) || defined(__HAIKU__) && !defined(__AMIGAOS4__)
-// Version Linux
+// Linux version
 void Utils::GetPath(char *Path)
 {
     char Provi[512];
@@ -185,7 +185,7 @@ void Utils::GetPath(char *Path)
 #endif
 
 #ifdef __AMIGAOS4__
-// Version AmigaOS4
+// AmigaOS4 version
 void Utils::GetPath(char *Path)
 {
     char Provi[512];
@@ -203,7 +203,7 @@ void Utils::GetPath(char *Path)
 #endif
 
 #ifdef __APPLE__
-// Version Mac OSX
+// Mac OSX version
 void Utils::GetPath(char *Path)
 {
     char Provi[512];

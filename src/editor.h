@@ -31,8 +31,6 @@ class Mouse;
 class Game;
 class Gamepad;
 
-/*** Définition de la class ***/
-/******************************/
 class Editor
 {
 public:
@@ -40,15 +38,12 @@ public:
         m_mouse(mouse), m_game(game), m_gamepad(gamepad) { };
     ~Editor() = default;
 
-    /*** Fonctions ***/
-    /*****************/
-    eMenu SDLMain(int NumNiveau); // Boucle principale
-    void Draw() const; // Charge un tableau
-    void PrendTouche(int Touche); // Prend les touches enfoncées
+    eMenu SDLMain(int LevelNumber); // Main loop
+    void Draw() const; // Loads a map
+    void GetKeyPress(int Key); // Fetches pressed/held keys
 
 private:
-    /*** Variables ***/
-    int N { 0 }; // Numero du tableau à éditer
+    int N { 0 }; // Index of the edited level
     e_Sprite Option { locomotive };
     int NumDeco { 0 };
     int NumN { 0 };

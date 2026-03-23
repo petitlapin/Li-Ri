@@ -33,42 +33,38 @@
 #define M_PI 3.141592654
 #endif
 
-/*** Variables globales ***/
-/**************************/
 extern sNewPreference Pref;
 extern int currentTime;
-extern int MasqueK;
+extern int MaskK;
 
 int AddDir[] = { -1, 1, -LT, LT };
 
-/*** Construteur et Destructeur ***/
-/**********************************/
 Loco::Loco(Audio &audio) :
     m_audio(audio)
 {
     Init(LT / 2 + HT / 2 * LT, D_Right);
 }
 
-/*** Initialise la locomotive ***/
-/********************************/
+/*** Initialize locomotive ***/
+/*****************************/
 void Loco::Init(int Pos, int Direction)
 {
     int i;
     unsigned char Ar = 0;
 
-    PLoco = 0; // Pointe sur la première case
-    PInter = -1;
-    Speed = Reduce = Extend = 0; // Pas d'alongement
-    Mort = -1;
-    Gagne = false;
+    LocoPos = 0; // Points toward first tile
+    IntersectPos = -1;
+    Speed = Reduce = Extend = 0; // No extending
+    Dead = -1;
+    Win = false;
     Pref.WagonGap = WAGON_GAP_AVERAGE;
 
-    // Initialise les variables
+    // Initializing variables
     for (i = 0; i < 256; i++) {
         PosWagon[i].SprStart = 0;
     }
 
-    // Cherche le case Avant
+    // Look for the front tile
     switch (Direction) {
     case D_Top:
         Pos += LT;
@@ -88,19 +84,19 @@ void Loco::Init(int Pos, int Direction)
         break;
     }
 
-    // Initialise le Tableau et la loco
-    D = D_Case * 1.99; // Positionne la tete presque à la fin
+    // Initializing Level and locomotive
+    D = D_Case * 1.99; // Position the head in front of the locomotive
 
-    T[PLoco].P = Pos;
-    T[PLoco].Arrive = Ar;
-    T[PLoco].Sortie = Direction;
-    T[PLoco].D = D_Case;
+    T[LocoPos].P = Pos;
+    T[LocoPos].Arrive = Ar;
+    T[LocoPos].Exit = Direction;
+    T[LocoPos].D = D_Case;
 
-    // Fait avancer d'une case
+    // Going forward one tile
     Go(Direction);
     Go(Direction);
 
-    // Initialise la loco et son wagon à charbon
+    // Initializing the locomotive and its coal wagon
     NWagon = 2;
     Wagon[0] = locomotive;
     Wagon[1] = coal_wagon;
@@ -110,23 +106,21 @@ void Loco::Init(int Pos, int Direction)
     PosWagon[1].dx = PosWagon[1].dy = -10;
     PosWagon[1].fx = PosWagon[1].fy = -10;
 
-    MemoDuree = 0;
+    MemoDuration = 0;
 }
 
-/*** Affiche la locomotive ***/
-/*****************************/
-void Loco::Display(Screen &Ec)
+void Loco::Display(Screen &screen)
 {
     float ltrain = 0;
     float p1, p2, a, ar, vx, vy;
     int x1, x2, y1, y2;
     int i, ns = 0;
-    int cdx, cdy, cfx = 0, cfy = 0; // Points d'accroche des cables
+    int cdx, cdy, cfx = 0, cfy = 0; // Attachment point for cables
     float lv;
 
-    // Affiche tous les wagons
+    // Display all wagon/(cars)
     for (i = 0; i < NWagon; i++) {
-        // Cherche les points du wagons
+        // Search wagon points
         switch (Wagon[i]) {
         case coal_wagon:
             p1 = ltrain + 11;
@@ -141,17 +135,17 @@ void Loco::Display(Screen &Ec)
             lv = 20;
         }
 
-        // Calcule la position des points
+        // Calculate cars point's position
         FindPoint(D - p1, x1, y1);
         FindPoint(D - p2, x2, y2);
 
-        PosWagon[i].dx = x1; // Sauve la position des points pour test de colision futur
+        PosWagon[i].dx = x1; // Save position points for future collision checks
         PosWagon[i].dy = y1;
         PosWagon[i].fx = x2;
         PosWagon[i].fy = y2;
 
-        // Calcule l'angle de rotation de la loco et le N° du Sprite
-        if (x1 <= x2) { // Angle 0 à 180 compris
+        // Calculate the locomotive's angle of rotation and the number of the sprite
+        if (x1 <= x2) { // Angle 0 through 180
             vy = (float)(x2 - x1);
             vx = (float)(y2 - y1);
             if (vx != 0) {
@@ -164,7 +158,7 @@ void Loco::Display(Screen &Ec)
                 a = 180.0 + a;
             }
         }
-        else { // Angle 180.001 à 359.999
+        else { // Angle 180.001 through 359.999
             vy = (float)(x1 - x2);
             vx = (float)(y1 - y2);
             if (vx != 0) {
@@ -179,35 +173,35 @@ void Loco::Display(Screen &Ec)
         }
         ar = a * M_PI / 180.0;
 
-        // Prend le centre du sprite
+        // store the center of the sprite
         x1 = (x1 + x2) / 2;
         y1 = (y1 + y2) / 2;
 
-        // Affiche les cables de liaison
-        if (i > 0) { // Si doit afficher les cables
-            // Calcule le point d'accroche en sortie
+        // Ropes/Cables
+        if (i > 0) { // if we need to display cable
+            // Calculate the attachment point behind
             cdx = x1 - (int)(sin(ar) * lv);
             cdy = y1 - (int)(cos(ar) * lv);
 
-            // Affiche le cable
-            Ec.PrintCable(cdx, cdy, cfx, cfy);
+            // Displays the cable
+            screen.PrintCable(cdx, cdy, cfx, cfy);
         }
-        // Calcule le crocher de fin pour le prochaine wagon
+        // Calculate the attachment point for the next Wagon/car
         cfx = x1 - (int)(sin(ar + M_PI) * lv);
         cfy = y1 - (int)(cos(ar + M_PI) * lv);
 
-        // Cherche le N° du Sprite
+        // Search the sprite's Number
         switch ((int)a) {
-        case 0: // En haut
+        case 0: // Up
             ns = (int)(y1 + D_Case / 2) % (int)D_Case;
             break;
-        case 180: // En bas
+        case 180: // Down
             ns = (int)(y1 + D_Case / 2) % (int)D_Case + 40;
             break;
-        case 90: // Gauche
+        case 90: // Left
             ns = (int)(x1 + D_Case / 2) % (int)D_Case + 80;
             break;
-        case 270: // Droite
+        case 270: // Right
             ns = (int)(x1 + D_Case / 2) % (int)D_Case + 120;
             break;
         default:
@@ -218,86 +212,86 @@ void Loco::Display(Screen &Ec)
             ns += 160;
         }
 
-        Ec.PrintSprite(Wagon[i], ns, x1, y1);
+        screen.PrintSprite(Wagon[i], ns, x1, y1);
 
-        // Si pas fini la sequence d'affiche de départ du wagon
+        // If not done, display the start sequence of the wagon
         if (PosWagon[i].SprStart < N_SPR_START) {
-            PosWagon[i].SprStart += MemoDuree * N_SPR_START / 750.0;
+            PosWagon[i].SprStart += MemoDuration * N_SPR_START / 750.0;
             if (PosWagon[i].SprStart < N_SPR_START) {
-                Ec.PrintSprite(new_wagon, (int)(PosWagon[i].SprStart), x1, y1);
+                screen.PrintSprite(new_wagon, (int)(PosWagon[i].SprStart), x1, y1);
             }
         }
 
-        // Met l'ecart entre les wagons
+        // Add gap between the wagons/cars
         ltrain += Pref.WagonGap;
     }
 }
 
-/*** Test les options sur une case ***/
-/*************************************/
-void Loco::TestCase(float Dist, long DureeJeu, int *Tableau)
+/*** Checking for items/options on a tile ***/
+/*******************************************/
+void Loco::TestTile(float Dist, long GameDuration, int *Level)
 {
     int i;
     float DMoy;
     float Ec1, vx, vy, Ec2;
 
-    // test si depasse milieu d'une case pour teste de colision
-    DMoy = (T[PLoco].D + T[PLoco - 1].D) / 2.0;
+    // Check for collisions, half a tile in front of the locomotive
+    DMoy = (T[LocoPos].D + T[LocoPos - 1].D) / 2.0;
     if (D <= DMoy && D + Dist >= DMoy) {
-        // Test si sur une option
-        switch (Tableau[T[PLoco].P]) {
-        case C_Wagon: // Une nouvelle loco
-            m_audio.Play(sWagon);
-            Tableau[T[PLoco].P] = 1; // efface l'option
+        // Check if on an item
+        switch (Level[T[LocoPos].P]) {
+        case C_Car: // New wagon/car
+            m_audio.Play(sCar);
+            Level[T[LocoPos].P] = 1; // Remove item from level
             Pref.Score += 5;
-            AddLoco(); // Ajoute une loco au azard
+            AddLoco(); // Add a random wagon
 
-            Gagne = true; // Test si la dernière loco
+            Win = true; // Check if it was the last wagon for win condition
             for (i = 0; i < LT * HT; i++) {
-                if (Tableau[i] == C_Wagon) {
-                    Gagne = false;
+                if (Level[i] == C_Car) {
+                    Win = false;
                 }
             }
-            if (Gagne) {
-                Mort = currentTime + PAUSE_DURATION;
+            if (Win) {
+                Dead = currentTime + PAUSE_DURATION;
                 m_audio.Play(sEnd);
             }
             break;
-        case C_Allonge: // Alonge la loco
-            m_audio.Play(sEtire);
-            Tableau[T[PLoco].P] = 1; // efface l'option
+        case C_Expand: // Expand locomotive item
+            m_audio.Play(sExpand);
+            Level[T[LocoPos].P] = 1; // Remove item from map
             Pref.Score += 20;
-            if (Reduce > DureeJeu) {
-                Reduce = DureeJeu - 1;
+            if (Reduce > GameDuration) {
+                Reduce = GameDuration - 1;
             }
             else {
-                Extend = DureeJeu + EXTENSION_DURATION;
+                Extend = GameDuration + EXTENSION_DURATION;
             }
             break;
-        case C_Reduit: // Si réduit la loco
-            m_audio.Play(sReduit);
-            Tableau[T[PLoco].P] = 1; // efface l'option
-            if (Extend > DureeJeu) {
-                Extend = DureeJeu - 1;
+        case C_Shrink: // Shrink locomotive item
+            m_audio.Play(sShrink);
+            Level[T[LocoPos].P] = 1; // remove item from map
+            if (Extend > GameDuration) {
+                Extend = GameDuration - 1;
             }
             else {
-                Reduce = DureeJeu + REDUCTION_DURATION;
+                Reduce = GameDuration + REDUCTION_DURATION;
             }
             break;
-        case C_Speed: // Si Vitesse
+        case C_Speed: // Speed item
             m_audio.Play(sSpeed);
-            Tableau[T[PLoco].P] = 1; // efface l'option
+            Level[T[LocoPos].P] = 1; // remove item from map
             Pref.Score += 30;
-            Speed = DureeJeu + SPEED_DURATION;
+            Speed = GameDuration + SPEED_DURATION;
             break;
-        case C_Live: // Si Vie
+        case C_Life: // Life item
             m_audio.Play(sLive);
-            Tableau[T[PLoco].P] = 1; // efface l'option
+            Level[T[LocoPos].P] = 1; // remove item from map
             Pref.Lives++;
             break;
         }
 
-        // Test de colision avec un autre Wagon
+        // Collision check with another wagon/car
         for (i = 1; i < NWagon; i++) {
             vx = (float)(PosWagon[i].dx - PosWagon[0].dx);
             vy = (float)(PosWagon[i].dy - PosWagon[0].dy);
@@ -306,206 +300,206 @@ void Loco::TestCase(float Dist, long DureeJeu, int *Tableau)
             vy = (float)(PosWagon[i].fy - PosWagon[0].dy);
             Ec2 = vx * vx + vy * vy;
 
-            // Si colition le signale
-            if (Mort < currentTime && (Ec1 < RAYON_TOUCHE || Ec2 <= RAYON_TOUCHE)) {
+            // Death upon hitting wagon in range
+            if (Dead < currentTime && (Ec1 < RAY_HIT || Ec2 <= RAY_HIT)) {
                 m_audio.Play(sCrash);
                 Pref.Lives--;
-                Mort = currentTime + PAUSE_DURATION;
+                Dead = currentTime + PAUSE_DURATION;
             }
         }
     }
 }
 
-/*** Fait Avancer la locomotive ***/
-/**********************************/
-void Loco::Avance(int Duree, long DureeJeu, int *Touche, int *Tableau)
+/*** Makes locomotive move forward ***/
+/*************************************/
+void Loco::MoveForward(int Duration, long GameDuration, int *Key, int *Level)
 {
     int i;
-    float Dist = Pref.SpeedAverage * (float)(Duree) / 1000.0;
+    float Dist = Pref.SpeedAverage * (float)(Duration) / 1000.0;
 
-    MemoDuree = (float)(Duree);
+    MemoDuration = (float)(Duration);
 
-    TestCase(Dist, DureeJeu, Tableau);
+    TestTile(Dist, GameDuration, Level);
 
-    // Test si doit Réduire le wagon
-    if (Reduce > DureeJeu) {
-        if (Pref.WagonGap > WAGON_GAP_MIN) { // Si doit réduire
-            Pref.WagonGap -= (float)(Duree) * (Pref.SpeedAverage * 0.8 / (float)(NWagon - 1)) / 1000.0;
+    // Check if Locomotive should shrink
+    if (Reduce > GameDuration) {
+        if (Pref.WagonGap > WAGON_GAP_MIN) { // If locomotive must be shrinked
+            Pref.WagonGap -= (float)(Duration) * (Pref.SpeedAverage * 0.8 / (float)(NWagon - 1)) / 1000.0;
             if (Pref.WagonGap < WAGON_GAP_MIN) {
                 Pref.WagonGap = WAGON_GAP_MIN;
             }
         }
     }
-    else { // Si temps est passé
-        if (Pref.WagonGap < WAGON_GAP_AVERAGE) { // Si doit ralonger le wagon
-            Pref.WagonGap += (float)(Duree) * (Pref.SpeedAverage * 0.8 / (float)(NWagon)) / 1000.0;
+    else { // If time passed
+        if (Pref.WagonGap < WAGON_GAP_AVERAGE) { // If locomotive must be expanded
+            Pref.WagonGap += (float)(Duration) * (Pref.SpeedAverage * 0.8 / (float)(NWagon)) / 1000.0;
             if (Pref.WagonGap > WAGON_GAP_AVERAGE) {
                 Pref.WagonGap = WAGON_GAP_AVERAGE;
             }
         }
     }
 
-    // Test si doit Ralonger le wagon
-    if (Extend > DureeJeu) {
-        if (Pref.WagonGap < WAGON_GAP_MAX) { // Si doit Ralonger
-            Pref.WagonGap += (float)(Duree) * (Pref.SpeedAverage * 0.8 / (float)(NWagon)) / 1000.0;
+    // Check if locomotive must be expanded
+    if (Extend > GameDuration) {
+        if (Pref.WagonGap < WAGON_GAP_MAX) { // If locomotive must be expanded
+            Pref.WagonGap += (float)(Duration) * (Pref.SpeedAverage * 0.8 / (float)(NWagon)) / 1000.0;
             if (Pref.WagonGap > WAGON_GAP_MAX) {
                 Pref.WagonGap = WAGON_GAP_MAX;
             }
         }
     }
-    else { // Si temps est passé
-        if (Pref.WagonGap > WAGON_GAP_AVERAGE) { // Si doit ralonger le wagon
-            Pref.WagonGap -= (float)(Duree) * (Pref.SpeedAverage * 0.8 / (float)(NWagon - 1)) / 1000.0;
+    else { // If time passed
+        if (Pref.WagonGap > WAGON_GAP_AVERAGE) { // If locomotive must be shrinked
+            Pref.WagonGap -= (float)(Duration) * (Pref.SpeedAverage * 0.8 / (float)(NWagon - 1)) / 1000.0;
             if (Pref.WagonGap < WAGON_GAP_AVERAGE) {
                 Pref.WagonGap = WAGON_GAP_AVERAGE;
             }
         }
     }
 
-    // Test si doit modifier la vitesse de la loco
-    if (Speed > DureeJeu) {
-        if (Pref.SpeedAverage < Pref.Speed * 2) { // Si doit accelerer
-            Pref.SpeedAverage += (float)(Duree) / 40.0;
+    // Check if locomotive speed must change
+    if (Speed > GameDuration) {
+        if (Pref.SpeedAverage < Pref.Speed * 2) { // if must accelerate
+            Pref.SpeedAverage += (float)(Duration) / 40.0;
             if (Pref.SpeedAverage > Pref.Speed * 2) {
                 Pref.SpeedAverage = Pref.Speed * 2;
             }
         }
     }
     else {
-        if (Pref.SpeedAverage > Pref.Speed) { // Si doit ralentir
-            Pref.SpeedAverage -= (float)(Duree) / 40.0;
+        if (Pref.SpeedAverage > Pref.Speed) { // if must slow down
+            Pref.SpeedAverage -= (float)(Duration) / 40.0;
             if (Pref.SpeedAverage < Pref.Speed) {
                 Pref.SpeedAverage = Pref.Speed;
             }
         }
     }
 
-    // Tand que dépasse la case en distante
-    while (D + Dist > T[PLoco].D) {
-        Dist -= T[PLoco].D - D; // Enleve la distance restant à parcourir
-        D = T[PLoco].D;
+    // While distant tile isn't reached
+    while (D + Dist > T[LocoPos].D) {
+        Dist -= T[LocoPos].D - D; // Substract the remaining distance
+        D = T[LocoPos].D;
 
-        i = 0; // Cherche la direction possible
-        while (TestDir(Touche[i], Tableau) == false) {
+        i = 0; // Search possible directions
+        while (TestDir(Key[i], Level) == false) {
             i++;
         }
 
-        Go(Touche[i]); // Fait avancer le loco suivant le désir du joueur
+        Go(Key[i]); // Locomotive advances in the player's wanted direction
 
-        DoFleche(Tableau, Touche); // Recherche la position de la futur intersection
+        FindArrow(Level, Key); // Search the position of the next intersection
 
-        TestCase(Dist, DureeJeu, Tableau); // Test la case au cas ou le jeu est vraiment lent
+        TestTile(Dist, GameDuration, Level); // Checks the tile for an item in case the game was really slow
     }
 
-    D += Dist; // Met à la bonne position finale
+    D += Dist; // Add distance to total distance
 
-    if (PInter == -1) {
-        DoFleche(Tableau, Touche);
+    if (IntersectPos == -1) {
+        FindArrow(Level, Key);
     }
 }
 
-/*** Recherche la position de la futur intersection ***/
-/******************************************************/
-void Loco::DoFleche(int *Tableau, int *Touche)
+/*** Search the position of the next intersection ***/
+/****************************************************/
+void Loco::FindArrow(int *Level, int *Key)
 {
-    int Sortie = T[PLoco].Sortie;
+    int Exit = T[LocoPos].Exit;
     int MemoS;
-    int NVoie;
-    int x, y, Tou;
+    int NTracks;
+    int x, y, Keypress;
     int i = 0;
 
-    if (T[PLoco].P != PInter && PInter != -1) {
-        return; // Si pas encore arrivé sur la case de croisement
+    if (T[LocoPos].P != IntersectPos && IntersectPos != -1) {
+        return; // If the crossing tile wasn't reached yet
     }
 
-    PInter = T[PLoco].P; // Prend la position de la loco
+    IntersectPos = T[LocoPos].P; // Store the locomotive position
 
     do {
-        // Vas à la nouvelle case
-        switch (Sortie) {
+        // Goes to the next tile
+        switch (Exit) {
         case D_Top:
-            PInter -= LT;
-            PEntree = D_Bottom;
+            IntersectPos -= LT;
+            EntryPos = D_Bottom;
             break;
         case D_Left:
-            PInter--;
-            PEntree = D_Right;
+            IntersectPos--;
+            EntryPos = D_Right;
             break;
         case D_Bottom:
-            PInter += LT;
-            PEntree = D_Top;
+            IntersectPos += LT;
+            EntryPos = D_Top;
             break;
         case D_Right:
-            PInter++;
-            PEntree = D_Left;
+            IntersectPos++;
+            EntryPos = D_Left;
             break;
         }
 
-        // Compte les voies disponibles.
-        MemoS = Sortie;
-        x = PInter % LT;
-        y = PInter / LT;
-        NVoie = 0;
-        if (y > 0 && PEntree != D_Top && Tableau[PInter - LT] != 0) {
-            Sortie = D_Top;
-            NVoie++;
+        // Counts the different possible tracks
+        MemoS = Exit;
+        x = IntersectPos % LT;
+        y = IntersectPos / LT;
+        NTracks = 0;
+        if (y > 0 && EntryPos != D_Top && Level[IntersectPos - LT] != 0) {
+            Exit = D_Top;
+            NTracks++;
         }
-        if (y + 1 < HT && PEntree != D_Bottom && Tableau[PInter + LT] != 0) {
-            Sortie = D_Bottom;
-            NVoie++;
+        if (y + 1 < HT && EntryPos != D_Bottom && Level[IntersectPos + LT] != 0) {
+            Exit = D_Bottom;
+            NTracks++;
         }
-        if (x > 0 && PEntree != D_Left && Tableau[PInter - 1] != 0) {
-            Sortie = D_Left;
-            NVoie++;
+        if (x > 0 && EntryPos != D_Left && Level[IntersectPos - 1] != 0) {
+            Exit = D_Left;
+            NTracks++;
         }
-        if (x + 1 < LT && PEntree != D_Right && Tableau[PInter + 1] != 0) {
-            Sortie = D_Right;
-            NVoie++;
+        if (x + 1 < LT && EntryPos != D_Right && Level[IntersectPos + 1] != 0) {
+            Exit = D_Right;
+            NTracks++;
         }
 
-    } while (NVoie == 1);
+    } while (NTracks == 1);
 
-    // Prend la direction de sortie comme direction par defaut
-    while (Touche[i] != MemoS) {
+    // Set the exit direction as default direction
+    while (Key[i] != MemoS) {
         i++;
     }
-    if (i > 0 && !MasqueK) { // Prend la direction de la loco comme direction par defaut
-        Tou = Touche[i];
+    if (i > 0 && !MaskK) { // Set the locomotive's direction as default direction
+        Keypress = Key[i];
         while (i) {
-            Touche[i] = Touche[i - 1];
+            Key[i] = Key[i - 1];
             i--;
         }
-        Touche[0] = Tou; // Mémorise la touche
+        Key[0] = Keypress; // Store key/dir
     }
 }
 
-/*** Test si une direction est possible ***/
-/******************************************/
-bool Loco::TestDir(int FDir, int *Tableau)
+/*** Check if a direction/turn is possible ***/
+/*********************************************/
+bool Loco::TestDir(int FDir, int *Level)
 {
-    int PAvant = T[PLoco].P;
+    int PosBefore = T[LocoPos].P;
     int x, y;
 
-    // Test si les directions ne sont pas opposées
-    if (T[PLoco].Sortie == D_Top && FDir == D_Bottom) {
+    // Checks if directions aren't opposites
+    if (T[LocoPos].Exit == D_Top && FDir == D_Bottom) {
         return false;
     }
-    if (T[PLoco].Sortie == D_Bottom && FDir == D_Top) {
+    if (T[LocoPos].Exit == D_Bottom && FDir == D_Top) {
         return false;
     }
-    if (T[PLoco].Sortie == D_Left && FDir == D_Right) {
+    if (T[LocoPos].Exit == D_Left && FDir == D_Right) {
         return false;
     }
-    if (T[PLoco].Sortie == D_Right && FDir == D_Left) {
+    if (T[LocoPos].Exit == D_Right && FDir == D_Left) {
         return false;
     }
 
-    PAvant += AddDir[(T[PLoco].Sortie)]; // Position dans virage
+    PosBefore += AddDir[(T[LocoPos].Exit)]; // Position in turns
 
-    // Test si un bord
-    x = PAvant % LT;
-    y = PAvant / LT;
+    // Check if there's a border
+    x = PosBefore % LT;
+    y = PosBefore / LT;
     if (FDir == D_Top && y == 0) {
         return false;
     }
@@ -519,98 +513,98 @@ bool Loco::TestDir(int FDir, int *Tableau)
         return false;
     }
 
-    PAvant += AddDir[FDir]; // Position futur
+    PosBefore += AddDir[FDir]; // Set as future position
 
-    if (Tableau[PAvant] == 0) {
-        return false; // Test si il y a un rail
+    if (Level[PosBefore] == 0) {
+        return false; // Check if there's a rail
     }
 
     return true;
 }
 
-/*** Deplace la locomotive ***/
-/*****************************/
-bool Loco::Go(int FuturDir)
+/*** Move the locomotive ***/
+/***************************/
+bool Loco::Go(int FutureDir)
 {
-    int PTab = T[PLoco].P;
-    int const Dir = T[PLoco].Sortie;
+    int PTab = T[LocoPos].P;
+    int const Dir = T[LocoPos].Exit;
     int Mask;
     int i;
 
-    // Test si risque de dépassement et enleve une bonne partie
-    if (PLoco == 255) {
+    // Test if there's a risk of exceeding track
+    if (LocoPos == 255) {
         for (i = 0; i < 256 - 50; i++) {
             T[i].P = T[i + 50].P;
             T[i].D = T[i + 50].D;
             T[i].Arrive = T[i + 50].Arrive;
-            T[i].Sortie = T[i + 50].Sortie;
+            T[i].Exit = T[i + 50].Exit;
         }
-        PLoco -= 50;
+        LocoPos -= 50;
     }
 
-    // Mémorise la prochaine case
-    PLoco++; // Passe à la case suivante
+    // Store next tile
+    LocoPos++; // Move to next tile
 
     switch (Dir) {
     case D_Top:
         PTab -= LT;
-        T[PLoco].Arrive = D_Bottom;
+        T[LocoPos].Arrive = D_Bottom;
         break;
     case D_Bottom:
         PTab += LT;
-        T[PLoco].Arrive = D_Top;
+        T[LocoPos].Arrive = D_Top;
         break;
     case D_Left:
         PTab--;
-        T[PLoco].Arrive = D_Right;
+        T[LocoPos].Arrive = D_Right;
         break;
     default:
         PTab++;
-        T[PLoco].Arrive = D_Left;
+        T[LocoPos].Arrive = D_Left;
     }
 
-    // Donne futur direction et N° case avant
-    T[PLoco].P = PTab;
-    T[PLoco].Sortie = FuturDir;
+    // Gives future direction and the number of the tile before
+    T[LocoPos].P = PTab;
+    T[LocoPos].Exit = FutureDir;
 
-    // Calcule la distance
-    Mask = T[PLoco].Arrive * 4 + T[PLoco].Sortie;
+    // Calculates the distance
+    Mask = T[LocoPos].Arrive * 4 + T[LocoPos].Exit;
     switch (Mask) {
-    case (D_Left * 4 + D_Right): // Si vas tous droit
+    case (D_Left * 4 + D_Right): // if going straight forward
     case (D_Right * 4 + D_Left):
     case (D_Top * 4 + D_Bottom):
     case (D_Bottom * 4 + D_Top):
-        T[PLoco].D = T[PLoco - 1].D + D_Case;
+        T[LocoPos].D = T[LocoPos - 1].D + D_Case;
         break;
     default:
-        T[PLoco].D = T[PLoco - 1].D + D_CaseR;
+        T[LocoPos].D = T[LocoPos - 1].D + D_CaseR;
         return true;
     }
 
     return false;
 }
 
-/*** Recherche un point sur le parcour ***/
-/*****************************************/
+/*** Searching a point on the map ***/
+/************************************/
 void Loco::FindPoint(float Dist, int &x, int &y)
 {
-    int NP = PLoco;
+    int NP = LocoPos;
     int P;
     float D_Rest;
 
-    // Recherche la case d'avant
+    // Find the previous tile
     while (T[NP - 1].D > Dist) {
         NP--;
     }
     P = T[NP].P;
 
-    // Calcule les coordonnée suivant la direction
+    // Calculate coordinates following the direction
     D_Rest = T[NP].D - Dist;
     if (D_Rest == 0) {
-        D_Rest = D_Case / 1000.0; // Evite les erreurs de division
+        D_Rest = D_Case / 1000.0; // Avoid problems with divisions
     }
 
-    switch (T[NP].Arrive * 4 + T[NP].Sortie) {
+    switch (T[NP].Arrive * 4 + T[NP].Exit) {
     case (D_Left * 4 + D_Right):
         y = int(P / LT * D_Case + D_Case / 2);
         x = int(P % LT * D_Case + D_Case - D_Rest);
@@ -665,13 +659,13 @@ void Loco::FindPoint(float Dist, int &x, int &y)
     }
 }
 
-/*** Ajoute une loco au azrard ***/
-/*********************************/
+/*** Adds a random wagon to the locomotive ***/
+/*********************************************/
 void Loco::AddLoco()
 {
-    Wagon[NWagon] = (e_Sprite)(rand() % (wagon - logs_wagon) + logs_wagon);
-    if (Wagon[NWagon] == Wagon[NWagon - 1]) { // Evite 2 fois le meme wagon
-        if (Wagon[NWagon] + 1 == wagon) {
+    Wagon[NWagon] = (e_Sprite)(rand() % (car - logs_wagon) + logs_wagon);
+    if (Wagon[NWagon] == Wagon[NWagon - 1]) { // Avoids adding the same sprite twice
+        if (Wagon[NWagon] + 1 == car) {
             Wagon[NWagon] = logs_wagon;
         }
         else {

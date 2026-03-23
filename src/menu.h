@@ -26,8 +26,6 @@
 
 #include "preference.h"
 
-/*** Fonction d'attente ***/
-/**************************/
 void Sleeping();
 
 class Game;
@@ -35,8 +33,6 @@ class Audio;
 class Gamepad;
 class Mouse;
 
-/*** Définition de la class ***/
-/******************************/
 class Menu
 {
 public:
@@ -44,30 +40,26 @@ public:
         m_game(game), m_audio(audio), m_mouse(mouse), m_gamepad(gamepad) { };
     ~Menu() = default;
 
-    /*** Fonctions ***/
-    /*****************/
-    eMenu SDLMain(); // Menu principale
-    eMenu SDLMain_Language(); // Menu du choix de la langue
-    void InitMain_Options(); // Prépare l'affichage du menu options
-    eMenu SDLMain_Options(); // Menu du choix des options
-    eMenu SDLMain_Speed(); // Menu du choix de la difficulté
-    eMenu SDLMain_Level(); // Choisi le niveau
+    eMenu SDLMain(); // Main menu
+    eMenu SDLMain_Language(); // Language choice menu
+    void InitMain_Options(); // Preparing settings menu display
+    eMenu SDLMain_Options(); // Settings menun
+    eMenu SDLMain_Speed(); // Difficulty menu
+    eMenu SDLMain_Level(); // Level selection menu
 #ifndef DCHILDREN
-    eMenu SDLMain_HR(); // Menu de question sur les droits de l'homme
+    eMenu SDLMain_HR(); // Human rights questions menu
 #endif
-    void Print_InGame(); // Affiche le menu InGame
-    eMenu SDLMain_InGame(); // Menu dans le jeu
-    eMenu SDLMain_Score(bool EditScore = false); // Affiche les scores
+    void Print_InGame(); // Print menu InGame
+    eMenu SDLMain_InGame(); // InGame Menu
+    eMenu SDLMain_Score(bool EditScore = false); // Display scores
 
-    void Print_Main(int Centre = 400) const; // Affiche le menu principale
-    void Affiche_Main_Centre() const; // Centre les flèches sur le bouton
+    void Print_Main(int Center = 400) const; // Display main menu
+    void Center_Arrows() const; // Center arrows on the button
 
 private:
-    /*** Variables ***/
-    /*****************/
-    int PyE { 0 }; // Position du curseur dans le menu
-    int Niv { 0 };
-    int CentreM { 0 }; // Variable pour le menu options
+    int PyE { 0 }; // Position of the cursor in the menu
+    int Level { 0 };
+    int CenterM { 0 }; // Variable for the settings menu
 
     Game &m_game;
     Audio &m_audio;

@@ -27,26 +27,25 @@
 #include <SDL2/SDL_events.h>
 
 class Audio;
-/*** Structure pour la position dans le menu Py ***/
+
+/*** Structure for the positions in the Py menu ***/
 /**************************************************/
 struct mPy
-{ // DepX==-1 si derniere entrée
-    int DepX, DepY;
-    int FinX, FinY;
+{ // DepX==-1 if last entry
+    int StartX, StartY;
+    int EndX, EndY;
     int Py;
-    bool Valide; // Si doit valider un enter quand click de la sourie
+    bool Valid; // Trigger enter key on mouse click
 };
 
 struct mButton
-{ // DepX=-1 si derniere entrée
-    int DepX, DepY;
-    int FinX, FinY;
-    int Valeur;
+{ // DepX=-1 if last entry
+    int StartX, StartY;
+    int EndX, EndY;
+    int Value;
     int *Adr;
 };
 
-/*** Définition de la class Tableau ***/
-/**************************************/
 class Mouse
 {
 public:
@@ -54,17 +53,17 @@ public:
         m_audio(audio) { }
     ~Mouse() = default;
 
-    void InitStart(); // Initialise les coordonnées de la sourie
-    void Init(struct mPy *TablePy, struct mButton *B = nullptr); // Initialise la sourie
-    void GetEvent(SDL_Event &event, int &Py); // Prend les evenements
-    void Print() const; // Affiche le curseur
+    void InitStart(); // Inits the mouse coordinates
+    void Init(struct mPy *TablePy, struct mButton *B = nullptr); // Mouse init
+    void GetEvent(SDL_Event &event, int &Py); // Fetches events
+    void Print() const; // Displays cursor
 
     int Px { 400 }, Py { 300 }; // Mouse screen position
 
 private:
     Audio &m_audio;
-    struct mPy *tPy { nullptr }; // Pointe sur coordonées pour Py
-    struct mButton *Bo { nullptr }; // Pointe sur les coordonnées des bouttons
+    struct mPy *tPy { nullptr }; // Pointer to py coordinates
+    struct mButton *Bo { nullptr }; // Pointer to Button coordinates
 };
 
 #endif

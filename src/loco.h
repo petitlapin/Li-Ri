@@ -29,59 +29,54 @@
 class Screen;
 class Audio;
 
-/*** Definition de la classe qui mémorise les cases ***/
-/******************************************************/
+/*** Structs to store tile positions ***/
+/***************************************/
 struct s_TLoco
 {
-    int P; // Pointe sur le N° de la case
-    float D; // Distance parcoure (case comprie)
-    unsigned char Arrive, Sortie; // Direction d'arrivée et de sortie
+    int P; // Tile index
+    float D; // Distance traveled
+    unsigned char Arrive, Exit; // Arrival and Exit directions
 };
 
 struct s_PosWagon
-{ // Mémorise la position avant et arrière des wagons pour le test de colision
+{ // Stores positions in front and behind the locomotives for collision checks
     int dx, dy;
     int fx, fy;
-    float SprStart; // Si fini sa sequence d'affiche de départ
+    float SprStart; // if start display sequence is finished
 };
 #define N_SPR_START 50
 
-/*** Définition de la class ***/
-/******************************/
 class Loco
 {
 public:
     explicit Loco(Audio &audio);
     ~Loco() = default;
 
-    /*** Fonctions ***/
-    void Init(int Pos, int Direction); // Initialise la loco sur le tableau
-    void Display(Screen &Ec); // Fait l'affichage de la loco.
-    void TestCase(float Dist, long DureeJeu, int *Tableau); // Test les options sur la case si passe au centre
-    void Avance(int Dureems, long DureeJeu, int *Touche, int *Tableau); // Fait avancer la locomotive
-    void DoFleche(int *Tableau, int *Touche); // Recherche la position de la futur intersection
-    bool TestDir(int FDir, int *Tableau); // Test si une direction est possible
-    void AddLoco(); // Ajoute une loco au azard
+    void Init(int Pos, int Direction); // Initialize locomotive
+    void Display(Screen &screen); // Display the locomotive
+    void TestTile(float Dist, long GameDuration, int *Level); // Checking for items/options on a tile
+    void MoveForward(int Duration, long GameDuration, int *Key, int *Level); // Makes locomotive move forward for Duration in ms
+    void FindArrow(int *Level, int *Key); // Search the position of the next intersection
+    bool TestDir(int FDir, int *Level); // Check if a direction/turn is possible
+    void AddLoco(); // Adds a random car to the locomotive
 
-    /*** Fonctions privées ***/
-    inline bool Go(int FuturDirection); // Fait avancer le tableau (retourne true si tourne)
-    inline void FindPoint(float Dist, int &x, int &y); // Retourne la position d'un point sur le parcour
+    inline bool Go(int FutureDirection); // Move the locomotive
+    inline void FindPoint(float Dist, int &x, int &y); // Searching a point on the map
 
-    int Mort; // Mémorise l'heure + duree pour faire une pause aprés avoir touché un wagon
-    bool Gagne; // Si a fini le niveau
-    int PEntree; // Entrée le la loco sur une case pour la fleche
-    int PInter; // Position de la futur intersection pour afficher la fleche
+    int Dead; // Stores current time + duration for a pause after losing game
+    bool Win; // If we finished a level
+    int EntryPos; // Entry position of the locomotive on a tile for arrows
+    int IntersectPos; // Position of the incoming intersection to display the arrow at
 
 private:
-    /*** Variables ***/
-    long Reduce, Extend, Speed; // Memorise l'horloge de fin si doit réduire ou alonger le train
-    int PLoco; // Position de la tête de la loco dans le tableau
-    float D; // Distance parcourue par la loco
-    struct s_TLoco T[256]; // Mémorise le parcour de la loco maxi = 256 cases
-    int NWagon; // Mémorise le nombre de wagon
-    e_Sprite Wagon[256]; // Mémorise les wagons
-    struct s_PosWagon PosWagon[256]; // Mémorise position des wagons à l'écran pour test de colision
-    float MemoDuree; // Memorise la precedente durée pour faire avancer les explosions du depart
+    long Reduce, Extend, Speed; // Stores the end clock to decide shrinking or expanding
+    int LocoPos; // Locomotive's head position in the level
+    float D; // Distance traveled by the locomotive
+    struct s_TLoco T[256]; // Stores the route traveled by the locomotive, up to 256 tiles
+    int NWagon; // Stores the number of wagons
+    e_Sprite Wagon[256]; // Stores the wagons
+    struct s_PosWagon PosWagon[256]; // Store wagon positions to check for collisions
+    float MemoDuration; // Stores old duration to make start explosions move
 
     Audio &m_audio;
 };
