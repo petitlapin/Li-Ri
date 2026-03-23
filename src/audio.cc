@@ -30,29 +30,23 @@
 #include "utils.h"
 #include "preference.h"
 
-/*** Variable globales ***/
-/*************************/
 extern sNewPreference Pref;
 extern int currentTime;
 
-/*** Constructeur et Destructeur ***/
-/***********************************/
 Audio::~Audio()
 {
     if (N) {
         Mix_HaltChannel(-1);
         for (int i = 0; i < N; i++) {
-            if (Son[i]) {
-                Mix_FreeChunk(Son[i]);
+            if (Sound[i]) {
+                Mix_FreeChunk(Sound[i]);
             }
         }
-        delete[] Son;
+        delete[] Sound;
     }
     Mix_CloseAudio();
 }
 
-/*** Initialise l'Audio ***/
-/**************************/
 bool Audio::Init()
 {
     char PathFile[512];
@@ -62,46 +56,46 @@ bool Audio::Init()
         return false;
     }
 
-    /*** Allocation de la mémoire ***/
-    N = sFin;
-    Son = new Mix_Chunk *[sFin];
+    /*** Memory allocation ***/
+    N = sSize;
+    Sound = new Mix_Chunk *[sSize];
 
-    /*** Chargement des sons ***/
-    strcpy(PathFile, "Sounds/clic.wav");
+    /*** Loading sound effects ***/
+    strcpy(PathFile, "Sounds/click.wav");
     Utils::GetPath(PathFile);
-    Son[sClic] = Mix_LoadWAV(PathFile);
+    Sound[sClick] = Mix_LoadWAV(PathFile);
 
     strcpy(PathFile, "Sounds/speed.wav");
     Utils::GetPath(PathFile);
-    Son[sSpeed] = Mix_LoadWAV(PathFile);
+    Sound[sSpeed] = Mix_LoadWAV(PathFile);
 
     strcpy(PathFile, "Sounds/crash.wav");
     Utils::GetPath(PathFile);
-    Son[sCrash] = Mix_LoadWAV(PathFile);
+    Sound[sCrash] = Mix_LoadWAV(PathFile);
 
     strcpy(PathFile, "Sounds/end.wav");
     Utils::GetPath(PathFile);
-    Son[sEnd] = Mix_LoadWAV(PathFile);
+    Sound[sEnd] = Mix_LoadWAV(PathFile);
 
     strcpy(PathFile, "Sounds/lose.wav");
     Utils::GetPath(PathFile);
-    Son[sLose] = Mix_LoadWAV(PathFile);
+    Sound[sLose] = Mix_LoadWAV(PathFile);
 
-    strcpy(PathFile, "Sounds/etire.wav");
+    strcpy(PathFile, "Sounds/expand.wav");
     Utils::GetPath(PathFile);
-    Son[sEtire] = Mix_LoadWAV(PathFile);
+    Sound[sExpand] = Mix_LoadWAV(PathFile);
 
-    strcpy(PathFile, "Sounds/wagon.wav");
+    strcpy(PathFile, "Sounds/car.wav");
     Utils::GetPath(PathFile);
-    Son[sWagon] = Mix_LoadWAV(PathFile);
+    Sound[sCar] = Mix_LoadWAV(PathFile);
 
-    strcpy(PathFile, "Sounds/reduit.wav");
+    strcpy(PathFile, "Sounds/shrink.wav");
     Utils::GetPath(PathFile);
-    Son[sReduit] = Mix_LoadWAV(PathFile);
+    Sound[sShrink] = Mix_LoadWAV(PathFile);
 
     strcpy(PathFile, "Sounds/live.wav");
     Utils::GetPath(PathFile);
-    Son[sLive] = Mix_LoadWAV(PathFile);
+    Sound[sLive] = Mix_LoadWAV(PathFile);
 
     strcpy(PathFile, "Sounds/menu.mod");
     Utils::GetPath(PathFile);
@@ -110,8 +104,8 @@ bool Audio::Init()
     return true;
 }
 
-/*** Charge une music 0=menu 1,2,3,4 = game ***/
-/**********************************************/
+/*** Loads a music track, 0 = menu music 1,2,3,4=game music tracks ***/
+/*********************************************************************/
 void Audio::LoadMusic(int Num)
 {
     char Provi[512] = "Sounds/jeu1.xm";
@@ -124,12 +118,12 @@ void Audio::LoadMusic(int Num)
 
     if (Music) {
         PauseMusic(true);
-        Mix_HaltMusic(); // Arrete la music
+        Mix_HaltMusic(); // Stops the music
         Mix_FreeMusic(Music);
         Music = nullptr;
     }
 
-    if (Num == 0) { // Si music du menu
+    if (Num == 0) { // if menu music
         strcpy(Provi, "Sounds/menu.mod");
         Utils::GetPath(Provi);
         Music = Mix_LoadMUS(Provi);
@@ -142,8 +136,8 @@ void Audio::LoadMusic(int Num)
     PlayMusic();
 }
 
-/*** Passe à la music de jeu suivante ***/
-/****************************************/
+/*** Switch to next game track ***/
+/********************************/
 void Audio::NextMusic()
 {
     NMus++;
@@ -153,26 +147,26 @@ void Audio::NextMusic()
     LoadMusic(NMus);
 }
 
-/*** Fait la lecture d'un son ***/
-/********************************/
-void Audio::Play(eSon So)
+/*** Plays a sound effect ***/
+/****************************/
+void Audio::Play(eSound index)
 {
     if (!N) {
         return;
     }
 
-    if (So == sClic) {
+    if (index == sClick) {
         if (currentTime - MemorizedTime <= 120) {
             return;
         }
         MemorizedTime = currentTime;
     }
 
-    Mix_PlayChannel(-1, Son[So], 0);
+    Mix_PlayChannel(-1, Sound[index], 0);
 }
 
-/*** Joue la music ***/
-/*********************/
+/*** Plays the music ***/
+/***********************/
 void Audio::PlayMusic() const
 {
     if (Music && N) {
@@ -181,13 +175,13 @@ void Audio::PlayMusic() const
     }
 }
 
-void Audio::PauseMusic(bool Et) const
+void Audio::PauseMusic(bool IsMusicPlaying) const
 {
     if (!N) {
         return;
     }
 
-    if (Et) {
+    if (IsMusicPlaying) {
         Mix_PauseMusic();
     }
     else {
@@ -195,8 +189,8 @@ void Audio::PauseMusic(bool Et) const
     }
 }
 
-/*** Valide les Volumes ***/
-/**************************/
+/*** Handles sound volumes ***/
+/*****************************/
 void Audio::DoVolume() const
 {
     if (!N) {

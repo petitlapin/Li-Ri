@@ -29,49 +29,47 @@
 #include "screen.h"
 #include "sprite.h" // for e_Sprite
 
-/*** Variables Globales ***/
-/**************************/
 extern int currentTime;
-extern Screen Ec;
+extern Screen screen;
 extern SDL_Window *sdlWindow;
 
-/*** Initialise la sourie ***/
-/****************************/
+/*** Mouse init ***/
+/******************/
 void Mouse::InitStart()
 {
-    // Initialise les coordonnées de la sourie
+    // Init mouse coordinates
     Px = 400;
     Py = 300;
     SDL_WarpMouseInWindow(sdlWindow, Px, Py);
 }
 
-/*** Initialise un bebut d'utilisation ***/
-/*****************************************/
+/*** Initialise the mouse for use ***/
+/************************************/
 void Mouse::Init(struct mPy *TablePy, struct mButton *B)
 {
-    // Sauve les adresses utils
+    // Save useful pointers
     tPy = TablePy;
     Bo = B;
 }
 
-/*** Prend les evenements de la sourie ***/
-/*****************************************/
+/*** Fetch mouse events ***/
+/**************************/
 void Mouse::GetEvent(SDL_Event &event, int &pPy)
 {
     int i;
 
     switch (event.type) {
-    case SDL_MOUSEMOTION: // Si mouvement de la sourie
+    case SDL_MOUSEMOTION: // If mouse moves
         Px = event.motion.x;
         Py = event.motion.y;
-        // regarde si doit bouger la position de Py
-        if (tPy) { // Si bien une table
+        // Check if py's position must move
+        if (tPy) { // If the table exists
             i = 0;
-            while (tPy[i].DepX != -1) { // Fait toutes les coordonnées
-                if (Px >= tPy[i].DepX && Px <= tPy[i].FinX && Py >= tPy[i].DepY && Py <= tPy[i].FinY) {
+            while (tPy[i].StartX != -1) { // iterate through all coordinates
+                if (Px >= tPy[i].StartX && Px <= tPy[i].EndX && Py >= tPy[i].StartY && Py <= tPy[i].EndY) {
                     if (pPy != tPy[i].Py) {
                         pPy = tPy[i].Py;
-                        m_audio.Play(sClic);
+                        m_audio.Play(sClick);
                     }
                 }
                 i++;
@@ -83,12 +81,12 @@ void Mouse::GetEvent(SDL_Event &event, int &pPy)
             Px = event.button.x;
             Py = event.button.y;
 
-            // regarde si doit valider un enter
-            if (tPy) { // Si bien une table
+            // Trigger Enter key if clicking on a valid region
+            if (tPy) { // If table exists
                 i = 0;
-                while (tPy[i].DepX != -1) { // Fait toutes les coordonnées
-                    if (Px >= tPy[i].DepX && Px <= tPy[i].FinX && Py >= tPy[i].DepY && Py <= tPy[i].FinY) {
-                        if (tPy[i].Valide == true) {
+                while (tPy[i].StartX != -1) { // iterate through defined regions
+                    if (Px >= tPy[i].StartX && Px <= tPy[i].EndX && Py >= tPy[i].StartY && Py <= tPy[i].EndY) {
+                        if (tPy[i].Valid == true) {
                             event.type = SDL_KEYDOWN;
                             event.key.state = SDL_PRESSED;
                             event.key.keysym.sym = SDLK_RETURN;
@@ -98,18 +96,18 @@ void Mouse::GetEvent(SDL_Event &event, int &pPy)
                 };
             }
 
-            // Fait la gestion des bouttons
-            if (Bo) { // Si bien une table
+            // Handle button interactions
+            if (Bo) { // If table exists
                 i = 0;
-                while (Bo[i].DepX != -1) { // Fait toutes les coordonnées
-                    if (Px >= Bo[i].DepX && Px <= Bo[i].FinX && Py >= Bo[i].DepY && Py <= Bo[i].FinY) {
-                        if (Bo[i].Adr == nullptr) { // Si doit fair une touche
+                while (Bo[i].StartX != -1) { // Iterate through defined regions
+                    if (Px >= Bo[i].StartX && Px <= Bo[i].EndX && Py >= Bo[i].StartY && Py <= Bo[i].EndY) {
+                        if (Bo[i].Adr == nullptr) { // If a key press should be triggered
                             event.type = SDL_KEYDOWN;
                             event.key.state = SDL_PRESSED;
-                            event.key.keysym.sym = (SDL_Keycode)Bo[i].Valeur;
+                            event.key.keysym.sym = (SDL_Keycode)Bo[i].Value;
                         }
-                        else { // Si doit changer une variable
-                            *(Bo[i].Adr) = Bo[i].Valeur;
+                        else { // If a variable should be changed
+                            *(Bo[i].Adr) = Bo[i].Value;
                         }
                     }
                     i++;
@@ -120,14 +118,14 @@ void Mouse::GetEvent(SDL_Event &event, int &pPy)
     }
 }
 
-/*** Affiche le curseur ***/
-/**************************/
+/*** Display cursor ***/
+/**********************/
 void Mouse::Print() const
 {
     int X = Px, Y = Py;
     int const NumSp = (currentTime / 50) % 20;
 
-    // Corrige la position du curseur au cas ou déborde de l'écran
+    // Correct cursor position if it goes off screen
     if (X < 5) {
         X = 5;
     }
@@ -142,7 +140,7 @@ void Mouse::Print() const
     }
 
 #ifndef ANDROID
-    // Affiche le curseur
-    Ec.PrintSprite(cursor, NumSp, X, Y);
+    // Display cursor
+    screen.PrintSprite(cursor, NumSp, X, Y);
 #endif
 }

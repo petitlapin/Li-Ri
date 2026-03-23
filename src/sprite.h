@@ -27,22 +27,22 @@
 #include <SDL2/SDL_render.h>
 
 #define FCOLOR 128
-#define ALPHA_OMBRE 125
-#define ECART_ENTRE_CHIFFRE 1
-#define ECART_ENTRE_LETTRE 2
-#define LONGUEUR_ESPACE 30
+#define ALPHA_SHADOW 125
+#define GAP_BETWEEN_NUMBERS 1
+#define GAP_BETWEEN_LETTERS 2
+#define SPACE_LENGTH 30
 
-/*** Definition de la structure Dim ***/
-/**************************************/
+/*** Dim struct definition ***/
+/*****************************/
 struct s_Dim
 {
     int L, H;
-    int cx, cy; // Centre de l'image après recadrage
-    int bpp; // Nombre de bytes par pixels 3 ou 4 avec l'alpha
+    int cx, cy; // Image center after cropping
+    int bpp; // Number of bytes per pixels, 3 or 4 with alpha
 };
 
-/*** Nom des sprites ***/
-/***********************/
+/*** Sprite names ***/
+/********************/
 enum e_Sprite {
     locomotive = 0,
     coal_wagon,
@@ -50,16 +50,16 @@ enum e_Sprite {
     cargo_wagon,
     engine_wagon,
     cistern_wagon,
-    wagon,
-    pluslong,
-    pluscourt,
+    car,
+    expander,
+    shrinker,
     speed,
     life,
     new_wagon,
-    logo_vie,
+    logo_health,
     rail,
     dir,
-    lettres,
+    letters,
     digits,
     title,
     copyright,
@@ -76,12 +76,12 @@ enum e_Sprite {
     keys,
     gmenu,
     menu,
-    fond_hr,
-    fond_hrr,
-    fond_menu,
-    fond,
+    background_hr,
+    background_hrr,
+    background_menu,
+    background,
 
-    fjeu,
+    fgame,
     fmenu,
     rope,
     loading,
@@ -167,45 +167,39 @@ enum e_Sprite {
     T_art29,
     T_art30,
 #endif
-    T_Langue,
+    T_Language,
 
     T_ENDTEXT
 };
 
-/*** Fonctions ***/
-/*****************/
-void DrawLoading(); // Affiche le chargeur sur la page de départ
-bool LoadLanguage(); // Charge les sprites d'une langue
-bool LoadSprites(); // Charge tous les sprites
+void DrawLoading(); // displays the loader on the startup page
+bool LoadLanguage(); // Loads sprites of a language
+bool LoadSprites(); // Loads all sprites
 
-int NumberLength(int C); // Retourne la longueur en pixels d'un nombre
-int StringLength(char *Texte); // Retourne la longueur en pixels d'un texte
-bool CharExist(char C); // Si un caracataire existe
+int NumberLength(int C); // Returns the length in pixels of a number
+int StringLength(char *Text); // Returns the length in pixels of a string.
+bool CharExist(char C); // Checks if a character exists
 
-void DrawNumber(int x, int y, int Nombre, SDL_Texture *Fond = nullptr); // Affiche un chiffre
-void DrawString(int x, int y, char *Texte, SDL_Texture *Fond = nullptr); // Affiche une chaine de caractaire
+void DrawNumber(int x, int y, int Number, SDL_Texture *Background = nullptr); // Displays a number
+void DrawString(int x, int y, char *Text, SDL_Texture *Background = nullptr); // Displays a string
 
-void DrawText(int x, int y, e_Sprite Text, SDL_Texture *Fond = nullptr); // Affiche un text dans la langue
+void DrawText(int x, int y, e_Sprite Text, SDL_Texture *Background = nullptr); // Displays a text in the language
 
-/*** Definition de la classe Sprite ***/
-/**************************************/
 class Sprite
 {
 public:
     Sprite() = default;
     ~Sprite();
 
-    /*** Fonctions ***/
-    bool Load(unsigned char *Buf, long &P); // Charge les images
-    void Draw(int X, int Y, int NumSpr, SDL_Texture *Fond = nullptr) const; // Affiche un sprite
+    bool Load(unsigned char *Buf, long &P); // Loads images
+    void Draw(int X, int Y, int NumSpr, SDL_Texture *Background = nullptr) const; // Displays a sprite
     void PrintRope(int dx, int dy, int fx, int fy);
-    bool New(int Lx, int Ly); // Alloue un nouveau sprite vide sans transparence
-    void Delete(); // Efface la mémoire du sprite
+    bool New(int Lx, int Ly); // Allocates a new empty sprite without transparency
+    void Delete(); // Erases memory from the sprite
 
-    /*** Variables ***/
-    int N { 0 }; // Nombre de sprite
-    SDL_Texture **Image { nullptr }; // Pointe sur les sprites
-    s_Dim *Dim { nullptr }; // Dimensions des sprites
+    int N { 0 }; // Amount of sprites
+    SDL_Texture **Image { nullptr }; // Pointer to the sprites
+    s_Dim *Dim { nullptr }; // Dimensions of the sprites
 };
 
 #endif

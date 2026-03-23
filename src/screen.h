@@ -33,15 +33,14 @@ public:
     Screen() = default;
     ~Screen() = default;
 
-    void PrintSprite(e_Sprite NumSpr, int Num, int x, int y); // Affiche un sprite
-    void PrintCable(int dx, int dy, int fx, int fy); // Affiche un cable
-    void PrintText(e_Sprite Text, int x, int y); // Affiche un text à l'ecran
-    void PrintOptions(int NVies, int NScore); // Affiche les options sur le coté
-    void CleanSpriteAndScreen(e_Sprite NumSpriteFondEcran); // Efface l'ecran avec l'image de fond
+    void PrintSprite(e_Sprite NumSpr, int Num, int x, int y); // Displays a sprite
+    void PrintCable(int dx, int dy, int fx, int fy); // Displays a cable/rope
+    void PrintText(e_Sprite Text, int x, int y); // Displays text
+    void PrintOptions(int Nlives, int NScore); // Displays information on the side
+    void CleanSpriteAndScreen(e_Sprite NumSpritebackground); // Erases display with background image
 
 private:
-    /*** Variables ***/
-    int Score { -1 }; // Mémorise le score affiché
+    int Score { -1 }; // Stores displayed score
 };
 
 #endif

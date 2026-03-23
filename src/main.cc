@@ -46,8 +46,6 @@
 #include "editor.h"
 #include "utils.h"
 
-/*** Global variables ***/
-/************************/
 SDL_Window *sdlWindow; // Screen video pointer
 SDL_Renderer *sdlRenderer; // Screen video pointer
 
@@ -55,7 +53,7 @@ char Titre[] = "Li-ri V" VERSION;
 
 Sprite *Sprites = nullptr; // Sprites pointer
 int NSprites = 0; // Number of sprites in memory
-Screen Ec; // 2 Video buffer pointer
+Screen screen; // 2 Video buffer pointer
 sNewPreference Pref; // Preference table.
 Level level;
 
@@ -82,8 +80,6 @@ void InitPref()
     Utils::LoadPref();
 }
 
-/*** Main program ***/
-/********************/
 int main(int narg, char *argv[])
 {
     int i;
@@ -98,7 +94,7 @@ int main(int narg, char *argv[])
 #endif
 
     SDL_SetHint(SDL_HINT_JOYSTICK_ALLOW_BACKGROUND_EVENTS, "1");
-    // Initiliase SDL
+    // Initialize SDL
     if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO | SDL_INIT_GAMECONTROLLER) < 0) {
         SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Unable to initialize SDL: %s", SDL_GetError());
         exit(-1);

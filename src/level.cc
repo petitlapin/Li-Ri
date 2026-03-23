@@ -25,8 +25,6 @@
 #include "utils.h"
 #include "level.h"
 
-/*** Constructeurs ***/
-/*********************/
 Level::Level()
 {
     int i;
@@ -35,8 +33,8 @@ Level::Level()
     }
 }
 
-/*** Charge les tableaux ***/
-/***************************/
+/*** Load levels/maps ***/
+/************************/
 bool Level::Load()
 {
     unsigned char *Buf;
@@ -50,16 +48,16 @@ bool Level::Load()
         return false;
     }
 
-    // Charge les tableaux
+    // Store levels, N is the number of levels
     N = (int)(Buf[0]) * 256 + (int)(Buf[1]);
 
     for (i = 0; i < N; i++) {
         for (j = 0; j < LT * HT; j++) {
             T[i].T[j] = Buf[P++];
         }
-        T[i].DepX = (int)(Buf[P]) * 256 + (int)(Buf[P + 1]);
-        T[i].DepY = (int)(Buf[P + 2]) * 256 + (int)(Buf[P + 3]);
-        T[i].DepDir = (int)(Buf[P + 4]) * 256 + (int)(Buf[P + 5]);
+        T[i].StartX = (int)(Buf[P]) * 256 + (int)(Buf[P + 1]);
+        T[i].StartY = (int)(Buf[P + 2]) * 256 + (int)(Buf[P + 3]);
+        T[i].StartDir = (int)(Buf[P + 4]) * 256 + (int)(Buf[P + 5]);
         T[i].NDeco = (int)(Buf[P + 6]) * 256 + (int)(Buf[P + 7]);
         P += 8;
         for (j = 0; j < T[i].NDeco; j++) {
@@ -75,8 +73,8 @@ bool Level::Load()
     return true;
 }
 
-/*** Sauve les tableaux ***/
-/**************************/
+/*** Save levels ***/
+/*******************/
 bool Level::Save()
 {
     unsigned char *Buf;
@@ -84,13 +82,13 @@ bool Level::Save()
     int i, j;
     char NameLevelFile[512] = "levels.dat";
 
-    // Alloue la mémoire
+    // Allocate memory
     Buf = new unsigned char[sizeof(s_Level) * N + sizeof(int) + 1];
     if (Buf == nullptr) {
         return false;
     }
 
-    // Charge les tableaux
+    // Load levels
     Buf[0] = N / 256;
     Buf[1] = N % 256;
 
@@ -98,12 +96,12 @@ bool Level::Save()
         for (j = 0; j < LT * HT; j++) {
             Buf[P++] = T[i].T[j];
         }
-        Buf[P] = T[i].DepX / 256;
-        Buf[P + 1] = T[i].DepX % 256;
-        Buf[P + 2] = T[i].DepY / 256;
-        Buf[P + 3] = T[i].DepY % 256;
-        Buf[P + 4] = T[i].DepDir / 256;
-        Buf[P + 5] = T[i].DepDir % 256;
+        Buf[P] = T[i].StartX / 256;
+        Buf[P + 1] = T[i].StartX % 256;
+        Buf[P + 2] = T[i].StartY / 256;
+        Buf[P + 3] = T[i].StartY % 256;
+        Buf[P + 4] = T[i].StartDir / 256;
+        Buf[P + 5] = T[i].StartDir % 256;
         Buf[P + 6] = T[i].NDeco / 256;
         Buf[P + 7] = T[i].NDeco % 256;
 
@@ -119,7 +117,7 @@ bool Level::Save()
         }
     }
 
-    // Sauve les tableaux
+    // Save Levels
     Utils::GetPath(NameLevelFile);
     if (Utils::SaveFile(NameLevelFile, (char *)Buf, P) == false) {
         delete[] Buf;
@@ -130,8 +128,8 @@ bool Level::Save()
     return true;
 }
 
-/*** Efface un Tableau ***/
-/*************************/
+/*** Delete Level with level number ***/
+/**************************************/
 void Level::Del(int Num)
 {
     int i, j;
@@ -141,9 +139,9 @@ void Level::Del(int Num)
             for (j = 0; j < LT * HT; j++) {
                 T[i].T[j] = T[i + 1].T[j];
             }
-            T[i].DepX = T[i + 1].DepX;
-            T[i].DepY = T[i + 1].DepY;
-            T[i].DepDir = T[i + 1].DepDir;
+            T[i].StartX = T[i + 1].StartX;
+            T[i].StartY = T[i + 1].StartY;
+            T[i].StartDir = T[i + 1].StartDir;
             T[i].NDeco = T[i + 1].NDeco;
             for (j = 0; j < T[i].NDeco; j++) {
                 T[i].Deco[j].x = T[i + 1].Deco[j].x;
@@ -155,8 +153,8 @@ void Level::Del(int Num)
     }
 }
 
-/*** Insert un Tableau ***/
-/*************************/
+/*** Insert level ***/
+/********************/
 void Level::Ins(int Num)
 {
     int i, j;
@@ -166,9 +164,9 @@ void Level::Ins(int Num)
             for (j = 0; j < LT * HT; j++) {
                 T[i].T[j] = T[i - 1].T[j];
             }
-            T[i].DepX = T[i - 1].DepX;
-            T[i].DepY = T[i - 1].DepY;
-            T[i].DepDir = T[i - 1].DepDir;
+            T[i].StartX = T[i - 1].StartX;
+            T[i].StartY = T[i - 1].StartY;
+            T[i].StartDir = T[i - 1].StartDir;
             T[i].NDeco = T[i - 1].NDeco;
             for (j = 0; j < T[i].NDeco; j++) {
                 T[i].Deco[j].x = T[i - 1].Deco[j].x;
@@ -182,8 +180,8 @@ void Level::Ins(int Num)
     }
 }
 
-/*** Vide un tableau ***/
-/***********************/
+/*** Empty/Clear levels ***/
+/**************************/
 void Level::Clear(int Num)
 {
     int i;
@@ -191,7 +189,7 @@ void Level::Clear(int Num)
     for (i = 0; i < LT * HT; i++) {
         T[Num].T[i] = C_None;
     }
-    T[Num].DepX = LT / 2;
-    T[Num].DepY = HT / 2;
+    T[Num].StartX = LT / 2;
+    T[Num].StartY = HT / 2;
     T[Num].NDeco = 0;
 }

@@ -36,8 +36,6 @@
 #include "gamepad.h"
 #include "mouse.h"
 
-/*** Variables globales ***/
-/**************************/
 extern SDL_Renderer *sdlRenderer;
 
 extern Sprite *Sprites;
@@ -50,34 +48,31 @@ extern Level level;
 
 static int NumRail[] = { 10, 10, 10, 0, 10, 1, 2, 3, 10, 4, 5, 6, 7, 8, 9, 10 };
 
-/*** SDL Main ***/
-/****************/
-eMenu Editor::SDLMain(int NumNiv)
+eMenu Editor::SDLMain(int LevelNumber)
 {
     int PyE;
     int cx = 0, cy = 0;
-    bool Boutton = false;
+    bool Button = false;
     int TypeB = -1;
     int i, d, dx, dy;
 
-    NumN = NumNiv;
+    NumN = LevelNumber;
 
-    Draw(); // Charge le tableau
+    Draw(); // Loads level
     SDL_RenderPresent(sdlRenderer);
 
-    currentTime = SDL_GetTicks(); // Prend l'horloge
+    currentTime = SDL_GetTicks(); // Get clock time
 
     Option = rail;
 
-    // Initialise la sourie
     m_mouse.Init(nullptr);
 
-    // Prend les evenements
+    // Fetch events
     do {
         SDL_Event event;
         while (SDL_PollEvent(&event)) {
-            m_mouse.GetEvent(event, PyE); // Handle mouse
-            m_gamepad.GetEvent(event); // Handle gamepad
+            m_mouse.GetEvent(event, PyE);
+            m_gamepad.GetEvent(event);
 
             switch (event.type) {
             case SDL_WINDOWEVENT:
@@ -90,18 +85,18 @@ eMenu Editor::SDLMain(int NumNiv)
                     if (event.key.keysym.sym == SDLK_ESCAPE) {
                         return mMenu;
                     }
-                    PrendTouche(event.key.keysym.sym);
+                    GetKeyPress(event.key.keysym.sym);
                 }
                 break;
             case SDL_MOUSEBUTTONDOWN:
                 if (event.button.state == SDL_PRESSED) {
-                    Boutton = true;
+                    Button = true;
                     TypeB = -1;
                 }
                 break;
             case SDL_MOUSEBUTTONUP:
-                Boutton = false;
-                if (TypeB != -1 && Option == deco && cx >= LT) { // Si doit effacer une décoration
+                Button = false;
+                if (TypeB != -1 && Option == deco && cx >= LT) { // If a decoration must be deleted
                     level.T[NumN].NDeco--;
                 }
                 TypeB = -1;
@@ -112,15 +107,15 @@ eMenu Editor::SDLMain(int NumNiv)
             }
         }
 
-        // Gère l'appuis du boutton de la sourie
+        // Handles mouse click
         cx = m_mouse.Px / D_Case;
         cy = m_mouse.Py / D_Case;
 
-        if (Boutton && cx < LT) {
+        if (Button && cx < LT) {
             switch (Option) {
             case deco:
-                if (TypeB == -1) { // Si première fois que appuis sur la touche
-                    for (i = 0; i < level.T[NumN].NDeco; i++) { // Recherche si décoration proche du clic
+                if (TypeB == -1) { // On first time clicking
+                    for (i = 0; i < level.T[NumN].NDeco; i++) { // Search if there's a decoration nearby the click
                         dx = level.T[NumN].Deco[i].x - m_mouse.Px;
                         dy = level.T[NumN].Deco[i].y - m_mouse.Py;
                         d = dx * dx + dy * dy;
@@ -128,14 +123,14 @@ eMenu Editor::SDLMain(int NumNiv)
                             TypeB = i;
                         }
                     }
-                    if (TypeB == -1) { // Si doit fair un nouveau décor
+                    if (TypeB == -1) { // Building a new decor
                         level.T[NumN].NDeco++;
                         level.T[NumN].Deco[(level.T[NumN].NDeco - 1)].NumSpr = NumDeco;
                         level.T[NumN].Deco[(level.T[NumN].NDeco - 1)].x = m_mouse.Px;
                         level.T[NumN].Deco[(level.T[NumN].NDeco - 1)].y = m_mouse.Py;
                         TypeB = 1;
                     }
-                    else { // Fait passe la selection au premier plan
+                    else { // Highlight selection
                         level.T[NumN].Deco[level.T[NumN].NDeco].NumSpr = level.T[NumN].Deco[TypeB].NumSpr;
                         level.T[NumN].Deco[level.T[NumN].NDeco].x = level.T[NumN].Deco[TypeB].x;
                         level.T[NumN].Deco[level.T[NumN].NDeco].y = level.T[NumN].Deco[TypeB].y;
@@ -147,7 +142,7 @@ eMenu Editor::SDLMain(int NumNiv)
                         NumDeco = level.T[NumN].Deco[(level.T[NumN].NDeco - 1)].NumSpr;
                     }
                 }
-                else { // Si pas la première fois remplace
+                else { // if not the first click, replace
                     level.T[NumN].Deco[(level.T[NumN].NDeco - 1)].NumSpr = NumDeco;
                     level.T[NumN].Deco[(level.T[NumN].NDeco - 1)].x = m_mouse.Px;
                     level.T[NumN].Deco[(level.T[NumN].NDeco - 1)].y = m_mouse.Py;
@@ -164,40 +159,40 @@ eMenu Editor::SDLMain(int NumNiv)
                 }
                 level.T[NumN].T[cy * LT + cx] = TypeB;
                 break;
-            case wagon:
-                level.T[NumN].T[cy * LT + cx] = C_Wagon;
+            case car:
+                level.T[NumN].T[cy * LT + cx] = C_Car;
                 break;
-            case pluslong:
-                level.T[NumN].T[cy * LT + cx] = C_Allonge;
+            case expander:
+                level.T[NumN].T[cy * LT + cx] = C_Expand;
                 break;
-            case pluscourt:
-                level.T[NumN].T[cy * LT + cx] = C_Reduit;
+            case shrinker:
+                level.T[NumN].T[cy * LT + cx] = C_Shrink;
                 break;
             case speed:
                 level.T[NumN].T[cy * LT + cx] = C_Speed;
                 break;
             case life:
-                level.T[NumN].T[cy * LT + cx] = C_Live;
+                level.T[NumN].T[cy * LT + cx] = C_Life;
                 break;
             case (e_Sprite)(locomotive + D_Top):
             case (e_Sprite)(locomotive + D_Bottom):
             case (e_Sprite)(locomotive + D_Left):
             case (e_Sprite)(locomotive + D_Right):
-                level.T[NumN].DepX = cx;
-                level.T[NumN].DepY = cy;
-                level.T[NumN].DepDir = (int)(Option) - (int)(locomotive);
+                level.T[NumN].StartX = cx;
+                level.T[NumN].StartY = cy;
+                level.T[NumN].StartDir = (int)(Option) - (int)(locomotive);
                 break;
             default:
                 break;
             }
         }
 
-        // Gère les Horloges et la pose
+        // Handles time and pause
         previousTime = currentTime;
         currentTime = SDL_GetTicks();
         Sleeping();
 
-        // Fait l'affichage
+        // Handles displaying
         Draw();
         SDL_RenderPresent(sdlRenderer);
 
@@ -206,38 +201,38 @@ eMenu Editor::SDLMain(int NumNiv)
     return mQuit;
 }
 
-/*** Charge un tableau ***/
-/*************************/
+/*** Loads a map ***/
+/*******************/
 void Editor::Draw() const
 {
     int i, x, y, m, cx, cy;
     unsigned char *T;
 
-    // Prend l'adresse du niveau
+    // Address of the level
     T = level.T[NumN].T;
 
-    // Fabrique le fond du jeu
-    Sprites[fond].Draw(400, 300, 0);
+    // Builds the game's background
+    Sprites[background].Draw(400, 300, 0);
 
-    // Affiche le circuit
+    // Displays the train track
     for (i = 0; i < LT * HT; i++) {
-        if (T[i] >= C_Rail && T[i] < C_Fin) {
+        if (T[i] >= C_Rail && T[i] < C_Size) {
             y = i / LT * D_Case + D_Case / 2;
             x = i % LT * D_Case + D_Case / 2;
 
             m = 0;
             cx = i % LT;
             cy = i / LT;
-            if (cy > 0 && T[i - LT] >= 1 && T[i - LT] < C_Fin) {
+            if (cy > 0 && T[i - LT] >= 1 && T[i - LT] < C_Size) {
                 m += 8;
             }
-            if (cy < HT - 1 && T[i + LT] >= 1 && T[i + LT] < C_Fin) {
+            if (cy < HT - 1 && T[i + LT] >= 1 && T[i + LT] < C_Size) {
                 m += 4;
             }
-            if (cx > 0 && T[i - 1] >= 1 && T[i - 1] < C_Fin) {
+            if (cx > 0 && T[i - 1] >= 1 && T[i - 1] < C_Size) {
                 m += 2;
             }
-            if (cx < LT - 1 && T[i + 1] >= 1 && T[i + 1] < C_Fin) {
+            if (cx < LT - 1 && T[i + 1] >= 1 && T[i + 1] < C_Size) {
                 m += 1;
             }
 
@@ -245,57 +240,57 @@ void Editor::Draw() const
         }
     }
 
-    // Affiche les décorations
+    // Displays decorations
     for (i = 0; i < level.T[NumN].NDeco; i++) {
         Sprites[deco].Draw(level.T[NumN].Deco[i].x, level.T[NumN].Deco[i].y, level.T[NumN].Deco[i].NumSpr);
     }
 
-    // Affiche numero du niveau
+    // Displays the level number
     DrawNumber(740, 130, NumN + 1);
 
-    // Affiche les options
+    // Display possible sprites
     for (i = 0; i < LT * HT; i++) {
         switch (T[i]) {
-        case C_Wagon: // Si un loco
-            Sprites[wagon].Draw(i % LT * D_Case + D_Case / 2, i / LT * D_Case + D_Case / 2, 25);
+        case C_Car: // Car sprite
+            Sprites[car].Draw(i % LT * D_Case + D_Case / 2, i / LT * D_Case + D_Case / 2, 25);
             break;
-        case C_Allonge: // Si plus long
-            Sprites[pluslong].Draw(i % LT * D_Case + D_Case / 2, i / LT * D_Case + D_Case / 2, 25);
+        case C_Expand: // Expand sprite
+            Sprites[expander].Draw(i % LT * D_Case + D_Case / 2, i / LT * D_Case + D_Case / 2, 25);
             break;
-        case C_Reduit: // Si plus court
-            Sprites[pluscourt].Draw(i % LT * D_Case + D_Case / 2, i / LT * D_Case + D_Case / 2, 25);
+        case C_Shrink: // Shrink sprite
+            Sprites[shrinker].Draw(i % LT * D_Case + D_Case / 2, i / LT * D_Case + D_Case / 2, 25);
             break;
-        case C_Speed: // Si plus vite
+        case C_Speed: // Speed sprite
             Sprites[speed].Draw(i % LT * D_Case + D_Case / 2, i / LT * D_Case + D_Case / 2, 25);
             break;
-        case C_Live: // Si une vie
+        case C_Life: // Life sprite
             Sprites[life].Draw(i % LT * D_Case + D_Case / 2, i / LT * D_Case + D_Case / 2, 25);
             break;
         }
     }
 
-    // Affiche le départ de la locomotive
-    switch (level.T[NumN].DepDir) {
+    // Displays the starting point of the locomotive
+    switch (level.T[NumN].StartDir) {
     case D_Top:
-        Sprites[locomotive].Draw(level.T[NumN].DepX * D_Case + D_Case / 2, level.T[NumN].DepY * D_Case + D_Case / 2, 0);
+        Sprites[locomotive].Draw(level.T[NumN].StartX * D_Case + D_Case / 2, level.T[NumN].StartY * D_Case + D_Case / 2, 0);
         break;
     case D_Bottom:
-        Sprites[locomotive].Draw(level.T[NumN].DepX * D_Case + D_Case / 2, level.T[NumN].DepY * D_Case + D_Case / 2, 40);
+        Sprites[locomotive].Draw(level.T[NumN].StartX * D_Case + D_Case / 2, level.T[NumN].StartY * D_Case + D_Case / 2, 40);
         break;
     case D_Left:
-        Sprites[locomotive].Draw(level.T[NumN].DepX * D_Case + D_Case / 2, level.T[NumN].DepY * D_Case + D_Case / 2, 80);
+        Sprites[locomotive].Draw(level.T[NumN].StartX * D_Case + D_Case / 2, level.T[NumN].StartY * D_Case + D_Case / 2, 80);
         break;
     case D_Right:
-        Sprites[locomotive].Draw(level.T[NumN].DepX * D_Case + D_Case / 2, level.T[NumN].DepY * D_Case + D_Case / 2, 120);
+        Sprites[locomotive].Draw(level.T[NumN].StartX * D_Case + D_Case / 2, level.T[NumN].StartY * D_Case + D_Case / 2, 120);
         break;
     }
 
-    // Affiche l'option choisi dans le menu
+    // Displays selected option in the menu
     switch (Option) {
     case rail:
-    case wagon:
-    case pluslong:
-    case pluscourt:
+    case car:
+    case expander:
+    case shrinker:
     case speed:
     case life:
         Sprites[Option].Draw(740, 200, 0);
@@ -319,7 +314,7 @@ void Editor::Draw() const
         break;
     }
 
-    // Affiche le curseur
+    // Displays the cursor
     if (Option != deco) {
         Sprites[cursor].Draw(m_mouse.Px, m_mouse.Py, 0);
     }
@@ -328,13 +323,13 @@ void Editor::Draw() const
     }
 }
 
-/*** Prend les touches enfoncées ***/
-/***********************************/
-void Editor::PrendTouche(int Tou)
+/*** Fetches pressed/held keys ***/
+/*********************************/
+void Editor::GetKeyPress(int Key)
 {
     int i, j;
 
-    switch (Tou) {
+    switch (Key) {
     case SDLK_PAGEUP:
         if (NumN < level.N - 1) {
             NumN++;
@@ -392,23 +387,23 @@ void Editor::PrendTouche(int Tou)
         level.Clear(NumN);
         break;
     case '$':
-        // test si le dernier niveau est vide
+        // Checks if the last level is empty
         for (j = i = 0; i < LT * HT; i++) {
             j += level.T[level.N - 1].T[i];
         }
         if (j == 0) {
             if (NumN < level.N - 1) {
-                level.N--; // Si vide ne le compte pas
+                level.N--; // Not counted if empty
             }
         }
 
-        // Sauve le niveau
+        // Saving the level
         if (level.Save() == false) {
             SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Error while saving levels");
             exit(-1);
         }
 
-        // test le niveau
+        // Testing the level
         Pref.Level = NumN;
         m_game.SDLMain();
         m_mouse.Init(nullptr);
@@ -418,13 +413,13 @@ void Editor::PrendTouche(int Tou)
         Option = rail;
         break;
     case 'z':
-        Option = wagon;
+        Option = car;
         break;
     case 'e':
-        Option = pluslong;
+        Option = expander;
         break;
     case 'r':
-        Option = pluscourt;
+        Option = shrinker;
         break;
     case 't':
         Option = speed;

@@ -26,48 +26,44 @@
 
 #include <SDL2/SDL_mixer.h>
 
-/*** Enumération des sons ***/
-/****************************/
-enum eSon {
-    sClic = 0,
+/*** Sound effects enum ***/
+/**************************/
+enum eSound {
+    sClick = 0,
     sSpeed,
     sCrash,
     sEnd,
     sLose,
-    sEtire,
-    sWagon,
-    sReduit,
+    sExpand,
+    sCar,
+    sShrink,
     sLive,
-    sFin
+    sSize
 };
 
-/*** Définition de la classe Audio ***/
-/*************************************/
 class Audio
 {
 public:
     Audio() = default;
     ~Audio();
 
-    /*** Fonctions ***/
-    bool Init(); // Initialise et charge les fichiers audio
-    void LoadMusic(int Num); // Charge une music, 0 = music du menu 1,2,3,4=Jeu
-    void NextMusic(); // Passe à la music suivante
+    bool Init(); // Initializes and loads audio files
+    void LoadMusic(int Num); // Loads a music track, 0 = menu music 1,2,3,4=game music tracks
+    void NextMusic(); // Switch to next game track
 
-    void Play(eSon); // Joue un son
-    void PlayMusic() const; // Joue la music
+    void Play(eSound);
+    void PlayMusic() const;
 
-    void PauseMusic(bool Etat) const; // Met ou no la music en pause
+    void PauseMusic(bool IsMusicPlaying) const; // Pauses/Resumes music
 
-    void DoVolume() const; // Valide les volumes audio
-    Mix_Music *Music { nullptr }; // Pointe sur les musics
+    void DoVolume() const; // Handles sound volumes
+    Mix_Music *Music { nullptr }; // Pointer to music tracks
 
 private:
-    /*** Variables ***/
-    int N { 0 }; // Nombre d'échantillon audio
-    int NMus { 0 }; // Numéro de la music en cours
-    int MemorizedTime { 0 }; // Mémorise l'horloge pour les clics
-    Mix_Chunk **Son { nullptr }; // Pointe sur les sons
+    int N { 0 }; // Number/Amount of sound effects
+    int NMus { 0 }; // Number of the current music
+    int MemorizedTime { 0 }; // Memorizes time for clicks
+    Mix_Chunk **Sound { nullptr }; // Pointer to sound effects
 };
 
 #endif

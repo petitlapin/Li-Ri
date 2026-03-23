@@ -41,7 +41,7 @@
 
 #define N_LIVES_COUNT 3
 
-#define RAYON_TOUCHE (32 * 32)
+#define RAY_HIT (32 * 32)
 
 #define LT 17
 #define HT 15
@@ -58,12 +58,12 @@
 /*** Possible pieces on the level ***/
 #define C_None 0
 #define C_Rail 1
-#define C_Wagon 2
-#define C_Allonge 3
-#define C_Reduit 4
+#define C_Car 2
+#define C_Expand 3
+#define C_Shrink 4
 #define C_Speed 5
-#define C_Live 6
-#define C_Fin 7
+#define C_Life 6
+#define C_Size 7
 
 enum e_Difficulty {
     Easy,
@@ -80,23 +80,23 @@ struct sScore
     char Name[80];
 };
 
-/*** Preferences structures ***/
+/*** Old Preferences structures, UNUSED ***/
 struct sOldPreference
 {
-    e_Difficulty Difficulte; // Difficulté de la partie (Vitesse)
-    int Level; // Niveau du joueur
-    int Lives; // Nombre de vie du joueur
-    int Score; // Score du joueur
-    double Vitesse; // Vitesse suivant le niveau
-    double VitesseMoy; // Vitesse en cours de la loco
-    float EcartWagon; // ecart en pixels entre 2 wagons
+    e_Difficulty Difficulte; // Difficulty (Speed)
+    int Level; // Player Level
+    int Lives; // Player Life count
+    int Score; // Player Score
+    double Vitesse; // Speed according to level
+    double VitesseMoy; // Current locomotive speed
+    float EcartWagon; // gap in pixels between wagons
     int NiveauMax;
     int FullScreen;
-    int Langue; // Langue à afficher
-    int NLangues; // Nombre de langues disponible
-    float Volume; // Volumes audio
-    float VolumeM; // Volume de la music
-    struct sScore Sco[8]; // Mémorise les scores
+    int Langue; // Language displayed
+    int NLangues; // Available languages
+    float Volume; // Sound effects volume
+    float VolumeM; // Music volume
+    struct sScore Sco[8]; // Store scores
 };
 
 struct sNewPreference

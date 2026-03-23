@@ -25,12 +25,10 @@
 #include "sprite.h"
 #include "screen.h"
 
-/*** Variables globales ***/
-/**************************/
 extern Sprite *Sprites;
 
-/*** Affiche un Sprite ***/
-/*************************/
+/*** Display a sprite ***/
+/************************/
 void Screen::PrintSprite(e_Sprite NumSpr, int Num, int x, int y)
 {
     Sprites[NumSpr].Draw(x, y, Num);
@@ -42,35 +40,35 @@ void Screen::PrintCable(int dx, int dy, int fx, int fy)
     Sprites[rope].PrintRope(dx, dy, fx, fy);
 }
 
-/*** Affiche un text ***/
-/***********************/
+/*** Display a text ***/
+/**********************/
 void Screen::PrintText(e_Sprite Text, int x, int y)
 {
     Sprites[Text].Draw(x, y, 0);
 }
 
-/*** Affiche les options du jeu ***/
-/**********************************/
-void Screen::PrintOptions(int NV, int NScore)
+/*** Display game settings ***/
+/*****************************/
+void Screen::PrintOptions(int Nlives, int NScore)
 {
     int x, y;
 
     Score = NScore;
     DrawNumber(740, 215, Score);
 
-    if (NV > 10) {
-        NV = 10; // Evite un dépassement de l'affichage
+    if (Nlives > 10) {
+        Nlives = 10; // Clamp to avoid going off screen
     }
-    for (int i = 0; i < NV; ++i) { // Affiche les vies
+    for (int i = 0; i < Nlives; ++i) { // Display lives
         x = i % 2;
         x = x * 44 + 38 + LT * D_Case;
         y = i / 2;
         y = 384 + y * 46;
-        Sprites[logo_vie].Draw(x, y, 0);
+        Sprites[logo_health].Draw(x, y, 0);
     }
 }
 
-/*** Efface l'ecran avec l'image de fond ***/
+/*** Erase display with background image ***/
 /*******************************************/
 void Screen::CleanSpriteAndScreen(e_Sprite NumSp)
 {

@@ -30,47 +30,45 @@
 #include "preference.h"
 #include "utils.h"
 
-/*** Variables Globales ***/
-/**************************/
 extern SDL_Renderer *sdlRenderer;
 extern Sprite *Sprites;
 extern int NSprites;
 extern sNewPreference Pref;
 
-static const char *OrdreTexte = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789.-!?*+<>%$()&;";
-static const char *OrdreTexte2 = "abcdefghijklmnopqrstuvwxyz0123456789,_|?*+<>%$[]&;";
-static int TableTexte[256];
+static const char *TextOrder = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789.-!?*+<>%$()&;";
+static const char *TextOrder2 = "abcdefghijklmnopqrstuvwxyz0123456789,_|?*+<>%$[]&;";
+static int TextTable[256];
 
-char Langue[31][16]; // Mémorise les noms des langues
-int NTextes = 0;
+char Languages[31][16]; // Stores languages
+int NTexts = 0;
 bool shouldDrawLoading = false;
 
 #define N_SPRITESFOND 2
 
-/*** Affiche le chargeur lors du chargement ***/
-/**********************************************/
+/*** Displays loader when loading ***/
+/************************************/
 void DrawLoading()
 {
-    static int NumAf = -1; // Numéro su sprite affiché
+    static int NumDisplayed = -1; // Number of the displayed sprite
     int i, Old;
     int Clock;
 
     if (shouldDrawLoading == true) {
         Clock = SDL_GetTicks();
-        i = (Clock / (1000 / 25)) % Sprites[loading].N; // Calcule le numéro su sprite à afficher
+        i = (Clock / (1000 / 25)) % Sprites[loading].N; // Calculates the Number of the wanted sprite
 
-        if (i != NumAf) {
-            Old = NumAf;
-            NumAf = i;
-            Sprites[loading].Draw(400, 300, NumAf);
+        if (i != NumDisplayed) {
+            Old = NumDisplayed;
+            NumDisplayed = i;
+            Sprites[loading].Draw(400, 300, NumDisplayed);
             SDL_RenderPresent(sdlRenderer);
             // TODO if(Old!=-1) Sprites[chargeur].Efface(400,300,Old,sdlVideo);
         }
     }
 }
 
-/*** Charge les Sprites d'une langue ***/
-/***************************************/
+/*** Loads the sprite of a language ***/
+/**************************************/
 bool LoadLanguage()
 {
     long L, P;
@@ -78,17 +76,17 @@ bool LoadLanguage()
     unsigned char *Buf;
     char PathFile[512];
 
-    strcpy(PathFile, Langue[Pref.Language]);
+    strcpy(PathFile, Languages[Pref.Language]);
     Utils::GetPath(PathFile);
     if (Utils::FileExists(PathFile) == false) {
-        SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Unable to find '%s'", Langue[Pref.Language]);
+        SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Unable to find '%s'", Languages[Pref.Language]);
         return false;
     }
     L = Utils::LoadFile(PathFile, Buf);
 
-    // Lit les sprites
+    // Reads sprites
     P = 0;
-    for (i = 0; i < NTextes; i++) {
+    for (i = 0; i < NTexts; i++) {
         if (Sprites[T_level + i].N) {
             Sprites[T_level + i].Delete();
         }
@@ -96,13 +94,13 @@ bool LoadLanguage()
             return false;
         }
     }
-    delete[] Buf; // Libère la mémoire du fichier des sprites
+    delete[] Buf; // Frees memory from the sprite file
 
     return true;
 }
 
-/*** Charge les Sprites du jeu ***/
-/*********************************/
+/*** Loads the game's sprites ***/
+/********************************/
 bool LoadSprites()
 {
     long L, P;
@@ -113,61 +111,61 @@ bool LoadSprites()
     char PathFile[512] = "language.dat";
     Utils::GetPath(PathFile);
 
-    // Initialise la table de caractaire des textes
+    // Initialize characters table for texts
     for (i = 0; i < 256; i++) {
-        TableTexte[i] = -1;
+        TextTable[i] = -1;
     }
     i = 0;
-    while (OrdreTexte[i] != 0) {
-        TableTexte[(int)(OrdreTexte[i])] = i;
+    while (TextOrder[i] != 0) {
+        TextTable[(int)(TextOrder[i])] = i;
         i++;
     }
     i = 0;
-    while (OrdreTexte2[i] != 0) {
-        TableTexte[(int)(OrdreTexte2[i])] = i;
+    while (TextOrder2[i] != 0) {
+        TextTable[(int)(TextOrder2[i])] = i;
         i++;
     }
 
-    // *** Charge le fichier des langues ***
-    // *************************************
+    // *** Loads the languages file ***
+    // ********************************
     if (Utils::FileExists(PathFile) == false) {
         SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Unable to find 'language.dat'");
         return false;
     }
     L = Utils::LoadFile(PathFile, Buf);
 
-    // Prend le nombre de sprites
+    // Read the sprites count
     NSp = (int)(Buf[0]) * 256 + (int)(Buf[1]);
     NSp += N_SPRITESFOND + 2;
-    NTextes = (int)(Buf[2]) * 256 + (int)(Buf[3]);
+    NTexts = (int)(Buf[2]) * 256 + (int)(Buf[3]);
     Pref.NLanguages = (int)(Buf[4]) * 256 + (int)(Buf[5]);
 
-    NSprites = NSp + NTextes + Pref.NLanguages;
+    NSprites = NSp + NTexts + Pref.NLanguages;
     Sprites = new Sprite[NSprites];
 
-    // Récupère les nom des langues
+    // Fetch languages names
     P = 6;
     for (i = 0; i < Pref.NLanguages; i++) {
-        strcpy(Langue[i], (char *)(Buf + P));
+        strcpy(Languages[i], (char *)(Buf + P));
         P += strlen((char *)(Buf + P)) + 1;
     }
 
-    // Charge les sprites des langues
+    // Load languages sprite
     for (i = 0; i < Pref.NLanguages; i++) {
-        if (Sprites[T_Langue + i].Load(Buf, P) == false) {
+        if (Sprites[T_Language + i].Load(Buf, P) == false) {
             return false;
         }
     }
 
     if (Sprites[loading].Load(Buf, P) == false) {
-        return false; // Sprite du chargeur
+        return false; // Loading sprite
     }
-    shouldDrawLoading = true; // Peut afficher le sprite du chargeur
+    shouldDrawLoading = true; // can display loading sprite
 
     delete[] Buf;
 
-    // *** Charge le fichier des sprites ***
-    // *************************************
+    // *** loads sprites file ***
+    // **************************
     strcpy(PathFile, "sprites.dat");
     Utils::GetPath(PathFile);
     if (Utils::FileExists(PathFile) == false) {
@@ -176,12 +174,12 @@ bool LoadSprites()
     }
     L = Utils::LoadFile(PathFile, Buf);
 
-    // Lit les sprites
+    // Reads sprites
     P = 0;
     for (i = 0; i < NSp; i++) {
         DrawLoading();
         switch (i) {
-        case fjeu:
+        case fgame:
         case fmenu:
             if (Sprites[i].New(800, 600) == false) {
                 return false;
@@ -199,20 +197,20 @@ bool LoadSprites()
         }
     }
 
-    delete[] Buf; // Libère la mémoire du fichier des sprites
+    delete[] Buf; // Frees memory from the sprites file
 
-    // *** Charge la langue ***
-    // ************************
+    // *** Loads language ***
+    // **********************
     if (Pref.Language != -1) {
         LoadLanguage();
     }
 
-    shouldDrawLoading = false; // N'affiche plus les sprites du chargeur
+    shouldDrawLoading = false; // Disable loading sprite
     return true;
 }
 
-/*** Retourne la longueur d'un nombre ***/
-/****************************************/
+/*** Returns the length of a number ***/
+/**************************************/
 int NumberLength(int C)
 {
     int l = 0;
@@ -221,32 +219,32 @@ int NumberLength(int C)
         l += Sprites[digits].Dim[(C % 10)].L;
         C /= 10;
         if (C) {
-            l += ECART_ENTRE_CHIFFRE;
+            l += GAP_BETWEEN_NUMBERS;
         }
     } while (C);
 
     return l;
 }
 
-/*** Retourne la longueur d'un texte ***/
-/***************************************/
-int StringLength(char *Texte)
+/*** Returns the length of a string ***/
+/**************************************/
+int StringLength(char *Text)
 {
     int i = 0;
     int l = 0;
     int Le;
 
-    while (Texte[i] != 0) {
-        Le = (int)(Texte[i]);
-        if (TableTexte[Le] != -1) {
-            l += Sprites[lettres].Dim[(TableTexte[Le])].L;
-            if (Texte[i + 1] != 0) {
-                l += ECART_ENTRE_LETTRE;
+    while (Text[i] != 0) {
+        Le = (int)(Text[i]);
+        if (TextTable[Le] != -1) {
+            l += Sprites[letters].Dim[(TextTable[Le])].L;
+            if (Text[i + 1] != 0) {
+                l += GAP_BETWEEN_LETTERS;
             }
         }
         else {
             if (Le == (int)(' ')) {
-                l += LONGUEUR_ESPACE;
+                l += SPACE_LENGTH;
             }
         }
 
@@ -256,8 +254,8 @@ int StringLength(char *Texte)
     return l;
 }
 
-/*** Test si un caracataire existe ***/
-/*************************************/
+/*** Checks if a char exists ***/
+/*******************************/
 bool CharExist(char C)
 {
     if ((int)(C) < 0) {
@@ -266,44 +264,44 @@ bool CharExist(char C)
     if (C == ' ') {
         return true;
     }
-    if (TableTexte[(int)(C)] != -1) {
+    if (TextTable[(int)(C)] != -1) {
         return true;
     }
     return false;
 }
-/*** Affiche un nombre ***/
+/*** Displays a number ***/
 /*************************/
-void DrawNumber(int x, int y, int Nombre, SDL_Texture *Fond)
+void DrawNumber(int x, int y, int Number, SDL_Texture *Background)
 {
-    int const l = NumberLength(Nombre);
+    int const l = NumberLength(Number);
 
     x += l / 2;
     do {
-        Sprites[digits].Draw(x - (Sprites[digits].Dim[(Nombre % 10)].L) / 2, y, Nombre % 10, Fond);
-        x -= Sprites[digits].Dim[(Nombre % 10)].L + ECART_ENTRE_CHIFFRE;
-        Nombre /= 10;
-    } while (Nombre);
+        Sprites[digits].Draw(x - (Sprites[digits].Dim[(Number % 10)].L) / 2, y, Number % 10, Background);
+        x -= Sprites[digits].Dim[(Number % 10)].L + GAP_BETWEEN_NUMBERS;
+        Number /= 10;
+    } while (Number);
 }
 
-/*** Affiche un Texte ***/
+/*** Display a string ***/
 /************************/
-void DrawString(int x, int y, char *Texte, SDL_Texture *Fond)
+void DrawString(int x, int y, char *Text, SDL_Texture *background)
 {
     int i = 0;
     int Le;
 
     // TODO Handle here unicode
-    while (Texte[i] != 0) {
-        Le = (int)(Texte[i]);
+    while (Text[i] != 0) {
+        Le = (int)(Text[i]);
 
-        if (TableTexte[Le] != -1) { // Si un caractaire connue
-            Le = TableTexte[Le];
-            Sprites[lettres].Draw(x + (Sprites[lettres].Dim[Le].L / 2), y, Le, Fond);
-            x += Sprites[lettres].Dim[Le].L + ECART_ENTRE_LETTRE;
+        if (TextTable[Le] != -1) { // If known char
+            Le = TextTable[Le];
+            Sprites[letters].Draw(x + (Sprites[letters].Dim[Le].L / 2), y, Le, background);
+            x += Sprites[letters].Dim[Le].L + GAP_BETWEEN_LETTERS;
         }
-        else { // Si un espace
+        else { // if there's a space
             if (Le == (int)(' ')) {
-                x += LONGUEUR_ESPACE - ECART_ENTRE_LETTRE;
+                x += SPACE_LENGTH - GAP_BETWEEN_LETTERS;
             }
         }
 
@@ -311,15 +309,13 @@ void DrawString(int x, int y, char *Texte, SDL_Texture *Fond)
     }
 }
 
-/*** Affiche un text dans la langue ***/
-/**************************************/
-void DrawText(int x, int y, e_Sprite Text, SDL_Texture *Fond)
+/*** Display text in a language ***/
+/**********************************/
+void DrawText(int x, int y, e_Sprite Text, SDL_Texture *Background)
 {
-    Sprites[Text].Draw(x, y, 0, Fond);
+    Sprites[Text].Draw(x, y, 0, Background);
 }
 
-/*** Constructeur ***/
-/********************/
 Sprite::~Sprite()
 {
     if (N) {
@@ -331,27 +327,27 @@ Sprite::~Sprite()
     }
 }
 
-/*** Charge les sprites ***/
-/**************************/
+/*** Load Sprites ***/
+/********************/
 bool Sprite::Load(unsigned char *Buf, long &P)
 {
     int i, j;
     unsigned char *B;
-    unsigned long ul = 1; // test le type de processeur
+    unsigned long ul = 1; // Checks processor type
     unsigned char *pul = (unsigned char *)(&ul);
 
-    // Prend nombre de sprites
+    // Gets Number of sprites
     N = (int)(Buf[P]) * 256 + (int)(Buf[P + 1]);
     P += 2;
     Dim = new s_Dim[N];
     Image = new SDL_Texture *[N];
 
-    // Lit tous les sprites
+    // Read all sprites
     for (i = 0; i < N; i++) {
-        // Affiche l'animation de chargement
+        // Displays loading
         DrawLoading();
 
-        // Lit les dimensions
+        // Reads dimensions
         Dim[i].L = (int)(Buf[P]) * 256 + (int)(Buf[P + 1]);
         P += 2;
         Dim[i].H = (int)(Buf[P]) * 256 + (int)(Buf[P + 1]);
@@ -363,7 +359,7 @@ bool Sprite::Load(unsigned char *Buf, long &P)
         Dim[i].bpp = (int)(Buf[P]) * 256 + (int)(Buf[P + 1]);
         P += 2;
 
-        // Fabrique la surface
+        // Build surface
         SDL_Surface *surface = SDL_CreateRGBSurface(0, Dim[i].L, Dim[i].H, Dim[i].bpp * 8,
                                                     0xff, 0xff00, 0xff0000, 0xff000000 * (Dim[i].bpp - 3));
         if (surface == nullptr) {
@@ -371,11 +367,11 @@ bool Sprite::Load(unsigned char *Buf, long &P)
             return false;
         }
 
-        // Copie les pixels
+        // Copy pixels
         SDL_LockSurface(surface);
         B = (unsigned char *)surface->pixels;
 
-        if (pul[0] == 0) { // Processeur type Power PC, 68000, ..
+        if (pul[0] == 0) { // Processor type Power PC, 68000, ..
             for (j = 0; j < Dim[i].L * Dim[i].H * Dim[i].bpp; j += Dim[i].bpp) {
                 if (Dim[i].bpp == 4) {
                     B[j + 3] = Buf[P++];
@@ -399,9 +395,9 @@ bool Sprite::Load(unsigned char *Buf, long &P)
     return true;
 }
 
-/*** Affiche le sprite ***/
+/*** Displaying sprite ***/
 /*************************/
-void Sprite::Draw(int X, int Y, int NumSpr, SDL_Texture *Fond) const
+void Sprite::Draw(int X, int Y, int NumSpr, SDL_Texture *Background) const
 {
     SDL_Rect Position;
     SDL_Rect Di;
@@ -420,7 +416,7 @@ void Sprite::Draw(int X, int Y, int NumSpr, SDL_Texture *Fond) const
 }
 
 /*** Print the white rope between two wagons ***/
-/*********************************/
+/***********************************************/
 void Sprite::PrintRope(int dx, int dy, int fx, int fy)
 {
     SDL_SetRenderDrawColor(sdlRenderer, 255, 255, 255, 0);
@@ -428,11 +424,11 @@ void Sprite::PrintRope(int dx, int dy, int fx, int fy)
     SDL_SetRenderDrawColor(sdlRenderer, 0, 0, 0, 0);
 }
 
-/*** Alloue un nouveau sprite vide ***/
-/*************************************/
+/*** Allocates a new empty sprite ***/
+/************************************/
 bool Sprite::New(int Lx, int Ly)
 {
-    Delete(); // Efface au cas ou
+    Delete(); // Delete "just in case"
 
     N = 1;
     Dim = new s_Dim[N];
@@ -444,7 +440,7 @@ bool Sprite::New(int Lx, int Ly)
     Dim[0].cy = Ly / 2;
     Dim[0].bpp = 3; // No transparency
 
-    // Fabrique la surface
+    // Builds surface
     SDL_Surface *surface = SDL_CreateRGBSurface(0, Dim[0].L, Dim[0].H, Dim[0].bpp * 8,
                                                 0xff, 0xff00, 0xff0000, 0xff000000 * (Dim[0].bpp - 3));
     if (surface == nullptr) {
@@ -456,7 +452,7 @@ bool Sprite::New(int Lx, int Ly)
     return true;
 }
 
-/*** Efface le sprite ***/
+/*** Deletes a sprite ***/
 /************************/
 void Sprite::Delete()
 {
