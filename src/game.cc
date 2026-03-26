@@ -45,14 +45,12 @@ extern sNewPreference Pref;
 extern int currentTime;
 extern int previousTime;
 
-extern Level level;
-
 static int NumRail[] = { -1, -1, -1, 0, -1, 1, 2, 3, -1, 4, 5, 6, 7, 8, 9, 10 };
 
 int MaskK; // Mask for movement keys
 
-Game::Game(Audio &sounds, Screen &screen, Gamepad &gamepad) :
-    m_sounds(sounds), m_screen(screen), m_gamepad(gamepad), Lo(m_sounds)
+Game::Game(Audio &sounds, Screen &screen, Level &level, Gamepad &gamepad) :
+    m_sounds(sounds), m_screen(screen), m_level(level), m_gamepad(gamepad), Lo(m_sounds)
 {
     KeyPress[0] = D_Top;
     KeyPress[1] = D_Bottom;
@@ -245,7 +243,7 @@ eMenu Game::SDLMain()
                 }
 #endif
                 NumN++;
-                if (level.N == NumN) {
+                if (m_level.N == NumN) {
                     Pref.Score += Pref.Lives * 100;
                     return mScoreEdit;
                 }
@@ -275,7 +273,7 @@ bool Game::Load(int LevelN)
 
     // Copy wanted level to current
     for (i = 0; i < LT * HT; i++) {
-        T[i] = (int)level.T[LevelN].T[i];
+        T[i] = (int)m_level.T[LevelN].T[i];
     }
 
     // Change lives count with difficulty settings
@@ -298,8 +296,8 @@ bool Game::Load(int LevelN)
     }
 
     // Initialize locomotive
-    Lo.Init(level.T[LevelN].StartX + level.T[LevelN].StartY * LT, level.T[LevelN].StartDir);
-    BufKeyPress(level.T[LevelN].StartDir);
+    Lo.Init(m_level.T[LevelN].StartX + m_level.T[LevelN].StartY * LT, m_level.T[LevelN].StartDir);
+    BufKeyPress(m_level.T[LevelN].StartDir);
     MaskK = 0;
 
     // Adapt speed with difficulty
@@ -354,8 +352,8 @@ bool Game::DrawLevel(int LevelN)
 
     // Display decorations
 #ifndef DCHILDREN
-    for (i = 0; i < level.T[LevelN].NDeco; i++) {
-        Sprites[deco].Draw(level.T[LevelN].Deco[i].x, level.T[LevelN].Deco[i].y, level.T[LevelN].Deco[i].NumSpr,
+    for (i = 0; i < m_level.T[LevelN].NDeco; i++) {
+        Sprites[deco].Draw(m_level.T[LevelN].Deco[i].x, m_level.T[LevelN].Deco[i].y, m_level.T[LevelN].Deco[i].NumSpr,
                            Sprites[fgame].Image[0]);
     }
 #endif

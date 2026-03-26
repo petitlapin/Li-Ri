@@ -30,12 +30,13 @@
 class Mouse;
 class Game;
 class Gamepad;
+class Level;
 
 class Editor
 {
 public:
-    Editor(Mouse &mouse, Game &game, Gamepad &gamepad) :
-        m_mouse(mouse), m_game(game), m_gamepad(gamepad) { };
+    Editor(Mouse &mouse, Game &game, Level &level, Gamepad &gamepad) :
+        m_mouse(mouse), m_game(game), m_level(level), m_gamepad(gamepad) { };
     ~Editor() = default;
 
     eMenu SDLMain(int LevelNumber); // Main loop
@@ -50,6 +51,7 @@ private:
 
     Mouse &m_mouse;
     Game &m_game;
+    Level &m_level;
     Gamepad &m_gamepad;
 };
 #endif

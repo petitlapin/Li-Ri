@@ -31,11 +31,12 @@ class Audio;
 class Menu;
 class Gamepad;
 class Screen;
+class Level;
 
 class Game
 {
 public:
-    explicit Game(Audio &sounds, Screen &screen, Gamepad &gamepad);
+    explicit Game(Audio &sounds, Screen &screen, Level &level, Gamepad &gamepad);
     ~Game() = default;
 
     void setMenu(Menu *menu) { m_menu = menu; }
@@ -61,6 +62,7 @@ private:
 
     Audio &m_sounds;
     Screen &m_screen;
+    Level &m_level;
     Gamepad &m_gamepad;
     Menu *m_menu { nullptr };
 
