@@ -31,7 +31,7 @@ Johnny Jazeix: port to SDL2 + android + cmake
 Copyright (c) 2006
 Dominique Roux-Serret: design & programming & graphics & website.
 
-Copyright (c) 2006 (for "menu.mod", "jeu1.xm", "jeu2.xm") MAF464. This music licensed under GPL license. See COPYING for details
+Copyright (c) 2006 (for "menu.mod", "jeu1.xm", "jeu2.xm") MAF464 (email charcosset.b@free.fr; website http://maf464.free.fr). This music licensed under GPL license. See COPYING for details
 
 [<img src="https://fdroid.gitlab.io/artwork/badge/get-it-on.png"
      alt="Get it on F-Droid"
