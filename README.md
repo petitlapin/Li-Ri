@@ -23,6 +23,24 @@ Gameplay
 ## Building
 Information on how to compile Li-Ri is available in the INSTALL file.
 
+## Thanks
+* Christian H. and Adrian F. for the German correction.
+* N. Y. for the Japanese corrections.
+* David R. and David B.M. for the Spanish corrections.
+* K. TONNELLE "http://ktonnelle.free.fr" for the Breton translation.
+* V. Búr for the Esperanto translation.
+* J. JORGE for the Portuguese translation.
+* V. Búr for the Slovak translation.
+* T. Gustavsson for the Swedish transltation.
+* L. Serafinowski for the Polish translation.
+* R. Claudio, Bao for Italian corrections.
+* Mike for the russian corrections.
+* F. Doruk "http://www.fisek.org.tr" for Turkish translation.
+* S. Etienne for the Hungarian translation.
+* W. Bas for Dutch translation.
+* An, Sanggap for the Korean version and translation.
+* M. Juhasz for the Hungarian corrections.
+
 -------------
 
 Copyright (c) 2023
