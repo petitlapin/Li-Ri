@@ -30,11 +30,12 @@
 class Audio;
 class Menu;
 class Gamepad;
+class Screen;
 
 class Game
 {
 public:
-    explicit Game(Audio &sounds, Gamepad &gamepad);
+    explicit Game(Audio &sounds, Screen &screen, Gamepad &gamepad);
     ~Game() = default;
 
     void setMenu(Menu *menu) { m_menu = menu; }
@@ -59,6 +60,7 @@ private:
     bool Help { true }; // Show intersection arrows
 
     Audio &m_sounds;
+    Screen &m_screen;
     Gamepad &m_gamepad;
     Menu *m_menu { nullptr };
 
