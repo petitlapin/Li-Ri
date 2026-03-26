@@ -54,7 +54,6 @@ char Titre[] = "Li-ri V" VERSION;
 Sprite *Sprites = nullptr; // Sprites pointer
 int NSprites = 0; // Number of sprites in memory
 sNewPreference Pref; // Preference table.
-Level level;
 
 int currentTime = 0; // Game clock
 int previousTime = 0;
@@ -121,6 +120,8 @@ int main(int narg, char *argv[])
     if (LoadSprites() == false) {
         exit(-1);
     }
+
+    Level level;
     if (level.Load() == false) {
         exit(-1);
     }
@@ -132,8 +133,8 @@ int main(int narg, char *argv[])
     Gamepad gamepad;
     gamepad.Initialize();
 
-    Game game { audio, screen, gamepad };
-    Editor editor { mouse, game, gamepad };
+    Game game { audio, screen, level, gamepad };
+    Editor editor { mouse, game, level, gamepad };
 
     Menu MainMenu { game, audio, screen, mouse, gamepad };
     game.setMenu(&MainMenu);

@@ -44,8 +44,6 @@ extern sNewPreference Pref;
 extern int currentTime;
 extern int previousTime;
 
-extern Level level;
-
 static int NumRail[] = { 10, 10, 10, 0, 10, 1, 2, 3, 10, 4, 5, 6, 7, 8, 9, 10 };
 
 eMenu Editor::SDLMain(int LevelNumber)
@@ -97,7 +95,7 @@ eMenu Editor::SDLMain(int LevelNumber)
             case SDL_MOUSEBUTTONUP:
                 Button = false;
                 if (TypeB != -1 && Option == deco && cx >= LT) { // If a decoration must be deleted
-                    level.T[NumN].NDeco--;
+                    m_level.T[NumN].NDeco--;
                 }
                 TypeB = -1;
                 break;
@@ -115,72 +113,72 @@ eMenu Editor::SDLMain(int LevelNumber)
             switch (Option) {
             case deco:
                 if (TypeB == -1) { // On first time clicking
-                    for (i = 0; i < level.T[NumN].NDeco; i++) { // Search if there's a decoration nearby the click
-                        dx = level.T[NumN].Deco[i].x - m_mouse.Px;
-                        dy = level.T[NumN].Deco[i].y - m_mouse.Py;
+                    for (i = 0; i < m_level.T[NumN].NDeco; i++) { // Search if there's a decoration nearby the click
+                        dx = m_level.T[NumN].Deco[i].x - m_mouse.Px;
+                        dy = m_level.T[NumN].Deco[i].y - m_mouse.Py;
                         d = dx * dx + dy * dy;
                         if (d <= (D_Case * 2) * (D_Case * 2)) {
                             TypeB = i;
                         }
                     }
                     if (TypeB == -1) { // Building a new decor
-                        level.T[NumN].NDeco++;
-                        level.T[NumN].Deco[(level.T[NumN].NDeco - 1)].NumSpr = NumDeco;
-                        level.T[NumN].Deco[(level.T[NumN].NDeco - 1)].x = m_mouse.Px;
-                        level.T[NumN].Deco[(level.T[NumN].NDeco - 1)].y = m_mouse.Py;
+                        m_level.T[NumN].NDeco++;
+                        m_level.T[NumN].Deco[(m_level.T[NumN].NDeco - 1)].NumSpr = NumDeco;
+                        m_level.T[NumN].Deco[(m_level.T[NumN].NDeco - 1)].x = m_mouse.Px;
+                        m_level.T[NumN].Deco[(m_level.T[NumN].NDeco - 1)].y = m_mouse.Py;
                         TypeB = 1;
                     }
                     else { // Highlight selection
-                        level.T[NumN].Deco[level.T[NumN].NDeco].NumSpr = level.T[NumN].Deco[TypeB].NumSpr;
-                        level.T[NumN].Deco[level.T[NumN].NDeco].x = level.T[NumN].Deco[TypeB].x;
-                        level.T[NumN].Deco[level.T[NumN].NDeco].y = level.T[NumN].Deco[TypeB].y;
-                        for (d = TypeB; d < level.T[NumN].NDeco; d++) {
-                            level.T[NumN].Deco[d].NumSpr = level.T[NumN].Deco[d + 1].NumSpr;
-                            level.T[NumN].Deco[d].x = level.T[NumN].Deco[d + 1].x;
-                            level.T[NumN].Deco[d].y = level.T[NumN].Deco[d + 1].y;
+                        m_level.T[NumN].Deco[m_level.T[NumN].NDeco].NumSpr = m_level.T[NumN].Deco[TypeB].NumSpr;
+                        m_level.T[NumN].Deco[m_level.T[NumN].NDeco].x = m_level.T[NumN].Deco[TypeB].x;
+                        m_level.T[NumN].Deco[m_level.T[NumN].NDeco].y = m_level.T[NumN].Deco[TypeB].y;
+                        for (d = TypeB; d < m_level.T[NumN].NDeco; d++) {
+                            m_level.T[NumN].Deco[d].NumSpr = m_level.T[NumN].Deco[d + 1].NumSpr;
+                            m_level.T[NumN].Deco[d].x = m_level.T[NumN].Deco[d + 1].x;
+                            m_level.T[NumN].Deco[d].y = m_level.T[NumN].Deco[d + 1].y;
                         }
-                        NumDeco = level.T[NumN].Deco[(level.T[NumN].NDeco - 1)].NumSpr;
+                        NumDeco = m_level.T[NumN].Deco[(m_level.T[NumN].NDeco - 1)].NumSpr;
                     }
                 }
                 else { // if not the first click, replace
-                    level.T[NumN].Deco[(level.T[NumN].NDeco - 1)].NumSpr = NumDeco;
-                    level.T[NumN].Deco[(level.T[NumN].NDeco - 1)].x = m_mouse.Px;
-                    level.T[NumN].Deco[(level.T[NumN].NDeco - 1)].y = m_mouse.Py;
+                    m_level.T[NumN].Deco[(m_level.T[NumN].NDeco - 1)].NumSpr = NumDeco;
+                    m_level.T[NumN].Deco[(m_level.T[NumN].NDeco - 1)].x = m_mouse.Px;
+                    m_level.T[NumN].Deco[(m_level.T[NumN].NDeco - 1)].y = m_mouse.Py;
                 }
                 break;
             case rail:
                 if (TypeB == -1) {
-                    if (level.T[NumN].T[cy * LT + cx] != C_Rail) {
+                    if (m_level.T[NumN].T[cy * LT + cx] != C_Rail) {
                         TypeB = C_Rail;
                     }
                     else {
                         TypeB = C_None;
                     }
                 }
-                level.T[NumN].T[cy * LT + cx] = TypeB;
+                m_level.T[NumN].T[cy * LT + cx] = TypeB;
                 break;
             case car:
-                level.T[NumN].T[cy * LT + cx] = C_Car;
+                m_level.T[NumN].T[cy * LT + cx] = C_Car;
                 break;
             case expander:
-                level.T[NumN].T[cy * LT + cx] = C_Expand;
+                m_level.T[NumN].T[cy * LT + cx] = C_Expand;
                 break;
             case shrinker:
-                level.T[NumN].T[cy * LT + cx] = C_Shrink;
+                m_level.T[NumN].T[cy * LT + cx] = C_Shrink;
                 break;
             case speed:
-                level.T[NumN].T[cy * LT + cx] = C_Speed;
+                m_level.T[NumN].T[cy * LT + cx] = C_Speed;
                 break;
             case life:
-                level.T[NumN].T[cy * LT + cx] = C_Life;
+                m_level.T[NumN].T[cy * LT + cx] = C_Life;
                 break;
             case (e_Sprite)(locomotive + D_Top):
             case (e_Sprite)(locomotive + D_Bottom):
             case (e_Sprite)(locomotive + D_Left):
             case (e_Sprite)(locomotive + D_Right):
-                level.T[NumN].StartX = cx;
-                level.T[NumN].StartY = cy;
-                level.T[NumN].StartDir = (int)(Option) - (int)(locomotive);
+                m_level.T[NumN].StartX = cx;
+                m_level.T[NumN].StartY = cy;
+                m_level.T[NumN].StartDir = (int)(Option) - (int)(locomotive);
                 break;
             default:
                 break;
@@ -209,7 +207,7 @@ void Editor::Draw() const
     unsigned char *T;
 
     // Address of the level
-    T = level.T[NumN].T;
+    T = m_level.T[NumN].T;
 
     // Builds the game's background
     Sprites[background].Draw(400, 300, 0);
@@ -241,8 +239,8 @@ void Editor::Draw() const
     }
 
     // Displays decorations
-    for (i = 0; i < level.T[NumN].NDeco; i++) {
-        Sprites[deco].Draw(level.T[NumN].Deco[i].x, level.T[NumN].Deco[i].y, level.T[NumN].Deco[i].NumSpr);
+    for (i = 0; i < m_level.T[NumN].NDeco; i++) {
+        Sprites[deco].Draw(m_level.T[NumN].Deco[i].x, m_level.T[NumN].Deco[i].y, m_level.T[NumN].Deco[i].NumSpr);
     }
 
     // Displays the level number
@@ -270,18 +268,18 @@ void Editor::Draw() const
     }
 
     // Displays the starting point of the locomotive
-    switch (level.T[NumN].StartDir) {
+    switch (m_level.T[NumN].StartDir) {
     case D_Top:
-        Sprites[locomotive].Draw(level.T[NumN].StartX * D_Case + D_Case / 2, level.T[NumN].StartY * D_Case + D_Case / 2, 0);
+        Sprites[locomotive].Draw(m_level.T[NumN].StartX * D_Case + D_Case / 2, m_level.T[NumN].StartY * D_Case + D_Case / 2, 0);
         break;
     case D_Bottom:
-        Sprites[locomotive].Draw(level.T[NumN].StartX * D_Case + D_Case / 2, level.T[NumN].StartY * D_Case + D_Case / 2, 40);
+        Sprites[locomotive].Draw(m_level.T[NumN].StartX * D_Case + D_Case / 2, m_level.T[NumN].StartY * D_Case + D_Case / 2, 40);
         break;
     case D_Left:
-        Sprites[locomotive].Draw(level.T[NumN].StartX * D_Case + D_Case / 2, level.T[NumN].StartY * D_Case + D_Case / 2, 80);
+        Sprites[locomotive].Draw(m_level.T[NumN].StartX * D_Case + D_Case / 2, m_level.T[NumN].StartY * D_Case + D_Case / 2, 80);
         break;
     case D_Right:
-        Sprites[locomotive].Draw(level.T[NumN].StartX * D_Case + D_Case / 2, level.T[NumN].StartY * D_Case + D_Case / 2, 120);
+        Sprites[locomotive].Draw(m_level.T[NumN].StartX * D_Case + D_Case / 2, m_level.T[NumN].StartY * D_Case + D_Case / 2, 120);
         break;
     }
 
@@ -331,18 +329,18 @@ void Editor::GetKeyPress(int Key)
 
     switch (Key) {
     case SDLK_PAGEUP:
-        if (NumN < level.N - 1) {
+        if (NumN < m_level.N - 1) {
             NumN++;
         }
         else {
             j = 0;
             for (i = 0; i < LT * HT; i++) {
-                j += level.T[NumN].T[i];
+                j += m_level.T[NumN].T[i];
             }
             if (j != 0) {
                 NumN++;
-                level.N++;
-                level.Clear(NumN);
+                m_level.N++;
+                m_level.Clear(NumN);
             }
         }
         break;
@@ -366,10 +364,10 @@ void Editor::GetKeyPress(int Key)
         }
         break;
     case SDLK_INSERT:
-        level.Ins(NumN);
+        m_level.Ins(NumN);
         break;
     case SDLK_DELETE:
-        level.Del(NumN);
+        m_level.Del(NumN);
         break;
     case SDLK_UP:
         Option = (e_Sprite)(locomotive + D_Top);
@@ -384,21 +382,21 @@ void Editor::GetKeyPress(int Key)
         Option = (e_Sprite)(locomotive + D_Right);
         break;
     case 'c':
-        level.Clear(NumN);
+        m_level.Clear(NumN);
         break;
     case '$':
         // Checks if the last level is empty
         for (j = i = 0; i < LT * HT; i++) {
-            j += level.T[level.N - 1].T[i];
+            j += m_level.T[m_level.N - 1].T[i];
         }
         if (j == 0) {
-            if (NumN < level.N - 1) {
-                level.N--; // Not counted if empty
+            if (NumN < m_level.N - 1) {
+                m_level.N--; // Not counted if empty
             }
         }
 
         // Saving the level
-        if (level.Save() == false) {
+        if (m_level.Save() == false) {
             SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Error while saving levels");
             exit(-1);
         }
