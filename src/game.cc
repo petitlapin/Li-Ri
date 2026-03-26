@@ -45,16 +45,14 @@ extern sNewPreference Pref;
 extern int currentTime;
 extern int previousTime;
 
-extern Screen screen;
-
 extern Level level;
 
 static int NumRail[] = { -1, -1, -1, 0, -1, 1, 2, 3, -1, 4, 5, 6, 7, 8, 9, 10 };
 
 int MaskK; // Mask for movement keys
 
-Game::Game(Audio &sounds, Gamepad &gamepad) :
-    m_sounds(sounds), m_gamepad(gamepad), Lo(m_sounds)
+Game::Game(Audio &sounds, Screen &screen, Gamepad &gamepad) :
+    m_sounds(sounds), m_screen(screen), m_gamepad(gamepad), Lo(m_sounds)
 {
     KeyPress[0] = D_Top;
     KeyPress[1] = D_Bottom;
@@ -70,7 +68,7 @@ eMenu Game::SDLMain()
     Help = true;
     Load(NumN); // Loads map/level
     SDL_RenderPresent(sdlRenderer);
-    screen.CleanSpriteAndScreen(fgame);
+    m_screen.CleanSpriteAndScreen(fgame);
     Pause = true;
 
     currentTime = SDL_GetTicks(); // get Clock time
@@ -508,7 +506,7 @@ void Game::DisplayScreen()
     int ndir = 0;
 
     // New Display
-    Lo.Display(screen); // Display locomotive
+    Lo.Display(m_screen); // Display locomotive
 
     if (Lo.IntersectPos != -1 && Help) { // Display arrow on future intersection
         switch (Lo.EntryPos) {
@@ -526,44 +524,44 @@ void Game::DisplayScreen()
             break;
         }
 
-        screen.PrintSprite(dir, ndir, (Lo.IntersectPos % LT) * D_Case + D_Case / 2, (Lo.IntersectPos / LT) * D_Case + D_Case / 2);
+        m_screen.PrintSprite(dir, ndir, (Lo.IntersectPos % LT) * D_Case + D_Case / 2, (Lo.IntersectPos / LT) * D_Case + D_Case / 2);
     }
 
     // Display options
     for (i = 0; i < LT * HT; i++) {
         switch (T[i]) {
         case C_Car: // if car sprite
-            screen.PrintSprite(car, (GameClock * 40 / 1000 + i * 7) % 50, i % LT * D_Case + D_Case / 2, i / LT * D_Case + D_Case / 2);
+            m_screen.PrintSprite(car, (GameClock * 40 / 1000 + i * 7) % 50, i % LT * D_Case + D_Case / 2, i / LT * D_Case + D_Case / 2);
             break;
         case C_Expand: // if expander sprite
-            screen.PrintSprite(expander, (GameClock * 40 / 1000 + i * 7) % 50, i % LT * D_Case + D_Case / 2, i / LT * D_Case + D_Case / 2);
+            m_screen.PrintSprite(expander, (GameClock * 40 / 1000 + i * 7) % 50, i % LT * D_Case + D_Case / 2, i / LT * D_Case + D_Case / 2);
             break;
         case C_Shrink: // if shrinker sprite
-            screen.PrintSprite(shrinker, (GameClock * 40 / 1000 + i * 7) % 50, i % LT * D_Case + D_Case / 2, i / LT * D_Case + D_Case / 2);
+            m_screen.PrintSprite(shrinker, (GameClock * 40 / 1000 + i * 7) % 50, i % LT * D_Case + D_Case / 2, i / LT * D_Case + D_Case / 2);
             break;
         case C_Speed: // if speed sprite
-            screen.PrintSprite(speed, (GameClock * 40 / 1000 + i * 7) % 50, i % LT * D_Case + D_Case / 2, i / LT * D_Case + D_Case / 2);
+            m_screen.PrintSprite(speed, (GameClock * 40 / 1000 + i * 7) % 50, i % LT * D_Case + D_Case / 2, i / LT * D_Case + D_Case / 2);
             break;
         case C_Life: // if life sprite
-            screen.PrintSprite(life, (GameClock * 40 / 1000 + i * 7) % 50, i % LT * D_Case + D_Case / 2, i / LT * D_Case + D_Case / 2);
+            m_screen.PrintSprite(life, (GameClock * 40 / 1000 + i * 7) % 50, i % LT * D_Case + D_Case / 2, i / LT * D_Case + D_Case / 2);
             break;
         }
     }
 
     // When paused, asks for a key press
     if (Pause) {
-        screen.PrintText(T_press_any_key, LT * D_Case / 2, 300);
+        m_screen.PrintText(T_press_any_key, LT * D_Case / 2, 300);
     }
 
     // Prints a dashboard
-    screen.PrintOptions(Pref.Lives, Pref.Score);
+    m_screen.PrintOptions(Pref.Lives, Pref.Score);
     if (Pref.WagonGap < WAGON_GAP_MIN) {
-        screen.PrintSprite(shrinker, (GameClock * 40 / 1000) % 50, 715, 295);
+        m_screen.PrintSprite(shrinker, (GameClock * 40 / 1000) % 50, 715, 295);
     }
     if (Pref.WagonGap > WAGON_GAP_AVERAGE) {
-        screen.PrintSprite(expander, (GameClock * 40 / 1000) % 50, 715, 295);
+        m_screen.PrintSprite(expander, (GameClock * 40 / 1000) % 50, 715, 295);
     }
     if (Pref.SpeedAverage > Pref.Speed) {
-        screen.PrintSprite(speed, (GameClock * 40 / 1000 + 7) % 50, 765, 295);
+        m_screen.PrintSprite(speed, (GameClock * 40 / 1000 + 7) % 50, 765, 295);
     }
 }

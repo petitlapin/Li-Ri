@@ -54,7 +54,6 @@ extern int previousTime;
 extern SDL_Window *sdlWindow;
 extern SDL_Renderer *sdlRenderer;
 extern Sprite *Sprites;
-extern Screen screen;
 extern sNewPreference Pref;
 
 static char Points[] = ". . . . . . . . . . . . . .";
@@ -111,7 +110,7 @@ eMenu Menu::SDLMain()
 
     // Fetching events
     do {
-        screen.CleanSpriteAndScreen(fmenu);
+        m_screen.CleanSpriteAndScreen(fmenu);
         SDL_RenderClear(sdlRenderer);
         // Get background image and build menu
         Sprites[background_menu].Draw(400, 300, 0, Sprites[fmenu].Image[0]);
@@ -425,7 +424,7 @@ eMenu Menu::SDLMain_Options()
     PyE = 4;
     // Fetch events
     do {
-        screen.CleanSpriteAndScreen(fmenu);
+        m_screen.CleanSpriteAndScreen(fmenu);
         SDL_RenderClear(sdlRenderer);
         InitMain_Options(); // Prepare menu
         SDL_Event event;
@@ -589,39 +588,39 @@ eMenu Menu::SDLMain_Options()
         Sleeping();
 
         if (Pref.FullScreen) {
-            screen.PrintSprite(arrows, 1, 350, 300);
-            screen.PrintSprite(arrows, 3, 450, 300);
+            m_screen.PrintSprite(arrows, 1, 350, 300);
+            m_screen.PrintSprite(arrows, 3, 450, 300);
         }
         else {
-            screen.PrintSprite(arrows, 0, 350, 300);
-            screen.PrintSprite(arrows, 4, 450, 300);
+            m_screen.PrintSprite(arrows, 0, 350, 300);
+            m_screen.PrintSprite(arrows, 4, 450, 300);
         }
 
         NumSp = (currentTime / 30) % 25;
-        screen.PrintSprite(sound, NumSp, 150, 110);
+        m_screen.PrintSprite(sound, NumSp, 150, 110);
         NumSp = (currentTime / 30) % 25;
-        screen.PrintSprite(music, NumSp, 150, 200);
+        m_screen.PrintSprite(music, NumSp, 150, 200);
         NumSp = (currentTime / 50) % 50;
-        screen.PrintSprite(earth, NumSp, 180, 400);
+        m_screen.PrintSprite(earth, NumSp, 180, 400);
 
         N = (int)(Pref.Volume * 10 + 1) / SDL_MIX_MAXVOLUME;
         NumSp = (currentTime / 50) % 40 + 120;
         for (i = 0; i < N; i++) {
             if (i == N - 1) {
-                screen.PrintSprite(locomotive, NumSp, (690 - 300) / 10 * i + 300, 110);
+                m_screen.PrintSprite(locomotive, NumSp, (690 - 300) / 10 * i + 300, 110);
             }
             else {
-                screen.PrintSprite(logs_wagon, NumSp, (690 - 300) / 10 * i + 300, 110);
+                m_screen.PrintSprite(logs_wagon, NumSp, (690 - 300) / 10 * i + 300, 110);
             }
         }
 
         N = (int)(Pref.VolumeM * 10 + 1) / SDL_MIX_MAXVOLUME;
         for (i = 0; i < N; i++) {
             if (i == N - 1) {
-                screen.PrintSprite(locomotive, NumSp, (690 - 300) / 10 * i + 300, 200);
+                m_screen.PrintSprite(locomotive, NumSp, (690 - 300) / 10 * i + 300, 200);
             }
             else {
-                screen.PrintSprite(logs_wagon, NumSp, (690 - 300) / 10 * i + 300, 200);
+                m_screen.PrintSprite(logs_wagon, NumSp, (690 - 300) / 10 * i + 300, 200);
             }
         }
 
@@ -676,7 +675,7 @@ eMenu Menu::SDLMain_Speed()
 
     // Fetch events
     do {
-        screen.CleanSpriteAndScreen(fmenu);
+        m_screen.CleanSpriteAndScreen(fmenu);
         SDL_RenderClear(sdlRenderer);
         // Set background image and build display
         Sprites[background_menu].Draw(400, 300, 0, Sprites[fmenu].Image[0]);
@@ -782,7 +781,7 @@ eMenu Menu::SDLMain_Level()
     // Fetch events
     do {
         // Erase background
-        screen.CleanSpriteAndScreen(fmenu);
+        m_screen.CleanSpriteAndScreen(fmenu);
         SDL_RenderClear(sdlRenderer);
         // Set background image and build display
         Sprites[background_menu].Draw(400, 300, 0, Sprites[fmenu].Image[0]);
@@ -890,26 +889,26 @@ eMenu Menu::SDLMain_Level()
         // Draw arrows
         if (Level > 0) {
             if (PyE == 3) {
-                screen.PrintSprite(arrows, 2, 330, 380);
+                m_screen.PrintSprite(arrows, 2, 330, 380);
             }
             else {
-                screen.PrintSprite(arrows, 1, 330, 380);
+                m_screen.PrintSprite(arrows, 1, 330, 380);
             }
         }
         else {
-            screen.PrintSprite(arrows, 0, 330, 380);
+            m_screen.PrintSprite(arrows, 0, 330, 380);
         }
 
         if (Level < Pref.LevelMax[Pref.Difficulty]) {
             if (PyE == 4) {
-                screen.PrintSprite(arrows, 5, 470, 380);
+                m_screen.PrintSprite(arrows, 5, 470, 380);
             }
             else {
-                screen.PrintSprite(arrows, 4, 470, 380);
+                m_screen.PrintSprite(arrows, 4, 470, 380);
             }
         }
         else {
-            screen.PrintSprite(arrows, 3, 470, 380);
+            m_screen.PrintSprite(arrows, 3, 470, 380);
         }
 
         DrawNumber(400, 380, Level + 1);
@@ -1104,17 +1103,17 @@ eMenu Menu::SDLMain_HR()
         Sleeping();
 
         if (Order) {
-            screen.PrintSprite(background_hrr, 0, 240, 492);
+            m_screen.PrintSprite(background_hrr, 0, 240, 492);
             DrawText(240, 492, e_Sprite(T_tart1 + N1));
         }
         else {
-            screen.PrintSprite(background_hrr, 0, 440, 492);
+            m_screen.PrintSprite(background_hrr, 0, 440, 492);
             DrawText(440, 492, e_Sprite(T_tart1 + N1));
         }
 
         if (Done == -1) {
             if (Order) {
-                screen.PrintSprite(background_hrr, 0, 440, 492);
+                m_screen.PrintSprite(background_hrr, 0, 440, 492);
                 DrawText(440, 492, e_Sprite(T_tart1 + N2));
                 if (PyE == 0) {
                     Print_Main(240);
@@ -1124,7 +1123,7 @@ eMenu Menu::SDLMain_HR()
                 }
             }
             else {
-                screen.PrintSprite(background_hrr, 0, 240, 492);
+                m_screen.PrintSprite(background_hrr, 0, 240, 492);
                 DrawText(240, 492, e_Sprite(T_tart1 + N2));
                 if (PyE == 1) {
                     Print_Main(240);
@@ -1179,7 +1178,7 @@ eMenu Menu::SDLMain_InGame()
 
     // Fetch events
     do {
-        screen.CleanSpriteAndScreen(fmenu);
+        m_screen.CleanSpriteAndScreen(fmenu);
         SDL_RenderClear(sdlRenderer);
         SDL_Event event;
         while (SDL_PollEvent(&event)) {
@@ -1310,7 +1309,7 @@ eMenu Menu::SDLMain_Score(bool EditScore)
     // Fetch events
     do {
         // Erase background
-        screen.CleanSpriteAndScreen(fmenu);
+        m_screen.CleanSpriteAndScreen(fmenu);
         SDL_RenderClear(sdlRenderer);
         // Set background image and build display
         Sprites[background_menu].Draw(400, 300, 0, Sprites[fmenu].Image[0]);
@@ -1403,8 +1402,8 @@ eMenu Menu::SDLMain_Score(bool EditScore)
             DrawString(140, 120 + NEdit * (360 / 7), Pref.Sco[NEdit].Name);
 
             i = (currentTime / 50) % 20; // Draw cursors
-            screen.PrintSprite(arrow_left, i, 110, 120 + NEdit * (360 / 7));
-            screen.PrintSprite(arrow_right, i, 180 + StringLength(Pref.Sco[NEdit].Name), 120 + NEdit * (360 / 7));
+            m_screen.PrintSprite(arrow_left, i, 110, 120 + NEdit * (360 / 7));
+            m_screen.PrintSprite(arrow_right, i, 180 + StringLength(Pref.Sco[NEdit].Name), 120 + NEdit * (360 / 7));
         }
 
         // Update render
@@ -1427,8 +1426,8 @@ void Menu::Print_Main(int Center) const
     int const x2 = (Center - x1) + Center;
     int const y = (Menu_Py[PyE].EndY + Menu_Py[PyE].StartY) / 2;
 
-    screen.PrintSprite(arrow_left, NumSp, x1, y);
-    screen.PrintSprite(arrow_right, NumSp, x2, y);
+    m_screen.PrintSprite(arrow_left, NumSp, x1, y);
+    m_screen.PrintSprite(arrow_right, NumSp, x2, y);
 }
 
 /*** Center arrows on the menu ***/
@@ -1440,6 +1439,6 @@ void Menu::Center_Arrows() const
     int const x2 = Menu_Py[PyE].EndX + 5;
     int const y = (Menu_Py[PyE].EndY + Menu_Py[PyE].StartY) / 2;
 
-    screen.PrintSprite(arrow_left, NumSp, x1, y);
-    screen.PrintSprite(arrow_right, NumSp, x2, y);
+    m_screen.PrintSprite(arrow_left, NumSp, x1, y);
+    m_screen.PrintSprite(arrow_right, NumSp, x2, y);
 }

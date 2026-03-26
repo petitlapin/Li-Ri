@@ -30,7 +30,6 @@
 #include "sprite.h" // for e_Sprite
 
 extern int currentTime;
-extern Screen screen;
 extern SDL_Window *sdlWindow;
 
 /*** Mouse init ***/
@@ -141,6 +140,6 @@ void Mouse::Print() const
 
 #ifndef ANDROID
     // Display cursor
-    screen.PrintSprite(cursor, NumSp, X, Y);
+    m_screen.PrintSprite(cursor, NumSp, X, Y);
 #endif
 }

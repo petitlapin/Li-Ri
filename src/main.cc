@@ -53,7 +53,6 @@ char Titre[] = "Li-ri V" VERSION;
 
 Sprite *Sprites = nullptr; // Sprites pointer
 int NSprites = 0; // Number of sprites in memory
-Screen screen; // 2 Video buffer pointer
 sNewPreference Pref; // Preference table.
 Level level;
 
@@ -115,6 +114,8 @@ int main(int narg, char *argv[])
 
     SDL_ShowCursor(0); // Hide cursor
 
+    Screen screen;
+
     Audio audio;
     audio.Init();
     if (LoadSprites() == false) {
@@ -125,16 +126,16 @@ int main(int narg, char *argv[])
     }
 
     audio.PlayMusic();
-    Mouse mouse { audio };
+    Mouse mouse { audio, screen };
     mouse.InitStart();
 
     Gamepad gamepad;
     gamepad.Initialize();
 
-    Game game { audio, gamepad };
+    Game game { audio, screen, gamepad };
     Editor editor { mouse, game, gamepad };
 
-    Menu MainMenu { game, audio, mouse, gamepad };
+    Menu MainMenu { game, audio, screen, mouse, gamepad };
     game.setMenu(&MainMenu);
 
     previousTime = currentTime = SDL_GetTicks();
