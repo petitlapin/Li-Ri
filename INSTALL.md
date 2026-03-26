@@ -1,18 +1,15 @@
-Installation Instructions
-*************************
+# Installation Instructions
 
 Li-Ri depends on SDL2 and SDL2_mixer (and their dependencies).
 
-Compilation via conan:
-=======================
+## Compilation via conan
 Install conan 2 and run it: `conan install . --output-folder=build --build=missing`.
 
 Then, run cmake to generate the build files: `cmake -DCMAKE_TOOLCHAIN_FILE=build/Release/generators/conan_toolchain.cmake -DUSE_CONAN=ON -DCMAKE_BUILD_TYPE=Release -S . -B build`.
 
 At last, run cmake to build the executable: `cmake --build build --config Release`.
 
-Compilation via package manager:
-================================
+## Compilation via package manager:
 Use your favorite tools to install the development packages of SDL2 and SDL2_mixer (preferably latest versions).
 
 Then run cmake to generate the build files: `cmake -DCMAKE_BUILD_TYPE=Release -S . -B build`.
@@ -21,21 +18,17 @@ To specify the folder where to look for the data files, you can set the variable
 
 At last, run cmake to build the executable: `cmake --build build --config Release`.
 
-Installation:
-=============
+## Installation
 Adding the option `-DCMAKE_INSTALL_PREFIX=install` will add a new target to install the package in the install/ folder inside your build folder: `cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=install -S . -B build`.
 
 This will copy the binary to the ${CMAKE_INSTALL_PREFIX}/bin/ and data in ${CMAKE_INSTALL_PREFIX}/share/Li-Ri folder (except on Windows where it will copy everything in ${CMAKE_INSTALL_PREFIX}/bin/).
 
-Packaging:
-==========
+## Packaging
 To create a package, use the *package* target from cmake invocation: `cmake --build build --config Release --target package`.
 * on Linux, it will create a self extractible tgz file. You can execute it and install it. Then, you can run `bin/Li-ri.sh` from this folder to run Li-Ri.
 * on macOS, it will generate a .dmg (that has not been tested at all so it may not run at all).
 * on Windows, a NSIS installer (you need to install NSIS on your computer to generate it).
 
-
-Releasing:
-==========
+## Releasing
 Update NEWS.yaml to add a new version and the changelog.
 Then, run `./tools/create_release.sh -v 3.1.5` to update all the files necessary for the release.
