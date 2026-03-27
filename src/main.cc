@@ -32,6 +32,7 @@
 #include <SDL2/SDL_video.h> // for SDL_CreateWindow, SDL_DestroyWindow
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_mixer.h>
+#include <SDL2/SDL_ttf.h>
 
 #include "config.h"
 #include "preference.h"
@@ -97,6 +98,7 @@ int main(int narg, char *argv[])
         SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Unable to initialize SDL: %s", SDL_GetError());
         exit(-1);
     }
+    TTF_Init();
     // Close the program properly when quitting
     atexit(SDL_Quit);
 

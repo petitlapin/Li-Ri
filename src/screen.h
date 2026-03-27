@@ -24,23 +24,36 @@
 #ifndef SCREEN_DOM_
 #define SCREEN_DOM_
 
-#include "sprite.h"
+#include <SDL2/SDL_ttf.h>
+#include <SDL2/SDL_log.h>
+#include <SDL2/SDL_rect.h>
+#include <SDL2/SDL_surface.h>
+#include <SDL2/SDL_timer.h>
 #include "preference.h"
+#include "string"
+#include "sprite.h"
 
 class Screen
 {
 public:
-    Screen() = default;
-    ~Screen() = default;
+    Screen();
+    ~Screen();
 
     void PrintSprite(e_Sprite NumSpr, int Num, int x, int y); // Displays a sprite
     void PrintCable(int dx, int dy, int fx, int fy); // Displays a cable/rope
-    void PrintText(e_Sprite Text, int x, int y); // Displays text
+    void ChangeFontSize(int size); // Change font size
+    void ChangeFontColor(float r, float g, float b);
+    void PrintText(const std::string &Text, int x, int y); // Displays text
+    int TextLength(std::string Text);
     void PrintOptions(int Nlives, int NScore); // Displays information on the side
     void CleanSpriteAndScreen(e_Sprite NumSpritebackground); // Erases display with background image
 
 private:
     int Score { -1 }; // Stores displayed score
+    TTF_Font* m_font;
+    SDL_Color fColor;
+    SDL_Surface* fontSurface;
+    SDL_Texture* fontTexture;
 };
 
 #endif

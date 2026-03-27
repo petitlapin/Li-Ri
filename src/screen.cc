@@ -22,10 +22,38 @@
 //    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 #include "preference.h"
-#include "sprite.h"
 #include "screen.h"
+#include "sprite.h"
+#include "utils.h"
 
 extern Sprite *Sprites;
+extern SDL_Renderer *sdlRenderer;
+
+/*** Constructor ***/
+/*******************/
+Screen::Screen()
+{
+    // Loading font
+    char fontPath[512];
+    strcpy(fontPath, "Assets/Fonts/comic.ttf");
+    Utils::GetPath(fontPath);
+    m_font = TTF_OpenFont(fontPath, 28);
+
+    // Selecting font color
+    fColor.r = 255;
+    fColor.g = 255;
+    fColor.b = 255;
+    fColor.a = 255;
+}
+
+/*** Destructor ***/
+/******************/
+Screen::~Screen()
+{
+    // Destroying font
+    SDL_DestroyTexture(fontTexture);
+    TTF_CloseFont(m_font);
+}
 
 /*** Display a sprite ***/
 /************************/
@@ -40,11 +68,39 @@ void Screen::PrintCable(int dx, int dy, int fx, int fy)
     Sprites[rope].PrintRope(dx, dy, fx, fy);
 }
 
+void Screen::ChangeFontSize(int size){
+    TTF_SetFontSize(m_font, size);
+}
+
+void Screen::ChangeFontColor(float r, float g, float b){
+    fColor.r = r;
+    fColor.g = g;
+    fColor.b = b;
+    fColor.a = 255;
+}
+
 /*** Display a text ***/
 /**********************/
-void Screen::PrintText(e_Sprite Text, int x, int y)
+void Screen::PrintText(const std::string &Text, int x, int y)
 {
-    Sprites[Text].Draw(x, y, 0);
+    fontSurface = TTF_RenderUTF8_Blended(m_font, Text.c_str(), fColor); // Rendering text
+    fontTexture = SDL_CreateTextureFromSurface(sdlRenderer, fontSurface); // Creating texture
+
+    // Setting position and size
+    SDL_Rect dst;
+    dst.x = x;
+    dst.y = y;
+    dst.w = fontSurface->w;
+    dst.h = fontSurface->h;
+
+    // Rendering text
+    SDL_RenderCopy(sdlRenderer, fontTexture, nullptr, &dst);
+}
+
+int Screen::TextLength(std::string Text){
+    int w,h;
+    TTF_SizeUTF8(m_font, Text.c_str(), &w, &h);
+    return w;
 }
 
 /*** Display game settings ***/

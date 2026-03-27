@@ -548,7 +548,13 @@ void Game::DisplayScreen()
 
     // When paused, asks for a key press
     if (Pause) {
-        m_screen.PrintText(T_press_any_key, LT * D_Case / 2, 300);
+        m_screen.ChangeFontSize(60);
+        m_screen.ChangeFontColor(0, 0, 0);
+        m_screen.PrintText("Press any key", 341 - m_screen.TextLength("Press any key")/2, 271);
+        m_screen.ChangeFontColor(255, 255, 0);
+        m_screen.PrintText("Press any key", 340 - m_screen.TextLength("Press any key")/2, 270);
+        m_screen.ChangeFontColor(255, 255, 255);
+        m_screen.ChangeFontSize(14);
     }
 
     // Prints a dashboard
