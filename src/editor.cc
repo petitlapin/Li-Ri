@@ -157,8 +157,8 @@ eMenu Editor::SDLMain(int LevelNumber)
                 }
                 m_level.T[NumN].T[cy * LT + cx] = TypeB;
                 break;
-            case car:
-                m_level.T[NumN].T[cy * LT + cx] = C_Car;
+            case wagon:
+                m_level.T[NumN].T[cy * LT + cx] = C_Wagon;
                 break;
             case expander:
                 m_level.T[NumN].T[cy * LT + cx] = C_Expand;
@@ -249,8 +249,8 @@ void Editor::Draw() const
     // Display possible sprites
     for (i = 0; i < LT * HT; i++) {
         switch (T[i]) {
-        case C_Car: // Car sprite
-            Sprites[car].Draw(i % LT * D_Case + D_Case / 2, i / LT * D_Case + D_Case / 2, 25);
+        case C_Wagon: // Wagon sprite
+            Sprites[wagon].Draw(i % LT * D_Case + D_Case / 2, i / LT * D_Case + D_Case / 2, 25);
             break;
         case C_Expand: // Expand sprite
             Sprites[expander].Draw(i % LT * D_Case + D_Case / 2, i / LT * D_Case + D_Case / 2, 25);
@@ -286,7 +286,7 @@ void Editor::Draw() const
     // Displays selected option in the menu
     switch (Option) {
     case rail:
-    case car:
+    case wagon:
     case expander:
     case shrinker:
     case speed:
@@ -411,7 +411,7 @@ void Editor::GetKeyPress(int Key)
         Option = rail;
         break;
     case 'z':
-        Option = car;
+        Option = wagon;
         break;
     case 'e':
         Option = expander;

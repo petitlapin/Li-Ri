@@ -118,7 +118,7 @@ void Loco::Display(Screen &screen)
     int cdx, cdy, cfx = 0, cfy = 0; // Attachment point for cables
     float lv;
 
-    // Display all wagon/(cars)
+    // Display all wagon
     for (i = 0; i < NWagon; i++) {
         // Search wagon points
         switch (Wagon[i]) {
@@ -135,7 +135,7 @@ void Loco::Display(Screen &screen)
             lv = 20;
         }
 
-        // Calculate cars point's position
+        // Calculate wagons point's position
         FindPoint(D - p1, x1, y1);
         FindPoint(D - p2, x2, y2);
 
@@ -186,7 +186,7 @@ void Loco::Display(Screen &screen)
             // Displays the cable
             screen.PrintCable(cdx, cdy, cfx, cfy);
         }
-        // Calculate the attachment point for the next Wagon/car
+        // Calculate the attachment point for the next Wagon
         cfx = x1 - (int)(sin(ar + M_PI) * lv);
         cfy = y1 - (int)(cos(ar + M_PI) * lv);
 
@@ -222,7 +222,7 @@ void Loco::Display(Screen &screen)
             }
         }
 
-        // Add gap between the wagons/cars
+        // Add gap between the wagons
         ltrain += Pref.WagonGap;
     }
 }
@@ -240,15 +240,15 @@ void Loco::TestTile(float Dist, long GameDuration, int *Level)
     if (D <= DMoy && D + Dist >= DMoy) {
         // Check if on an item
         switch (Level[T[LocoPos].P]) {
-        case C_Car: // New wagon/car
-            m_audio.Play(sCar);
+        case C_Wagon: // New wagon
+            m_audio.Play(sWagon);
             Level[T[LocoPos].P] = 1; // Remove item from level
             Pref.Score += 5;
             AddLoco(); // Add a random wagon
 
             Win = true; // Check if it was the last wagon for win condition
             for (i = 0; i < LT * HT; i++) {
-                if (Level[i] == C_Car) {
+                if (Level[i] == C_Wagon) {
                     Win = false;
                 }
             }
@@ -291,7 +291,7 @@ void Loco::TestTile(float Dist, long GameDuration, int *Level)
             break;
         }
 
-        // Collision check with another wagon/car
+        // Collision check with another wagon
         for (i = 1; i < NWagon; i++) {
             vx = (float)(PosWagon[i].dx - PosWagon[0].dx);
             vy = (float)(PosWagon[i].dy - PosWagon[0].dy);
@@ -663,9 +663,9 @@ void Loco::FindPoint(float Dist, int &x, int &y)
 /*********************************************/
 void Loco::AddLoco()
 {
-    Wagon[NWagon] = (e_Sprite)(rand() % (car - logs_wagon) + logs_wagon);
+    Wagon[NWagon] = (e_Sprite)(rand() % (wagon - logs_wagon) + logs_wagon);
     if (Wagon[NWagon] == Wagon[NWagon - 1]) { // Avoids adding the same sprite twice
-        if (Wagon[NWagon] + 1 == car) {
+        if (Wagon[NWagon] + 1 == wagon) {
             Wagon[NWagon] = logs_wagon;
         }
         else {

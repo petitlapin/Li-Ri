@@ -50,7 +50,7 @@ enum e_Sprite {
     cargo_wagon,
     engine_wagon,
     cistern_wagon,
-    car,
+    wagon,
     expander,
     shrinker,
     speed,

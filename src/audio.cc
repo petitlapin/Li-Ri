@@ -85,9 +85,9 @@ bool Audio::Init()
     Utils::GetPath(PathFile);
     Sound[sExpand] = Mix_LoadWAV(PathFile);
 
-    strcpy(PathFile, "Sounds/car.wav");
+    strcpy(PathFile, "Sounds/wagon.wav");
     Utils::GetPath(PathFile);
-    Sound[sCar] = Mix_LoadWAV(PathFile);
+    Sound[sWagon] = Mix_LoadWAV(PathFile);
 
     strcpy(PathFile, "Sounds/shrink.wav");
     Utils::GetPath(PathFile);
