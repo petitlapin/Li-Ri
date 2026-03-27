@@ -40,7 +40,7 @@ bool Level::Load()
     unsigned char *Buf;
     long L, P = 2;
     int i, j;
-    char NameLevelFile[512] = "levels.dat";
+    char NameLevelFile[512] = "Assets/Levels.dat";
 
     Utils::GetPath(NameLevelFile);
     L = Utils::LoadFile(NameLevelFile, Buf);

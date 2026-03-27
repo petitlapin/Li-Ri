@@ -226,7 +226,7 @@ eMenu Menu::SDLMain()
 
 /*** SDL Main Menu Language choice ***/
 /*************************************/
-eMenu Menu::SDLMain_Language()
+/*eMenu Menu::SDLMain_Language()
 {
     int NCol = 1;
     int NL;
@@ -364,7 +364,7 @@ eMenu Menu::SDLMain_Language()
     } while (true);
 
     return mQuit;
-}
+}*/
 
 /*** SDL Main Menu Settings ***/
 /******************************/
@@ -550,7 +550,7 @@ eMenu Menu::SDLMain_Options()
                             PyE = 2;
                             break;
                         case 3: // Language choice
-                            SDLMain_Language();
+                            //SDLMain_Language();
                             PyE = 3;
                             break;
                         case 5: // Lower sound effects volume

@@ -35,11 +35,6 @@ extern Sprite *Sprites;
 extern int NSprites;
 extern sNewPreference Pref;
 
-static const char *TextOrder = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789.-!?*+<>%$()&;";
-static const char *TextOrder2 = "abcdefghijklmnopqrstuvwxyz0123456789,_|?*+<>%$[]&;";
-static int TextTable[256];
-
-char Languages[31][16]; // Stores languages
 int NTexts = 0;
 bool shouldDrawLoading = false;
 
@@ -67,38 +62,6 @@ void DrawLoading()
     }
 }
 
-/*** Loads the sprite of a language ***/
-/**************************************/
-bool LoadLanguage()
-{
-    long L, P;
-    int i;
-    unsigned char *Buf;
-    char PathFile[512];
-
-    strcpy(PathFile, Languages[Pref.Language]);
-    Utils::GetPath(PathFile);
-    if (Utils::FileExists(PathFile) == false) {
-        SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Unable to find '%s'", Languages[Pref.Language]);
-        return false;
-    }
-    L = Utils::LoadFile(PathFile, Buf);
-
-    // Reads sprites
-    P = 0;
-    for (i = 0; i < NTexts; i++) {
-        if (Sprites[T_level + i].N) {
-            Sprites[T_level + i].Delete();
-        }
-        if (Sprites[T_level + i].Load(Buf, P) == false) {
-            return false;
-        }
-    }
-    delete[] Buf; // Frees memory from the sprite file
-
-    return true;
-}
-
 /*** Loads the game's sprites ***/
 /********************************/
 bool LoadSprites()
@@ -108,71 +71,28 @@ bool LoadSprites()
     unsigned char *Buf;
     int NSp;
 
-    char PathFile[512] = "language.dat";
+    char PathFile[512] = "Assets/Sprites.dat";
+
+    // Check is exist this file
     Utils::GetPath(PathFile);
-
-    // Initialize characters table for texts
-    for (i = 0; i < 256; i++) {
-        TextTable[i] = -1;
-    }
-    i = 0;
-    while (TextOrder[i] != 0) {
-        TextTable[(int)(TextOrder[i])] = i;
-        i++;
-    }
-    i = 0;
-    while (TextOrder2[i] != 0) {
-        TextTable[(int)(TextOrder2[i])] = i;
-        i++;
-    }
-
-    // *** Loads the languages file ***
-    // ********************************
-    if (Utils::FileExists(PathFile) == false) {
-        SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Unable to find 'language.dat'");
-        return false;
-    }
-    L = Utils::LoadFile(PathFile, Buf);
-
-    // Read the sprites count
-    NSp = (int)(Buf[0]) * 256 + (int)(Buf[1]);
-    NSp += N_SPRITESFOND + 2;
-    NTexts = (int)(Buf[2]) * 256 + (int)(Buf[3]);
-    Pref.NLanguages = (int)(Buf[4]) * 256 + (int)(Buf[5]);
-
-    NSprites = NSp + NTexts + Pref.NLanguages;
-    Sprites = new Sprite[NSprites];
-
-    // Fetch languages names
-    P = 6;
-    for (i = 0; i < Pref.NLanguages; i++) {
-        strcpy(Languages[i], (char *)(Buf + P));
-        P += strlen((char *)(Buf + P)) + 1;
-    }
-
-    // Load languages sprite
-    for (i = 0; i < Pref.NLanguages; i++) {
-        if (Sprites[T_Language + i].Load(Buf, P) == false) {
-            return false;
-        }
-    }
-
-    if (Sprites[loading].Load(Buf, P) == false) {
-        return false; // Loading sprite
-    }
-    shouldDrawLoading = true; // can display loading sprite
-
-    delete[] Buf;
-
-    // *** loads sprites file ***
-    // **************************
-    strcpy(PathFile, "sprites.dat");
-    Utils::GetPath(PathFile);
-    if (Utils::FileExists(PathFile) == false) {
+    if (!Utils::FileExists(PathFile)) {
         SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Unable to find 'sprites.dat'");
         return false;
     }
+    // Reading this file
     L = Utils::LoadFile(PathFile, Buf);
+    if (L <= 0 || Buf == nullptr) {
+        SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Failed to load file");
+        return false;
+    }
+
+    P = 0;
+    // Calculating sprites count
+    NSp = (int)(Buf[P]) * 256 + (int)(Buf[P + 1]);
+
+    Sprites = new Sprite[NSp];
+    NSprites = NSp;
+
 
     // Reads sprites
     P = 0;
@@ -198,12 +118,6 @@ bool LoadSprites()
     }
 
     delete[] Buf; // Frees memory from the sprites file
-
-    // *** Loads language ***
-    // **********************
-    if (Pref.Language != -1) {
-        LoadLanguage();
-    }
 
     shouldDrawLoading = false; // Disable loading sprite
     return true;

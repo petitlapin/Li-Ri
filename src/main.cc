@@ -144,12 +144,6 @@ int main(int narg, char *argv[])
     previousTime = currentTime = SDL_GetTicks();
     srand(SDL_GetTicks());
 
-    // ask locale if first run
-    if (Pref.Language == -1) {
-        RetMenu = MainMenu.SDLMain_Language();
-        LoadLanguage();
-    }
-
     // menu switch
     do {
         switch (RetMenu) {
@@ -157,7 +151,7 @@ int main(int narg, char *argv[])
             RetM = MainMenu.SDLMain();
             break;
         case mLanguage:
-            RetM = MainMenu.SDLMain_Language();
+            //RetM = MainMenu.SDLMain_Language();
             break;
         case mOption:
             RetM = MainMenu.SDLMain_Options();
