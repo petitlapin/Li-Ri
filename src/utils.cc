@@ -298,9 +298,9 @@ bool Utils::LoadPref()
             }
             Pref.Sco[i].Score = std::stoi(pv);
             if (pv) {
-                pv = ini.GetValue("highscore", nameKey.c_str(), Pref.Sco[i].Name);
+                pv = ini.GetValue("highscore", nameKey.c_str(), Pref.Sco[i].Name.c_str());
             }
-            strncpy(Pref.Sco[i].Name, pv, 80);
+            Pref.Sco[i].Name = pv;
         }
         return true;
     }
@@ -322,7 +322,7 @@ bool Utils::LoadPref()
             Pref.LevelMax[2] = oldPref.Difficulte == Hard ? oldPref.NiveauMax : 0;
             for (int i = 0; i < 8; ++i) {
                 Pref.Sco[i].Score = oldPref.Sco[i].Score;
-                strncpy(Pref.Sco[i].Name, oldPref.Sco[i].Name, 80);
+                Pref.Sco[i].Name = std::string(oldPref.Sco[i].Name);
             }
             // TODO Delete old file at some file
             return true;
@@ -354,7 +354,7 @@ void Utils::SavePref()
         std::string scoreKey = "score_" + std::to_string(i);
         std::string nameKey = "name_" + std::to_string(i);
         ini.SetValue("highscore", scoreKey.c_str(), std::to_string(Pref.Sco[i].Score).c_str());
-        ini.SetValue("highscore", nameKey.c_str(), Pref.Sco[i].Name);
+        ini.SetValue("highscore", nameKey.c_str(), Pref.Sco[i].Name.c_str());
     }
     ini.SaveFile(PathPref);
 }

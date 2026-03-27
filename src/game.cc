@@ -21,6 +21,7 @@
 //    with this program; if not, write to the Free Software Foundation, Inc.,
 //    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
+#define DCHILDREN
 #include <SDL2/SDL_events.h> // for SDL_PollEvent, SDL_PRESSED, SDL_Event
 #include <SDL2/SDL_keycode.h> // for SDLK_DOWN, SDLK_LEFT, SDLK_RIGHT, SDLK_UP
 #include <SDL2/SDL_render.h> // for SDL_RenderPresent, SDL_RenderClear
@@ -359,12 +360,14 @@ bool Game::DrawLevel(int LevelN)
 #endif
 
     // Displays texts for selected language
-    DrawText(740, 110, T_level, Sprites[fgame].Image[0]);
-    DrawText(740, 180, T_score, Sprites[fgame].Image[0]);
-    DrawText(740, 260, T_options, Sprites[fgame].Image[0]);
-    DrawText(740, 340, T_lives, Sprites[fgame].Image[0]);
+    m_screen.ChangeFontColor(255, 255, 0);
+    m_screen.PrintText("Level", 740-m_screen.TextLength("Level")/2, 110);
+    m_screen.PrintText("Score", 740-m_screen.TextLength("Score")/2, 180);
+    m_screen.PrintText("Config", 740-m_screen.TextLength("Config")/2, 260);
+    m_screen.PrintText("Lives", 740-m_screen.TextLength("Lives")/2, 340);
+    m_screen.ChangeFontColor(255, 255, 255);
 
-    DrawNumber(740, 140, Pref.Level + 1, Sprites[fgame].Image[0]);
+    m_screen.PrintText(std::to_string(Pref.Level + 1), 740 - m_screen.TextLength(std::to_string(Pref.Level + 1))/2, 140);
 
     return true;
 }

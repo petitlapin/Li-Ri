@@ -176,15 +176,6 @@ void DrawLoading(); // displays the loader on the startup page
 bool LoadLanguage(); // Loads sprites of a language
 bool LoadSprites(); // Loads all sprites
 
-int NumberLength(int C); // Returns the length in pixels of a number
-int StringLength(char *Text); // Returns the length in pixels of a string.
-bool CharExist(char C); // Checks if a character exists
-
-void DrawNumber(int x, int y, int Number, SDL_Texture *Background = nullptr); // Displays a number
-void DrawString(int x, int y, char *Text, SDL_Texture *Background = nullptr); // Displays a string
-
-void DrawText(int x, int y, e_Sprite Text, SDL_Texture *Background = nullptr); // Displays a text in the language
-
 class Sprite
 {
 public:
