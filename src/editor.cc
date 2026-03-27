@@ -243,9 +243,6 @@ void Editor::Draw() const
         Sprites[deco].Draw(m_level.T[NumN].Deco[i].x, m_level.T[NumN].Deco[i].y, m_level.T[NumN].Deco[i].NumSpr);
     }
 
-    // Displays the level number
-    DrawNumber(740, 130, NumN + 1);
-
     // Display possible sprites
     for (i = 0; i < LT * HT; i++) {
         switch (T[i]) {

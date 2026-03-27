@@ -359,12 +359,14 @@ bool Game::DrawLevel(int LevelN)
 #endif
 
     // Displays texts for selected language
-    DrawText(740, 110, T_level, Sprites[fgame].Image[0]);
-    DrawText(740, 180, T_score, Sprites[fgame].Image[0]);
-    DrawText(740, 260, T_options, Sprites[fgame].Image[0]);
-    DrawText(740, 340, T_lives, Sprites[fgame].Image[0]);
+    m_screen.ChangeFontColor(255, 255, 0);
+    m_screen.PrintText("Level", 740-m_screen.TextLength("Level")/2, 110);
+    m_screen.PrintText("Score", 740-m_screen.TextLength("Score")/2, 180);
+    m_screen.PrintText("Config", 740-m_screen.TextLength("Config")/2, 260);
+    m_screen.PrintText("Lives", 740-m_screen.TextLength("Lives")/2, 340);
+    m_screen.ChangeFontColor(255, 255, 255);
 
-    DrawNumber(740, 140, Pref.Level + 1, Sprites[fgame].Image[0]);
+    m_screen.PrintText(std::to_string(Pref.Level + 1), 740 - m_screen.TextLength(std::to_string(Pref.Level + 1))/2, 140);
 
     return true;
 }

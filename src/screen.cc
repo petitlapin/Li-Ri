@@ -105,21 +105,23 @@ int Screen::TextLength(std::string Text){
 
 /*** Display game settings ***/
 /*****************************/
-void Screen::PrintOptions(int Nlives, int NScore)
+void Screen::PrintOptions(int NV, int NScore)
 {
     int x, y;
 
     Score = NScore;
-    DrawNumber(740, 215, Score);
+    ChangeFontSize(24);
+    PrintText(std::to_string(Score), 740 - TextLength(std::to_string(Score))/2, 215);
+    ChangeFontSize(22);
 
-    if (Nlives > 10) {
-        Nlives = 10; // Clamp to avoid going off screen
+    if (NV > 10) {
+        NV = 10; // Clamp to avoid going off screen
     }
-    for (int i = 0; i < Nlives; ++i) { // Display lives
+    for (int i = 0; i < NV; ++i) { // Display lives
         x = i % 2;
         x = x * 44 + 38 + LT * D_Case;
         y = i / 2;
-        y = 384 + y * 46;
+        y = 394 + y * 46;
         Sprites[logo_health].Draw(x, y, 0);
     }
 }

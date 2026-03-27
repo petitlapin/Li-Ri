@@ -26,6 +26,8 @@
 
 #include "preference.h"
 
+#include <string>
+
 void Sleeping();
 
 class Game;
@@ -67,6 +69,9 @@ private:
     Screen &m_screen;
     Mouse &m_mouse;
     Gamepad &m_gamepad;
+
+    int Year = 2026;
+    std::string CopyrightText = "G.P.L. Game - Copyright 2023-" + std::to_string(Year) + " By Johnny Jazeix (fork of Ri-Li originally written by D. Roux-Serret), Music by MAF";
 };
 
 #endif
