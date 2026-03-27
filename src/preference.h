@@ -58,7 +58,7 @@
 /*** Possible pieces on the level ***/
 #define C_None 0
 #define C_Rail 1
-#define C_Car 2
+#define C_Wagon 2
 #define C_Expand 3
 #define C_Shrink 4
 #define C_Speed 5

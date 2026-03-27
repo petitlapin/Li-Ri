@@ -58,7 +58,7 @@ public:
     void MoveForward(int Duration, long GameDuration, int *Key, int *Level); // Makes locomotive move forward for Duration in ms
     void FindArrow(int *Level, int *Key); // Search the position of the next intersection
     bool TestDir(int FDir, int *Level); // Check if a direction/turn is possible
-    void AddLoco(); // Adds a random car to the locomotive
+    void AddLoco(); // Adds a random wagon to the locomotive
 
     inline bool Go(int FutureDirection); // Move the locomotive
     inline void FindPoint(float Dist, int &x, int &y); // Searching a point on the map

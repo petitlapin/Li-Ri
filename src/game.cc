@@ -528,8 +528,8 @@ void Game::DisplayScreen()
     // Display options
     for (i = 0; i < LT * HT; i++) {
         switch (T[i]) {
-        case C_Car: // if car sprite
-            m_screen.PrintSprite(car, (GameClock * 40 / 1000 + i * 7) % 50, i % LT * D_Case + D_Case / 2, i / LT * D_Case + D_Case / 2);
+        case C_Wagon: // if wagon sprite
+            m_screen.PrintSprite(wagon, (GameClock * 40 / 1000 + i * 7) % 50, i % LT * D_Case + D_Case / 2, i / LT * D_Case + D_Case / 2);
             break;
         case C_Expand: // if expander sprite
             m_screen.PrintSprite(expander, (GameClock * 40 / 1000 + i * 7) % 50, i % LT * D_Case + D_Case / 2, i / LT * D_Case + D_Case / 2);
