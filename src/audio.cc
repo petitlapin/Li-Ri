@@ -108,7 +108,7 @@ bool Audio::Init()
 /*********************************************************************/
 void Audio::LoadMusic(int Num)
 {
-    char Provi[512] = "Sounds/jeu1.xm";
+    char Provi[512] = "Sounds/ingame1.xm";
 
     if (!N) {
         return;
@@ -129,7 +129,7 @@ void Audio::LoadMusic(int Num)
         Music = Mix_LoadMUS(Provi);
     }
     else {
-        Provi[10] = (char)(Num) + '0';
+        Provi[13] = (char)(Num) + '0';
         Utils::GetPath(Provi);
         Music = Mix_LoadMUS(Provi);
     }
