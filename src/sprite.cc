@@ -74,9 +74,8 @@ bool LoadLanguage()
     long L, P;
     int i;
     unsigned char *Buf;
-    char PathFile[512];
-
-    strcpy(PathFile, Languages[Pref.Language]);
+    char PathFile[512] = "Assets/";
+    strcat(PathFile, Languages[Pref.Language]);
     Utils::GetPath(PathFile);
     if (Utils::FileExists(PathFile) == false) {
         SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Unable to find '%s'", Languages[Pref.Language]);
@@ -108,7 +107,7 @@ bool LoadSprites()
     unsigned char *Buf;
     int NSp;
 
-    char PathFile[512] = "language.dat";
+    char PathFile[512] = "Assets/language.dat";
     Utils::GetPath(PathFile);
 
     // Initialize characters table for texts
@@ -129,7 +128,7 @@ bool LoadSprites()
     // *** Loads the languages file ***
     // ********************************
     if (Utils::FileExists(PathFile) == false) {
-        SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Unable to find 'language.dat'");
+        SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Unable to find 'Assets/language.dat'");
         return false;
     }
     L = Utils::LoadFile(PathFile, Buf);
@@ -166,10 +165,10 @@ bool LoadSprites()
 
     // *** loads sprites file ***
     // **************************
-    strcpy(PathFile, "sprites.dat");
+    strcpy(PathFile, "Assets/sprites.dat");
     Utils::GetPath(PathFile);
     if (Utils::FileExists(PathFile) == false) {
-        SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Unable to find 'sprites.dat'");
+        SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Unable to find 'Assets/sprites.dat'");
         return false;
     }
     L = Utils::LoadFile(PathFile, Buf);

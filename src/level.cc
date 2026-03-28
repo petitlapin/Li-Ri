@@ -40,7 +40,7 @@ bool Level::Load()
     unsigned char *Buf;
     long L, P = 2;
     int i, j;
-    char NameLevelFile[512] = "levels.dat";
+    char NameLevelFile[512] = "Assets/levels.dat";
 
     Utils::GetPath(NameLevelFile);
     L = Utils::LoadFile(NameLevelFile, Buf);
@@ -80,7 +80,7 @@ bool Level::Save()
     unsigned char *Buf;
     long P = 2;
     int i, j;
-    char NameLevelFile[512] = "levels.dat";
+    char NameLevelFile[512] = "Assets/levels.dat";
 
     // Allocate memory
     Buf = new unsigned char[sizeof(s_Level) * N + sizeof(int) + 1];
