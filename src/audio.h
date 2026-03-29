@@ -35,7 +35,7 @@ enum eSound {
     sEnd,
     sLose,
     sExpand,
-    sCar,
+    sWagon,
     sShrink,
     sLive,
     sSize
