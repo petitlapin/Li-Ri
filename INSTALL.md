@@ -32,3 +32,6 @@ To create a package, use the *package* target from cmake invocation: `cmake --bu
 ## Releasing
 Update NEWS.yaml to add a new version and the changelog.
 Then, run `./tools/create_release.sh -v 3.1.5` to update all the files necessary for the release.
+
+## Audio sounds
+The ogg sounds have been created using LMMS DAW. You can install it on your OS using your package manager. To generate the ogg files in command line, run `lmms render input.mmpz -f ogg -b 160 -o output.ogg`

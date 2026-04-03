@@ -126,7 +126,9 @@ int main(int narg, char *argv[])
         exit(-1);
     }
 
-    audio.PlayMusic();
+    // Start background music
+    audio.LoadMusic(0);
+
     Mouse mouse { audio, screen };
     mouse.InitStart();
 

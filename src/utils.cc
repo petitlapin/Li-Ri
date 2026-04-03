@@ -274,6 +274,10 @@ bool Utils::LoadPref()
         if (pv) {
             Pref.VolumeM = std::stof(pv);
         }
+        pv = ini.GetValue("main", "audioTheme");
+        if (pv) {
+            Pref.AudioTheme = eAudioTheme(std::stoi(pv));
+        }
         pv = ini.GetValue("main", "humanRightsQuiz");
         if (pv) {
             Pref.HumanRightsQuiz = std::stoi(pv);
@@ -347,6 +351,7 @@ void Utils::SavePref()
     ini.SetValue("main", "audioVolume", std::to_string(Pref.Volume).c_str());
     ini.SetValue("main", "musicVolume", std::to_string(Pref.VolumeM).c_str());
     ini.SetValue("main", "humanRightsQuiz", std::to_string(Pref.HumanRightsQuiz).c_str());
+    ini.SetValue("main", "audioTheme", std::to_string((int)Pref.AudioTheme).c_str());
     ini.SetValue("easy", "maxLevel", std::to_string(Pref.LevelMax[0]).c_str());
     ini.SetValue("normal", "maxLevel", std::to_string(Pref.LevelMax[1]).c_str());
     ini.SetValue("difficult", "maxLevel", std::to_string(Pref.LevelMax[2]).c_str());

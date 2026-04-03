@@ -359,7 +359,7 @@ void Menu::InitMain_Options()
     // Set background image and build display
     Sprites[background_menu].Draw(400, 300, 0, Sprites[fmenu].Image[0]);
     Sprites[gmenu].Draw(400, 300, 0, Sprites[fmenu].Image[0]);
-    Sprites[keys].Draw(610, 455, 0, Sprites[fmenu].Image[0]);
+    Sprites[keys].Draw(690, 505, 0, Sprites[fmenu].Image[0]);
 
     AddButton(0, sound, 140, 110);
     AddButton(1, music, 160, 200);
@@ -372,46 +372,57 @@ void Menu::InitMain_Options()
 
     AddButton(3, earth, 180, 400);
 
+    // audio theme
+    Sprites[arrows].Draw(370, 420, 1, Sprites[fmenu].Image[0]);
+    Sprites[arrows].Draw(620, 420, 4, Sprites[fmenu].Image[0]);
+
+    Menu_Py[4].StartX = 370 - Sprites[arrows].Dim[0].L / 2;
+    Menu_Py[4].StartY = 420 - Sprites[arrows].Dim[0].H / 2;
+    Menu_Py[4].EndX = 620 + Sprites[arrows].Dim[0].L / 2;
+    Menu_Py[4].EndY = 420 + Sprites[arrows].Dim[0].H / 2;
+    Menu_Py[4].Py = 4;
+    Menu_Py[4].Valid = true;
+
     // Center text left
     CenterM = 120 + Sprites[T_menu].Dim[0].L / 2;
     DrawText(CenterM, 490, T_menu, Sprites[fmenu].Image[0]);
-    AddButton(4, T_menu, CenterM, 490);
+    AddButton(5, T_menu, CenterM, 490);
 
     // Sound buttons
     Sprites[arrows].Draw(250, 110, 1, Sprites[fmenu].Image[0]);
     Sprites[arrows].Draw(700, 110, 4, Sprites[fmenu].Image[0]);
-    Menu_Py[5].StartX = 230;
-    Menu_Py[5].StartY = 70;
-    Menu_Py[5].EndX = 475;
-    Menu_Py[5].EndY = 145;
-    Menu_Py[5].Py = 5;
-    Menu_Py[5].Valid = true;
-
-    Menu_Py[6].StartX = 476;
+    Menu_Py[6].StartX = 230;
     Menu_Py[6].StartY = 70;
-    Menu_Py[6].EndX = 720;
+    Menu_Py[6].EndX = 475;
     Menu_Py[6].EndY = 145;
     Menu_Py[6].Py = 6;
     Menu_Py[6].Valid = true;
 
-    // Music buttons
-    Sprites[arrows].Draw(250, 200, 1, Sprites[fmenu].Image[0]);
-    Sprites[arrows].Draw(700, 200, 4, Sprites[fmenu].Image[0]);
-    Menu_Py[7].StartX = 230;
-    Menu_Py[7].StartY = 155;
-    Menu_Py[7].EndX = 475;
-    Menu_Py[7].EndY = 245;
+    Menu_Py[7].StartX = 476;
+    Menu_Py[7].StartY = 70;
+    Menu_Py[7].EndX = 720;
+    Menu_Py[7].EndY = 145;
     Menu_Py[7].Py = 7;
     Menu_Py[7].Valid = true;
 
-    Menu_Py[8].StartX = 476;
+    // Music buttons
+    Sprites[arrows].Draw(250, 200, 1, Sprites[fmenu].Image[0]);
+    Sprites[arrows].Draw(700, 200, 4, Sprites[fmenu].Image[0]);
+    Menu_Py[8].StartX = 230;
     Menu_Py[8].StartY = 155;
-    Menu_Py[8].EndX = 720;
+    Menu_Py[8].EndX = 475;
     Menu_Py[8].EndY = 245;
     Menu_Py[8].Py = 8;
     Menu_Py[8].Valid = true;
 
-    Menu_Py[9].StartX = -1;
+    Menu_Py[9].StartX = 476;
+    Menu_Py[9].StartY = 155;
+    Menu_Py[9].EndX = 720;
+    Menu_Py[9].EndY = 245;
+    Menu_Py[9].Py = 9;
+    Menu_Py[9].Valid = true;
+
+    Menu_Py[10].StartX = -1;
 }
 
 /*** Options menu management ***/
@@ -421,7 +432,7 @@ eMenu Menu::SDLMain_Options()
     int i, N;
     int NumSp;
 
-    PyE = 4;
+    PyE = 5;
     // Fetch events
     do {
         m_screen.CleanSpriteAndScreen(fmenu);
@@ -451,12 +462,19 @@ eMenu Menu::SDLMain_Options()
                             if (Pref.FullScreen == false) {
                                 Pref.FullScreen = true;
                                 ChangeVideo();
-                                PyE = 2;
                             }
                             break;
+                        case 4:
+                            Pref.AudioTheme = eAudioTheme(Pref.AudioTheme - 1);
+                            if (Pref.AudioTheme < 0) {
+                                Pref.AudioTheme = mZabiden;
+                            }
+                            m_audio.LoadMusic(0);
+                            PyE = 4;
+                            break;
                         case 0:
-                        case 5: // Lowers sound effects volume
-                        case 6:
+                        case 6: // lowers sounds effects volume
+                        case 7:
                             Pref.Volume -= SDL_MIX_MAXVOLUME / 10.0;
                             if (Pref.Volume < 0) {
                                 Pref.Volume = 0;
@@ -465,8 +483,8 @@ eMenu Menu::SDLMain_Options()
                             m_audio.Play(sLive);
                             break;
                         case 1:
-                        case 7: // Lowers music volume
-                        case 8:
+                        case 8: // lowers music volume
+                        case 9:
                             Pref.VolumeM -= SDL_MIX_MAXVOLUME / 10.0;
                             if (Pref.VolumeM < 0) {
                                 Pref.VolumeM = 0;
@@ -484,9 +502,17 @@ eMenu Menu::SDLMain_Options()
                                 PyE = 2;
                             }
                             break;
+                        case 4:
+                            Pref.AudioTheme = eAudioTheme(Pref.AudioTheme + 1);
+                            if (Pref.AudioTheme > mZabiden) {
+                                Pref.AudioTheme = mMaf;
+                            }
+                            m_audio.LoadMusic(0);
+                            PyE = 4;
+                            break;
                         case 0:
-                        case 5:
                         case 6:
+                        case 7:
                             Pref.Volume += SDL_MIX_MAXVOLUME / 10.0;
                             if (Pref.Volume > SDL_MIX_MAXVOLUME) {
                                 Pref.Volume = SDL_MIX_MAXVOLUME;
@@ -495,8 +521,8 @@ eMenu Menu::SDLMain_Options()
                             m_audio.Play(sLive);
                             break;
                         case 1:
-                        case 7:
                         case 8:
+                        case 9:
                             Pref.VolumeM += SDL_MIX_MAXVOLUME / 10.0;
                             if (Pref.VolumeM > SDL_MIX_MAXVOLUME) {
                                 Pref.VolumeM = SDL_MIX_MAXVOLUME;
@@ -508,12 +534,12 @@ eMenu Menu::SDLMain_Options()
                     case SDLK_UP:
                         PyE--;
                         if (PyE < 0) {
-                            PyE = 4;
+                            PyE = 5;
                         }
                         break;
                     case SDLK_DOWN:
                         PyE++;
-                        if (PyE >= 5) {
+                        if (PyE >= 6) {
                             PyE = 0;
                         }
                         break;
@@ -538,7 +564,15 @@ eMenu Menu::SDLMain_Options()
                             SDLMain_Language();
                             PyE = 3;
                             break;
-                        case 5: // Lower sound effects volume
+                        case 4: // Audio theme
+                            Pref.AudioTheme = eAudioTheme(Pref.AudioTheme + 1);
+                            if (Pref.AudioTheme > mZabiden) {
+                                Pref.AudioTheme = mMaf;
+                            }
+                            m_audio.LoadMusic(0);
+                            PyE = 4;
+                            break;
+                        case 6: // lower sounds effects volume
                             Pref.Volume -= SDL_MIX_MAXVOLUME / 10.0;
                             if (Pref.Volume < 0) {
                                 Pref.Volume = 0;
@@ -546,7 +580,7 @@ eMenu Menu::SDLMain_Options()
                             m_audio.DoVolume();
                             m_audio.Play(sLive);
                             break;
-                        case 6:
+                        case 7:
                             Pref.Volume += SDL_MIX_MAXVOLUME / 10.0;
                             if (Pref.Volume > SDL_MIX_MAXVOLUME) {
                                 Pref.Volume = SDL_MIX_MAXVOLUME;
@@ -554,14 +588,14 @@ eMenu Menu::SDLMain_Options()
                             m_audio.DoVolume();
                             m_audio.Play(sLive);
                             break;
-                        case 7: // Lower music volume
+                        case 8: // lower music volume
                             Pref.VolumeM -= SDL_MIX_MAXVOLUME / 10.0;
                             if (Pref.VolumeM < 0) {
                                 Pref.VolumeM = 0;
                             }
                             m_audio.DoVolume();
                             break;
-                        case 8:
+                        case 9:
                             Pref.VolumeM += SDL_MIX_MAXVOLUME / 10.0;
                             if (Pref.VolumeM > SDL_MIX_MAXVOLUME) {
                                 Pref.VolumeM = SDL_MIX_MAXVOLUME;
@@ -596,6 +630,16 @@ eMenu Menu::SDLMain_Options()
             m_screen.PrintSprite(arrows, 4, 450, 300);
         }
 
+        switch (Pref.AudioTheme) {
+        case mMaf:
+            DrawString(400, 420, "MAF 464", Sprites[fmenu].Image[0]);
+            break;
+        case mZabiden:
+            DrawString(400, 420, "ZABIDEN", Sprites[fmenu].Image[0]);
+            break;
+        }
+        DrawString(350, 370, "Audio Theme", Sprites[fmenu].Image[0]);
+
         NumSp = (currentTime / 30) % 25;
         m_screen.PrintSprite(sound, NumSp, 150, 110);
         NumSp = (currentTime / 30) % 25;
@@ -629,12 +673,10 @@ eMenu Menu::SDLMain_Options()
             Print_Main(180);
             break;
         case 4:
-            Print_Main(CenterM);
+            Print_Main(490);
             break;
         case 5:
-            PyE = 0;
-            Print_Main();
-            PyE = 5;
+            Print_Main(CenterM);
             break;
         case 6:
             PyE = 0;
@@ -642,7 +684,7 @@ eMenu Menu::SDLMain_Options()
             PyE = 6;
             break;
         case 7:
-            PyE = 1;
+            PyE = 0;
             Print_Main();
             PyE = 7;
             break;
@@ -650,6 +692,11 @@ eMenu Menu::SDLMain_Options()
             PyE = 1;
             Print_Main();
             PyE = 8;
+            break;
+        case 9:
+            PyE = 1;
+            Print_Main();
+            PyE = 9;
             break;
         default:
             Print_Main();
