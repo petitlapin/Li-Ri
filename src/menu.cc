@@ -223,10 +223,7 @@ eMenu Menu::SDLMain_Language()
 
     // Miscellaneous inits
     m_mouse.Init(Menu_Py);
-    PyE = Pref.Language;
-    if (PyE == -1) {
-        PyE = 1;
-    }
+    PyE = 1;
 
     SDL_RenderClear(sdlRenderer);
     // Set background image and build display
@@ -239,6 +236,8 @@ eMenu Menu::SDLMain_Language()
 
     // Fetch events
     do {
+        Menu_Py[3].StartX = -1;
+
         SDL_RenderClear(sdlRenderer);
         Sprites[background_menu].Draw(400, 300, 0, Sprites[fmenu].Image[0]);
         Sprites[background_hr].Draw(400, 170, 0, Sprites[fmenu].Image[0]);
@@ -246,7 +245,7 @@ eMenu Menu::SDLMain_Language()
         DrawString(225, 140, "Select your", Sprites[fmenu].Image[0]);
         DrawString(225, 190, "language", Sprites[fmenu].Image[0]);
         for (i = 0; i < Pref.NLanguages; i++) {
-            x = i * (800 / 3) + (800 / 6);
+            x = -(Selector-1)*266+(i * (800 / 3) + (800 / 6));
             y = 400;
 
             Sprites[T_Language + i].Draw(x, y, 0, Sprites[fmenu].Image[0]);
@@ -272,7 +271,6 @@ eMenu Menu::SDLMain_Language()
         AddButton(1, arrows, 50, 325);
         AddButton(2, arrows, 800-50, 325);
 
-        Menu_Py[3].StartX = -1;
 
         DrawString(50, 550, "Press space to continue", Sprites[fmenu].Image[0]);
 
@@ -303,7 +301,7 @@ eMenu Menu::SDLMain_Language()
                         }
                         break;
                     case SDLK_RIGHT:
-                        if (Selector != Pref.NLanguages){
+                        if (Selector != Pref.NLanguages-1){
                             Selector++;
                         }   
                         break;
@@ -325,7 +323,7 @@ eMenu Menu::SDLMain_Language()
                                 }
                                 break;
                             case 2:
-                                if (Selector != Pref.NLanguages){
+                                if (Selector != Pref.NLanguages-1){
                                     Selector++;
                                 }   
                                 break;
