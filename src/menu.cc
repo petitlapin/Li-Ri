@@ -214,7 +214,10 @@ eMenu Menu::SDLMain_Language()
     int NCol = 1;
     int NL;
     int Gap;
+    int N;
+    int NumSp;
     int i;
+    int e;
     int x, y;
     int const OldLanguage = Pref.Language;
 
@@ -228,9 +231,10 @@ eMenu Menu::SDLMain_Language()
     SDL_RenderClear(sdlRenderer);
     // Set background image and build display
     Sprites[background_menu].Draw(400, 300, 0, Sprites[fmenu].Image[0]);
+    DrawString(0, 0, "Select your language", Sprites[fmenu].Image[0]);
 
     // Draw available languages
-    NCol = 3;
+    NCol = 19;
     if (Pref.NLanguages % NCol == 0) {
         NL = Pref.NLanguages / NCol;
     }
@@ -248,7 +252,6 @@ eMenu Menu::SDLMain_Language()
     }
 
     Menu_Py[Pref.NLanguages].StartX = -1;
-
     // Erase background
     SDL_RenderPresent(sdlRenderer);
 
@@ -256,13 +259,32 @@ eMenu Menu::SDLMain_Language()
     do {
         SDL_RenderClear(sdlRenderer);
         Sprites[background_menu].Draw(400, 300, 0, Sprites[fmenu].Image[0]);
+        Sprites[background_hr].Draw(400, 120, 0, Sprites[fmenu].Image[0]);
+
+        DrawString(225, 90, "Select your", Sprites[fmenu].Image[0]);
+        DrawString(225, 74*2, "language", Sprites[fmenu].Image[0]);
         for (i = 0; i < Pref.NLanguages; i++) {
             x = (i / NL) * (800 / 3) + (800 / 6);
-            y = (i % NL) * Gap + Gap;
+            y = 400;
 
             Sprites[T_Language + i].Draw(x, y, 0, Sprites[fmenu].Image[0]);
             AddButton(i, (e_Sprite)(T_Language + i), x, y);
         }
+
+        N = 19;
+        NumSp = (currentTime / 50) % 40 + 120;
+        for (e = 0; e < N; e++) {
+            if (e == N - 1) {
+                m_screen.PrintSprite(locomotive, NumSp, (690 - 300) / 12 * e + 117, 525);
+            }
+            else {
+                m_screen.PrintSprite(logs_wagon, NumSp, (690 - 300) / 12 * e + 117, 525);
+            }
+        }
+
+        Sprites[arrows].Draw(50, 525, 1, Sprites[fmenu].Image[0]);
+        Sprites[arrows].Draw(800-50, 525, 4, Sprites[fmenu].Image[0]);
+
 
         SDL_Event event;
         while (SDL_PollEvent(&event)) {
