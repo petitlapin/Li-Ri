@@ -214,7 +214,7 @@ eMenu Menu::SDLMain_Language()
     int NumSp;
     int ArrowsNumSp;
     int const OldLanguage = Pref.Language;
-    unsigned int Selector=Pref.Language;
+    unsigned int Selector = Pref.Language;
     int i;
     int e;
     int x, y;
@@ -244,7 +244,7 @@ eMenu Menu::SDLMain_Language()
         DrawString(225, 190, "language", Sprites[fmenu].Image[0]);
         // Draw languages icons with offset
         for (i = 0; i < Pref.NLanguages; i++) {
-            x = -(Selector-1)*266+(i * (800 / 3) + (800 / 6));
+            x = -(Selector - 1) * 266 + (i * (800 / 3) + (800 / 6));
             y = 400;
 
             Sprites[T_Language + i].Draw(x, y, 0, Sprites[fmenu].Image[0]);
@@ -265,12 +265,12 @@ eMenu Menu::SDLMain_Language()
         m_screen.PrintSprite(arrow_left, ArrowsNumSp, 300, 400);
         m_screen.PrintSprite(arrow_right, ArrowsNumSp, 500, 400);
         Sprites[arrows].Draw(50, 325, 1, Sprites[fmenu].Image[0]);
-        Sprites[arrows].Draw(800-50, 325, 4, Sprites[fmenu].Image[0]);
+        Sprites[arrows].Draw(800 - 50, 325, 4, Sprites[fmenu].Image[0]);
         Sprites[background_hrr].Draw(400, 550, 0, Sprites[fmenu].Image[0]);
         AddButton(1, arrows, 50, 325);
-        AddButton(2, arrows, 800-50, 325);
+        AddButton(2, arrows, 800 - 50, 325);
         AddButton(3, background_hrr, 400, 550);
-        DrawString(400-25*3, 550, "Select", Sprites[fmenu].Image[0]);
+        DrawString(400 - 25 * 3, 550, "Select", Sprites[fmenu].Image[0]);
 
         SDL_Event event;
         while (SDL_PollEvent(&event)) {
@@ -294,14 +294,14 @@ eMenu Menu::SDLMain_Language()
                         }
                         return mMenu;
                     case SDLK_LEFT:
-                        if (Selector != 0){
+                        if (Selector != 0) {
                             Selector--;
                         }
                         break;
                     case SDLK_RIGHT:
-                        if (Selector != Pref.NLanguages-1){
+                        if (Selector != Pref.NLanguages - 1) {
                             Selector++;
-                        }   
+                        }
                         break;
                     case SDLK_F12: // Save screenshot
                         if (event.key.repeat == 0) {
@@ -316,20 +316,20 @@ eMenu Menu::SDLMain_Language()
                     case SDLK_RETURN:
                     case SDLK_KP_ENTER:
                         switch (PyE) {
-                            case 1:
-                                if (Selector != 0){
-                                    Selector--;
-                                }
-                                break;
-                            case 2:
-                                if (Selector != Pref.NLanguages-1){
-                                    Selector++;
-                                }   
-                                break;
-                            case 3:
-                                Pref.Language = Selector;
-                                LoadLanguage();
-                                return mMenu;
+                        case 1:
+                            if (Selector != 0) {
+                                Selector--;
+                            }
+                            break;
+                        case 2:
+                            if (Selector != Pref.NLanguages - 1) {
+                                Selector++;
+                            }
+                            break;
+                        case 3:
+                            Pref.Language = Selector;
+                            LoadLanguage();
+                            return mMenu;
                         }
                     default:
                         break;
