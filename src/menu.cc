@@ -261,7 +261,7 @@ eMenu Menu::SDLMain_Language()
                 m_screen.PrintSprite(logs_wagon, NumSp, (690 - 300) / 12 * e + 117, 325);
             }
         }
-        // Creating arrows, and select buttons
+        // Creating arrows and select buttons
         m_screen.PrintSprite(arrow_left, ArrowsNumSp, 300, 400);
         m_screen.PrintSprite(arrow_right, ArrowsNumSp, 500, 400);
         Sprites[arrows].Draw(50, 325, 1, Sprites[fmenu].Image[0]);
