@@ -41,6 +41,15 @@ Information on how to compile Li-Ri is available in the INSTALL.md file.
 * An, Sanggap for the Korean version and translation.
 * M. Juhasz for the Hungarian corrections.
 
+# System requirements
+CPU - 59.7 MHz; <br>
+RAM - 40 MB; <br>
+Graphics card - With OpenGL support; <br>
+minimal OS:
+- Windows XP
+- Android 4.1
+- Linux 2.6
+
 -------------
 
 Copyright (c) 2023-2026
