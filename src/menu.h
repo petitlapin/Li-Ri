@@ -38,7 +38,7 @@ class Menu
 {
 public:
     Menu(Game &game, Audio &audio, Screen &screen, Mouse &mouse, Gamepad &gamepad) :
-        m_game(game), m_audio(audio), m_screen(screen), m_mouse(mouse), m_gamepad(gamepad) { };
+        m_game(game), m_audio(audio), m_screen(screen), m_mouse(mouse), m_gamepad(gamepad) {};
     ~Menu() = default;
 
     eMenu SDLMain(); // Main menu
