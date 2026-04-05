@@ -211,8 +211,6 @@ eMenu Menu::SDLMain()
 /*************************************/
 eMenu Menu::SDLMain_Language()
 {
-    int NCol = 1;
-    int Gap;
     int NumSp;
     int ArrowsNumSp;
     int const OldLanguage = Pref.Language;
@@ -223,12 +221,11 @@ eMenu Menu::SDLMain_Language()
 
     // Miscellaneous inits
     m_mouse.Init(Menu_Py);
-    PyE = 1;
+    PyE = 3;
 
     SDL_RenderClear(sdlRenderer);
     // Set background image and build display
     Sprites[background_menu].Draw(400, 300, 0, Sprites[fmenu].Image[0]);
-    DrawString(0, 0, "Select your language", Sprites[fmenu].Image[0]);
 
     Menu_Py[Pref.NLanguages].StartX = -1;
     // Erase background
@@ -236,24 +233,26 @@ eMenu Menu::SDLMain_Language()
 
     // Fetch events
     do {
-        Menu_Py[3].StartX = -1;
+        Menu_Py[4].StartX = -1;
 
         SDL_RenderClear(sdlRenderer);
+        // Drawing background, title
         Sprites[background_menu].Draw(400, 300, 0, Sprites[fmenu].Image[0]);
         Sprites[background_hr].Draw(400, 170, 0, Sprites[fmenu].Image[0]);
 
         DrawString(225, 140, "Select your", Sprites[fmenu].Image[0]);
         DrawString(225, 190, "language", Sprites[fmenu].Image[0]);
+        // Draw languages icons with offset
         for (i = 0; i < Pref.NLanguages; i++) {
             x = -(Selector-1)*266+(i * (800 / 3) + (800 / 6));
             y = 400;
 
             Sprites[T_Language + i].Draw(x, y, 0, Sprites[fmenu].Image[0]);
         }
-
+        // Animating scroll and arrows
         NumSp = (currentTime / 50) % 40 + 120;
         ArrowsNumSp = (currentTime / 50) % 20;
-
+        // Drawing scroll bar
         for (e = 0; e < Selector; e++) {
             if (e == Selector - 1) {
                 m_screen.PrintSprite(locomotive, NumSp, (690 - 300) / 12 * e + 117, 325);
@@ -262,17 +261,16 @@ eMenu Menu::SDLMain_Language()
                 m_screen.PrintSprite(logs_wagon, NumSp, (690 - 300) / 12 * e + 117, 325);
             }
         }
-
+        // Creating arrows, and select buttons
         m_screen.PrintSprite(arrow_left, ArrowsNumSp, 300, 400);
         m_screen.PrintSprite(arrow_right, ArrowsNumSp, 500, 400);
-
         Sprites[arrows].Draw(50, 325, 1, Sprites[fmenu].Image[0]);
         Sprites[arrows].Draw(800-50, 325, 4, Sprites[fmenu].Image[0]);
+        Sprites[background_hrr].Draw(400, 550, 0, Sprites[fmenu].Image[0]);
         AddButton(1, arrows, 50, 325);
         AddButton(2, arrows, 800-50, 325);
-
-
-        DrawString(50, 550, "Press space to continue", Sprites[fmenu].Image[0]);
+        AddButton(3, background_hrr, 400, 550);
+        DrawString(400-25*3, 550, "Select", Sprites[fmenu].Image[0]);
 
         SDL_Event event;
         while (SDL_PollEvent(&event)) {
@@ -314,6 +312,7 @@ eMenu Menu::SDLMain_Language()
                         Pref.Language = Selector;
                         LoadLanguage();
                         return mMenu;
+
                     case SDLK_RETURN:
                     case SDLK_KP_ENTER:
                         switch (PyE) {
@@ -327,6 +326,10 @@ eMenu Menu::SDLMain_Language()
                                     Selector++;
                                 }   
                                 break;
+                            case 3:
+                                Pref.Language = Selector;
+                                LoadLanguage();
+                                return mMenu;
                         }
                     default:
                         break;
