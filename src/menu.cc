@@ -215,9 +215,11 @@ eMenu Menu::SDLMain_Language()
     int ArrowsNumSp;
     int const OldLanguage = Pref.Language;
     unsigned int Selector = Pref.Language;
+    int Offset;
     int i;
     int e;
     int x, y;
+    int spacing = 70;
 
     // Miscellaneous inits
     m_mouse.Init(Menu_Py);
@@ -236,16 +238,14 @@ eMenu Menu::SDLMain_Language()
         Menu_Py[4].StartX = -1;
 
         SDL_RenderClear(sdlRenderer);
-        // Drawing background, title
+        // Drawing background
         Sprites[background_menu].Draw(400, 300, 0, Sprites[fmenu].Image[0]);
-        Sprites[background_hr].Draw(400, 170, 0, Sprites[fmenu].Image[0]);
-
-        DrawString(225, 140, "Select your", Sprites[fmenu].Image[0]);
-        DrawString(225, 190, "language", Sprites[fmenu].Image[0]);
+        Sprites[menu].Draw(200, 300, 0, Sprites[fmenu].Image[0]);
         // Draw languages icons with offset
         for (i = 0; i < Pref.NLanguages; i++) {
-            x = -(Selector - 1) * 266 + (i * (800 / 3) + (800 / 6));
-            y = 400;
+            Offset = -(Selector) * spacing;
+            x = 625;
+            y = 100 + i * spacing + Offset;
 
             Sprites[T_Language + i].Draw(x, y, 0, Sprites[fmenu].Image[0]);
         }
@@ -255,22 +255,24 @@ eMenu Menu::SDLMain_Language()
         // Drawing scroll bar
         for (e = 0; e < Selector; e++) {
             if (e == Selector - 1) {
-                m_screen.PrintSprite(locomotive, NumSp, (690 - 300) / 12 * e + 117, 325);
+                m_screen.PrintSprite(locomotive, NumSp, (690 - 300) / 24 * e + 70, 350);
             }
             else {
-                m_screen.PrintSprite(logs_wagon, NumSp, (690 - 300) / 12 * e + 117, 325);
+                m_screen.PrintSprite(logs_wagon, NumSp, (690 - 300) / 24 * e + 70, 350);
             }
         }
-        // Creating arrows and select buttons
-        m_screen.PrintSprite(arrow_left, ArrowsNumSp, 300, 400);
-        m_screen.PrintSprite(arrow_right, ArrowsNumSp, 500, 400);
-        Sprites[arrows].Draw(50, 325, 1, Sprites[fmenu].Image[0]);
-        Sprites[arrows].Draw(800 - 50, 325, 4, Sprites[fmenu].Image[0]);
-        Sprites[background_hrr].Draw(400, 550, 0, Sprites[fmenu].Image[0]);
-        AddButton(1, arrows, 50, 325);
-        AddButton(2, arrows, 800 - 50, 325);
-        AddButton(3, background_hrr, 400, 550);
-        DrawString(400 - 25 * 3, 550, "Select", Sprites[fmenu].Image[0]);
+        // Creating arrows, frame, text and select buttons
+        DrawString(25, 225, "Select your", Sprites[fmenu].Image[0]);
+        DrawString(25, 265, "language", Sprites[fmenu].Image[0]);
+        m_screen.PrintSprite(arrow_left, ArrowsNumSp, 500, 95);
+        m_screen.PrintSprite(arrow_right, ArrowsNumSp, 750, 95);
+        Sprites[arrows].Draw(25, 350, 1, Sprites[fmenu].Image[0]);
+        Sprites[arrows].Draw(385, 350, 4, Sprites[fmenu].Image[0]);
+        Sprites[background_hrr].Draw(100, 400, 0, Sprites[fmenu].Image[0]);
+        AddButton(1, arrows, 25, 350);
+        AddButton(2, arrows, 385, 350);
+        AddButton(3, background_hrr, 100, 400);
+        DrawString(100 - 25 * 3, 400, "Select", Sprites[fmenu].Image[0]);
 
         SDL_Event event;
         while (SDL_PollEvent(&event)) {
