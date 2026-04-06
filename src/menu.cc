@@ -243,7 +243,7 @@ eMenu Menu::SDLMain_Language()
         Sprites[menu].Draw(200, 300, 0, Sprites[fmenu].Image[0]);
         // Draw languages icons with offset
         for (i = 0; i < Pref.NLanguages; i++) {
-            Offset = -(Selector) * spacing;
+            Offset = -(Selector)*spacing;
             x = 625;
             y = 100 + i * spacing + Offset;
 
