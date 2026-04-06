@@ -235,7 +235,7 @@ eMenu Menu::SDLMain_Language()
 
     // Fetch events
     do {
-        Menu_Py[4].StartX = -1;
+        Menu_Py[3].StartX = -1;
 
         SDL_RenderClear(sdlRenderer);
         // Drawing background
@@ -269,9 +269,9 @@ eMenu Menu::SDLMain_Language()
         Sprites[arrows].Draw(25, 350, 1, Sprites[fmenu].Image[0]);
         Sprites[arrows].Draw(385, 350, 4, Sprites[fmenu].Image[0]);
         Sprites[background_hrr].Draw(100, 400, 0, Sprites[fmenu].Image[0]);
-        AddButton(1, arrows, 25, 350);
-        AddButton(2, arrows, 385, 350);
-        AddButton(3, background_hrr, 100, 400);
+        AddButton(0, arrows, 25, 350);
+        AddButton(1, arrows, 385, 350);
+        AddButton(2, background_hrr, 100, 400);
         DrawString(100 - 25 * 3, 400, "Select", Sprites[fmenu].Image[0]);
 
         SDL_Event event;
@@ -318,17 +318,17 @@ eMenu Menu::SDLMain_Language()
                     case SDLK_RETURN:
                     case SDLK_KP_ENTER:
                         switch (PyE) {
-                        case 1:
+                        case 0:
                             if (Selector != 0) {
                                 Selector--;
                             }
                             break;
-                        case 2:
+                        case 1:
                             if (Selector != Pref.NLanguages - 1) {
                                 Selector++;
                             }
                             break;
-                        case 3:
+                        case 2:
                             Pref.Language = Selector;
                             LoadLanguage();
                             return mMenu;
