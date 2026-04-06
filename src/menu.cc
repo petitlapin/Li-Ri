@@ -211,58 +211,68 @@ eMenu Menu::SDLMain()
 /*************************************/
 eMenu Menu::SDLMain_Language()
 {
-    int NCol = 1;
-    int NL;
-    int Gap;
-    int i;
-    int x, y;
+    int NumSp;
+    int ArrowsNumSp;
     int const OldLanguage = Pref.Language;
+    unsigned int Selector = Pref.Language;
+    int Offset;
+    int i;
+    int e;
+    int x, y;
+    int spacing = 70;
 
     // Miscellaneous inits
     m_mouse.Init(Menu_Py);
-    PyE = Pref.Language;
-    if (PyE == -1) {
-        PyE = 1;
-    }
+    PyE = 3;
 
     SDL_RenderClear(sdlRenderer);
     // Set background image and build display
     Sprites[background_menu].Draw(400, 300, 0, Sprites[fmenu].Image[0]);
 
-    // Draw available languages
-    NCol = 3;
-    if (Pref.NLanguages % NCol == 0) {
-        NL = Pref.NLanguages / NCol;
-    }
-    else {
-        NL = Pref.NLanguages / NCol + 1;
-    }
-    Gap = 600 / (NL + 1);
-
-    for (i = 0; i < Pref.NLanguages; i++) {
-        x = (i / NL) * (800 / 3) + (800 / 6);
-        y = (i % NL) * Gap + Gap;
-
-        Sprites[T_Language + i].Draw(x, y, 0, Sprites[fmenu].Image[0]);
-        AddButton(i, (e_Sprite)(T_Language + i), x, y);
-    }
-
     Menu_Py[Pref.NLanguages].StartX = -1;
-
     // Erase background
     SDL_RenderPresent(sdlRenderer);
 
     // Fetch events
     do {
+        Menu_Py[3].StartX = -1;
+
         SDL_RenderClear(sdlRenderer);
+        // Drawing background
         Sprites[background_menu].Draw(400, 300, 0, Sprites[fmenu].Image[0]);
+        Sprites[menu].Draw(200, 300, 0, Sprites[fmenu].Image[0]);
+        // Draw languages icons with offset
         for (i = 0; i < Pref.NLanguages; i++) {
-            x = (i / NL) * (800 / 3) + (800 / 6);
-            y = (i % NL) * Gap + Gap;
+            Offset = -(Selector)*spacing;
+            x = 625;
+            y = 100 + i * spacing + Offset;
 
             Sprites[T_Language + i].Draw(x, y, 0, Sprites[fmenu].Image[0]);
-            AddButton(i, (e_Sprite)(T_Language + i), x, y);
         }
+        // Animating scroll and arrows
+        NumSp = (currentTime / 50) % 40 + 120;
+        ArrowsNumSp = (currentTime / 50) % 20;
+        // Drawing scroll bar
+        for (e = 0; e < Selector; e++) {
+            if (e == Selector - 1) {
+                m_screen.PrintSprite(locomotive, NumSp, (690 - 300) / 24 * e + 70, 350);
+            }
+            else {
+                m_screen.PrintSprite(logs_wagon, NumSp, (690 - 300) / 24 * e + 70, 350);
+            }
+        }
+        // Creating arrows, frame, text and select buttons
+        DrawString(25, 225, "Select your", Sprites[fmenu].Image[0]);
+        DrawString(25, 265, "language", Sprites[fmenu].Image[0]);
+        m_screen.PrintSprite(arrow_left, ArrowsNumSp, 500, 95);
+        m_screen.PrintSprite(arrow_right, ArrowsNumSp, 750, 95);
+        Sprites[arrows].Draw(25, 350, 1, Sprites[fmenu].Image[0]);
+        Sprites[arrows].Draw(385, 350, 4, Sprites[fmenu].Image[0]);
+        Sprites[background_hrr].Draw(100, 400, 0, Sprites[fmenu].Image[0]);
+        AddButton(0, arrows, 25, 350);
+        AddButton(1, arrows, 385, 350);
+        AddButton(2, background_hrr, 100, 400);
+        DrawString(100 - 25 * 3, 400, "Select", Sprites[fmenu].Image[0]);
 
         SDL_Event event;
         while (SDL_PollEvent(&event)) {
@@ -285,26 +295,14 @@ eMenu Menu::SDLMain_Language()
                             Pref.Language = PyE;
                         }
                         return mMenu;
-                    case SDLK_UP:
-                        PyE--;
-                        if (PyE < 0) {
-                            PyE = Pref.NLanguages - 1;
-                        }
-                        break;
-                    case SDLK_DOWN:
-                        PyE++;
-                        if (PyE >= Pref.NLanguages) {
-                            PyE = 0;
-                        }
-                        break;
                     case SDLK_LEFT:
-                        if (PyE - NL >= 0) {
-                            PyE -= NL;
+                        if (Selector != 0) {
+                            Selector--;
                         }
                         break;
                     case SDLK_RIGHT:
-                        if (PyE + NL < Pref.NLanguages) {
-                            PyE += NL;
+                        if (Selector != Pref.NLanguages - 1) {
+                            Selector++;
                         }
                         break;
                     case SDLK_F12: // Save screenshot
@@ -313,13 +311,28 @@ eMenu Menu::SDLMain_Language()
                         }
                         break;
                     case ' ':
+                        Pref.Language = Selector;
+                        LoadLanguage();
+                        return mMenu;
+
                     case SDLK_RETURN:
                     case SDLK_KP_ENTER:
-                        Pref.Language = PyE;
-                        if (Pref.Language != OldLanguage) {
+                        switch (PyE) {
+                        case 0:
+                            if (Selector != 0) {
+                                Selector--;
+                            }
+                            break;
+                        case 1:
+                            if (Selector != Pref.NLanguages - 1) {
+                                Selector++;
+                            }
+                            break;
+                        case 2:
+                            Pref.Language = Selector;
                             LoadLanguage();
+                            return mMenu;
                         }
-                        return mMenu;
                     default:
                         break;
                     }
