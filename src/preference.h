@@ -117,7 +117,7 @@ struct sNewPreference
     int LevelMax[3] { 0, 0, 0 }; // One per difficulty
     int FullScreen { true };
     int Language { -1 }; // locale index
-    float Volume { (float)SDL_MIX_MAXVOLUME }; // audio volume
+    float Volume { (float)SDL_MIX_MAXVOLUME / 2.0f }; // audio volume
     float VolumeM { (float)SDL_MIX_MAXVOLUME }; // music volume
     struct sScore Sco[8]; // store scores
     eAudioTheme AudioTheme { mZabiden }; // which audio theme to use
