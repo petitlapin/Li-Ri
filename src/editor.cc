@@ -244,7 +244,7 @@ void Editor::Draw() const
     }
 
     // Displays the level number
-    //DrawNumber(740, 130, NumN + 1);
+    // DrawNumber(740, 130, NumN + 1);
 
     // Display possible sprites
     for (i = 0; i < LT * HT; i++) {

@@ -66,11 +66,13 @@ void Screen::PrintCable(int dx, int dy, int fx, int fy)
     Sprites[rope].PrintRope(dx, dy, fx, fy);
 }
 
-void Screen::ChangeFontSize(int size){
+void Screen::ChangeFontSize(int size)
+{
     TTF_SetFontSize(m_font, size);
 }
 
-void Screen::ChangeFontColor(float r, float g, float b){
+void Screen::ChangeFontColor(float r, float g, float b)
+{
     fColor.r = r;
     fColor.g = g;
     fColor.b = b;
@@ -89,17 +91,17 @@ void Screen::PrintText(const std::string &Text, int x, int y)
     // Setting position and size
     SDL_Rect Position;
     SDL_QueryTexture(texture, NULL, NULL, &Position.w, &Position.h);
-    Position.x = x;// - Position.w;
-    Position.y = y;// - Position.h;
-
+    Position.x = x; // - Position.w;
+    Position.y = y; // - Position.h;
 
     // Rendering text
     SDL_RenderCopy(sdlRenderer, texture, nullptr, &Position);
     SDL_DestroyTexture(texture);
 }
 
-int Screen::TextLength(std::string Text){
-    int w,h;
+int Screen::TextLength(std::string Text)
+{
+    int w, h;
     TTF_SizeUTF8(m_font, Text.c_str(), &w, &h);
     return w;
 }
@@ -112,7 +114,7 @@ void Screen::PrintOptions(int Nlives, int NScore)
 
     Score = NScore;
     ChangeFontSize(24);
-    PrintText(std::to_string(Score), 740 - TextLength(std::to_string(Score))/2, 215);
+    PrintText(std::to_string(Score), 740 - TextLength(std::to_string(Score)) / 2, 215);
     ChangeFontSize(22);
 
     if (Nlives > 10) {

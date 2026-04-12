@@ -361,13 +361,13 @@ bool Game::DrawLevel(int LevelN)
     // Displays texts for selected language
     m_screen.ChangeFontSize(20);
     m_screen.ChangeFontColor(255, 255, 0);
-    m_screen.PrintText("Level", 740-m_screen.TextLength("Level")/2, 110);
-    m_screen.PrintText("Score", 740-m_screen.TextLength("Score")/2, 180);
-    m_screen.PrintText("Options", 740-m_screen.TextLength("Options")/2, 260);
-    m_screen.PrintText("Lives", 740-m_screen.TextLength("Lives")/2, 340);
+    m_screen.PrintText("Level", 740 - m_screen.TextLength("Level") / 2, 110);
+    m_screen.PrintText("Score", 740 - m_screen.TextLength("Score") / 2, 180);
+    m_screen.PrintText("Options", 740 - m_screen.TextLength("Options") / 2, 260);
+    m_screen.PrintText("Lives", 740 - m_screen.TextLength("Lives") / 2, 340);
     m_screen.ChangeFontColor(255, 255, 255);
 
-    m_screen.PrintText(std::to_string(Pref.Level + 1), 740 - m_screen.TextLength(std::to_string(Pref.Level + 1))/2, 140);
+    m_screen.PrintText(std::to_string(Pref.Level + 1), 740 - m_screen.TextLength(std::to_string(Pref.Level + 1)) / 2, 140);
 
     return true;
 }
@@ -553,9 +553,9 @@ void Game::DisplayScreen()
     if (Pause) {
         m_screen.ChangeFontSize(60);
         m_screen.ChangeFontColor(0, 0, 0);
-        m_screen.PrintText("Press any key", 341 - m_screen.TextLength("Press any key")/2, 271);
+        m_screen.PrintText("Press any key", 341 - m_screen.TextLength("Press any key") / 2, 271);
         m_screen.ChangeFontColor(255, 255, 0);
-        m_screen.PrintText("Press any key", 340 - m_screen.TextLength("Press any key")/2, 270);
+        m_screen.PrintText("Press any key", 340 - m_screen.TextLength("Press any key") / 2, 270);
         m_screen.ChangeFontColor(255, 255, 255);
         m_screen.ChangeFontSize(14);
     }

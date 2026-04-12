@@ -240,7 +240,6 @@ void DrawNumber(int x, int y, int Number, SDL_Texture *Background)
     } while (Number);
 }
 
-
 /*** Display text in a language ***/
 /**********************************/
 void DrawText(int x, int y, e_Sprite Text, SDL_Texture *Background)

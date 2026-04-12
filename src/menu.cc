@@ -74,7 +74,7 @@ void Sleeping()
 
 /*** Add button with text to the menu array ***/
 /**********************************************/
-void AddTextButton(int Num, std::string Text, int X, int Y, Screen& ScreenObj)
+void AddTextButton(int Num, std::string Text, int X, int Y, Screen &ScreenObj)
 {
     ScreenObj.ChangeFontSize(45);
 
@@ -137,7 +137,7 @@ eMenu Menu::SDLMain()
 
         m_screen.ChangeFontSize(14);
         // Automatic year change
-        m_screen.PrintText(CopyrightText, 400-m_screen.TextLength(CopyrightText)/2, 575);
+        m_screen.PrintText(CopyrightText, 400 - m_screen.TextLength(CopyrightText) / 2, 575);
         m_screen.ChangeFontSize(22);
 
         AddTextButton(0, "Play", 400, 229, m_screen);
@@ -190,13 +190,13 @@ eMenu Menu::SDLMain()
                         break;
                     default:
                         key = event.key.keysym.sym & 0x7F; // Gets the character corresponding to the key
-                            for (i = 2; i >= 0; i--) {
-                                MCode[i + 1] = MCode[i]; // shift code
-                            }
-                            MCode[0] = key;
-                            if (strcmp(MCode, "tide") == 0 || strcmp(MCode, "TIDE") == 0) {
-                                return mEdit; // If level editor selected
-                            }
+                        for (i = 2; i >= 0; i--) {
+                            MCode[i + 1] = MCode[i]; // shift code
+                        }
+                        MCode[0] = key;
+                        if (strcmp(MCode, "tide") == 0 || strcmp(MCode, "TIDE") == 0) {
+                            return mEdit; // If level editor selected
+                        }
                     }
                 }
                 break;
@@ -1367,12 +1367,12 @@ eMenu Menu::SDLMain_Score(bool EditScore)
 
         // Draw title and commands
         m_screen.ChangeFontColor(255, 255, 0);
-        m_screen.PrintText("Leaderboard", 400-m_screen.TextLength("Leaderboard")/2, 50);
-        #ifndef ANDROID
-        m_screen.PrintText("Press enter to continue", 400-m_screen.TextLength("Press enter to continue")/2, 550);
-        #else
-        m_screen.PrintText("Tap to continue", 400-m_screen.TextLength("Tap to continue")/2, 550);
-        #endif
+        m_screen.PrintText("Leaderboard", 400 - m_screen.TextLength("Leaderboard") / 2, 50);
+#ifndef ANDROID
+        m_screen.PrintText("Press enter to continue", 400 - m_screen.TextLength("Press enter to continue") / 2, 550);
+#else
+        m_screen.PrintText("Tap to continue", 400 - m_screen.TextLength("Tap to continue") / 2, 550);
+#endif
         m_screen.ChangeFontColor(255, 255, 255);
 
         // Draw scores
@@ -1450,7 +1450,7 @@ eMenu Menu::SDLMain_Score(bool EditScore)
         currentTime = SDL_GetTicks();
         Sleeping();
 
-        if (EditScore && NEdit >= 0 && NEdit < 8) {  // Handle the scores edition drawing
+        if (EditScore && NEdit >= 0 && NEdit < 8) { // Handle the scores edition drawing
             if (!Pref.Sco[NEdit].Name.empty()) {
                 m_screen.PrintText(Pref.Sco[NEdit].Name, 140, 120 + NEdit * (360 / 7));
             }
