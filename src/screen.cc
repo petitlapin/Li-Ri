@@ -90,7 +90,7 @@ void Screen::PrintText(const std::string &Text, int x, int y)
 
     // Setting position and size
     SDL_Rect Position;
-    SDL_QueryTexture(texture, NULL, NULL, &Position.w, &Position.h);
+    SDL_QueryTexture(texture, nullptr, nullptr, &Position.w, &Position.h);
     Position.x = x; // - Position.w;
     Position.y = y; // - Position.h;
 
@@ -99,7 +99,7 @@ void Screen::PrintText(const std::string &Text, int x, int y)
     SDL_DestroyTexture(texture);
 }
 
-int Screen::TextLength(std::string Text)
+int Screen::TextLength(const std::string &Text)
 {
     int w, h;
     TTF_SizeUTF8(m_font, Text.c_str(), &w, &h);

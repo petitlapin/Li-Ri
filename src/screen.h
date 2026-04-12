@@ -41,7 +41,7 @@ public:
     void ChangeFontSize(int size); // Change font size
     void ChangeFontColor(float r, float g, float b);
     void PrintText(const std::string &Text, int x, int y); // Displays text
-    int TextLength(std::string Text);
+    int TextLength(const std::string &Text);
     void PrintOptions(int Nlives, int NScore); // Displays information on the side
     void CleanSpriteAndScreen(e_Sprite NumSpritebackground); // Erases display with background image
 

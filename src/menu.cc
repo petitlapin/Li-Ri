@@ -74,7 +74,7 @@ void Sleeping()
 
 /*** Add button with text to the menu array ***/
 /**********************************************/
-void AddTextButton(int Num, std::string Text, int X, int Y, Screen &ScreenObj)
+void AddTextButton(int Num, const std::string &Text, int X, int Y, Screen &ScreenObj)
 {
     ScreenObj.ChangeFontSize(45);
 
