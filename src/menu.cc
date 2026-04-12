@@ -72,6 +72,24 @@ void Sleeping()
     }
 }
 
+/*** Add button with text to the menu array ***/
+/**********************************************/
+void AddTextButton(int Num, const std::string &Text, int X, int Y, Screen &ScreenObj)
+{
+    ScreenObj.ChangeFontSize(45);
+
+    int textWidth = ScreenObj.TextLength(Text);
+
+    ScreenObj.PrintText(Text, X - textWidth / 2, Y - 22);
+
+    Menu_Py[Num].StartX = X - textWidth / 2;
+    Menu_Py[Num].StartY = Y - 22;
+    Menu_Py[Num].EndX = X + textWidth / 2;
+    Menu_Py[Num].EndY = Y + 22;
+    Menu_Py[Num].Py = Num;
+    Menu_Py[Num].Valid = true;
+}
+
 /*** Add an button to the menu array ***/
 /***************************************/
 void AddButton(int Num, e_Sprite NumSp, int X, int Y)
@@ -116,16 +134,16 @@ eMenu Menu::SDLMain()
         Sprites[background_menu].Draw(400, 300, 0, Sprites[fmenu].Image[0]);
         Sprites[menu].Draw(400, 340, 0, Sprites[fmenu].Image[0]);
         Sprites[title].Draw(400, 65, 0, Sprites[fmenu].Image[0]);
-        Sprites[copyright].Draw(400, 587, 0, Sprites[fmenu].Image[0]);
 
-        DrawText(400, 229, T_play, Sprites[fmenu].Image[0]);
-        AddButton(0, T_play, 400, 229);
-        DrawText(400, 306, T_scores, Sprites[fmenu].Image[0]);
-        AddButton(1, T_scores, 400, 306);
-        DrawText(400, 384, T_moptions, Sprites[fmenu].Image[0]);
-        AddButton(2, T_moptions, 400, 384);
-        DrawText(400, 461, T_quit, Sprites[fmenu].Image[0]);
-        AddButton(3, T_quit, 400, 461);
+        m_screen.ChangeFontSize(14);
+        // Automatic year change
+        m_screen.PrintText(CopyrightText, 400 - m_screen.TextLength(CopyrightText) / 2, 575);
+        m_screen.ChangeFontSize(22);
+
+        AddTextButton(0, "Play", 400, 229, m_screen);
+        AddTextButton(1, "Scores", 400, 306, m_screen);
+        AddTextButton(2, "Options", 400, 384, m_screen);
+        AddTextButton(3, "Exit", 400, 461, m_screen);
         Menu_Py[4].StartX = -1;
         SDL_Event event;
         while (SDL_PollEvent(&event)) {
@@ -172,14 +190,12 @@ eMenu Menu::SDLMain()
                         break;
                     default:
                         key = event.key.keysym.sym & 0x7F; // Gets the character corresponding to the key
-                        if (CharExist(key) == true) { // if character exists
-                            for (i = 2; i >= 0; i--) {
-                                MCode[i + 1] = MCode[i]; // shift code
-                            }
-                            MCode[0] = key;
-                            if (strcmp(MCode, "tide") == 0 || strcmp(MCode, "TIDE") == 0) {
-                                return mEdit; // If level editor selected
-                            }
+                        for (i = 2; i >= 0; i--) {
+                            MCode[i + 1] = MCode[i]; // shift code
+                        }
+                        MCode[0] = key;
+                        if (strcmp(MCode, "tide") == 0 || strcmp(MCode, "TIDE") == 0) {
+                            return mEdit; // If level editor selected
                         }
                     }
                 }
@@ -384,9 +400,7 @@ void Menu::InitMain_Options()
     Menu_Py[4].Valid = true;
 
     // Center text left
-    CenterM = 120 + Sprites[T_menu].Dim[0].L / 2;
-    DrawText(CenterM, 490, T_menu, Sprites[fmenu].Image[0]);
-    AddButton(5, T_menu, CenterM, 490);
+    AddTextButton(5, "Menu", 180, 490, m_screen);
 
     // Sound buttons
     Sprites[arrows].Draw(250, 110, 1, Sprites[fmenu].Image[0]);
@@ -632,13 +646,13 @@ eMenu Menu::SDLMain_Options()
 
         switch (Pref.AudioTheme) {
         case mMaf:
-            DrawString(400, 420, "MAF 464", Sprites[fmenu].Image[0]);
+            m_screen.PrintText("MAF 464", 400, 390);
             break;
         case mZabiden:
-            DrawString(400, 420, "ZABIDEN", Sprites[fmenu].Image[0]);
+            m_screen.PrintText("ZABIDEN", 400, 390);
             break;
         }
-        DrawString(350, 370, "Audio Theme", Sprites[fmenu].Image[0]);
+        m_screen.PrintText("Audio Theme", 360, 340);
 
         NumSp = (currentTime / 30) % 25;
         m_screen.PrintSprite(sound, NumSp, 150, 110);
@@ -676,7 +690,7 @@ eMenu Menu::SDLMain_Options()
             Print_Main(490);
             break;
         case 5:
-            Print_Main(CenterM);
+            Print_Main(180);
             break;
         case 6:
             PyE = 0;
@@ -729,12 +743,9 @@ eMenu Menu::SDLMain_Speed()
         Sprites[menu].Draw(400, 340, 0, Sprites[fmenu].Image[0]);
         Sprites[title].Draw(400, 65, 0, Sprites[fmenu].Image[0]);
 
-        DrawText(400, 225, T_easy, Sprites[fmenu].Image[0]);
-        AddButton(0, T_easy, 400, 225);
-        DrawText(400, 340, T_normal, Sprites[fmenu].Image[0]);
-        AddButton(1, T_normal, 400, 340);
-        DrawText(400, 455, T_hard, Sprites[fmenu].Image[0]);
-        AddButton(2, T_hard, 400, 455);
+        AddTextButton(0, "Easy", 400, 225, m_screen);
+        AddTextButton(1, "Normal", 400, 340, m_screen);
+        AddTextButton(2, "Hard", 400, 455, m_screen);
         Menu_Py[3].StartX = -1;
 
         SDL_Event event;
@@ -835,12 +846,9 @@ eMenu Menu::SDLMain_Level()
         Sprites[menu].Draw(400, 340, 0, Sprites[fmenu].Image[0]);
         Sprites[title].Draw(400, 65, 0, Sprites[fmenu].Image[0]);
 
-        DrawText(400, 225, T_new_game, Sprites[fmenu].Image[0]);
-        AddButton(0, T_new_game, 400, 225);
-        DrawText(400, 320, T_old_level, Sprites[fmenu].Image[0]);
-        AddButton(1, T_old_level, 400, 320);
-        DrawText(400, 455, T_menu, Sprites[fmenu].Image[0]);
-        AddButton(2, T_menu, 400, 455);
+        AddTextButton(0, "New game", 400, 225, m_screen);
+        AddTextButton(1, "Old level", 400, 305, m_screen);
+        AddTextButton(2, "Menu", 400, 445, m_screen);
 
         AddButton(3, arrows, 330, 380);
         AddButton(4, arrows, 470, 380);
@@ -958,7 +966,7 @@ eMenu Menu::SDLMain_Level()
             m_screen.PrintSprite(arrows, 3, 470, 380);
         }
 
-        DrawNumber(400, 380, Level + 1);
+        m_screen.PrintText(std::to_string(Level + 1), 390, 355);
 
         if (PyE != 3 && PyE != 4) {
             Print_Main();
@@ -1208,12 +1216,9 @@ void Menu::Print_InGame()
 
     Sprites[menu].Draw(340, 300, 0, Sprites[fmenu].Image[0]);
 
-    DrawText(340, 185, T_continue, Sprites[fmenu].Image[0]);
-    AddButton(0, T_continue, 340, 185);
-    DrawText(340, 300, T_moptions, Sprites[fmenu].Image[0]);
-    AddButton(1, T_moptions, 340, 300);
-    DrawText(340, 415, T_exit_game, Sprites[fmenu].Image[0]);
-    AddButton(2, T_exit_game, 340, 415);
+    AddTextButton(0, "Continue", 340, 185, m_screen);
+    AddTextButton(1, "Settings", 340, 300, m_screen);
+    AddTextButton(2, "Exit", 340, 415, m_screen);
     Menu_Py[3].StartX = -1;
 }
 
@@ -1313,7 +1318,6 @@ eMenu Menu::SDLMain_Score(bool EditScore)
     int i;
     int NEdit = -1;
     char Provi[256];
-    int PosCur = 0;
     char key;
 
     // Searches the score index to edit
@@ -1330,13 +1334,13 @@ eMenu Menu::SDLMain_Score(bool EditScore)
         if (NEdit < 7) { // if shifting must be done
             for (i = 7; i > NEdit; i--) {
                 Pref.Sco[i].Score = Pref.Sco[i - 1].Score;
-                strcpy(Pref.Sco[i].Name, Pref.Sco[i - 1].Name);
+                Pref.Sco[i].Name = Pref.Sco[i - 1].Name;
             }
         }
 
         // Erase name and enter score
         Pref.Sco[NEdit].Score = Pref.Score;
-        Pref.Sco[NEdit].Name[0] = 0;
+        Pref.Sco[NEdit].Name.clear();
     }
 
     // Sets mouse on entire display
@@ -1362,25 +1366,31 @@ eMenu Menu::SDLMain_Score(bool EditScore)
         Sprites[background_menu].Draw(400, 300, 0, Sprites[fmenu].Image[0]);
 
         // Draw title and commands
-        DrawText(400, 50, T_better_scores, Sprites[fmenu].Image[0]);
-        DrawText(400, 550, T_press_any_key, Sprites[fmenu].Image[0]);
+        m_screen.ChangeFontColor(255, 255, 0);
+        m_screen.PrintText("Better scores", 400 - m_screen.TextLength("Better scores") / 2, 50);
+#ifndef ANDROID
+        m_screen.PrintText("Press any key", 400 - m_screen.TextLength("Press any key") / 2, 540);
+#else
+        m_screen.PrintText("Tap to continue", 400 - m_screen.TextLength("Tap to continue") / 2, 540);
+#endif
+        m_screen.ChangeFontColor(255, 255, 255);
 
         // Draw scores
         for (i = 0; i < 8; i++) {
             sprintf(Provi, "%d", i + 1);
-            DrawString(70, 120 + i * (360 / 7), Provi, Sprites[fmenu].Image[0]);
+            m_screen.PrintText(Provi, 70, 120 + i * (360 / 7));
 
             if (EditScore == false || NEdit != i) {
-                if (Pref.Sco[i].Name[0]) {
-                    DrawString(140, 120 + i * (360 / 7), Pref.Sco[i].Name, Sprites[fmenu].Image[0]);
+                if (!Pref.Sco[i].Name.empty()) {
+                    m_screen.PrintText(Pref.Sco[i].Name, 140, 120 + i * (360 / 7));
                 }
                 else {
-                    DrawString(140, 120 + i * (360 / 7), Points, Sprites[fmenu].Image[0]);
+                    m_screen.PrintText(Points, 140, 120 + i * (360 / 7));
                 }
             }
 
             sprintf(Provi, "%i", Pref.Sco[i].Score);
-            DrawString(740 - StringLength(Provi), 120 + i * (360 / 7), Provi, Sprites[fmenu].Image[0]);
+            m_screen.PrintText(Provi, 720 - m_screen.TextLength(std::string(Provi)), 120 + i * (360 / 7));
         }
 
         // Erase background
@@ -1397,6 +1407,15 @@ eMenu Menu::SDLMain_Score(bool EditScore)
                 break;
             case SDL_KEYDOWN: // Waits a Keyboard press
                 if (event.key.state == SDL_PRESSED) {
+                    if (NEdit >= 0 && event.key.keysym.sym == SDLK_BACKSPACE && !Pref.Sco[NEdit].Name.empty()) {
+                        std::string &currentScore = Pref.Sco[NEdit].Name;
+                        // For utf-8 characters, we need to pop_back twice
+                        // Use SDL_StepBackUTF8 with sdl3 to detect utf-8 characters?
+                        if ((currentScore[currentScore.size() - 1] & 0xc0) == 0x80) {
+                            currentScore.pop_back();
+                        }
+                        currentScore.pop_back();
+                    }
                     m_audio.Play(sClick);
                     if (EditScore == false && event.key.keysym.sym != SDLK_F12) {
                         event.key.keysym.sym = SDLK_RETURN;
@@ -1414,22 +1433,14 @@ eMenu Menu::SDLMain_Score(bool EditScore)
                             SDL_StopTextInput();
                         }
                         return mMenu;
-                    case SDLK_BACKSPACE: // Erases
-                        if (PosCur) {
-                            PosCur--;
-                            Pref.Sco[NEdit].Name[PosCur] = 0;
-                        }
-                        break;
                     default:
                         break;
                     }
                 }
                 break;
             case SDL_TEXTINPUT:
-                /* Add new text onto the end of our text */
-                if (StringLength(Pref.Sco[NEdit].Name) < LSCOREMAX && PosCur < 79 && CharExist(event.text.text[0])) {
-                    PosCur += strlen(event.text.text);
-                    strcat(Pref.Sco[NEdit].Name, event.text.text);
+                if (NEdit >= 0 && Pref.Sco[NEdit].Name.size() <= 16) {
+                    Pref.Sco[NEdit].Name += event.text.text;
                 }
                 break;
             case SDL_QUIT:
@@ -1445,12 +1456,15 @@ eMenu Menu::SDLMain_Score(bool EditScore)
         currentTime = SDL_GetTicks();
         Sleeping();
 
-        if (EditScore) { // Handle the scores edition drawing
-            DrawString(140, 120 + NEdit * (360 / 7), Pref.Sco[NEdit].Name);
+        if (EditScore && NEdit >= 0 && NEdit < 8) { // Handle the scores edition drawing
+            if (!Pref.Sco[NEdit].Name.empty()) {
+                m_screen.PrintText(Pref.Sco[NEdit].Name, 140, 120 + NEdit * (360 / 7));
+            }
 
             i = (currentTime / 50) % 20; // Draw cursors
-            m_screen.PrintSprite(arrow_left, i, 110, 120 + NEdit * (360 / 7));
-            m_screen.PrintSprite(arrow_right, i, 180 + StringLength(Pref.Sco[NEdit].Name), 120 + NEdit * (360 / 7));
+            int textLen = Pref.Sco[NEdit].Name.empty() ? 0 : m_screen.TextLength(Pref.Sco[NEdit].Name);
+            m_screen.PrintSprite(arrow_left, i, 110, 150 + NEdit * (360 / 7));
+            m_screen.PrintSprite(arrow_right, i, 180 + textLen, 150 + NEdit * (360 / 7));
         }
 
         // Update render

@@ -35,10 +35,6 @@ extern Sprite *Sprites;
 extern int NSprites;
 extern sNewPreference Pref;
 
-static const char *TextOrder = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789.-!?*+<>%$()&;";
-static const char *TextOrder2 = "abcdefghijklmnopqrstuvwxyz0123456789,_|?*+<>%$[]&;";
-static int TextTable[256];
-
 char Languages[31][16]; // Stores languages
 int NTexts = 0;
 bool shouldDrawLoading = false;
@@ -110,21 +106,6 @@ bool LoadSprites()
 
     char PathFile[512] = "language.dat";
     Utils::GetPath(PathFile);
-
-    // Initialize characters table for texts
-    for (i = 0; i < 256; i++) {
-        TextTable[i] = -1;
-    }
-    i = 0;
-    while (TextOrder[i] != 0) {
-        TextTable[(int)(TextOrder[i])] = i;
-        i++;
-    }
-    i = 0;
-    while (TextOrder2[i] != 0) {
-        TextTable[(int)(TextOrder2[i])] = i;
-        i++;
-    }
 
     // *** Loads the languages file ***
     // ********************************
@@ -226,49 +207,6 @@ int NumberLength(int C)
     return l;
 }
 
-/*** Returns the length of a string ***/
-/**************************************/
-int StringLength(char *Text)
-{
-    int i = 0;
-    int l = 0;
-    int Le;
-
-    while (Text[i] != 0) {
-        Le = (int)(Text[i]);
-        if (TextTable[Le] != -1) {
-            l += Sprites[letters].Dim[(TextTable[Le])].L;
-            if (Text[i + 1] != 0) {
-                l += GAP_BETWEEN_LETTERS;
-            }
-        }
-        else {
-            if (Le == (int)(' ')) {
-                l += SPACE_LENGTH;
-            }
-        }
-
-        i++;
-    }
-
-    return l;
-}
-
-/*** Checks if a char exists ***/
-/*******************************/
-bool CharExist(char C)
-{
-    if ((int)(C) < 0) {
-        return false;
-    }
-    if (C == ' ') {
-        return true;
-    }
-    if (TextTable[(int)(C)] != -1) {
-        return true;
-    }
-    return false;
-}
 /*** Displays a number ***/
 /*************************/
 void DrawNumber(int x, int y, int Number, SDL_Texture *Background)
@@ -281,32 +219,6 @@ void DrawNumber(int x, int y, int Number, SDL_Texture *Background)
         x -= Sprites[digits].Dim[(Number % 10)].L + GAP_BETWEEN_NUMBERS;
         Number /= 10;
     } while (Number);
-}
-
-/*** Display a string ***/
-/************************/
-void DrawString(int x, int y, const char *Text, SDL_Texture *background)
-{
-    int i = 0;
-    int Le;
-
-    // TODO Handle here unicode
-    while (Text[i] != 0) {
-        Le = (int)(Text[i]);
-
-        if (TextTable[Le] != -1) { // If known char
-            Le = TextTable[Le];
-            Sprites[letters].Draw(x + (Sprites[letters].Dim[Le].L / 2), y, Le, background);
-            x += Sprites[letters].Dim[Le].L + GAP_BETWEEN_LETTERS;
-        }
-        else { // if there's a space
-            if (Le == (int)(' ')) {
-                x += SPACE_LENGTH - GAP_BETWEEN_LETTERS;
-            }
-        }
-
-        i++;
-    }
 }
 
 /*** Display text in a language ***/

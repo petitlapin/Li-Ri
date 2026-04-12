@@ -26,6 +26,8 @@
 
 #include "preference.h"
 
+#include <string>
+
 void Sleeping();
 
 class Game;
@@ -60,13 +62,15 @@ public:
 private:
     int PyE { 0 }; // Position of the cursor in the menu
     int Level { 0 };
-    int CenterM { 0 }; // Variable for the settings menu
 
     Game &m_game;
     Audio &m_audio;
     Screen &m_screen;
     Mouse &m_mouse;
     Gamepad &m_gamepad;
+
+    int Year = 2026;
+    std::string CopyrightText = "G.P.L. Game - Copyright 2023-" + std::to_string(Year) + " By Johnny Jazeix (fork of Ri-Li originally written by D. Roux-Serret), Music by MAF";
 };
 
 #endif

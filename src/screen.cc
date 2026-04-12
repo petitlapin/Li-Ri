@@ -22,10 +22,36 @@
 //    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 #include "preference.h"
-#include "sprite.h"
 #include "screen.h"
+#include "sprite.h"
+#include "utils.h"
 
 extern Sprite *Sprites;
+extern SDL_Renderer *sdlRenderer;
+
+/*** Constructor ***/
+/*******************/
+Screen::Screen()
+{
+    // Loading font
+    char fontPath[512];
+    strcpy(fontPath, "Assets/Fonts/comic.ttf");
+    Utils::GetPath(fontPath);
+    m_font = TTF_OpenFont(fontPath, 28);
+
+    // Selecting font color
+    fColor.r = 255;
+    fColor.g = 255;
+    fColor.b = 255;
+    fColor.a = 255;
+}
+
+/*** Destructor ***/
+/******************/
+Screen::~Screen()
+{
+    TTF_CloseFont(m_font);
+}
 
 /*** Display a sprite ***/
 /************************/
@@ -40,11 +66,44 @@ void Screen::PrintCable(int dx, int dy, int fx, int fy)
     Sprites[rope].PrintRope(dx, dy, fx, fy);
 }
 
+void Screen::ChangeFontSize(int size)
+{
+    TTF_SetFontSize(m_font, size);
+}
+
+void Screen::ChangeFontColor(float r, float g, float b)
+{
+    fColor.r = r;
+    fColor.g = g;
+    fColor.b = b;
+    fColor.a = 255;
+}
+
 /*** Display a text ***/
 /**********************/
-void Screen::PrintText(e_Sprite Text, int x, int y)
+void Screen::PrintText(const std::string &Text, int x, int y)
 {
-    Sprites[Text].Draw(x, y, 0);
+    SDL_Texture *texture = nullptr;
+    SDL_Surface *surf = TTF_RenderUTF8_Blended(m_font, Text.c_str(), fColor);
+    texture = SDL_CreateTextureFromSurface(sdlRenderer, surf);
+    SDL_FreeSurface(surf);
+
+    // Setting position and size
+    SDL_Rect Position;
+    SDL_QueryTexture(texture, nullptr, nullptr, &Position.w, &Position.h);
+    Position.x = x; // - Position.w;
+    Position.y = y; // - Position.h;
+
+    // Rendering text
+    SDL_RenderCopy(sdlRenderer, texture, nullptr, &Position);
+    SDL_DestroyTexture(texture);
+}
+
+int Screen::TextLength(const std::string &Text)
+{
+    int w, h;
+    TTF_SizeUTF8(m_font, Text.c_str(), &w, &h);
+    return w;
 }
 
 /*** Display game settings ***/
@@ -54,7 +113,9 @@ void Screen::PrintOptions(int Nlives, int NScore)
     int x, y;
 
     Score = NScore;
-    DrawNumber(740, 215, Score);
+    ChangeFontSize(24);
+    PrintText(std::to_string(Score), 740 - TextLength(std::to_string(Score)) / 2, 215);
+    ChangeFontSize(22);
 
     if (Nlives > 10) {
         Nlives = 10; // Clamp to avoid going off screen
