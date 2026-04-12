@@ -81,7 +81,7 @@ if(LINUX)
 endif()
 
 if(USE_CONAN)
-  target_link_libraries(${LIRI_EXECUTABLE_NAME} PRIVATE SDL2::SDL2 SDL2_mixer::SDL2_mixer SDL2_ttf::SDL2_ttf)
+  target_link_libraries(${LIRI_EXECUTABLE_NAME} PRIVATE SDL2::SDL2 SDL2_mixer::SDL2_mixer sdl_ttf::sdl_ttf)
 else()
   target_include_directories(${LIRI_EXECUTABLE_NAME} PUBLIC ${SDL2_INCLUDE_DIRS})
   target_link_libraries(${LIRI_EXECUTABLE_NAME} PRIVATE ${SDL2_LINK_LIBRARIES})
