@@ -226,49 +226,6 @@ int NumberLength(int C)
     return l;
 }
 
-/*** Returns the length of a string ***/
-/**************************************/
-int StringLength(char *Text)
-{
-    int i = 0;
-    int l = 0;
-    int Le;
-
-    while (Text[i] != 0) {
-        Le = (int)(Text[i]);
-        if (TextTable[Le] != -1) {
-            l += Sprites[letters].Dim[(TextTable[Le])].L;
-            if (Text[i + 1] != 0) {
-                l += GAP_BETWEEN_LETTERS;
-            }
-        }
-        else {
-            if (Le == (int)(' ')) {
-                l += SPACE_LENGTH;
-            }
-        }
-
-        i++;
-    }
-
-    return l;
-}
-
-/*** Checks if a char exists ***/
-/*******************************/
-bool CharExist(char C)
-{
-    if ((int)(C) < 0) {
-        return false;
-    }
-    if (C == ' ') {
-        return true;
-    }
-    if (TextTable[(int)(C)] != -1) {
-        return true;
-    }
-    return false;
-}
 /*** Displays a number ***/
 /*************************/
 void DrawNumber(int x, int y, int Number, SDL_Texture *Background)
@@ -283,31 +240,6 @@ void DrawNumber(int x, int y, int Number, SDL_Texture *Background)
     } while (Number);
 }
 
-/*** Display a string ***/
-/************************/
-void DrawString(int x, int y, const char *Text, SDL_Texture *background)
-{
-    int i = 0;
-    int Le;
-
-    // TODO Handle here unicode
-    while (Text[i] != 0) {
-        Le = (int)(Text[i]);
-
-        if (TextTable[Le] != -1) { // If known char
-            Le = TextTable[Le];
-            Sprites[letters].Draw(x + (Sprites[letters].Dim[Le].L / 2), y, Le, background);
-            x += Sprites[letters].Dim[Le].L + GAP_BETWEEN_LETTERS;
-        }
-        else { // if there's a space
-            if (Le == (int)(' ')) {
-                x += SPACE_LENGTH - GAP_BETWEEN_LETTERS;
-            }
-        }
-
-        i++;
-    }
-}
 
 /*** Display text in a language ***/
 /**********************************/

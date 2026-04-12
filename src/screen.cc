@@ -50,8 +50,6 @@ Screen::Screen()
 /******************/
 Screen::~Screen()
 {
-    // Destroying font
-    SDL_DestroyTexture(fontTexture);
     TTF_CloseFont(m_font);
 }
 
@@ -83,18 +81,21 @@ void Screen::ChangeFontColor(float r, float g, float b){
 /**********************/
 void Screen::PrintText(const std::string &Text, int x, int y)
 {
-    fontSurface = TTF_RenderUTF8_Blended(m_font, Text.c_str(), fColor); // Rendering text
-    fontTexture = SDL_CreateTextureFromSurface(sdlRenderer, fontSurface); // Creating texture
+    SDL_Texture *texture = nullptr;
+    SDL_Surface *surf = TTF_RenderUTF8_Blended(m_font, Text.c_str(), fColor);
+    texture = SDL_CreateTextureFromSurface(sdlRenderer, surf);
+    SDL_FreeSurface(surf);
 
     // Setting position and size
-    SDL_Rect dst;
-    dst.x = x;
-    dst.y = y;
-    dst.w = fontSurface->w;
-    dst.h = fontSurface->h;
+    SDL_Rect Position;
+    SDL_QueryTexture(texture, NULL, NULL, &Position.w, &Position.h);
+    Position.x = x;// - Position.w;
+    Position.y = y;// - Position.h;
+
 
     // Rendering text
-    SDL_RenderCopy(sdlRenderer, fontTexture, nullptr, &dst);
+    SDL_RenderCopy(sdlRenderer, texture, nullptr, &Position);
+    SDL_DestroyTexture(texture);
 }
 
 int Screen::TextLength(std::string Text){
@@ -105,7 +106,7 @@ int Screen::TextLength(std::string Text){
 
 /*** Display game settings ***/
 /*****************************/
-void Screen::PrintOptions(int NV, int NScore)
+void Screen::PrintOptions(int Nlives, int NScore)
 {
     int x, y;
 
@@ -114,14 +115,14 @@ void Screen::PrintOptions(int NV, int NScore)
     PrintText(std::to_string(Score), 740 - TextLength(std::to_string(Score))/2, 215);
     ChangeFontSize(22);
 
-    if (NV > 10) {
-        NV = 10; // Clamp to avoid going off screen
+    if (Nlives > 10) {
+        Nlives = 10; // Clamp to avoid going off screen
     }
-    for (int i = 0; i < NV; ++i) { // Display lives
+    for (int i = 0; i < Nlives; ++i) { // Display lives
         x = i % 2;
         x = x * 44 + 38 + LT * D_Case;
         y = i / 2;
-        y = 394 + y * 46;
+        y = 384 + y * 46;
         Sprites[logo_health].Draw(x, y, 0);
     }
 }

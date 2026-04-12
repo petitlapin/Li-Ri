@@ -25,12 +25,9 @@
 #define SCREEN_DOM_
 
 #include <SDL2/SDL_ttf.h>
-#include <SDL2/SDL_log.h>
-#include <SDL2/SDL_rect.h>
 #include <SDL2/SDL_surface.h>
-#include <SDL2/SDL_timer.h>
+#include <string>
 #include "preference.h"
-#include "string"
 #include "sprite.h"
 
 class Screen
@@ -50,10 +47,8 @@ public:
 
 private:
     int Score { -1 }; // Stores displayed score
-    TTF_Font* m_font;
     SDL_Color fColor;
-    SDL_Surface* fontSurface;
-    SDL_Texture* fontTexture;
+    TTF_Font *m_font;
 };
 
 #endif

@@ -646,13 +646,13 @@ eMenu Menu::SDLMain_Options()
 
         switch (Pref.AudioTheme) {
         case mMaf:
-            DrawString(400, 420, "MAF 464", Sprites[fmenu].Image[0]);
+            m_screen.PrintText("MAF 464", 400, 390);
             break;
         case mZabiden:
-            DrawString(400, 420, "ZABIDEN", Sprites[fmenu].Image[0]);
+            m_screen.PrintText("ZABIDEN", 400, 390);
             break;
         }
-        DrawString(350, 370, "Audio Theme", Sprites[fmenu].Image[0]);
+        m_screen.PrintText("Audio Theme", 360, 340);
 
         NumSp = (currentTime / 30) % 25;
         m_screen.PrintSprite(sound, NumSp, 150, 110);
@@ -1147,7 +1147,7 @@ eMenu Menu::SDLMain_HR()
             }
         }
 
-        // Test if Endished
+        // Test if finished
         if (Done != -1 && Done < currentTime) {
             return mGame;
         }
@@ -1320,32 +1320,31 @@ eMenu Menu::SDLMain_Score(bool EditScore)
     char Provi[256];
     char key;
 
-    // Cherche le numéro du score à remplacer si edition des scores
+    // Searches the score index to edit
     if (EditScore) {
-        for (i = 0; i < 8; i++) {
+        for (i = 7; i >= 0; i--) {
             if (Pref.Sco[i].Score < Pref.Score) {
                 NEdit = i;
-                break;
             }
         }
         if (NEdit == -1) {
             return mMenu;
         }
 
-        if (NEdit < 7) { // Si doit fair un décalage
+        if (NEdit < 7) { // if shifting must be done
             for (i = 7; i > NEdit; i--) {
                 Pref.Sco[i].Score = Pref.Sco[i - 1].Score;
                 Pref.Sco[i].Name = Pref.Sco[i - 1].Name;
             }
         }
 
-        // Efface le nouveau nom et met le score
+        // Erase name and enter score
         Pref.Sco[NEdit].Score = Pref.Score;
         Pref.Sco[NEdit].Name.clear();
     }
 
-    // Met la sourie sur tous l'ecran
-    m_mouse.Init(Menu_Py); // Initialise la sourie
+    // Sets mouse on entire display
+    m_mouse.Init(Menu_Py);
     Menu_Py[0].StartX = 0;
     Menu_Py[0].StartY = 0;
     Menu_Py[0].EndX = 800;
@@ -1358,12 +1357,12 @@ eMenu Menu::SDLMain_Score(bool EditScore)
         SDL_StartTextInput();
     }
 
-    // Prend les evenements
+    // Fetch events
     do {
-        // Efface le background
+        // Erase background
         m_screen.CleanSpriteAndScreen(fmenu);
         SDL_RenderClear(sdlRenderer);
-        // Prend l'image du background et fait l'affichage
+        // Set background image and build display
         Sprites[background_menu].Draw(400, 300, 0, Sprites[fmenu].Image[0]);
 
         // Draw title and commands
@@ -1394,11 +1393,11 @@ eMenu Menu::SDLMain_Score(bool EditScore)
             m_screen.PrintText(Provi, 740 - m_screen.TextLength(std::string(Provi)), 120 + i * (360 / 7));
         }
 
-        // Efface le background
+        // Erase background
         SDL_Event event;
         while (SDL_PollEvent(&event)) {
-            m_mouse.GetEvent(event, PyE); // Handle mouse
-            m_gamepad.GetEvent(event); // Handle gamepad
+            m_mouse.GetEvent(event, PyE);
+            m_gamepad.GetEvent(event);
 
             switch (event.type) {
             case SDL_WINDOWEVENT:
@@ -1406,25 +1405,30 @@ eMenu Menu::SDLMain_Score(bool EditScore)
                     SDL_RenderPresent(sdlRenderer);
                 }
                 break;
-            case SDL_KEYDOWN: // Prend un touche au clavier
+            case SDL_KEYDOWN: // Waits a Keyboard press
                 if (event.key.state == SDL_PRESSED) {
                     if (NEdit >= 0 && event.key.keysym.sym == SDLK_BACKSPACE && !Pref.Sco[NEdit].Name.empty()) {
                         Pref.Sco[NEdit].Name.pop_back();
                     }
                     m_audio.Play(sClick);
+                    if (EditScore == false && event.key.keysym.sym != SDLK_F12) {
+                        event.key.keysym.sym = SDLK_RETURN;
+                    }
                     switch (event.key.keysym.sym) {
                     case SDLK_F12: // Save screenshot
                         if (event.key.repeat == 0) {
                             Utils::doScreenshot(sdlRenderer);
                         }
                         break;
-                    case SDLK_ESCAPE: // Valide l'entrée
+                    case SDLK_ESCAPE: // Validates entry
                     case SDLK_RETURN:
                     case SDLK_KP_ENTER:
                         if (EditScore) {
                             SDL_StopTextInput();
                         }
                         return mMenu;
+                    default:
+                        break;
                     }
                 }
                 break;
@@ -1441,7 +1445,7 @@ eMenu Menu::SDLMain_Score(bool EditScore)
             }
         }
 
-        // Gère les variables
+        // Handle variables
         previousTime = currentTime;
         currentTime = SDL_GetTicks();
         Sleeping();
@@ -1458,7 +1462,7 @@ eMenu Menu::SDLMain_Score(bool EditScore)
             m_screen.PrintSprite(arrow_right, i, 180 + textLen, 120 + NEdit * (360 / 7));
         }
 
-        // Echange les buffets video
+        // Update render
         SDL_RenderPresent(sdlRenderer);
 
     } while (true);

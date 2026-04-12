@@ -359,10 +359,11 @@ bool Game::DrawLevel(int LevelN)
 #endif
 
     // Displays texts for selected language
+    m_screen.ChangeFontSize(20);
     m_screen.ChangeFontColor(255, 255, 0);
     m_screen.PrintText("Level", 740-m_screen.TextLength("Level")/2, 110);
     m_screen.PrintText("Score", 740-m_screen.TextLength("Score")/2, 180);
-    m_screen.PrintText("Config", 740-m_screen.TextLength("Config")/2, 260);
+    m_screen.PrintText("Options", 740-m_screen.TextLength("Options")/2, 260);
     m_screen.PrintText("Lives", 740-m_screen.TextLength("Lives")/2, 340);
     m_screen.ChangeFontColor(255, 255, 255);
 
