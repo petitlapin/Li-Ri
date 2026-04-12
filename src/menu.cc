@@ -847,7 +847,7 @@ eMenu Menu::SDLMain_Level()
         Sprites[title].Draw(400, 65, 0, Sprites[fmenu].Image[0]);
 
         AddTextButton(0, "New game", 400, 225, m_screen);
-        AddTextButton(1, "Old level", 400, 340, m_screen);
+        AddTextButton(1, "Old level", 400, 305, m_screen);
         AddTextButton(2, "Menu", 400, 445, m_screen);
 
         AddButton(3, arrows, 330, 380);
@@ -966,7 +966,7 @@ eMenu Menu::SDLMain_Level()
             m_screen.PrintSprite(arrows, 3, 470, 380);
         }
 
-        m_screen.PrintText(std::to_string(Level + 1), 400, 380);
+        m_screen.PrintText(std::to_string(Level + 1), 390, 355);
 
         if (PyE != 3 && PyE != 4) {
             Print_Main();
@@ -1218,7 +1218,7 @@ void Menu::Print_InGame()
 
     AddTextButton(0, "Continue", 340, 185, m_screen);
     AddTextButton(1, "Settings", 340, 300, m_screen);
-    AddTextButton(2, "Exit from game", 340, 415, m_screen);
+    AddTextButton(2, "Exit", 340, 415, m_screen);
     Menu_Py[3].StartX = -1;
 }
 
@@ -1367,11 +1367,11 @@ eMenu Menu::SDLMain_Score(bool EditScore)
 
         // Draw title and commands
         m_screen.ChangeFontColor(255, 255, 0);
-        m_screen.PrintText("Better score", 400 - m_screen.TextLength("Better score") / 2, 50);
+        m_screen.PrintText("Better scores", 400 - m_screen.TextLength("Better scores") / 2, 50);
 #ifndef ANDROID
-        m_screen.PrintText("Press any key", 400 - m_screen.TextLength("Press any key") / 2, 550);
+        m_screen.PrintText("Press any key", 400 - m_screen.TextLength("Press any key") / 2, 540);
 #else
-        m_screen.PrintText("Tap to continue", 400 - m_screen.TextLength("Tap to continue") / 2, 550);
+        m_screen.PrintText("Tap to continue", 400 - m_screen.TextLength("Tap to continue") / 2, 540);
 #endif
         m_screen.ChangeFontColor(255, 255, 255);
 
@@ -1390,7 +1390,7 @@ eMenu Menu::SDLMain_Score(bool EditScore)
             }
 
             sprintf(Provi, "%i", Pref.Sco[i].Score);
-            m_screen.PrintText(Provi, 740 - m_screen.TextLength(std::string(Provi)), 120 + i * (360 / 7));
+            m_screen.PrintText(Provi, 720 - m_screen.TextLength(std::string(Provi)), 120 + i * (360 / 7));
         }
 
         // Erase background
@@ -1408,7 +1408,13 @@ eMenu Menu::SDLMain_Score(bool EditScore)
             case SDL_KEYDOWN: // Waits a Keyboard press
                 if (event.key.state == SDL_PRESSED) {
                     if (NEdit >= 0 && event.key.keysym.sym == SDLK_BACKSPACE && !Pref.Sco[NEdit].Name.empty()) {
-                        Pref.Sco[NEdit].Name.pop_back();
+                        std::string &currentScore = Pref.Sco[NEdit].Name;
+                        // For utf-8 characters, we need to pop_back twice
+                        // Use SDL_StepBackUTF8 with sdl3 to detect utf-8 characters?
+                        if ((currentScore[currentScore.size() - 1] & 0xc0) == 0x80) {
+                            currentScore.pop_back();
+                        }
+                        currentScore.pop_back();
                     }
                     m_audio.Play(sClick);
                     if (EditScore == false && event.key.keysym.sym != SDLK_F12) {
@@ -1433,7 +1439,7 @@ eMenu Menu::SDLMain_Score(bool EditScore)
                 }
                 break;
             case SDL_TEXTINPUT:
-                if (NEdit >= 0) {
+                if (NEdit >= 0 && Pref.Sco[NEdit].Name.size() <= 16) {
                     Pref.Sco[NEdit].Name += event.text.text;
                 }
                 break;
@@ -1456,10 +1462,9 @@ eMenu Menu::SDLMain_Score(bool EditScore)
             }
 
             i = (currentTime / 50) % 20; // Draw cursors
-            m_screen.PrintSprite(arrow_left, i, 110, 120 + NEdit * (360 / 7));
-
             int textLen = Pref.Sco[NEdit].Name.empty() ? 0 : m_screen.TextLength(Pref.Sco[NEdit].Name);
-            m_screen.PrintSprite(arrow_right, i, 180 + textLen, 120 + NEdit * (360 / 7));
+            m_screen.PrintSprite(arrow_left, i, 110, 150 + NEdit * (360 / 7));
+            m_screen.PrintSprite(arrow_right, i, 180 + textLen, 150 + NEdit * (360 / 7));
         }
 
         // Update render

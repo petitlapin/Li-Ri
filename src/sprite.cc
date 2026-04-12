@@ -35,10 +35,6 @@ extern Sprite *Sprites;
 extern int NSprites;
 extern sNewPreference Pref;
 
-static const char *TextOrder = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789.-!?*+<>%$()&;";
-static const char *TextOrder2 = "abcdefghijklmnopqrstuvwxyz0123456789,_|?*+<>%$[]&;";
-static int TextTable[256];
-
 char Languages[31][16]; // Stores languages
 int NTexts = 0;
 bool shouldDrawLoading = false;
@@ -110,21 +106,6 @@ bool LoadSprites()
 
     char PathFile[512] = "language.dat";
     Utils::GetPath(PathFile);
-
-    // Initialize characters table for texts
-    for (i = 0; i < 256; i++) {
-        TextTable[i] = -1;
-    }
-    i = 0;
-    while (TextOrder[i] != 0) {
-        TextTable[(int)(TextOrder[i])] = i;
-        i++;
-    }
-    i = 0;
-    while (TextOrder2[i] != 0) {
-        TextTable[(int)(TextOrder2[i])] = i;
-        i++;
-    }
 
     // *** Loads the languages file ***
     // ********************************
