@@ -141,8 +141,8 @@ eMenu Menu::SDLMain()
         m_screen.ChangeFontSize(22);
 
         AddTextButton(0, "Play", 400, 229, m_screen);
-        AddTextButton(1, "Leaderboard", 400, 306, m_screen);
-        AddTextButton(2, "Settings", 400, 384, m_screen);
+        AddTextButton(1, "Scores", 400, 306, m_screen);
+        AddTextButton(2, "Options", 400, 384, m_screen);
         AddTextButton(3, "Exit", 400, 461, m_screen);
         Menu_Py[4].StartX = -1;
         SDL_Event event;
@@ -400,7 +400,7 @@ void Menu::InitMain_Options()
     Menu_Py[4].Valid = true;
 
     // Center text left
-    AddTextButton(5, "Menu", 100, 490, m_screen);
+    AddTextButton(5, "Menu", 180, 490, m_screen);
 
     // Sound buttons
     Sprites[arrows].Draw(250, 110, 1, Sprites[fmenu].Image[0]);
@@ -690,7 +690,7 @@ eMenu Menu::SDLMain_Options()
             Print_Main(490);
             break;
         case 5:
-            Print_Main(CenterM);
+            Print_Main(180);
             break;
         case 6:
             PyE = 0;
@@ -1367,9 +1367,9 @@ eMenu Menu::SDLMain_Score(bool EditScore)
 
         // Draw title and commands
         m_screen.ChangeFontColor(255, 255, 0);
-        m_screen.PrintText("Leaderboard", 400 - m_screen.TextLength("Leaderboard") / 2, 50);
+        m_screen.PrintText("Better score", 400 - m_screen.TextLength("Better score") / 2, 50);
 #ifndef ANDROID
-        m_screen.PrintText("Press enter to continue", 400 - m_screen.TextLength("Press enter to continue") / 2, 550);
+        m_screen.PrintText("Press any key", 400 - m_screen.TextLength("Press any key") / 2, 550);
 #else
         m_screen.PrintText("Tap to continue", 400 - m_screen.TextLength("Tap to continue") / 2, 550);
 #endif
