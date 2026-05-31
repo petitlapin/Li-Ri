@@ -1,0 +1,49 @@
+name: Android CI
+
+on:
+  push:
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+    linux:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v6.0.1
+            - name: Setup Android SDK
+              uses: android-actions/setup-android@v3
+            - name: Install android sdk packages        
+              run: sdkmanager "build-tools;33.0.2" "platforms;android-26"
+            - name: "Clone dependencies"
+              working-directory: ./android/app
+              run: |
+                git clone --branch "release-2.28.5" https://github.com/libsdl-org/SDL.git
+                git clone --branch "release-2.6.3" https://github.com/libsdl-org/SDL_mixer.git
+                git clone --branch "v4.25" https://github.com/brofield/simpleini.git
+            - name: "Create links"
+              working-directory: ./android/app
+              run: |
+                cp -R $PWD/SDL/android-project/app/src/main/java/org/libsdl/ src/main/java/org/
+                ln -s $PWD/SDL src/main/jni/SDL2
+                ln -s $PWD/SDL/include src/main/jni/SDL2/SDL2
+                ln -s $PWD/SDL_mixer src/main/jni/SDL2_mixer
+                ln -s $PWD/SDL_mixer/include src/main/jni/SDL2_mixer/SDL2
+                ln -s $PWD/simpleini src/main/jni/simpleini
+            - name: "Init submodule for SDL_mixer"
+              working-directory: ./android/app
+              run: git -C SDL_mixer submodule update --init external/libmodplug
+            - name: "Prepare build"
+              working-directory: ./android/app
+              run: |
+                mkdir -p src/main/assets/
+                cp -R ../../Sounds src/main/assets/
+                cp ../../data/* src/main/assets/
+                cp ../../src/config.h.in ../../src/config.h
+                sed -i "s/@LIRI_VERSION@/$$VERSION$$/" ../../src/config.h
+                sed -i "s/@LIRI_DATA_DIR@//" ../../src/config.h
+                sed -i "s/SUPPORT_MOD_MODPLUG ?= false/SUPPORT_MOD_MODPLUG ?= true/" src/main/jni/SDL2_mixer/Android.mk
+                sed -i 's/4.2.1/7.2.0/' ../build.gradle
+                sed -i 's/7.0.2/7.3.3/' ../gradle/wrapper/gradle-wrapper.properties
+            - name: Build with Gradle
+              working-directory: ./android/app
+              run: SDL/android-project/gradlew build
