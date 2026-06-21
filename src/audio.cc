@@ -49,7 +49,6 @@ void Audio::Stop()
         delete[] Sound;
     }
     SDL_DestroyProperties(musicOptions);
-    SDL_DestroyProperties(soundOptions);
     MIX_DestroyAudio(Music);
     MIX_DestroyTrack(Track);
     MIX_DestroyTrack(MusicTrack);
@@ -69,15 +68,15 @@ bool Audio::Init()
     N = sSize;
     Sound = new MIX_Audio *[sSize];
 
-    std::map<eSon, std::string> sounds {
-        { sClic, "Sounds/click.wav" },
+    std::map<eSound, std::string> sounds {
+        { sClick, "Sounds/click.wav" },
         { sSpeed, "Sounds/speed.wav" },
         { sCrash, "Sounds/crash.wav" },
         { sEnd, "Sounds/end.wav" },
         { sLose, "Sounds/lose.wav" },
-        { sEtire, "Sounds/etire.wav" },
+        { sExpand, "Sounds/expand.wav" },
         { sWagon, "Sounds/wagon.wav" },
-        { sReduit, "Sounds/reduit.wav" },
+        { sShrink, "Sounds/shrink.wav" },
         { sLive, "Sounds/live.wav" }
     };
     for (const auto &sound: sounds) {
@@ -85,6 +84,8 @@ bool Audio::Init()
         Utils::GetPath(PathFile);
         Sound[sound.first] = MIX_LoadAudio(Mixer, PathFile, true);
     }
+    musicOptions = SDL_CreateProperties();
+    SDL_SetNumberProperty(musicOptions, MIX_PROP_PLAY_LOOPS_NUMBER, -1);
 
     return true;
 }
@@ -111,7 +112,7 @@ void Audio::LoadMusic(int Num)
     if (Num == 0) { // menu music
         switch (Pref.AudioTheme) {
         case mMaf:
-            strcpy(Provi, "Sounds/menu_maf.mod");
+            strcpy(Provi, "Sounds/menu_maf.ogg");
             break;
         case mZabiden:
             strcpy(Provi, "Sounds/menu_zabiden.ogg");
@@ -123,7 +124,7 @@ void Audio::LoadMusic(int Num)
     else { // in game music
         switch (Pref.AudioTheme) {
         case mMaf:
-            sprintf(Provi, "Sounds/ingame%d_maf.xm", Num);
+            sprintf(Provi, "Sounds/ingame%d_maf.ogg", Num);
             break;
         case mZabiden:
             sprintf(Provi, "Sounds/ingame%d_zabiden.ogg", Num);
@@ -132,10 +133,6 @@ void Audio::LoadMusic(int Num)
         Utils::GetPath(Provi);
         Music = MIX_LoadAudio(Mixer, Provi, true);
     }
-    musicOptions = SDL_CreateProperties();
-    SDL_SetNumberProperty(musicOptions, MIX_PROP_PLAY_LOOPS_NUMBER, -1);
-    soundOptions = SDL_CreateProperties();
-    SDL_SetNumberProperty(soundOptions, MIX_PROP_PLAY_LOOPS_NUMBER, -1);
 
     PlayMusic();
 }
@@ -166,8 +163,8 @@ void Audio::Play(eSound index)
         MemorizedTime = currentTime;
     }
 
-    MIX_SetTrackAudio(Track, Son[So]);
-    MIX_PlayTrack(Track, soundOptions);
+    MIX_SetTrackAudio(Track, Sound[index]);
+    MIX_PlayTrack(Track, 0);
 }
 
 void Audio::PlayMusic() const
@@ -185,7 +182,7 @@ void Audio::PauseMusic(bool IsMusicPlaying) const
         return;
     }
 
-    if (Et) {
+    if (IsMusicPlaying) {
         MIX_PauseTrack(MusicTrack);
     }
     else {

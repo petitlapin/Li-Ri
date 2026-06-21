@@ -80,7 +80,7 @@ if(LINUX)
 endif()
 
 if(USE_CONAN)
-  target_link_libraries(${LIRI_EXECUTABLE_NAME} PRIVATE SDL3::SDL3 SDL3_mixer::SDL3_mixer)
+  target_link_libraries(${LIRI_EXECUTABLE_NAME} PRIVATE sdl::sdl SDL3_mixer::SDL3_mixer-static)
 else()
   target_include_directories(${LIRI_EXECUTABLE_NAME} PUBLIC ${SDL3_INCLUDE_DIRS})
   target_link_libraries(${LIRI_EXECUTABLE_NAME} PRIVATE ${SDL3_LINK_LIBRARIES})

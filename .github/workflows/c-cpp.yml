@@ -13,7 +13,7 @@ jobs:
             - name: Install Conan
               uses: turtlebrowser/get-conan@main
               with:
-                version: 2.25.2
+                version: 2.28.1
             - name: Configure conan
               run: conan profile detect
             - name: Install deps
@@ -24,7 +24,7 @@ jobs:
               run: cmake --build build --config Release
             - name: package
               run: cmake --build build --config Release --target package
-            - uses: actions/upload-artifact@v4
+            - uses: actions/upload-artifact@v7.0.1
               with:
                 name: ubuntu
                 path: build/Li_ri-*.sh
@@ -38,7 +38,7 @@ jobs:
             - name: Get Conan
               uses: turtlebrowser/get-conan@main
               with:
-                version: 2.25.2
+                version: 2.28.1
             - name: Configure conan
               run: conan profile detect
             - name: Install deps
@@ -50,7 +50,7 @@ jobs:
               run: cmake --build build --config Release
             - name: package
               run: cmake --build build --config Release --target package
-            - uses: actions/upload-artifact@v4
+            - uses: actions/upload-artifact@v7.0.1
               with:
                 name: macOS
                 path: build/Li_ri-*.dmg
@@ -62,7 +62,7 @@ jobs:
             - name: Install Conan
               uses: turtlebrowser/get-conan@main
               with:
-                version: 2.25.2
+                version: 2.28.1
 
             - name: Configure conan
               run: conan profile detect
@@ -74,12 +74,12 @@ jobs:
             - name: build
               run: cmake --build build --config Release
             - name: Install NSIS
-              uses: repolevedavaj/install-nsis@v1.1.0
+              uses: repolevedavaj/install-nsis@v1.2.1
               with:
-                nsis-version: "3.10"
+                nsis-version: "3.12"
             - name: package
               run: cmake --build build --config Release --target package
-            - uses: actions/upload-artifact@v4
+            - uses: actions/upload-artifact@v7.0.1
               with:
                 name: windows
                 path: build/Li_ri-*.exe

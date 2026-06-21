@@ -227,13 +227,11 @@ void Utils::GetPath(char *Path)
     char Provi[512];
 
     strcpy(Provi, Path);
-    char *basePath = SDL_GetBasePath();
+    const char *basePath = SDL_GetBasePath();
     sprintf(Path, "%s/%s", basePath, Provi);
     if (Utils::FileExists(Path)) {
-        SDL_free(basePath);
         return;
     }
-    SDL_free(basePath);
 }
 #endif
 

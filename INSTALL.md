@@ -1,6 +1,6 @@
 # Installation Instructions
 
-Li-Ri depends on SDL2 and SDL2_mixer (and their dependencies).
+Li-Ri depends on SDL3 and SDL3_mixer (and their dependencies).
 
 ## Compilation via conan
 Install conan 2 and run it: `conan install . --output-folder=build --build=missing`.
@@ -10,7 +10,7 @@ Then, run cmake to generate the build files: `cmake -DCMAKE_TOOLCHAIN_FILE=build
 At last, run cmake to build the executable: `cmake --build build --config Release`.
 
 ## Compilation via package manager:
-Use your favorite tools to install the development packages of SDL2 and SDL2_mixer (preferably latest versions).
+Use your favorite tools to install the development packages of SDL3 and SDL3_mixer (preferably latest versions).
 
 Then run cmake to generate the build files: `cmake -DCMAKE_BUILD_TYPE=Release -S . -B build`.
 
@@ -34,4 +34,6 @@ Update NEWS.yaml to add a new version and the changelog.
 Then, run `./tools/create_release.sh -v 3.1.5` to update all the files necessary for the release.
 
 ## Audio sounds
-The ogg sounds have been created using LMMS DAW. You can install it on your OS using your package manager. To generate the ogg files in command line, run `lmms render input.mmpz -f ogg -b 160 -o output.ogg`
+The xm and mod sounds have been created with Fasttracker II and Protracker. To generate the ogg files in command line, run `for f in Sounds/ingame{1,2}_maf.xm Sounds/menu_maf.mod; do xmp $f -o ${f%.*}.wav; ffmpeg -i ${f%.*}.wav -acodec libvorbis ${f%.*}.ogg;done`
+
+The mmpz sounds have been created using LMMS DAW. You can install it on your OS using your package manager. To generate the ogg files in command line, run `lmms render input.mmpz -f ogg -b 160 -o output.ogg`

@@ -31,6 +31,7 @@
 #include <SDL3/SDL_timer.h> // for SDL_GetTicks
 #include <SDL3/SDL_video.h> // for SDL_CreateWindow, SDL_DestroyWindow
 #include <SDL3/SDL.h>
+#include <SDL3/SDL_main.h>
 #include <SDL3_mixer/SDL_mixer.h>
 
 #include "config.h"

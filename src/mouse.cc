@@ -83,7 +83,7 @@ void Mouse::GetEvent(SDL_Event &event, int &pPy)
             // Trigger Enter key if clicking on a valid region
             if (tPy) { // If table exists
                 i = 0;
-                while (tPy[i].DepX != -1) { // iterate through defined regions
+                while (tPy[i].StartX != -1) { // iterate through defined regions
                     if (Px >= tPy[i].StartX && Px <= tPy[i].EndX && Py >= tPy[i].StartY && Py <= tPy[i].EndY) {
                         if (tPy[i].Valid == true) {
                             event.type = SDL_EVENT_KEY_DOWN;

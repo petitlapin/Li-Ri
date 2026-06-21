@@ -57,8 +57,8 @@ public:
 
     void PauseMusic(bool IsMusicPlaying) const; // Pauses/Resumes music
 
-    void DoVolume(MIX_Track* track) const; // Handles sound volumes
-    Mix_Audio *Music { nullptr }; // Pointer to music tracks
+    void DoVolume(MIX_Track *track) const; // Handles sound volumes
+    MIX_Audio *Music { nullptr }; // Pointer to music tracks
     MIX_Track *Track { nullptr }; // Should be private and cleanup better in main.cc
     MIX_Track *MusicTrack { nullptr };
 
@@ -66,9 +66,8 @@ private:
     int N { 0 }; // Number/Amount of sound effects
     int NMus { 0 }; // Number of the current music
     int MemorizedTime { 0 }; // Memorizes time for clicks
-    Mix_Chunk **Sound { nullptr }; // Pointer to sound effects
+    MIX_Audio **Sound { nullptr }; // Pointer to sound effects
     MIX_Mixer *Mixer { nullptr };
-    SDL_PropertiesID soundOptions;
     SDL_PropertiesID musicOptions;
 };
 
