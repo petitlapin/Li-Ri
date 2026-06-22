@@ -296,7 +296,7 @@ public class SDLActivity extends Activity implements View.OnSystemUiVisibilityCh
         return new String[] {
             "SDL3",
             // "SDL3_image",
-            // "SDL3_mixer",
+            "SDL3_mixer",
             // "SDL3_net",
             // "SDL3_ttf",
             "main"
