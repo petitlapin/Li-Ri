@@ -4,10 +4,10 @@ include $(CLEAR_VARS)
 
 LOCAL_MODULE := main
 
-SDL_PATH := ../SDL2
+SDL_PATH := ../SDL3
 
-LOCAL_C_INCLUDES := $(LOCAL_PATH)/$(SDL_PATH)/ \
-		    $(LOCAL_PATH)/../SDL2_mixer \
+LOCAL_C_INCLUDES := $(LOCAL_PATH)/$(SDL_PATH)/include \
+		    $(LOCAL_PATH)/../SDL3_mixer \
 		    $(LOCAL_PATH)/../simpleini \
 
 # Add your application source files here...
@@ -25,8 +25,8 @@ LOCAL_SRC_FILES := $(SDL_PATH)/src/main/android/SDL_android_main.c \
 	../../../../../../src/sprite.cc \
 	../../../../../../src/utils.cc \
 
-LOCAL_SHARED_LIBRARIES := SDL2 SDL2_mixer
+LOCAL_SHARED_LIBRARIES := SDL3 SDL3_mixer
 
-LOCAL_LDLIBS := -lGLESv1_CM -lGLESv2 -llog
+LOCAL_LDLIBS := -lGLESv1_CM -lGLESv2 -lOpenSLES -llog -landroid  # SDL
 
 include $(BUILD_SHARED_LIBRARY)
