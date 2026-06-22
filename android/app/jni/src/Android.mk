@@ -11,8 +11,7 @@ LOCAL_C_INCLUDES := $(LOCAL_PATH)/$(SDL_PATH)/include \
 		    $(LOCAL_PATH)/../simpleini \
 
 # Add your application source files here...
-LOCAL_SRC_FILES := $(SDL_PATH)/src/main/android/SDL_android_main.c \
-	../../../../../../src/audio.cc \
+LOCAL_SRC_FILES := ../../../../../../src/audio.cc \
 	../../../../../../src/editor.cc \
 	../../../../../../src/game.cc \
 	../../../../../../src/gamepad.cc \
