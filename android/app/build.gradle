@@ -5,7 +5,7 @@ plugins {
 def buildWithCMake = project.hasProperty('BUILD_WITH_CMAKE');
 
 android {
-    namespace = "org.liri.liri"
+    namespace = "org.liri.app"
     compileSdkVersion 35
     ndkVersion = "28.2.13676358"
     defaultConfig {
