@@ -11,18 +11,18 @@ LOCAL_C_INCLUDES := $(LOCAL_PATH)/$(SDL_PATH)/include \
 		    $(LOCAL_PATH)/../simpleini \
 
 # Add your application source files here...
-LOCAL_SRC_FILES := ../../../../../../src/audio.cc \
-	../../../../../../src/editor.cc \
-	../../../../../../src/game.cc \
-	../../../../../../src/gamepad.cc \
-	../../../../../../src/level.cc \
-	../../../../../../src/loco.cc \
-	../../../../../../src/main.cc \
-	../../../../../../src/menu.cc \
-	../../../../../../src/mouse.cc \
-	../../../../../../src/screen.cc \
-	../../../../../../src/sprite.cc \
-	../../../../../../src/utils.cc \
+LOCAL_SRC_FILES := ../../../../src/audio.cc \
+	../../../../src/editor.cc \
+	../../../../src/game.cc \
+	../../../../src/gamepad.cc \
+	../../../../src/level.cc \
+	../../../../src/loco.cc \
+	../../../../src/main.cc \
+	../../../../src/menu.cc \
+	../../../../src/mouse.cc \
+	../../../../src/screen.cc \
+	../../../../src/sprite.cc \
+	../../../../src/utils.cc \
 
 LOCAL_SHARED_LIBRARIES := SDL3 SDL3_mixer
 
