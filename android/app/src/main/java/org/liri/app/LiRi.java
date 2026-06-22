@@ -37,8 +37,8 @@ public class LiRi extends SDLActivity {
 
     protected String[] getLibraries() {
         return new String[] {
-                "SDL2",
-                "SDL2_mixer",
+                "SDL3",
+                "SDL3_mixer",
                 "main"
         };
     }
