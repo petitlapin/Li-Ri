@@ -210,12 +210,31 @@ void Utils::GetPath(char *Path)
 
     strcpy(Provi, Path);
 
-    sprintf(Path, "Li-ri.app/Contents/Resources/%s", Provi);
+    // Inside an .app bundle SDL_GetBasePath() returns "<App>.app/Contents/Resources/",
+    // independent of the current working directory (which is "/" when started from Finder).
+    char *basePath = SDL_GetBasePath();
+    if (basePath) {
+        snprintf(Path, 512, "%s%s", basePath, Provi);
+        SDL_free(basePath);
+        if (Utils::FileExists(Path)) {
+            return;
+        }
+    }
+
+    // Fallbacks: data folder given at configure time (-DLIRI_DATA_DIR=...), then the
+    // historical path relative to the working directory
+    if (LIRI_DATA_DIR[0] != '\0') {
+        snprintf(Path, 512, "%s/%s", LIRI_DATA_DIR, Provi);
+        if (Utils::FileExists(Path)) {
+            return;
+        }
+    }
+    snprintf(Path, 512, "Li-ri.app/Contents/Resources/%s", Provi);
     if (Utils::FileExists(Path)) {
         return;
     }
 
-    SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Unable to find '%s'", Path);
+    SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Unable to find '%s'", Provi);
     exit(-1);
 }
 #endif

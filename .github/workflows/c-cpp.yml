@@ -48,8 +48,23 @@ jobs:
               run: cmake -DCMAKE_TOOLCHAIN_FILE=build/Release/generators/conan_toolchain.cmake -DUSE_CONAN=ON -DCMAKE_BUILD_TYPE=Release -S . -B build
             - name: build
               run: cmake --build build --config Release
+            - name: verify app bundle
+              run: |
+                test -x build/Li-ri.app/Contents/MacOS/Li-ri
+                test -f build/Li-ri.app/Contents/Resources/sprites.dat
+                test -f build/Li-ri.app/Contents/Resources/Sounds/click.wav
+                test -f build/Li-ri.app/Contents/Resources/Li-ri.icns
+                plutil -lint build/Li-ri.app/Contents/Info.plist
+                otool -L build/Li-ri.app/Contents/MacOS/Li-ri
             - name: package
               run: cmake --build build --config Release --target package
+            - name: verify dmg
+              run: |
+                # The dmg shows the GPL license agreement; accept it non-interactively
+                yes | hdiutil attach build/Li_ri-*.dmg -mountpoint /tmp/liri -nobrowse
+                test -f /tmp/liri/Li-ri.app/Contents/Resources/sprites.dat
+                codesign --verify --deep --strict /tmp/liri/Li-ri.app
+                hdiutil detach /tmp/liri
             - uses: actions/upload-artifact@v4
               with:
                 name: macOS
