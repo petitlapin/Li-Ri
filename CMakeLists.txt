@@ -88,6 +88,44 @@ endif()
 
 target_link_libraries(${LIRI_EXECUTABLE_NAME} PRIVATE SimpleIni::SimpleIni)
 
+# macOS: build a self-contained Li-ri.app (data + sounds in Contents/Resources)
+if(APPLE)
+  set(LIRI_ICNS "${CMAKE_CURRENT_BINARY_DIR}/Li-ri.icns")
+  set(LIRI_ICONSET "${CMAKE_CURRENT_BINARY_DIR}/Li-ri.iconset")
+  find_program(ICONUTIL_EXECUTABLE iconutil)
+  if(ICONUTIL_EXECUTABLE)
+    add_custom_command(OUTPUT ${LIRI_ICNS}
+      COMMAND ${CMAKE_COMMAND} -E make_directory ${LIRI_ICONSET}
+      COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/data/Li-ri-icon-16x16.png   ${LIRI_ICONSET}/icon_16x16.png
+      COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/data/Li-ri-icon-32x32.png   ${LIRI_ICONSET}/icon_16x16@2x.png
+      COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/data/Li-ri-icon-32x32.png   ${LIRI_ICONSET}/icon_32x32.png
+      COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/data/Li-ri-icon-64x64.png   ${LIRI_ICONSET}/icon_32x32@2x.png
+      COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/data/Li-ri-icon-128x128.png ${LIRI_ICONSET}/icon_128x128.png
+      COMMAND ${ICONUTIL_EXECUTABLE} -c icns -o ${LIRI_ICNS} ${LIRI_ICONSET}
+      DEPENDS ${CMAKE_SOURCE_DIR}/data/Li-ri-icon-128x128.png
+      COMMENT "Generating Li-ri.icns")
+    target_sources(${LIRI_EXECUTABLE_NAME} PRIVATE ${LIRI_ICNS})
+    set_source_files_properties(${LIRI_ICNS} PROPERTIES MACOSX_PACKAGE_LOCATION Resources)
+  endif()
+
+  set_target_properties(${LIRI_EXECUTABLE_NAME} PROPERTIES
+    MACOSX_BUNDLE TRUE
+    MACOSX_BUNDLE_INFO_PLIST "${CMAKE_SOURCE_DIR}/macos/Info.plist.in"
+    MACOSX_BUNDLE_BUNDLE_NAME "Li-Ri"
+    MACOSX_BUNDLE_GUI_IDENTIFIER "io.github.petitlapin.Li-ri"
+    MACOSX_BUNDLE_ICON_FILE "Li-ri.icns"
+    MACOSX_BUNDLE_SHORT_VERSION_STRING "${LIRI_VERSION}"
+    MACOSX_BUNDLE_BUNDLE_VERSION "${LIRI_VERSION}")
+
+  # Copy game data into the bundle after every build, so the .app also runs from the build tree
+  add_custom_command(TARGET ${LIRI_EXECUTABLE_NAME} POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}/data
+            "$<TARGET_BUNDLE_CONTENT_DIR:${LIRI_EXECUTABLE_NAME}>/Resources"
+    COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}/Sounds
+            "$<TARGET_BUNDLE_CONTENT_DIR:${LIRI_EXECUTABLE_NAME}>/Resources/Sounds"
+    COMMENT "Copying game data into Li-ri.app")
+endif()
+
 
 include(GNUInstallDirs)
 install(TARGETS ${LIRI_EXECUTABLE_NAME}
@@ -96,6 +134,38 @@ install(TARGETS ${LIRI_EXECUTABLE_NAME}
   LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
   BUNDLE DESTINATION .)
 
+if(APPLE)
+  # Embed non-system dylibs (e.g. Homebrew SDL2) into the bundle and re-sign ad hoc,
+  # which Apple Silicon requires after the binaries were modified.
+  set(LIRI_EXTRA_BUNDLE_LIBS "")
+  if(NOT USE_CONAN)
+    # Homebrew's "sdl2" is sdl2-compat, which dlopen()s SDL3 at runtime. fixup_bundle
+    # cannot see that dependency, so ship SDL3 where sdl2-compat looks first:
+    # @loader_path/libSDL3.dylib, i.e. Contents/Frameworks/libSDL3.dylib.
+    pkg_check_modules(SDL2COMPAT QUIET sdl2-compat)
+    if(SDL2COMPAT_FOUND)
+      pkg_check_modules(SDL3 REQUIRED sdl3)
+      find_library(LIRI_SDL3_LIBRARY NAMES SDL3 HINTS ${SDL3_LIBRARY_DIRS} REQUIRED)
+      file(REAL_PATH "${LIRI_SDL3_LIBRARY}" LIRI_SDL3_LIBRARY_REAL)
+      set(LIRI_EXTRA_BUNDLE_LIBS "\$ENV{DESTDIR}\${CMAKE_INSTALL_PREFIX}/${LIRI_EXECUTABLE_NAME}.app/Contents/Frameworks/libSDL3.dylib")
+      install(FILES "${LIRI_SDL3_LIBRARY_REAL}"
+        DESTINATION "${LIRI_EXECUTABLE_NAME}.app/Contents/Frameworks"
+        RENAME libSDL3.dylib)
+    endif()
+  endif()
+  install(CODE "
+    include(BundleUtilities)
+    set(BU_CHMOD_BUNDLE_ITEMS ON)
+    fixup_bundle(\"\$ENV{DESTDIR}\${CMAKE_INSTALL_PREFIX}/${LIRI_EXECUTABLE_NAME}.app\" \"${LIRI_EXTRA_BUNDLE_LIBS}\" \"\")
+    execute_process(COMMAND codesign --force --deep --sign - \"\$ENV{DESTDIR}\${CMAKE_INSTALL_PREFIX}/${LIRI_EXECUTABLE_NAME}.app\"
+                    RESULT_VARIABLE _liri_codesign_result)
+    if(NOT _liri_codesign_result EQUAL 0)
+      message(FATAL_ERROR \"codesign of ${LIRI_EXECUTABLE_NAME}.app failed: \${_liri_codesign_result}\")
+    endif()
+  ")
+endif()
+
+if(NOT APPLE)
 install(FILES io.github.petitlapin.Li-ri.appdata.xml DESTINATION "${CMAKE_INSTALL_DATADIR}/appdata/")
 install(FILES io.github.petitlapin.Li-ri.desktop DESTINATION "${CMAKE_INSTALL_DATADIR}/applications/")
 install(FILES data/Li-ri-icon-16x16.png DESTINATION "${CMAKE_INSTALL_DATADIR}/icons/hicolor/16x16/apps/" RENAME io.github.petitlapin.Li-ri.png)
@@ -111,6 +181,7 @@ else()
   install(DIRECTORY ${CMAKE_SOURCE_DIR}/data/ DESTINATION "${CMAKE_INSTALL_DATADIR}/Li-ri")
   install(DIRECTORY ${CMAKE_SOURCE_DIR}/Sounds DESTINATION "${CMAKE_INSTALL_DATADIR}/Li-ri")
 endif()
+endif() # NOT APPLE
 option(RILI_ENABLE_IPO
   "Enable interprocedural optimization (IPO/LTO) by the compiler" ON)
 if(RILI_ENABLE_IPO)
