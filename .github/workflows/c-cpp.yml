@@ -29,7 +29,7 @@ jobs:
                 name: ubuntu
                 path: build/Li_ri-*.sh
     mac:
-        runs-on: macos-14
+        runs-on: macos-15
         steps:
             - uses: actions/checkout@v6.0.1
             - uses: actions/setup-python@v6.1.0
@@ -65,7 +65,12 @@ jobs:
                 version: 2.25.2
 
             - name: Configure conan
-              run: conan profile detect
+              run: |
+                conan profile detect
+                # windows-latest ships Visual Studio 2026; some recipes (sdl_mixer) pin a
+                # CMake < 4.2, which has no "Visual Studio 18 2026" generator.
+                printf '\n[replace_tool_requires]\ncmake/*: cmake/4.2.1\n' >> "$(conan profile path default)"
+                cat "$(conan profile path default)"
             - name: Install deps
               run: conan install . --output-folder=${{github.workspace}}/build --build=missing
             - name: "Configure and build"
@@ -74,9 +79,12 @@ jobs:
             - name: build
               run: cmake --build build --config Release
             - name: Install NSIS
-              uses: repolevedavaj/install-nsis@v1.1.0
-              with:
-                nsis-version: "3.10"
+              # repolevedavaj/install-nsis downloads from a fixed SourceForge mirror
+              # that now serves a corrupted installer; use Chocolatey instead.
+              shell: pwsh
+              run: |
+                choco install nsis -y --no-progress
+                "C:\Program Files (x86)\NSIS" | Out-File -FilePath $env:GITHUB_PATH -Append
             - name: package
               run: cmake --build build --config Release --target package
             - uses: actions/upload-artifact@v4
